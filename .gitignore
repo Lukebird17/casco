@@ -1,0 +1,17 @@
+**data**/
+**storage**/
+**logs**/
+**.ckpt
+**.pth
+**.log
+**.csv
+**.json
+**.zip
+**.tar
+**.h5
+**.npy
+**.pkl
+**.onnx
+**.ipynb
+**storage_demo**/
+**.pdf
