@@ -84,34 +84,44 @@ class EnhancedReadFiles:
     @classmethod
     def read_pdf_enhanced(cls, file_path: str, metadata: Dict) -> str:
         """
-        增强的PDF读取，支持表格检测和结构化信息提取
+        增强的PDF读取，集成PaddleOCR支持表格、多语言、旋转纠正等
+        Args:
+            file_path: PDF文件路径
+            metadata: 元数据字典
+        Returns:
+            提取的文本
         """
-        doc = fitz.open(file_path)
+        from advanced_ocr_system import ComprehensiveOCRSystem
+        
+        print(f"  🚀 使用高级OCR处理: {os.path.basename(file_path)}")
+        ocr_system = ComprehensiveOCRSystem()
+        results = ocr_system.process_document(
+            file_path,
+            auto_rotate=True,        # 自动旋转纠正
+            remove_watermark=True,   # 去除水印
+            enhance_blur=True,       # 增强模糊图像
+            extract_tables=True,     # 提取复杂表格
+            extract_formulas=False,  # 公式提取（可选）
+            language='auto'          # 自动检测语言
+        )
+        
+        # 合并所有页面的文本
         full_text = []
+        metadata['total_pages'] = len(results['pages'])
         
-        metadata['total_pages'] = len(doc)
+        for page in results['pages']:
+            full_text.append(f"\n{'='*50}\n[第 {page['page_number']} 页]\n{'='*50}\n")
+            
+            # 添加表格（Markdown格式）
+            if page['tables']:
+                for table in page['tables']:
+                    if table.get('markdown'):
+                        full_text.append(f"\n[表格 {table['table_index']}]\n{table['markdown']}\n")
+            
+            # 添加文本
+            if page['text']:
+                full_text.append(page['text'])
         
-        for page_num, page in enumerate(doc):
-            page_text = []
-            page_text.append(f"\n{'='*50}\n[第 {page_num + 1} 页]\n{'='*50}\n")
-            
-            # 提取文本
-            text = page.get_text("text")
-            
-            # 尝试检测和提取表格
-            tables = cls.detect_tables_in_page(page)
-            if tables:
-                page_text.append("[检测到表格数据]\n")
-                for table_idx, table in enumerate(tables):
-                    page_text.append(f"\n[表格 {table_idx + 1}]\n{table}\n")
-            
-            # 添加普通文本
-            if text.strip():
-                page_text.append(text)
-            
-            full_text.extend(page_text)
-        
-        doc.close()
         return "\n".join(full_text)
 
     @classmethod

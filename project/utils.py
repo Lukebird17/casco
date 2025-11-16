@@ -143,15 +143,37 @@ class ReadFiles:
             raise ValueError("Unsupported file type")
 
     @classmethod
-    def read_pdf(cls, file_path: str):
-        """读取PDF文件，使用 pymupdf (fitz)"""
+    def read_pdf(cls, file_path: str, use_ocr: bool = True):
+        """
+        读取PDF文件
+        
+        Args:
+            file_path: PDF文件路径
+            use_ocr: 是否启用OCR（针对扫描PDF）
+        
+        Returns:
+            提取的文本
+        """
         import fitz  # pymupdf
-        text = ""
-        doc = fitz.open(file_path)
-        for page in doc:
-            text += page.get_text()
-        doc.close()
-        return text
+        
+        if not use_ocr:
+            # 简单模式：只用pymupdf提取
+            text = ""
+            doc = fitz.open(file_path)
+            for page in doc:
+                text += page.get_text()
+            doc.close()
+            return text
+        
+        # OCR增强模式
+        from pdf_extractor import PaddleOCRPDFExtractor
+        
+        # 创建提取器（使用单例模式避免重复初始化）
+        if not hasattr(cls, '_ocr_extractor'):
+            cls._ocr_extractor = PaddleOCRPDFExtractor(lang='ch')
+        
+        result = cls._ocr_extractor.extract_from_pdf(file_path)
+        return result['text']
 
     @classmethod
     def read_markdown(cls, file_path: str):
