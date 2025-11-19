@@ -23,10 +23,20 @@ class EnhancedReadFiles:
     """
     增强的文件读取类，支持表格提取和元数据保留
     """
+    
+    # 类级别的OCR系统实例（全局共享，只初始化一次）
+    _ocr_system = None
 
     def __init__(self, path: str) -> None:
         self._path = path
         self.file_list = self.get_files()
+        
+        # 如果OCR系统还没初始化，则初始化一次
+        if EnhancedReadFiles._ocr_system is None:
+            print("🚀 初始化OCR系统（全局单例）...")
+            from simple_ocr_system import SimpleOCRSystem
+            EnhancedReadFiles._ocr_system = SimpleOCRSystem()
+            print("✅ OCR系统初始化完成！")
 
     def get_files(self):
         file_list = []
@@ -84,25 +94,21 @@ class EnhancedReadFiles:
     @classmethod
     def read_pdf_enhanced(cls, file_path: str, metadata: Dict) -> str:
         """
-        增强的PDF读取，集成PaddleOCR支持表格、多语言、旋转纠正等
+        增强的PDF读取，使用PaddleOCR支持表格、多语言、旋转纠正等
         Args:
             file_path: PDF文件路径
             metadata: 元数据字典
         Returns:
             提取的文本
         """
-        from advanced_ocr_system import ComprehensiveOCRSystem
+        # 使用类级别的OCR系统实例（已经初始化好了）
+        ocr_system = cls._ocr_system
         
-        print(f"  🚀 使用高级OCR处理: {os.path.basename(file_path)}")
-        ocr_system = ComprehensiveOCRSystem()
+        # 使用PPStructureV3进行文档结构分析
         results = ocr_system.process_document(
             file_path,
-            auto_rotate=True,        # 自动旋转纠正
-            remove_watermark=True,   # 去除水印
-            enhance_blur=True,       # 增强模糊图像
-            extract_tables=True,     # 提取复杂表格
-            extract_formulas=False,  # 公式提取（可选）
-            language='auto'          # 自动检测语言
+            use_structure_analysis=True,  # 使用结构分析（版面+表格+OCR）
+            extract_toc=True              # 提取目录
         )
         
         # 合并所有页面的文本

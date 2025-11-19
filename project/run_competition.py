@@ -48,6 +48,10 @@ class CompetitionRunner:
         self.storage_path = storage_path
         self.vector_store = None
         self.agent = None
+        # 初始化时创建reader，这样OCR系统只初始化一次
+        print("📖 初始化文档读取器（包含OCR系统）...")
+        self.reader = EnhancedReadFiles(self.data_path)
+        print("✅ 文档读取器初始化完成！\n")
         
     def build_or_load_vectorstore(self, rebuild: bool = False):
         """
@@ -56,9 +60,8 @@ class CompetitionRunner:
         print("=" * 60)
         if rebuild or not os.path.exists(f"{self.storage_path}/vectors.json"):
             print("📚 构建向量数据库...")
-            # 使用增强的文档读取器
-            reader = EnhancedReadFiles(self.data_path)
-            docs = reader.get_content(max_token_len=400, cover_content=50)
+            # 使用已初始化的文档读取器（避免重复初始化OCR）
+            docs = self.reader.get_content(max_token_len=400, cover_content=50)
             print(f"   总共分块数: {len(docs)}")
             
             # 创建向量存储
