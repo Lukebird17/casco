@@ -5,7 +5,7 @@
 **.pth
 **.log
 **.csv
-**.json
+# **.json
 **.zip
 **.tar
 **.h5

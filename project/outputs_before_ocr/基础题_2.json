@@ -1,0 +1,30 @@
+{
+  "query": "根据欧洲铁路局 2025-2027 年单一规划文件，机构注册系统迁移到知识图谱（knowledge graph）方法的目标进度在 2025 年底应达到多少百分比？",
+  "result": [
+    {
+      "position": 1,
+      "content": "[来源: era spd 2025-2027.pdf]\nMigration of registers to \na knowledge graph approach \n(no code needed anymore)\n25%\n100%\nA7.4.Progress with the \nspecifications for multi-leg \nticketing\nSpecifications \nfinalised\nA7.5.Agency becoming a \nregistration entity for vehicles \nat EU level\nProposal for EC \ndecision sent\nWorkflows put in \nplace accordingly\nA7.6.Exploratory work for \nEurocontrol for railways, \nincluding the traffic \nmanagement and economic \nregulation aspects\nDraft concept paper \ndeveloped and \ndiscussed with EC\n(95)\t ERA1226 is included in the services contributing to the policy goal specifically through their workstream on digitalisation, excluding the daily running of the registers."
+    },
+    {
+      "position": 2,
+      "content": "[来源: era spd 2025-2027.pdf]\n122 | EUROPEAN UNION AGENCY FOR RAILWAYS.SINGLE PROGRAMMING DOCUMENT 2025-2027\nMulti-annual programming 2025-2027\nAction\nIndicator\nPg code\n2022 \nbaseline\nTarget\n2023 (87)\n2024\n2025\n2026\n2027\nA5.Ensure proper \ninput/output for the \nclean-up of national \nrules (91)\nA5.1.No.of FTEs allocated \n(annual values)\nERA.1172\nERA-PRG-006\n4.28\n7.36\n7.8\n7.8\n7.8\n7.8\nA5.2.NRs to include in TSIs\nCRs introduced\n33% CRs Closed\n100% of the VA NRs \npositively assessed \nby end 2024 to be \ntransferred into TSIs \nCRs\n100% CRs created \nfor the TSI revision \npackage 2026 \nclosed\nA5.3.Increased performance \nof and trust in MS as control \nlevel - Manage NSRs cleaning-\nup process 2.0 (compliance \nwith TSI OPE 2023, incl.impact of TO, if relevant)\nProject finalised \n(through agreement \nwith MS and/or the \nissuing of TO)\n100% of planned \nMS assessed (incl."
+    },
+    {
+      "position": 3,
+      "content": "[来源: era spd 2025-2027.pdf]\n124 | EUROPEAN UNION AGENCY FOR RAILWAYS.SINGLE PROGRAMMING DOCUMENT 2025-2027\nMulti-annual programming 2025-2027\nAction\nIndicator\nPg code\n2022 \nbaseline\nTarget\n2023 (87)\n2024\n2025\n2026\n2027\nA6.9.GoA/JNS\nNormal: GoA \nproposal & ERA \nfollow-up report\nFast track: GoA \nproposal\nNormal: GoA \nproposal & ERA \nfollow-up report\nFast track: GoA \nproposal\nNormal: one normal \nprocedure (“cross \nwind”) completed\nFast track: 1 fast \ntrack procedure \ncompleted\nNormal: one \nnormal procedure \ncompleted\nFast track: 1 fast \ntrack procedure \ncompleted\nNormal: one \nnormal procedure \ncompleted GoA\nFast track: 1 fast \ntrack procedure \ncompleted\nA7.Ensure proper \ninput/output for the \ndigitalisation of \nAgency’s registers\nA7.1.No.of FTEs allocated \n(annual values)\nERA.1227\nERA.1226 (95)\nERA-REC-122\n3.44\n7.32\n7.32\n6.22\n5.5\n5.5\nA7.2.Migration plan for the \nindividual registers to a linked \ndata approach, including \nthe standardization of \nterminology through the ERA \nterminology\nDraft migration plan \nprepared\nMigration plan \nfinalised, based on \nlegal requirements \nand business cases\nA7.3."
+    },
+    {
+      "position": 4,
+      "content": "[来源: uic_work_programme_2023-2025.pdf]\n==================================================\n\n34\nGoals for the 2023 – 2025 period include:\n\nf Developing a Vision 2050 for the Region to foster \nthe growth of rail in Latin America,\n\nf Creating a network of experts that could support an \nincreasing number of railway projects in the region,\n\nf Sharing knowledge from the UIC working groups \nand from international standards,\n\nf Creating new group to respond to specific problems \nin the regions (e.g., asset management, safety, and \nenvironmental threats) in coordination with the UIC \nRail System Department,\n\nf Creating a working group dedicated to freight \nactivities in coordination with the UIC Freight \nDepartment.\n\n==================================================\n[第 35 页]\n==================================================\n\n35\nNEW REGIONAL STRATEGY\n\n==================================================\n[第 36 页]\n==================================================\n\n==================================================\n[第 37 页]\n=================================================="
+    },
+    {
+      "position": 5,
+      "content": "[来源: era spd 2023-2025.pdf]\n==================================================\n[第 5 页]\n=================================================="
+    },
+    {
+      "position": 6,
+      "content": "[来源: era spd 2023-2025.pdf]\n==================================================\n[第 28 页]\n==================================================\n\n26 | SINGLE PROGRAMMING DOCUMENT 2023-2025\nMulti-annual programming 2023‑2025\nThe Agency is currently reviewing the strategic statement 5, especially as no projects has \nbeen identified yet for the next three years. \nKey Performance Indicators\n#\nKey Performance Indicator\nTarget\n1\nNo KPI foreseen \np.m.\n#\nOutcome indicators\n1\nNo outcome indicator foreseen\nResource envelope\n2023\n2024\n2025\nFTEs\n0\n0\n0\nBudget\n€ 0\n€ 0\n€ 0\nStrategic Statement 5\nRail will be resilient and agile \nin responding to emergency \nsituations\n\n==================================================\n[第 29 页]\n=================================================="
+    }
+  ],
+  "answer": "根据提供的文档片段，机构注册系统迁移到知识图谱方法的目标进度在 2025 年底应达到 100%。"
+}

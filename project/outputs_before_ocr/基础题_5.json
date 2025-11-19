@@ -1,0 +1,30 @@
+{
+  "query": "在 Manresa 车站的事件调查报告中，列车 78443 被授权越过 3023 进站信号机后，何时（日期和时间）发生了列车 95218 最终启动了行驶，并最终导致两列车存在碰撞风险？",
+  "result": [
+    {
+      "position": 1,
+      "content": "[来源: ES-10306- 202270 0815 IF Manresa (english version).pdf]\n==================================================\n[第 23 页]\n==================================================\n\nInforme Final 70/2022\n\n23\n\nmaquinista. El RCM afirma que reconoce su culpa. Durante esta conversación de 2 minutos y 41 \nsegundos hay dos intentos de contacto por el Maquinista del tren 78443 situado delante de la señal \nde entrada 3023 dando indicación de parada. \nA las 18:37:10, el RCM invierte el escape 21/23 y el desvío nº19 para formar itinerario de tren 78443 \na vía 4, mientras que el tren 95218 todavía no ha iniciado su marcha desde vía 5. Instantes después, \na las 18:38:09 el RCM y el maquinista del tren 78443 establecen contacto y el RCM le autoriza \nmediante telefonema a rebasar la señal de entrada 3023 de Manresa con marcha de maniobras hasta \npunto de estacionamiento, sin haber comprobado la salida del tren 95218. A las 18:38:52 el tren \n78443 rebasa dicha señal."
+    },
+    {
+      "position": 2,
+      "content": "[来源: ES-10306- 202270 0815 IF Manresa (english version).pdf]\nriesgo de colisión entre los trenes 78443 y 95218.\n\nImagen 15 Itinerarios incompatibles de los trenes 95218 (amarillo) y 78443 (azul) \n2. Desde que el RCM dicta el telefonema al maquinista de tren 95218 hasta que este reanuda \nla marcha transcurren cuatro minutos y medio aproximadamente. El maquinista no salió \ninmediatamente tras recibir el telefonema, ni el RCM se percató, ni por observación directa \nni a través de las comprobaciones del cuadro de mando, de que el tren no había emprendido \nla marcha. El RCM autorizó al maquinista del tren 78443 el rebase de la señal de entrada 3023\n\n==================================================\n[第 26 页]\n==================================================\n\nComisión de Investigación de Accidentes Ferroviarios\n\n26"
+    },
+    {
+      "position": 3,
+      "content": "[来源: ES-10306- 202270 0815 IF Manresa (english version).pdf]\n==================================================\n[第 9 页]\n==================================================\n\nInforme Final 70/2022\n\n9\n\n3 \nDESCRIPCIÓN DEL SUCESO \n3.1 \nEL SUCESO Y SUS CIRCUNSTANCIAS \nDescripción \nEl suceso que se investiga consistió en un incidente operacional con resultado de riesgo de colisión \nentre los trenes 95218 y 78443. Tuvo lugar el día 15 de agosto de 2022, festivo nacional, a las 18:41 \nen la estación de Manresa de la línea 220 – Lleida-Pirineus– Bifurcación Vilanova en el PK. 302+247. \nLa estación de Manresa está situada en las coordenadas: 41°43'5.40\"N y 1°49'53.55\"E, dentro del \nmunicipio de Manresa, provincia de Barcelona, comunidad autónoma de Cataluña. \nEl incidente se produjo entre las señales de salida y de entrada de la estación de Manresa del lado \nSant Vicenç de Castellet (Barcelona), y está situado en una zona a nivel y en curva. \nDurante el incidente las condiciones meteorológicas y de visibilidad eran buenas y era por la tarde.\n\nImagen 1 Zona de la línea ferroviaria (fuente: Google Earth)\n\n==================================================\n[第 10 页]\n==================================================\n\n[检测到表格数据]"
+    },
+    {
+      "position": 4,
+      "content": "[来源: Baseline3-r2_subset-026_v360.pdf]\n3\n\nx\n\n7.3.2\n\nx\n\n7.3.2.1\n\nx\n\n7.3.2.2\n\nx\n\n7.3.2.3\n\nx\n\n7.3.2.4\n\nx\n\n7.3.2.5\n\nx\n\n7.3.2.6\n\nx\n\n7.3.2.7 \nx \nx\n\n7.3.2.8\n\nx\n\n7.3.2.9\n\nx\n\n7.3.2.10 \nx \nx\n\n7.3.2.11\n\nx\n\n7.3.3\n\nx\n\n7.3.3.1\n\nx\n\n7.3.3.2\n\nx\n\n7.3.3.2 a)\n\nx\n\n7.3.3.2 b)\n\nx\n\n7.3.3.3\n\nx\n\n7.3.3.4 \nx\n\n7.3.3.5\n\nx\n\n7.3.3.6\n\nx\n\n7.3.3.7\n\nx\n\n7.3.3.8\n\nx\n\n7.3.3.9\n\nx\n\n7.3.3.10\n\nx\n\n7.3.3.10.1\n\nx\n\n7.4\n\nx\n\n7.4.1\n\nx\n\n7.4.1.1\n\nx\n\n7.4.1.1 Table"
+    },
+    {
+      "position": 5,
+      "content": "[来源: 修改单-TCAMET 04010.2—2018《……互联互通系统规范  第2部分：系统架构和功能分配》.pdf]\nGä%Nå]¹(/(A<\n·756(/(0756(HK756%Nå]¹3³9:$¸æ*Õ(\n<Õæ*Õ(çTæ0$¸%]^è=Nå*Õ&$ 012)!/(@\n756*!Gä%Nå]¹(Ö!/(A<·756(/(0756(HK7\n56%Nå]¹3³9:$¸æ*Õ(<Õæ*Õ(çTæ0$\n¸%]^è=Nå*Õ&$\nX'YZLFG\n&'tu >.-.%.% %!Ä>¦I:'<·[*KLA£$&\n#"
+    },
+    {
+      "position": 6,
+      "content": "[来源: Baseline4-r1_subset-026_v400.pdf]\nInformative \nOthers \n7.1\n\nx\n\n7.2\n\nx\n\n7.3\n\nx\n\n7.3.1\n\nx\n\n7.3.1.1\n\nx\n\n7.3.1.2\n\nx\n\n7.3.1.3\n\nx\n\n7.3.2\n\nx\n\n7.3.2.1\n\nx\n\n7.3.2.2\n\nx\n\n7.3.2.3\n\nx\n\n7.3.2.4\n\nx\n\n7.3.2.5\n\nx\n\n7.3.2.6\n\nx\n\n7.3.2.7 \nx \nx\n\n7.3.2.8\n\nx\n\n7.3.2.9\n\nx\n\n7.3.2.10 \nx \nx\n\n7.3.2.11\n\nx\n\n7.3.3\n\nx\n\n7.3.3.1\n\nx\n\n7.3.3.2\n\nx\n\n7.3.3.2 1st bullet\n\nx\n\n7.3.3.2 2nd bullet\n\nx\n\n7.3.3.3\n\nx\n\n7.3.3.4 \nx\n\n7.3.3.4.1\n\nx\n\n7.3.3.5\n\nx\n\n7.3.3.6\n\nx\n\n7.3.3.7\n\nx"
+    }
+  ],
+  "answer": "根据提供的文档片段，列车 95218 最终启动行驶的时间是 2022 年 8 月 15 日 18:41。"
+}
