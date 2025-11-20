@@ -494,38 +494,34 @@ class EnhancedRAGAgent:
             'attempt': attempt + 1
         }
     
+    # 文件: enhanced_agent.py (在 EnhancedRAGAgent 类内部)
+
     def format_output(self, result: Dict, include_reasoning: bool = False) -> Dict:
         """
-        格式化输出（符合竞赛要求）
+        格式化输出（完全符合示例模板.json的要求）
         Args:
-            result: 查询结果
-            include_reasoning: 是否包含推理链
+            result: 查询结果 (包含 'query', 'answer', 'results')
+            include_reasoning: 是否包含推理链（模板不要求，但调试有用）
         Returns:
             格式化的输出
         """
+        
+        # 1. 提取纯文本列表，符合 "retrieved_contexts": [ "内容1", "内容2" ] 的要求
+        # 限制最多返回 OUTPUT_CONFIG['max_retrieval_results'] (默认为 10)
+        context_list = [r['content'] for r in result['results'][:10]] 
+        
         output = {
-            "query": result['query']
+            "question": result['query'],        # 字段名修正：'query' -> 'question'
+            "retrieved_contexts": context_list, # 字段名修正：'result' -> 'retrieved_contexts'
+            "answer": result['answer']
         }
         
-        # 格式化召回结果
-        formatted_results = []
-        for i, r in enumerate(result['results'][:10]):
-            formatted_results.append({
-                "position": i + 1,
-                "content": r['content']
-            })
-        
-        output["result"] = formatted_results
-        output["answer"] = result['answer']
-        
-        # 可选：包含推理链
+        # 可选：包含推理链和token统计（不属于模板要求，但有助于内部调试）
         if include_reasoning and result.get('reasoning_chain'):
             output["reasoning"] = result['reasoning_chain'].to_dict()
-        
-        # 可选：包含token统计
         if result.get('token_usage'):
             output["token_usage"] = result['token_usage']
-        
+            
         return output
     
     def get_performance_report(self) -> str:
