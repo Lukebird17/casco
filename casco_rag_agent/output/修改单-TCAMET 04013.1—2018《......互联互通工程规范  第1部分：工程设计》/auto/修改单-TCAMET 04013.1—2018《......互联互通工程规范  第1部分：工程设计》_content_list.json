@@ -1,0 +1,507 @@
+[
+    {
+        "type": "text",
+        "text": "中国城市轨道交通协会《城市轨道交通基于通信的列车运行控制系统(CBTC)互联互通工程规范第1部分：工程设计》(T/CAMET04013.1—2018)团体标准第1号修改单",
+        "text_level": 1,
+        "bbox": [
+            127,
+            174,
+            826,
+            343
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "本修改单经中国城市轨道交通协会于2024 年09月03日批准发布，自2024年09月10日起实施。",
+        "bbox": [
+            103,
+            401,
+            854,
+            450
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "一、编辑性修改",
+        "text_level": 1,
+        "bbox": [
+            150,
+            483,
+            311,
+            504
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "1．将第3.1.10 条术语“保护区段overlap section”修改为：“保护区 段 overlap\" ",
+        "bbox": [
+            99,
+            514,
+            854,
+            560
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "2.将第3.1.13 条术语“安全保护距离safe protection distance”修改为：“安全保护距离 safety margin”。",
+        "bbox": [
+            101,
+            563,
+            854,
+            611
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "3.将第3.1.16 条术语“共线运行mix operation”修改为：“共线运行mixed operation\"",
+        "bbox": [
+            99,
+            614,
+            854,
+            661
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "4.将第3.1.18条术语“物理区段physical track section,物理区段由安装在轨旁的计轴传感器进行分割，也称为计轴区段”修改为：“计轴区段axle track section，由安装在轨旁的计轴传感器进行分割”。",
+        "bbox": [
+            99,
+            666,
+            854,
+            738
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "5.将第3.1.19 条术语“逻辑区段是将较长的物理区段在逻辑上划分为若干个虚拟区段，作为CBTC系统中检测列车占用出清的最小单元。”修改为：“将较长的计轴区段在逻辑上划分为若干虚拟区段，作为CBTC系统中检测列车占用出清的最小单元。”",
+        "bbox": [
+            99,
+            743,
+            856,
+            841
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "6.增加第3.2 条缩略语“SB:有源应答器(Switchable Balise)\"",
+        "bbox": [
+            138,
+            844,
+            782,
+            866
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "discarded",
+        "text": "1 ",
+        "bbox": [
+            826,
+            875,
+            840,
+            890
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "7.将第5.2 条应答器安装精度要求中“折返轨/存车线内应答器：$\\pm 2 \\mathrm { \\ c m }$ ”修改为：“折返轨/存车线精确停车应答器： $\\pm 2 \\mathrm { \\ c m }$ ",
+        "bbox": [
+            147,
+            125,
+            893,
+            173
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "8.将第12.2 条ATS、CI重叠区设置原则中“ATS、CI重叠区的长度应不小于进路触发区段的长度”修改为：“ATS重叠区的长度应不小于进路触发区段的长度”。 ",
+        "bbox": [
+            140,
+            178,
+            898,
+            251
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "9.将第14 条临时限速区段划分原则中“临时限速区段划分应遵循如下原则：a)在无岔区段中，按照逻辑区段进行划分;b)在道岔区段内，按照三段式轨道区段进行划分。”修改为：“轨道区段划分应遵循如下原则：a)在无岔区段中，按照计轴区段进行划分;b)在道岔区段内，按照三段式进行划分。",
+        "bbox": [
+            140,
+            258,
+            898,
+            383
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "二、技术性修改",
+        "text_level": 1,
+        "bbox": [
+            191,
+            393,
+            353,
+            413
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "1.在第4.1条“区段划分原则”中：",
+        "bbox": [
+            191,
+            423,
+            554,
+            444
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "1）将“a)物理区段分界点（计轴点）应为轨道区段的分界点”修改为：“a)计轴区段分界点(计轴点）应为轨道区段的分界点”",
+        "bbox": [
+            189,
+            450,
+            898,
+            496
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "2) 将“c)无岔物理区段内,轨道区段的边界点应为逻辑区段分界 点”修改为：“c)无岔计轴区段内，轨道区段的边界点应为逻辑 区段分界点” ",
+        "bbox": [
+            189,
+            501,
+            896,
+            576
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "3）将“e)单个物理区段内轨道区段总个数:不超过12个”修改为 “e)单个计轴区段内轨道区段总个数：不超过12个。 ",
+        "bbox": [
+            189,
+            581,
+            898,
+            629
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "2.将第 $5 . 3 \\mathrm { ~ b ~ }$ )条中“本规范中车站站台精确停车的位置，不同编组列车以站台两端对标停车”修改为：“本文件中车站站台精确停车的位置，不同编组均采用正方向运行站台端头停车的原则”。",
+        "bbox": [
+            140,
+            633,
+            898,
+            707
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "3.将第5.4条“车辆段/停车场与正线转换应答器布置原则”中“当车辆由车辆段/停车场进入正线时，需要在转换轨前布置两个轮径校正应答器，用于实现列车的轮径校准及列车初始定位。应答器布置间距为 20米至60米(视工程项目具体情况确定）”，修改为：“当车辆由车辆段/停车场进入正线时，应在转换轨前布置至少两个轮径校正应答器，用于实现列车的轮径校准及列车初始定位。应答器布置间距为20 米至60米（视",
+        "bbox": [
+            140,
+            712,
+            898,
+            866
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "discarded",
+        "text": "2 ",
+        "bbox": [
+            154,
+            875,
+            170,
+            888
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "工程项目具体情况确定）”。",
+        "bbox": [
+            101,
+            125,
+            385,
+            147
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "4.在第5.5.2条“有效站台(140米)应答器布置原则”中：",
+        "bbox": [
+            145,
+            151,
+            755,
+            173
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "1) 将a）“站台内ATO位置校正应答器距离出站方向的停车标的距离应符合表1的规定”修改为：“站台内ATO位置校正应答器距离出站方向的停车标的距离参考值如表1所示，工程项目根据具体情况确定”；",
+        "bbox": [
+            147,
+            178,
+            856,
+            279
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "2）将表1标题“ATO校正应答器布置间距”修改为：“ATO校正应答器布置间距参考值”；",
+        "bbox": [
+            147,
+            284,
+            856,
+            331
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "(3)修改表1中长度值,表1修改为：",
+        "bbox": [
+            150,
+            336,
+            531,
+            357
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "表1ATO 校正应答器布置间距参考值（单位为米)",
+        "text_level": 1,
+        "bbox": [
+            198,
+            375,
+            752,
+            397
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "table",
+        "img_path": "images/e59a9aa13849d418a897153191e087d434c2463c2943b1f0a2e389f5acc6c54f.jpg",
+        "table_caption": [],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>应答器间距</td><td rowspan=1 colspan=1>长度</td></tr><tr><td rowspan=1 colspan=1>S1</td><td rowspan=1 colspan=1>5</td></tr><tr><td rowspan=1 colspan=1>S2</td><td rowspan=1 colspan=1>10</td></tr><tr><td rowspan=1 colspan=1>S3</td><td rowspan=1 colspan=1>站台中心点到FB2的距离±5</td></tr><tr><td rowspan=1 colspan=1>S4</td><td rowspan=1 colspan=1>站台边缘到FB3的距离±20</td></tr></table>",
+        "bbox": [
+            99,
+            415,
+            854,
+            589
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "4) 将b)“应用于双方向精确停车的应答器参考5.5.2的1)布置”修改为：“应用于双方向精确停车的应答器参考5.5.2 的a)布置”；",
+        "bbox": [
+            145,
+            604,
+            854,
+            678
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "5) 将“站台内ATO位置校正应答器的距离应符合表2的规定”修改为：“站台内ATO位置校正应答器的距离参考值如表2 所示，工程项目根据具体情况确定”；",
+        "bbox": [
+            147,
+            681,
+            856,
+            754
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "6）将表2 标题“双向ATO校正应答器布置间距”修改为：“双向ATO校正应答器布置间距参考值”；",
+        "bbox": [
+            147,
+            759,
+            854,
+            805
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "7)（修改表2中长度值,表2修改为：",
+        "bbox": [
+            147,
+            810,
+            540,
+            831
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "discarded",
+        "text": "3 ",
+        "bbox": [
+            826,
+            874,
+            842,
+            890
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "table",
+        "img_path": "images/108fb13650cabfebc58e668bec4421c650fbf8566411b2eddfde1edf15501c03.jpg",
+        "table_caption": [
+            "表2双向ATO校正应答器布置间距参考值(单位为米) "
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>参考点</td><td rowspan=1 colspan=1>长度    </td></tr><tr><td rowspan=1 colspan=1>S1</td><td rowspan=1 colspan=1>5   80</td></tr><tr><td rowspan=1 colspan=1>S2</td><td rowspan=1 colspan=1>/10ル</td></tr><tr><td rowspan=1 colspan=1>S3</td><td rowspan=1 colspan=1>0.5*短编组列车长度-S1-S2±5</td></tr><tr><td rowspan=1 colspan=1>S4</td><td rowspan=1 colspan=1>0.5*短编组列车长度-S1-S2±5</td></tr><tr><td rowspan=1 colspan=1>S5</td><td rowspan=1 colspan=1>10</td></tr><tr><td rowspan=1 colspan=1>S6Y</td><td rowspan=1 colspan=1>5</td></tr><tr><td rowspan=1 colspan=1>S7</td><td rowspan=1 colspan=1>10</td></tr><tr><td rowspan=1 colspan=1>S8</td><td rowspan=1 colspan=1>5</td></tr></table>",
+        "bbox": [
+            140,
+            160,
+            896,
+            429
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "5.在第5.5.3 条“有效站台(120 米)应答器布置原则”中：",
+        "bbox": [
+            187,
+            442,
+            792,
+            464
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "1) 将a）“站台内位置校正应答器距离出站方向的停车标的距离应符合表3的规定”修改为：“站台内位置校正应答器距离出站方向的停车标的距离参考值如表3所示，工程项目根据具体情况确定”；",
+        "bbox": [
+            189,
+            468,
+            898,
+            563
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "2）将表3标题“ATO校正应答器布置间距”修改为：“ATO校正应答器布置间距参考值”；",
+        "bbox": [
+            187,
+            568,
+            898,
+            614
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "3）修改表3中长度值，表3修改为：",
+        "bbox": [
+            189,
+            619,
+            581,
+            640
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "table",
+        "img_path": "images/a88b2a90f0ec097071df9e8382eae1e2dd30cf38e6042485d17ca9ef522bdc33.jpg",
+        "table_caption": [
+            "表3ATO校正应答器布置间距参考值（单位为米）"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>参考点</td><td rowspan=1 colspan=1>0        长度</td></tr><tr><td rowspan=1 colspan=1>S1</td><td rowspan=1 colspan=1>5</td></tr><tr><td rowspan=1 colspan=1>S2 X</td><td rowspan=1 colspan=1>10</td></tr><tr><td rowspan=1 colspan=1>S3</td><td rowspan=1 colspan=1>站台中心点到FB2的距离±5</td></tr><tr><td rowspan=1 colspan=1>S4</td><td rowspan=1 colspan=1>站台边缘到FB3的距离±20</td></tr></table>",
+        "bbox": [
+            143,
+            692,
+            896,
+            843
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "discarded",
+        "text": "4 ",
+        "bbox": [
+            154,
+            875,
+            170,
+            888
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "4) 将b）“站台内位置校正应答器的距离应符合表4的规定”修改为：“站台内位置校正应答器的距离参考值如表4所示，工程项目根据具体情况确定”；  \n5) 将表4标题“双向停车站台精确停车应答器布置”修改为：“双向停车站台精确停车应答器布置间距参考值”；  \n6) 修改表4中长度值，表4修改为：",
+        "bbox": [
+            145,
+            122,
+            856,
+            276
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "表4双向停车站台精确停车应答器布置间距参考值(单位为米)",
+        "text_level": 1,
+        "bbox": [
+            136,
+            292,
+            815,
+            315
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "table",
+        "img_path": "images/076b0afc43d89eaee339c856ff02a1754acbf493817ee8efb810bf0749486904.jpg",
+        "table_caption": [],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>参考点4</td><td rowspan=1 colspan=1>长度</td></tr><tr><td rowspan=1 colspan=1>s1、S1&#x27;</td><td rowspan=1 colspan=1>5</td></tr><tr><td rowspan=1 colspan=1>S2、S2&#x27;</td><td rowspan=1 colspan=1>10</td></tr><tr><td rowspan=1 colspan=1>S3、S3&#x27;</td><td rowspan=1 colspan=1>站台中心点到FB2、FB4的距离±5</td></tr></table>",
+        "bbox": [
+            99,
+            331,
+            856,
+            454
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "discarded",
+        "text": "5 ",
+        "bbox": [
+            826,
+            874,
+            842,
+            890
+        ],
+        "page_idx": 4
+    }
+]

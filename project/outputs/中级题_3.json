@@ -1,5 +1,0 @@
-{
-  "query": "根据文档《2024_Communications-Based Train Control》，图 5.11 所示的网状控制回路结构，ATO 子系统是如何实现自身的控制回路的？请阐述其如何获取输入（Messglieder），如何形成车辆轨迹（Fahrzeugtrajektorie），以及如何将轨迹作为目标值传递给列车的控制设备（Steuergerät）。",
-  "result": [],
-  "answer": "数据库中没有这个内容，我无法根据给定的上下文做出回答。如果您能提供更详细的文档或相关信息，我会尽力帮助您进行分析。"
-}

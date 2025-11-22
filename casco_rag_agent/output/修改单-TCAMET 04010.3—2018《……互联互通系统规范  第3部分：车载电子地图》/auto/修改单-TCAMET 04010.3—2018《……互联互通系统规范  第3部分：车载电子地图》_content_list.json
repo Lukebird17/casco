@@ -1,0 +1,568 @@
+[
+    {
+        "type": "text",
+        "text": "中国城市轨道交通协会《城市轨道交通基于通信的列车运行控制系统(CBTC)互联互通系统规范第3部分：车载电子地图》（T/CAMET04010.3—2018)团体标准第1号修改单",
+        "text_level": 1,
+        "bbox": [
+            124,
+            176,
+            831,
+            344
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "本修改单经中国城市轨道交通协会于2024 年09 月03 日批准发布，自2024年09月10日起实施。",
+        "bbox": [
+            106,
+            405,
+            852,
+            452
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "一、编辑性修改",
+        "text_level": 1,
+        "bbox": [
+            150,
+            486,
+            311,
+            508
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "1．第2章中，将“运基信号[2010]267号文件《RSSP-ⅡI铁路信号安全通信协议》”，修改为：“TB/T3528.2铁路信号安全通信协议第2部分：Ⅱ型协议”。",
+        "bbox": [
+            99,
+            516,
+            856,
+            589
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "2．部分字段取值长度有误，根据字段字节长度要求修改。包括：",
+        "bbox": [
+            138,
+            593,
+            817,
+            614
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "1）5.3.1，表3中，序号12，“轨道区段属性”行，“含义”列修改取值。将",
+        "bbox": [
+            147,
+            620,
+            856,
+            666
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "table",
+        "img_path": "images/30f2d67f5c58a64e67629056dbfec9b3ae026b4c648c4150e7f5c5ec77341002.jpg",
+        "table_caption": [
+            "表3轨道区段数据结构"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>变量名定义</td><td rowspan=1 colspan=1>数据长度（字节)</td><td rowspan=1 colspan=1>数据范围</td><td rowspan=1 colspan=1>含义</td></tr><tr><td rowspan=1 colspan=1>12</td><td rowspan=1 colspan=1>轨道区段属性</td><td rowspan=1 colspan=1>NIDTRPROPERTY</td><td rowspan=1 colspan=1>4</td><td rowspan=1 colspan=1>1 ∼0xFFFFFFFF ,0无效</td><td rowspan=1 colspan=1>0x000001:普通上行轨道区段0x000002，普通下行轨道区段0x000004，上行转换轨</td></tr></table>",
+        "bbox": [
+            99,
+            723,
+            856,
+            864
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "discarded",
+        "text": "1 ",
+        "bbox": [
+            826,
+            875,
+            842,
+            890
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "table",
+        "img_path": "images/8aaf141472083ef409ca7e99ee3a5b57313f2cbad1834e88d9a7a1bf0c090f40.jpg",
+        "table_caption": [
+            "表3轨道区段数据结构(续表)"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>变量名定义</td><td rowspan=1 colspan=1>数据长度（字节）</td><td rowspan=1 colspan=1>数据范围</td><td rowspan=1 colspan=1>义</td></tr><tr><td rowspan=1 colspan=1>12</td><td rowspan=1 colspan=1>轨道区段属性</td><td rowspan=1 colspan=1>NID_TRPROPERTY</td><td rowspan=1 colspan=1>4</td><td rowspan=1 colspan=1>1 ∼ OxFFFFFFFF,0无效</td><td rowspan=1 colspan=1>0x000008，下行转换轨0x000010,站台0x000020,道岔0x000040，上行车档0x000080，下行车档0x000100，上行线路终点0x000200,下行线路终点0x000400，上行灯泡线边界0x000800,下行灯泡线边界0x040000,CI通信轨道区段0x100000，联络线（预留)参见5.3.5。</td></tr></table>",
+        "bbox": [
+            140,
+            178,
+            898,
+            517
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "修改为：",
+        "bbox": [
+            189,
+            534,
+            277,
+            555
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "table",
+        "img_path": "images/60f76e4e304ef27454dcd040e2ee96286234d16972ffc7d0d9064f68efb928c5.jpg",
+        "table_caption": [
+            "表3轨道区段数据结构"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>变量名定义</td><td rowspan=1 colspan=1>数据长度（字节)</td><td rowspan=1 colspan=1>数据范围</td><td rowspan=1 colspan=1>义</td></tr><tr><td rowspan=1 colspan=1>12</td><td rowspan=1 colspan=1>轨道区段属性</td><td rowspan=1 colspan=1>NIDTRPROPERTY</td><td rowspan=1 colspan=1>4</td><td rowspan=1 colspan=1>∼OxFFFFFFFF,0无效</td><td rowspan=1 colspan=1>0x00000001：普通上行轨道区段0x00000002，普通下行轨道区段0x00000004，上行转换轨0x00000008，下行转换轨0x00000010，站台0x00000020,道岔0x00000040，上行车档0x00000080，下行车档</td></tr></table>",
+        "bbox": [
+            140,
+            611,
+            896,
+            864
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "discarded",
+        "text": "2 ",
+        "bbox": [
+            154,
+            875,
+            170,
+            890
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "table",
+        "img_path": "images/726919e02dded613adf4cc9c325306513e589a88b462c301787c64cb1c441116.jpg",
+        "table_caption": [
+            "表3轨道区段数据结构（续表)"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>变量名定义</td><td rowspan=1 colspan=1>数据长度（字节）</td><td rowspan=1 colspan=1>数据范围</td><td rowspan=1 colspan=1>常含</td></tr><tr><td rowspan=1 colspan=1>12</td><td rowspan=1 colspan=1>轨道区段属性</td><td rowspan=1 colspan=1>NID_TRPROPERTY</td><td rowspan=1 colspan=1>4</td><td rowspan=1 colspan=1>1 ~0xFFFFFFFF,</td><td rowspan=1 colspan=1>0x00000100,上行线路终点0x00000200，下行线路终点0x00000400，上行灯泡线边界0x00000800，下行灯泡线边界0x00040000，CI通信轨道区段0x00100000，联络线（预留）参见5.3.5。</td></tr></table>",
+        "bbox": [
+            99,
+            165,
+            856,
+            380
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "2) 5.3.5.1中,将“例如,某轨道区段既为普通上行轨道区段（属性取值为 $0 \\mathrm { x } 0 0 0 0 0 1$ ），又为上行转换轨（属性取值为 $0 \\mathrm { x } 0 0 0 0 0 4$ ),无其他属性，则轨道区段属性取值应为：0x000005（ $0 \\times 0 0 0 0 0 1 +$ 0x000004）”，修改为：“例如，某轨道区段既为普通上行轨道区段（属性取值为0x00000001），又为上行转换轨（属性取值为0x00000004），无其他属性，则轨道区段属性取值应为：$0 \\mathrm { x 0 0 0 0 0 0 0 5 ( 0 \\mathrm { x 0 0 0 0 0 0 0 1 + 0 \\mathrm { x 0 0 0 0 0 0 0 4 ) } } }$ 。”",
+        "bbox": [
+            147,
+            392,
+            856,
+            566
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "3）5.4.1,表10中，序号5,“折返区域属性”行，“含义”列修改取值。将",
+        "bbox": [
+            140,
+            573,
+            836,
+            594
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "table",
+        "img_path": "images/7947cb58e865d7deb1dacdb48acb8dcf16e1c61024bb8a7fb5677e83913514bb.jpg",
+        "table_caption": [
+            "表10折返区域数据结构"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>变量名定义</td><td rowspan=1 colspan=1>数据长度（字节)</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>Q含    义</td></tr><tr><td rowspan=1 colspan=1>5</td><td rowspan=1 colspan=1>折返区域属性</td><td rowspan=1 colspan=1>NIDTPPROPERTY</td><td rowspan=1 colspan=1>4</td><td rowspan=1 colspan=1>1 ∼ OxFFFFFFFF,0无效</td><td rowspan=1 colspan=1>0x001000，上行折返换端区域0x002000，下行折返换端区域0x004000，上行无人折返发车区域0x008000，下行无人折返发车区域0x010000，上行无人折返停车区域0x020000，下行无人折返停车区域参见5.4.3。</td></tr></table>",
+        "bbox": [
+            99,
+            651,
+            854,
+            864
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "discarded",
+        "text": "3 ",
+        "bbox": [
+            826,
+            874,
+            842,
+            890
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "修改为：",
+        "bbox": [
+            191,
+            138,
+            277,
+            158
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "table",
+        "img_path": "images/1dadf65b554cb738510c1330ccfefbe251bfad01c58c800913930289e25dd4be.jpg",
+        "table_caption": [
+            "表10折返区域数据结构"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>变量名定义</td><td rowspan=1 colspan=1>数据长度（字节）</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>含    义</td></tr><tr><td rowspan=1 colspan=1>5</td><td rowspan=1 colspan=1>折返区域属性</td><td rowspan=1 colspan=1>NID_TPPROPERTY</td><td rowspan=1 colspan=1>4</td><td rowspan=1 colspan=1>1 ∼ OxFFFFFFFF ,0无效</td><td rowspan=1 colspan=1>0x00001000，上行折返换端区域0x00002000，下行折返换端区域0x00004000，上行无人折返发车区域0x00008000，下行无人折返发车区域0x00010000，上行无人折返停车区域0x00020000，下行无人折返停车区域参见5.4.3。</td></tr></table>",
+        "bbox": [
+            140,
+            215,
+            896,
+            558
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "4）5.4.3.1中，将“例如，某折返区域既为上行折返换端区域（属性取值为 $0 \\mathrm { x } 0 0 0 0 0 1$ ），又为上行无人折返发车区域（属性取值为 $0 \\mathrm { x } 0 0 0 0 0 0 4$ ），无其他属性，则折返区域属性取值应为：$0 \\mathrm { x 0 0 0 0 0 5 ( 0 \\mathrm { x 0 0 0 0 0 1 + 0 \\mathrm { x 0 0 0 0 0 4 ) } ^ { \\mathrm { , } } } }$ ,修改为：“例如，某折返区域既为上行折返换端区域（属性取值为 $0 \\mathrm { { x } 0 0 0 0 1 0 0 0 }$ )，又为上行无人折返发车区域（属性取值为 $0 \\mathrm { x } 0 0 0 0 0 4 0 0 0$ )，无其他属性，则折返区域属性取值应为： $0 \\mathrm { { x } 0 0 0 0 5 0 0 0 }$ ( $0 \\times 0 0 0 0 1 0 0 0 \\ +$ 0x00004000) ,",
+        "bbox": [
+            187,
+            571,
+            898,
+            772
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "5） 5.5.1,表12中，序号5，“应答器属性”行，“含义”列修改取值。将",
+        "bbox": [
+            187,
+            779,
+            896,
+            825
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "discarded",
+        "text": "4 ",
+        "bbox": [
+            154,
+            875,
+            170,
+            888
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "表12应答器数据结构",
+        "text_level": 1,
+        "bbox": [
+            351,
+            125,
+            605,
+            147
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "table",
+        "img_path": "images/9fbd72bebe1536ac432ee2fa286bf9b9251dc50299940f4ea53c40ed870ee26c.jpg",
+        "table_caption": [],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>变量名定义</td><td rowspan=1 colspan=1>数据长度（字节）</td><td rowspan=1 colspan=1>数据范围</td><td rowspan=1 colspan=1>杨管</td></tr><tr><td rowspan=1 colspan=1>5</td><td rowspan=1 colspan=1>应答器属性</td><td rowspan=1 colspan=1>NID_</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>∼ OxFFFFFFFF,0无效</td><td rowspan=1 colspan=1>0x0001：上行站台精确停车应答器0x0002：下行站台精确停车应答器0x0004：上行轮径校准应答器0x0008：下行轮径校准应答器0x0010：上行填充应答器0x0020：下行填充应答器0x0040：上行主应答器0x0080：下行主应答器0x0100：其他固定应答器0x0200：兼预告的主应答器参见5.5.2。</td></tr></table>",
+        "bbox": [
+            99,
+            163,
+            856,
+            470
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "修改为：",
+        "bbox": [
+            147,
+            485,
+            235,
+            506
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "table",
+        "img_path": "images/86d7998d4d8501c7d193377fb3c32bd53a7b1d715779cb3624e54ffb0573142b.jpg",
+        "table_caption": [
+            "表12应答器数据结构"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>变量名定义</td><td rowspan=1 colspan=1>数据长度（字节）</td><td rowspan=1 colspan=1>数据范围</td><td rowspan=1 colspan=1>含 杨會生</td></tr><tr><td rowspan=1 colspan=1>5</td><td rowspan=1 colspan=1>应答器属性</td><td rowspan=1 colspan=1>NID_</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>FFF,0无效</td><td rowspan=1 colspan=1>0x00000001：上行站台精确停车应答器0x00000002:下行站台精确停车应答器0x00000008：下行轮径校准应答器0x00000010：上行填充应答器0x00000020：下行填充应答器0x00000040：上行主应答器0x00000080：下行主应答器0x00000100：其他固定应答器0x00000200：兼预告的主应答器参见5.5.2。</td></tr></table>",
+        "bbox": [
+            99,
+            562,
+            856,
+            864
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "discarded",
+        "text": "5 ",
+        "bbox": [
+            826,
+            875,
+            842,
+            890
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "6）5.5.2.1中，将“例如，某应答器既为上行站台精确停车应答器（属性取值为 $0 \\mathrm { x } 0 0 0 1$ ），又为下行站台精确停车应答器（属性取值为 $0 \\mathrm { x } 0 0 0 2$ ），无其他属性，则应答器属性取值应为：$0 \\mathrm { x } 0 0 0 3 \\left( \\mathrm { 0 } \\mathrm { x } 0 0 0 1 + \\mathrm { 0 } \\mathrm { x } 0 0 0 2 \\right)$ ”，修改为：“例如,某应答器既为上行站台精确停车应答器（属性取值为 $0 \\mathrm { { x } 0 0 0 0 0 0 0 0 1 }$ )，又为下行站台精确停车应答器（属性取值为 $0 \\mathrm { x } 0 0 0 0 0 0 0 0 2$ )，无其他属性,则应答器属性取值应为： $0 \\mathrm { x } 0 0 0 0 0 0 0 0 3$ ( $0 \\times 0 0 0 0 0 0 0 0 1 \\ +$ 0x00000002)”。",
+        "bbox": [
+            189,
+            127,
+            896,
+            328
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "7）5.6.1,表13中,序号5，“信号机属性”行，“含义”列修改取值。将",
+        "bbox": [
+            189,
+            333,
+            896,
+            380
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "table",
+        "img_path": "images/b3895ca658575a97e348e5ef98c3dc3f9e98937aedbbf727f75f5e71d37cc1d8.jpg",
+        "table_caption": [
+            "表13信号机数据结构"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>变量名定义</td><td rowspan=1 colspan=1>数据长度（字节）</td><td rowspan=1 colspan=1>数据范围</td><td rowspan=1 colspan=1>含义</td></tr><tr><td rowspan=1 colspan=1>5</td><td rowspan=1 colspan=1>信号机属性</td><td rowspan=1 colspan=1>NID_SIGPROPERTY</td><td rowspan=1 colspan=1>4</td><td rowspan=1 colspan=1>1 ~ OxFFFFFFFF,</td><td rowspan=1 colspan=1>0x0001：进站信号机；0x0002：出站信号机；0x0004：出站兼道岔防护信号机；0x0008：道岔防护信号机；0x0010：区间间隔信号机；0x0020：进段/进场信号机；0x0040：出段/出场信号机；0x0080：出库信号机；0x0100：入库信号机；0x0200：终端信号机；0x0400：调车信号机；0x0800：阻挡信号机。参见5.6.3。</td></tr></table>",
+        "bbox": [
+            140,
+            439,
+            896,
+            810
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "修改为：",
+        "bbox": [
+            189,
+            825,
+            277,
+            846
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "discarded",
+        "text": "6 ",
+        "bbox": [
+            152,
+            875,
+            170,
+            890
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "table",
+        "img_path": "images/a78d3d64d2625074e5499c173cd244a43088c675b45cd5f97bc3882021ec0d70.jpg",
+        "table_caption": [
+            "表13信号机数据结构"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td>序号定义</td><td></td><td>变量名 定义</td><td>数据 长度 （字节）</td><td>数据范围</td><td>杨管 含 0x00000001：进站信号机；</td></tr><tr><td>5</td><td>信号 机 属性</td><td>NID_ SIGPROPERTY</td><td>4</td><td>国城市 1 ∼OxFFFFFFFF, 0无效</td><td>0x00000002：出站信号机； 0x00000004：出站兼道岔防护信 号机； 0x00000008：道岔防护信号机； 0x00000010：区间间隔信号机； 0x00000020：进段/进场信号机； 0x00000040：出段/出场信号机； 0x00000080：出库信号机； 0x00000100：入库信号机； 0x00000200：终端信号机； 0x00000400：调车信号机； 0x00000800：阻挡信号机。 参见5.6.3。</td></tr></table>",
+        "bbox": [
+            99,
+            165,
+            854,
+            544
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "8）5.6.3.1中，将“例如，某信号机为出站兼防护信号机，则其必具备的属性为：出站信号机（属性取值为 $0 \\mathrm { x } 0 0 0 2$ ）、出站兼道岔防护信号机（属性取值为 $0 \\mathrm { x } 0 0 0 4$ ）、道岔防护信号机（属性取值为$0 \\mathrm { x } 0 0 0 8$ )，若该信号机无其他属性，则信号机属性取值应为：$\\mathrm { 0 x 0 0 0 E ( 0 x 0 0 0 2 + 0 x 0 0 0 4 + 0 x 0 0 0 8 ) }$ ”,修改为：“例如，某信号机为出站兼防护信号机，则其必具备的属性为：出站信号机（属性取值为 $0 \\times 0 0 0 0 0 0 0 2$ 出站兼道岔防护信号机（属性取值为$0 \\mathrm { x } 0 0 0 0 0 0 0 0 4$ )、道岔防护信号机（属性取值为 $0 \\mathrm { { x } 0 0 0 0 0 0 0 0 8 }$ )，若该信号机无其他属性，则信号机属性取值应为：0x0000000Ecid $\\mathrm { ( 0 x 0 0 0 0 0 0 0 0 2 + 0 x 0 0 0 0 0 0 0 4 + 0 x 0 0 0 0 0 0 0 8 ) ^ { \\prime \\prime } }$ ",
+        "bbox": [
+            147,
+            560,
+            856,
+            812
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "9) 5.13,表20中，序号10,“ALE层Tcon 定时器超时值”行，“数据范围”列修改取值。将",
+        "bbox": [
+            147,
+            818,
+            856,
+            866
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "discarded",
+        "text": "7 ",
+        "bbox": [
+            826,
+            875,
+            842,
+            888
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "表20安全通信协议栈数据结构",
+        "text_level": 1,
+        "bbox": [
+            344,
+            125,
+            695,
+            147
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "table",
+        "img_path": "images/443266dfbfbcb0633a7a963a3f89ea5185490d33708a209129b74a6efdd9b46a.jpg",
+        "table_caption": [],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>变量名定义</td><td rowspan=1 colspan=1>数据长度（字节）</td><td rowspan=1 colspan=1>数据范围</td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1>10</td><td rowspan=1 colspan=1>ALE层Tcon定时器超时值</td><td rowspan=1 colspan=1>M_ALE_Tcon</td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1>单位：毫秒</td><td rowspan=1 colspan=1>ALE层Tcon定时器超时值配置值</td></tr></table>",
+        "bbox": [
+            140,
+            166,
+            896,
+            390
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "修改为：",
+        "bbox": [
+            189,
+            408,
+            277,
+            429
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "表20安全通信协议栈数据结构",
+        "text_level": 1,
+        "bbox": [
+            341,
+            449,
+            697,
+            470
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "table",
+        "img_path": "images/398958371e95a77273cd2721027d22e226559eb9b5c1f5f6b27ba7a8ee981eed.jpg",
+        "table_caption": [],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>序号定义</td><td rowspan=1 colspan=1>变量名定义</td><td rowspan=1 colspan=1>数据长度（字节）</td><td rowspan=1 colspan=1>数据范围</td><td rowspan=1 colspan=1>含   义</td></tr><tr><td rowspan=1 colspan=1>10</td><td rowspan=1 colspan=1>ALE层Tcon定时器超时值</td><td rowspan=1 colspan=1>M_ALE_Tcon</td><td rowspan=1 colspan=1>4</td><td rowspan=1 colspan=1>0 ∼OxFFFFFFFF,单位：ms6o</td><td rowspan=1 colspan=1></td></tr></table>",
+        "bbox": [
+            140,
+            490,
+            896,
+            714
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "二、技术性修改",
+        "text_level": 1,
+        "bbox": [
+            191,
+            735,
+            353,
+            756
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "1．将5.3.5.6条中“若轨道区段上有车挡,则车挡的上/下行’应与作为普通轨道区段的“上/下行’一致”，修改为：“若轨道区段上有车挡，列车沿电子地图上/下行方向行驶时将被该车挡防护，则该轨道区段应具有“上/下行车档”属性”。",
+        "bbox": [
+            140,
+            764,
+            898,
+            866
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "discarded",
+        "text": "8 ",
+        "bbox": [
+            152,
+            875,
+            168,
+            888
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "2.将5.3.5.7条中“若轨道区段为线路终点(指线路尽头)轨道区段，则线路终点的“上/下行'应与作为普通轨道区段的“上/下行一致”，修改为：“若轨道区段为线路终点(指线路尽头)轨道区段，则线路终点的“上/下行”应与该轨道向非电子地图配置轨道延伸的方向一致”。",
+        "bbox": [
+            99,
+            124,
+            856,
+            225
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "discarded",
+        "text": "9 ",
+        "bbox": [
+            826,
+            875,
+            842,
+            888
+        ],
+        "page_idx": 8
+    }
+]

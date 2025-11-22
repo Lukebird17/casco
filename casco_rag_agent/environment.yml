@@ -1,0 +1,22 @@
+name: casco_rag
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      # 核心依赖
+      - python-dotenv
+      - openai
+      - tiktoken
+      - numpy
+      
+      # LangChain
+      - langchain
+      - langchain-openai
+      - langchain-core
+      
+      # RAG-Anything（本地安装）
+      - -e ../RAG-Anything
+

@@ -1,0 +1,2405 @@
+[
+    {
+        "type": "text",
+        "text": "中国城市轨道交通协会团体标准",
+        "text_level": 1,
+        "bbox": [
+            76,
+            134,
+            907,
+            171
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "T/CAMET 04011.5—2018 ",
+        "bbox": [
+            533,
+            191,
+            878,
+            215
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "城市轨道交通 基于通信的列车运行控制系统（CBTC）互联互通接口规范第5部分：计算机联锁（CI）间接口",
+        "text_level": 1,
+        "bbox": [
+            100,
+            358,
+            883,
+            493
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Urban rail transit— Interface specification for interoperabiity of communication based train control system Part 5: Interface between computer interlockings ",
+        "bbox": [
+            64,
+            515,
+            921,
+            606
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "discarded",
+        "text": "",
+        "bbox": [
+            647,
+            33,
+            857,
+            106
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "discarded",
+        "text": "ICS 45.020 S63 ",
+        "bbox": [
+            69,
+            35,
+            219,
+            82
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "discarded",
+        "text": "2018-12-31实施 ",
+        "bbox": [
+            659,
+            776,
+            911,
+            799
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "discarded",
+        "text": "2018-09-10发布",
+        "bbox": [
+            76,
+            776,
+            328,
+            799
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "discarded",
+        "text": "中国城市轨道交通协会发布",
+        "bbox": [
+            264,
+            880,
+            723,
+            910
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "目 次",
+        "text_level": 1,
+        "bbox": [
+            440,
+            183,
+            592,
+            213
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "前言 VⅢ引言 IX",
+        "bbox": [
+            121,
+            276,
+            904,
+            296
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            123,
+            304,
+            904,
+            321
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "1范围  \n2规范性引用文件 1  \n3 术语和缩略语 2  \n3.1术语…  \n3.2缩略语 3",
+        "bbox": [
+            123,
+            329,
+            907,
+            405
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            147,
+            410,
+            904,
+            459
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "4 总则 3",
+        "bbox": [
+            121,
+            462,
+            902,
+            481
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "5CI-CI通信接口报文规范 3 ",
+        "bbox": [
+            123,
+            489,
+            904,
+            511
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "5.1接口连接方式 3  \n5.2 通信体系结构 4  \n5.3接口数据描述 5  \n5.4 应用信息定义… 10",
+        "bbox": [
+            145,
+            516,
+            909,
+            619
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET04011.5—2018 ",
+        "bbox": [
+            633,
+            84,
+            904,
+            102
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "discarded",
+        "text": "V ",
+        "bbox": [
+            871,
+            902,
+            890,
+            917
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "前 言",
+        "text_level": 1,
+        "bbox": [
+            435,
+            183,
+            590,
+            213
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "T/CAMET04011《城市轨道交通基于通信的列车运行控制系统（CBTC）互联互通接口规范》分为以下八个部分：",
+        "bbox": [
+            128,
+            277,
+            904,
+            324
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "第1部分：应答器报文；  \n第2部分：CBTC系统车地连续通信协议；  \n第3部分：车载列车自动保护（ATP）/列车自动运行（ATO）系统与车辆的接口；  \n第4部分：区域控制器（ZC）间接口；  \n第5部分：计算机联锁（CI）间接口；  \n第6部分：列车自动监控系统（ATS）间接口；  \n第7部分：信号各子系统与维护支持系统（MSS）间接口；  \n第8部分：车载人机界面。",
+        "bbox": [
+            171,
+            329,
+            904,
+            557
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "本部分是T/CAMET04011的第5部分。",
+        "bbox": [
+            173,
+            560,
+            604,
+            580
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "本部分按照GB/T1.1—2009给出的规则起草。",
+        "bbox": [
+            173,
+            587,
+            678,
+            607
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "请注意本部分的某些内容可能涉及专利，本部分的发布机构不承担识别这些专利的责任。",
+        "bbox": [
+            126,
+            612,
+            904,
+            658
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "本规范由中国城市轨道交通协会技术装备专业委员会提出。",
+        "bbox": [
+            176,
+            663,
+            814,
+            685
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "本部分由中国城市轨道交通协会归口。",
+        "bbox": [
+            173,
+            688,
+            590,
+            708
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "本部分起草单位：北京全路通信信号研究设计院集团有限公司、交控科技股份有限公司、中国铁道科学研究院集团有限公司通信信号研究所、株洲中车时代电气股份有限公司、浙江众合科技股份有限公司、北京交通大学。",
+        "bbox": [
+            126,
+            713,
+            904,
+            786
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "本部分主要起草人：编写组：宿秀元、张利峰、邱锡宏、陈鹤、高国栋、冯浩楠、段宏伟、张大涛、原志彬、刘清华、胡顺定、王悉。审查组：李中浩、朱翔、赵炜、郑生全、张艳兵、张良、王道敏、张琼燕、段晨宁、李新文、李德堂、文成祥、任敬、朱东飞、肖利君、张守芝、刘新平。",
+        "bbox": [
+            126,
+            789,
+            904,
+            888
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET04011.5-2018",
+        "bbox": [
+            630,
+            85,
+            902,
+            102
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "discarded",
+        "text": "VII ",
+        "bbox": [
+            864,
+            902,
+            888,
+            919
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "引 言",
+        "text_level": 1,
+        "bbox": [
+            430,
+            190,
+            580,
+            220
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "为促进中国城市轨道交通建设，实现并满足城市轨道交通互联互通的需要，达到经济适用、资源共享、技术先进及可持续发展的目标，制定城市轨道交通基于通信的列车运行控制系统（CBTC）互联互通系列团体标准。",
+        "bbox": [
+            119,
+            284,
+            900,
+            383
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "该系列规范包括《城市轨道交通基于通信的列车运行控制系统（CBTC）互联互通系统规范》《城市轨道交通基于通信的列车运行控制系统（CBTC）互联互通接口规范》《城市轨道交通基于通信的列车运行控制系统（CBTC）互联互通测试规范》《城市轨道交通基于通信的列车运行控制系统（CBTC）互联互通工程规范》4个规范（17个部分）。",
+        "bbox": [
+            119,
+            390,
+            900,
+            518
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET04011.5—2018 ",
+        "bbox": [
+            621,
+            90,
+            892,
+            109
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "discarded",
+        "text": "IX ",
+        "bbox": [
+            857,
+            909,
+            880,
+            925
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "城市轨道交通基于通信的列车运行控制系统（CBTC）互联互通接口规范第5部分：计算机联锁（CI）间接口",
+        "text_level": 1,
+        "bbox": [
+            209,
+            190,
+            811,
+            292
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "1范围 ",
+        "text_level": 1,
+        "bbox": [
+            121,
+            329,
+            214,
+            351
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "T/CAMET04011的本部分规定了计算机联锁系统（CI）不同线路间接口，包括通信方式、拓扑内容。 ME",
+        "bbox": [
+            121,
+            370,
+            900,
+            444
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "本适用于国 基于通信的列车运控制系统（CBTC）的新成市轨道交通线路建设，用指导信号系统的系统设计、产品设计、设备招标 仙",
+        "bbox": [
+            121,
+            451,
+            900,
+            525
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "2规范性引用文件",
+        "text_level": 1,
+        "bbox": [
+            121,
+            542,
+            335,
+            563
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "下列文件对于本部分的用薪置变少。凡是注日期的引用文件，仅所注日期的版本适用于本部分。凡是不注日期的引用文件，其最新版本（包括所有的修改单）适用于本部分。",
+        "bbox": [
+            121,
+            584,
+            900,
+            658
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "GB/T24339.1—-2009 轨道交通 通信、信号和处理系统 第1部分：封闭式传输系统中的安全相关通信（IEC62280-1：2002，IDT）",
+        "bbox": [
+            121,
+            663,
+            900,
+            712
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "TB/T3027—2015 铁路车站计算机联锁技术条件",
+        "bbox": [
+            171,
+            715,
+            714,
+            737
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "CJ/T407—2012 城市轨道交通基于通信的列车自动控制系统技术要求",
+        "bbox": [
+            121,
+            742,
+            902,
+            789
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "T/CAMET04010.1 城市轨道交通 基于通信的列车运控制系统（CBTC）互联互通系统规范第1部分：系统总体要求",
+        "bbox": [
+            123,
+            796,
+            900,
+            843
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "运基信号[2010]267号 RSSP-I铁路信号安全通信协议",
+        "bbox": [
+            173,
+            850,
+            819,
+            870
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "IEEE 802.3 以太网（Ethernet)",
+        "bbox": [
+            173,
+            877,
+            511,
+            897
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET04011.5—2018 ",
+        "bbox": [
+            626,
+            92,
+            900,
+            111
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "discarded",
+        "text": "1 ",
+        "bbox": [
+            871,
+            907,
+            888,
+            924
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "RFC 791互联网协议（Internet Protocol）RFC768用户数据报协议（UserDatagram Protocol）",
+        "bbox": [
+            142,
+            132,
+            700,
+            181
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "3术语和缩略语",
+        "text_level": 1,
+        "bbox": [
+            92,
+            202,
+            285,
+            223
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "CJ/T407—2012和T/CAMET04010.1界定的及下列术语和缩略语适用于本部分。为了便于使用，以下重复列出了其中的主要相关术语。",
+        "bbox": [
+            92,
+            244,
+            873,
+            318
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "3.1术语",
+        "text_level": 1,
+        "bbox": [
+            92,
+            326,
+            214,
+            345
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "3.1.1 ",
+        "bbox": [
+            92,
+            355,
+            164,
+            372
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "基于通信的列车控制communication based train control（CBTC) ",
+        "bbox": [
+            142,
+            382,
+            866,
+            400
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "通过不依赖轨旁列车占用检测设备的列车主动定位技术、连续车一地双向数据通信技术以及能够执行安全功能的车载和地面处理器而构建的连续式列车自动控制系统。",
+        "bbox": [
+            92,
+            409,
+            873,
+            484
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "[CJ/T407——2012，定义3.1.1] ",
+        "bbox": [
+            142,
+            489,
+            478,
+            511
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "3.1.2 ",
+        "text_level": 1,
+        "bbox": [
+            92,
+            518,
+            166,
+            537
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "计算机联锁computer interlocking ",
+        "bbox": [
+            145,
+            547,
+            535,
+            565
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "以计算机技术为核心，自动实现进路、道岔、信号机等防护技术的总称。",
+        "bbox": [
+            95,
+            572,
+            876,
+            621
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "[CJ/T407——2012，定义3.1.6] ",
+        "bbox": [
+            145,
+            627,
+            478,
+            649
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "3.1.3 ",
+        "text_level": 1,
+        "bbox": [
+            92,
+            656,
+            166,
+            675
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "装备列车CBTC-equipped trains ",
+        "bbox": [
+            145,
+            685,
+            519,
+            703
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "装备了CBTC系统车载设备且设备处于工作状态的列车。[T/CAMET 04010.1,术语 3.1.11]",
+        "bbox": [
+            142,
+            705,
+            759,
+            759
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "3.1.4 ",
+        "text_level": 1,
+        "bbox": [
+            95,
+            767,
+            166,
+            784
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "非装备列车Non-CBTC-equipped trains ",
+        "bbox": [
+            145,
+            794,
+            597,
+            814
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "没有装备CBTC系统车载设备或者CBTC系统车载设备处于不工作状态的列车。",
+        "bbox": [
+            95,
+            821,
+            876,
+            870
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "[T/CAMET 04010.1,术语 3.1.12] ",
+        "bbox": [
+            147,
+            877,
+            519,
+            897
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "discarded",
+        "text": "2 ",
+        "bbox": [
+            109,
+            909,
+            123,
+            922
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET04011.5—2018 ",
+        "bbox": [
+            95,
+            87,
+            369,
+            107
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "3.1.5 ",
+        "text_level": 1,
+        "bbox": [
+            116,
+            136,
+            188,
+            154
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "常态点灯信号机inital-lighted signal",
+        "text_level": 1,
+        "bbox": [
+            166,
+            161,
+            578,
+            181
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "无接近信息室外信号机点灯，有接近信息室外信号机根据接近属性显示的信号机。",
+        "bbox": [
+            119,
+            186,
+            900,
+            234
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "3.2缩略语",
+        "text_level": 1,
+        "bbox": [
+            119,
+            240,
+            261,
+            260
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "ARB：始终占用的分区即非正常占用分区（AlwaysReportingBlock）  \nCBTC：基于通信的列车控制（CommunicationBased Train Control）  \nCI：计算机联锁（Computer Interlocking）  \nGAL：通用应用层（General Application Layer）  \nIPv4：互联网协议（InternetProtocol,IP）的第4版  \nMAC:媒体访问控制（Medium AccessControl）  \nRSSP：铁路信号安全协议（Railway Signal Safety Protocol）  \nTSR;临时限速（Temporary Speed Restriction）  \nUDP:用户数据报协议（UserDatagramProtocol）",
+        "bbox": [
+            166,
+            265,
+            873,
+            500
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "4 总则",
+        "text_level": 1,
+        "bbox": [
+            119,
+            518,
+            214,
+            538
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "本规范重点对互联互通不同线路间计算机联锁系统的通信接口进行了描述，最终系统功能、系统设备的工程配置、用户界面及操作方式、与外部系统接口要求、轨旁设备布置原则等本规范未规定的内容应在后续规范或工程实施中完成。",
+        "bbox": [
+            121,
+            557,
+            902,
+            658
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "本规范对通用性的互联互通接口数据进行定义，可根据工程项目具体情况，对CI间通信接口数据交互内容进行扩展。",
+        "bbox": [
+            121,
+            663,
+            902,
+            712
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "5CI-CI通信接口报文规范 ",
+        "text_level": 1,
+        "bbox": [
+            119,
+            728,
+            452,
+            750
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "5.1 接口连接方式",
+        "text_level": 1,
+        "bbox": [
+            121,
+            769,
+            340,
+            789
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "5.1.1 物理接口",
+        "text_level": 1,
+        "bbox": [
+            121,
+            796,
+            316,
+            814
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "CI和相邻CI采用双路冗余的通信通道（将双网分别定义为A网和B网）以提高系统的可靠性，任何一个单网的故障都不会对系统的正常使用产生影响。两系统按照A网和A网相连、B网和B网相连接的方式，",
+        "bbox": [
+            121,
+            821,
+            902,
+            895
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET04011.5—2018 ",
+        "bbox": [
+            626,
+            89,
+            897,
+            107
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "discarded",
+        "text": "3 ",
+        "bbox": [
+            873,
+            904,
+            890,
+            919
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "其连接方式见图1。",
+        "bbox": [
+            97,
+            129,
+            307,
+            149
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "image",
+        "img_path": "images/09194fc5f0ef59ea815f3b248f502aeab53fe7367bc2d566e7f449adada55ab7.jpg",
+        "image_caption": [
+            "图1 CI-CI双网冗余连接图"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            247,
+            164,
+            733,
+            284
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "5.2 通信体系结构",
+        "text_level": 1,
+        "bbox": [
+            97,
+            333,
+            319,
+            353
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "5.2.1 通信模型",
+        "text_level": 1,
+        "bbox": [
+            97,
+            360,
+            295,
+            378
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "图2中安全功能模块和通信功能模块属于各子系统内部功能实现，分别用于实现安全功能和对外通信功能。",
+        "bbox": [
+            100,
+            385,
+            873,
+            432
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "image",
+        "img_path": "images/6f5e245a34a59911c1086c08282916918b6fa89d0c625880c800ea3335aa7db1.jpg",
+        "image_caption": [
+            "图2 CI-CI通信协议模型"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            226,
+            446,
+            750,
+            693
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "5.2.2 通信机制",
+        "text_level": 1,
+        "bbox": [
+            97,
+            742,
+            295,
+            760
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "CI间通信机制如下：",
+        "bbox": [
+            147,
+            767,
+            369,
+            787
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "a）CI间通信采用周期发送的方式进行通信；  \nb）通信双方均采用大端字节序进行数据传输。",
+        "bbox": [
+            145,
+            792,
+            664,
+            841
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "5.2.3 通信层次结构",
+        "text_level": 1,
+        "bbox": [
+            97,
+            846,
+            345,
+            867
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "CI间通信层次结构划分如图3所示。",
+        "bbox": [
+            147,
+            872,
+            542,
+            893
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET04011.5-2018",
+        "bbox": [
+            100,
+            84,
+            371,
+            101
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "discarded",
+        "text": "4 ",
+        "bbox": [
+            109,
+            900,
+            128,
+            914
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "a) 物理层：采用IEEE802.3标准协议。  \nb) 数据链路层：MAC子层基于IEEE802.3标准。MAC头由14个字节组成，1个帧校验序列（4字节）将被加在Ethernet帧后面。  \nc ) 网络层： $\\mathrm { { I P v 4 } }$   \nd) 传输层：UDP协议。  \ne) 安全通信协议层：遵循GB/T24339.1—2009标准、TB/T3027—2015标准要求，采用RSSP-I铁路信号安全通信协议，同时通过序列号对冗余网络数据进行过滤，不作为本文档描述。",
+        "bbox": [
+            164,
+            134,
+            900,
+            333
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "f）应用层：包括通用应用层和CI应用层。",
+        "bbox": [
+            166,
+            338,
+            630,
+            358
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "注：CI-CI接口单帧报文长度可突破RSSP-I协议传输的最大信息长度限制。",
+        "bbox": [
+            161,
+            363,
+            880,
+            382
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "image",
+        "img_path": "images/09dddda83654156ec0f324c59b3d9e6dca1904f369759c5ad6cbbece0c738c50.jpg",
+        "image_caption": [
+            "图3 CI间通信层次结构"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            197,
+            383,
+            816,
+            735
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "5.3 接口数据描述",
+        "text_level": 1,
+        "bbox": [
+            121,
+            792,
+            340,
+            814
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "5.3.1 动态交互描述",
+        "text_level": 1,
+        "bbox": [
+            121,
+            821,
+            369,
+            841
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "CI与邻站CI传输分界线两边的设备信息，包括进路内物理区段、逻辑区段、信号机、站台门、紧急关闭按钮、道岔及保护区段状态。双方CI",
+        "bbox": [
+            121,
+            846,
+            902,
+            895
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET04011.5—2018 ",
+        "bbox": [
+            623,
+            89,
+            895,
+            106
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "discarded",
+        "text": "5 ",
+        "bbox": [
+            871,
+            904,
+            888,
+            919
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "向对方传输互联互通相关范围内的本联锁管辖范围的设备状态，接收对方CI发送的设备状态。",
+        "bbox": [
+            100,
+            129,
+            878,
+            176
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "5.3.1.1通用应用层消息包定义",
+        "text_level": 1,
+        "bbox": [
+            97,
+            183,
+            471,
+            205
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "按照《RSSP-I铁路信号安全通信协议》，将相邻CI间每个周期需要交互的信息通过组成通用（GAL)信息包进行传输，如图4所示。",
+        "bbox": [
+            97,
+            212,
+            878,
+            260
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "image",
+        "img_path": "images/398c5c03eecaff570be97593091dc807990a8b7c0b0016291a6647124209bfc2.jpg",
+        "image_caption": [
+            "图4通用信息包和应用层信息包关系结构图"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            240,
+            279,
+            735,
+            432
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "5.3.1.2信息包格式定义",
+        "text_level": 1,
+        "bbox": [
+            95,
+            483,
+            395,
+            505
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "CI间通信的1个安全连接每周期最多允许发送1个GAL消息包，GAL消息包中包含CI间传输的各条应用信息，每个GAL消息包总长不得超过1000字节，格式定义见表1、表2。",
+        "bbox": [
+            95,
+            511,
+            878,
+            587
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "table",
+        "img_path": "images/c1ffd9c6c258bba0fc46728e97ef9703235d55e3ffc9d286d93a860a1ef3383d.jpg",
+        "table_caption": [
+            "表1通用信息包格式定义"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td colspan=\"1\" rowspan=\"1\">信息域定义</td><td colspan=\"1\" rowspan=\"1\">字节编号</td><td colspan=\"1\" rowspan=\"1\">字段</td><td colspan=\"1\" rowspan=\"1\">长度</td><td colspan=\"1\" rowspan=\"1\">信息位定义及说明</td></tr><tr><td colspan=\"1\" rowspan=\"2\">接口信息类型</td><td colspan=\"1\" rowspan=\"1\">1</td><td colspan=\"1\" rowspan=\"1\">类型高位</td><td colspan=\"1\" rowspan=\"2\">2字节</td><td colspan=\"1\" rowspan=\"2\">0x0606:CI-CI接口</td></tr><tr><td colspan=\"1\" rowspan=\"1\">2</td><td colspan=\"1\" rowspan=\"1\">类型低位</td></tr><tr><td colspan=\"1\" rowspan=\"4\">发送方标识信息</td><td colspan=\"1\" rowspan=\"1\">3</td><td colspan=\"1\" rowspan=\"4\">源ID</td><td colspan=\"1\" rowspan=\"4\">4字节</td><td colspan=\"1\" rowspan=\"4\">发送方联锁ID\"</td></tr><tr><td colspan=\"1\" rowspan=\"1\">4</td></tr><tr><td colspan=\"1\" rowspan=\"1\">5</td></tr><tr><td colspan=\"1\" rowspan=\"1\">6</td></tr><tr><td colspan=\"1\" rowspan=\"4\">接收方标识信息</td><td colspan=\"1\" rowspan=\"1\">7</td><td colspan=\"1\" rowspan=\"4\">日的ID</td><td colspan=\"1\" rowspan=\"4\">4字节</td><td colspan=\"1\" rowspan=\"4\">接收方联锁1D\"</td></tr><tr><td colspan=\"1\" rowspan=\"1\">8</td></tr><tr><td colspan=\"1\" rowspan=\"1\">9</td></tr><tr><td colspan=\"1\" rowspan=\"1\">10</td></tr><tr><td colspan=\"1\" rowspan=\"4\">电子地图版本校验信息\"</td><td colspan=\"1\" rowspan=\"1\">1</td><td colspan=\"1\" rowspan=\"4\">CI与CI之间的版本一致性信息</td><td colspan=\"1\" rowspan=\"4\">4字节</td><td colspan=\"1\" rowspan=\"4\">CI-CI重登区范围内，CI与CI问的数据版本校验信息</td></tr><tr><td colspan=\"1\" rowspan=\"1\">12</td></tr><tr><td colspan=\"1\" rowspan=\"1\">13</td></tr><tr><td colspan=\"1\" rowspan=\"1\">14</td></tr><tr><td colspan=\"1\" rowspan=\"4\">本方消息序列号\"</td><td colspan=\"1\" rowspan=\"1\">15</td><td colspan=\"1\" rowspan=\"4\">序列号</td><td colspan=\"1\" rowspan=\"4\">4字节</td><td colspan=\"1\" rowspan=\"4\">记录发送本条消息时，本方的周期计数</td></tr><tr><td colspan=\"1\" rowspan=\"1\">16</td></tr><tr><td colspan=\"1\" rowspan=\"1\">17</td></tr><tr><td colspan=\"1\" rowspan=\"1\">18</td></tr><tr><td colspan=\"1\" rowspan=\"2\">通信周期</td><td colspan=\"1\" rowspan=\"1\">19</td><td colspan=\"1\" rowspan=\"2\">通信周期</td><td colspan=\"1\" rowspan=\"2\">2字节</td><td colspan=\"1\" rowspan=\"2\">单位：ms</td></tr><tr><td colspan=\"1\" rowspan=\"1\">20</td></tr><tr><td colspan=\"1\" rowspan=\"4\">对方消息序列号</td><td colspan=\"1\" rowspan=\"1\">21</td><td colspan=\"1\" rowspan=\"4\">序列号</td><td colspan=\"1\" rowspan=\"4\">4字节</td><td colspan=\"1\" rowspan=\"4\">记录收到对方上一条消息巾的对方消息序列号\"</td></tr><tr><td colspan=\"1\" rowspan=\"1\">22</td></tr><tr><td colspan=\"1\" rowspan=\"1\">23</td></tr><tr><td colspan=\"1\" rowspan=\"1\">24</td></tr><tr><td colspan=\"1\" rowspan=\"4\">收到上一条消息时本方序列号\"</td><td colspan=\"1\" rowspan=\"1\">25</td><td colspan=\"1\" rowspan=\"4\">序列号</td><td colspan=\"1\" rowspan=\"4\">4字节</td><td colspan=\"1\" rowspan=\"4\">记录收到对方上一条消息时，本方的周期计数\"</td></tr><tr><td colspan=\"1\" rowspan=\"1\">26</td></tr><tr><td colspan=\"1\" rowspan=\"1\">27</td></tr><tr><td colspan=\"1\" rowspan=\"1\">28</td></tr><tr><td colspan=\"1\" rowspan=\"1\">协议版本号</td><td colspan=\"1\" rowspan=\"1\">29</td><td colspan=\"1\" rowspan=\"1\">协议版本号</td><td colspan=\"1\" rowspan=\"1\">1字节</td><td colspan=\"1\" rowspan=\"1\">CI-CI的协议版本，001～255有效</td></tr><tr><td colspan=\"1\" rowspan=\"2\">应用层报文总长度</td><td colspan=\"1\" rowspan=\"1\">30</td><td colspan=\"1\" rowspan=\"2\">应用报文总长度</td><td colspan=\"1\" rowspan=\"2\">2字节</td><td colspan=\"1\" rowspan=\"2\">后续报文长度，以字节为单位，不含长度本身两字节</td></tr><tr><td colspan=\"1\" rowspan=\"1\">31</td></tr><tr><td colspan=\"1\" rowspan=\"1\">应用层数据</td><td colspan=\"1\" rowspan=\"1\">32-1000</td><td colspan=\"1\" rowspan=\"1\">应用层数据</td><td colspan=\"1\" rowspan=\"1\">变长</td><td colspan=\"1\" rowspan=\"1\">参见表3格式定义</td></tr><tr><td colspan=\"5\" rowspan=\"1\">ID的具体编号原则在工程实现阶段确定。电子地图版本校验信息针对CI-CI重叠区电子地图两个CI共用的信息。若“电子地图版本校验信息”或“协议版本号”与相邻CI不一致，则进行丢包或断开通信处理。序列号有效值为1~(231-1)。发送方应保证生成两包信息包时，两包信息包中的“本方消息序列号”字段的差值与“通信周期”相乘等于生成两包消息的时间间隔。当未收到对方消息时，序列号发送OxFFFFFFFF。</td></tr></table>",
+        "bbox": [
+            95,
+            622,
+            878,
+            860
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET 04011.5—2018 ",
+        "bbox": [
+            100,
+            82,
+            373,
+            101
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "discarded",
+        "text": "6 ",
+        "bbox": [
+            107,
+            900,
+            123,
+            915
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "table",
+        "img_path": "",
+        "table_caption": [
+            ""
+        ],
+        "table_footnote": [],
+        "bbox": [
+            100,
+            151,
+            880,
+            878
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET04011.5—2018 ",
+        "bbox": [
+            609,
+            84,
+            880,
+            102
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "discarded",
+        "text": "7 ",
+        "bbox": [
+            850,
+            902,
+            864,
+            915
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "table",
+        "img_path": "",
+        "table_caption": [
+            ""
+        ],
+        "table_footnote": [],
+        "bbox": [
+            114,
+            159,
+            895,
+            563
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "table",
+        "img_path": "images/81304560eeadab7c5d76c0da048f8c26d9f935a5aca5cfb6267de9d469a496c1.jpg",
+        "table_caption": [
+            "表2应用层信息格式定义"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>信息域定义</td><td rowspan=1 colspan=1>字节编号</td><td rowspan=1 colspan=1>报文内容</td><td rowspan=1 colspan=1>说明</td></tr><tr><td rowspan=2 colspan=1>报文长度</td><td rowspan=1 colspan=1>1</td><td rowspan=2 colspan=1>报文长度</td><td rowspan=2 colspan=1>由“报文类型~报文结束”的帧长度</td></tr><tr><td rowspan=1 colspan=1>2</td></tr><tr><td rowspan=2 colspan=1>报文类型</td><td rowspan=1 colspan=1>3</td><td rowspan=2 colspan=1>定义某一条应用信息的标识</td><td rowspan=2 colspan=1>自定义，详细内容参见5.3.2</td></tr><tr><td rowspan=1 colspan=1>4</td></tr><tr><td rowspan=2 colspan=1>预留</td><td rowspan=1 colspan=1>5</td><td rowspan=2 colspan=1>预留</td><td rowspan=1 colspan=1>0</td></tr><tr><td rowspan=1 colspan=1>6</td><td rowspan=1 colspan=1>0</td></tr><tr><td rowspan=1 colspan=1>报文内容</td><td rowspan=1 colspan=1>7~报</td><td rowspan=1 colspan=1>按照报文格式定义的报文结束文具体内容</td><td rowspan=1 colspan=1>自定义，详细内容参见5.3.2</td></tr></table>",
+        "bbox": [
+            119,
+            599,
+            897,
+            897
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET04011.5-2018",
+        "bbox": [
+            116,
+            90,
+            388,
+            109
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "discarded",
+        "text": "8 ",
+        "bbox": [
+            130,
+            909,
+            150,
+            922
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "5.3.1.3通信状态管理",
+        "text_level": 1,
+        "bbox": [
+            102,
+            129,
+            378,
+            151
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "5.3.1.3.1CI应对接收到的应用消息进行合法性检查，若检查未通过，认为木周期未收到邻站CI的应用信息或主动断开安全连接，并记录报警信息。具体检查方式如下：",
+        "bbox": [
+            102,
+            156,
+            880,
+            230
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "a) 消息内容的一致性检查：包括信息的字段合法性检查、字段组合合法性检查以及信息完整性检查；  \nb) 通用应用（GAL）信息包消息所应包含的信息的完整性；  \nc) 其他逻辑检查。",
+        "bbox": [
+            150,
+            235,
+            883,
+            336
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "5.3.1.3.2CI应能对通信连接状态进行判断：",
+        "bbox": [
+            102,
+            343,
+            616,
+            363
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "a) CI判断与邻站CI通 的超时时间定义为 $T _ { \\mathrm { ( ; i T i m e 0 ) } \\parallel }$ （叮配置，推荐值5s)  \nb) 通信建立后 $\\mathcal { \\tilde { T } } _ { \\mathrm { c i T i m e 0 u l } }$ 有接收到来白邻站CI的任何消息 中断（指应用层根据GAL包头 段进行判断，而非安全通信协议层进行的判断）。 $T _ { \\mathrm { c i T i m e 3 0 u l } }$ 时，根据GAI包头中字段进行判断，而非安  \nd) CI与邻站CI间通信中断的情况下，本站CI无法收到邻站汇报的设备信息。CI应将邻站所有设备状态设置为安全侧，如将通往邻站进路的始端信号机置为禁止信号，对应来白邻站的区段设置为占用。  \ne) CI与邻站CI间通信中断的情况下，若本站CI收到了合法的邻站CI信息，则本站CI应认为与邻站CI连接恢复。  \nf) 互联互通线网中，CI与邻站CI的通信超时时问应一致，消息有效期时间应一致。",
+        "bbox": [
+            145,
+            372,
+            883,
+            811
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "5.3.2数据类型定义",
+        "text_level": 1,
+        "bbox": [
+            100,
+            818,
+            345,
+            838
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "表3规定了CI间通信的所有应用信息类型及其含义、发送方向、长度范围、发送方式（周期/非周期）的内容。",
+        "bbox": [
+            100,
+            845,
+            876,
+            892
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET 04011.5—2018 ",
+        "bbox": [
+            611,
+            85,
+            880,
+            102
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "discarded",
+        "text": "9 ",
+        "bbox": [
+            847,
+            902,
+            864,
+            915
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "table",
+        "img_path": "images/3a15a2deea114b96f30b65ff5497b3c61274c374c7e0735aa85b198bcee3fd3c.jpg",
+        "table_caption": [
+            "表3CI-CI通信的应用层信息定义"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>信息类型</td><td rowspan=1 colspan=1>信息包名</td><td rowspan=1 colspan=1>发送方向</td><td rowspan=1 colspan=1>长度（字节）</td><td rowspan=1 colspan=1>发送方式</td></tr><tr><td rowspan=1 colspan=1>0x0201</td><td rowspan=1 colspan=1>道岔状态信息包</td><td rowspan=1 colspan=1>双向</td><td rowspan=1 colspan=1>xx</td><td rowspan=1 colspan=1>周期</td></tr><tr><td rowspan=1 colspan=1>0x0202</td><td rowspan=1 colspan=1>物理区段状态信息包</td><td rowspan=1 colspan=1>双向</td><td rowspan=1 colspan=1>xx</td><td rowspan=1 colspan=1>周期</td></tr><tr><td rowspan=1 colspan=1>0x0203</td><td rowspan=1 colspan=1>逻辑区段状态信息包</td><td rowspan=1 colspan=1>双向</td><td rowspan=1 colspan=1>xx</td><td rowspan=1 colspan=1>周期</td></tr><tr><td rowspan=1 colspan=1>0x0204</td><td rowspan=1 colspan=1>信号机状态信息包</td><td rowspan=1 colspan=1>双向</td><td rowspan=1 colspan=1>xx</td><td rowspan=1 colspan=1>周期</td></tr><tr><td rowspan=1 colspan=1>0x0205</td><td rowspan=1 colspan=1>站台门状态信息包</td><td rowspan=1 colspan=1>双向</td><td rowspan=1 colspan=1>xx</td><td rowspan=1 colspan=1>周期</td></tr><tr><td rowspan=1 colspan=1>0x0206</td><td rowspan=1 colspan=1>紧急关闭按钮状态信息包</td><td rowspan=1 colspan=1>双向</td><td rowspan=1 colspan=1>xx</td><td rowspan=1 colspan=1>周期</td></tr><tr><td rowspan=1 colspan=1>0x0207</td><td rowspan=1 colspan=1>照查状态信息包</td><td rowspan=1 colspan=1>双向</td><td rowspan=1 colspan=1>xx</td><td rowspan=1 colspan=1>周期</td></tr><tr><td rowspan=1 colspan=1>0x0208</td><td rowspan=1 colspan=1>防淹门信息包</td><td rowspan=1 colspan=1>双向</td><td rowspan=1 colspan=1>xx</td><td rowspan=1 colspan=1>周期</td></tr><tr><td rowspan=1 colspan=1>0x0209</td><td rowspan=1 colspan=1>上电锁闭状态信息包</td><td rowspan=1 colspan=1>双向</td><td rowspan=1 colspan=1>xx</td><td rowspan=1 colspan=1>周期</td></tr><tr><td rowspan=1 colspan=1>0x020a</td><td rowspan=1 colspan=1>临时限速信息包</td><td rowspan=1 colspan=1>双向</td><td rowspan=1 colspan=1>xx</td><td rowspan=1 colspan=1>周期</td></tr><tr><td rowspan=1 colspan=1>0x020b</td><td rowspan=1 colspan=1>城市自定义信息包</td><td rowspan=1 colspan=1>双向</td><td rowspan=1 colspan=1>xx</td><td rowspan=1 colspan=1>周期</td></tr><tr><td rowspan=1 colspan=1>0x020c</td><td rowspan=1 colspan=1>厂商自定义信息包</td><td rowspan=1 colspan=1>双向</td><td rowspan=1 colspan=1>xx</td><td rowspan=1 colspan=1>周期</td></tr></table>",
+        "bbox": [
+            114,
+            159,
+            895,
+            624
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "5.4 应用信息定义",
+        "text_level": 1,
+        "bbox": [
+            114,
+            638,
+            335,
+            659
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "5.4.1道岔状态信息 ",
+        "text_level": 1,
+        "bbox": [
+            114,
+            664,
+            361,
+            686
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "本CI应将互联互通相关范围内的本联锁管辖范围的道岔状态发送给邻站 $\\mathrm { C I }$ 。相邻CI间道岔索引顺序应保持一致。道岔状态信息见表4。",
+        "bbox": [
+            116,
+            691,
+            895,
+            739
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "table",
+        "img_path": "images/221a99c3e804494887f16c5a77b687e50dfc1493670e8a45c96da2b0ed3527e5.jpg",
+        "table_caption": [
+            "表4道岔状态信息"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td colspan=\"1\" rowspan=\"1\">字段长度</td><td colspan=\"1\" rowspan=\"1\">字段长度</td><td colspan=\"8\" rowspan=\"1\">说明</td></tr><tr><td colspan=\"1\" rowspan=\"1\">包含的道岔数量</td><td colspan=\"1\" rowspan=\"1\">1字节</td><td colspan=\"8\"></td></tr><tr><td colspan=\"1\" rowspan=\"1\">字段长度</td><td colspan=\"1\" rowspan=\"1\">字段长度</td><td colspan=\"8\" rowspan=\"1\">说   明</td></tr><tr><td colspan=\"1\" rowspan=\"2\">道岔状态</td><td colspan=\"1\" rowspan=\"2\">n字节</td><td colspan=\"1\" rowspan=\"1\">B7</td><td colspan=\"1\" rowspan=\"1\">B6</td><td colspan=\"1\" rowspan=\"1\">B5</td><td colspan=\"1\" rowspan=\"1\">B4</td><td colspan=\"1\" rowspan=\"1\">B3</td><td colspan=\"1\" rowspan=\"1\">B2</td><td colspan=\"1\" rowspan=\"1\">B1</td><td colspan=\"1\" rowspan=\"1\">B0</td></tr><tr><td colspan=\"2\" rowspan=\"1\">道岔1封锁状态：01b:木封锁10b:封锁00b:非法11b:默认值</td><td colspan=\"2\" rowspan=\"1\">道岔1单锁总锁闭状态：状态：01b:未单锁10b:单锁00b:非法11b:默认值</td><td colspan=\"2\" rowspan=\"1\">道岔1引导道岔1单锁总锁闭状态：01b:未引导总锁10b:引导总锁00h：非法11b:默认值</td><td colspan=\"2\" rowspan=\"1\">道贫1位置：01b:定位10b:反位00b:四开11b:默认值</td></tr><tr><td colspan=\"10\" rowspan=\"1\">a非法定义，正常通信过程中不应发送的设备状态，若出现非法设备状态，接收方认为本周期没有收到应用数据包，适用于本协议所有字段。默认值定义，通信双方在具休工程项日中不使用的信息码字或联锁系统在初始化完成之前发送的状态，适用于本协议所有字段。</td></tr></table>",
+        "bbox": [
+            116,
+            776,
+            895,
+            887
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "discarded",
+        "text": "10 ",
+        "bbox": [
+            130,
+            905,
+            157,
+            920
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET04011.5—2018 ",
+        "bbox": [
+            116,
+            90,
+            390,
+            109
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "table",
+        "img_path": "",
+        "table_caption": [
+            ""
+        ],
+        "table_footnote": [],
+        "bbox": [
+            100,
+            156,
+            878,
+            569
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "5.4.2物理区段状态信息",
+        "text_level": 1,
+        "bbox": [
+            100,
+            584,
+            395,
+            606
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "本CI应将互联互通相关范围内的本联锁区管辖范围内的物理区段状态发送给邻站CI。相邻CI间物理区段索引顺序应保持一致。物理区段状态信息见表5。",
+        "bbox": [
+            100,
+            611,
+            878,
+            685
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "table",
+        "img_path": "images/97a85ce91bb9c51f115d31705fbaa83cdf2d682bffab426412b043967d7f1fc2.jpg",
+        "table_caption": [
+            "表5物理区段状态信息"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td colspan=\"1\" rowspan=\"1\">字段长度</td><td colspan=\"1\" rowspan=\"1\">字段长度</td><td colspan=\"8\" rowspan=\"1\">说</td></tr><tr><td colspan=\"1\" rowspan=\"1\">包含的物理区段数量</td><td colspan=\"1\" rowspan=\"1\">1字节</td><td colspan=\"8\"></td></tr><tr><td colspan=\"1\" rowspan=\"1\">字段</td><td colspan=\"1\" rowspan=\"1\">长度</td><td colspan=\"8\" rowspan=\"1\">说   明</td></tr><tr><td colspan=\"1\" rowspan=\"3\">物理区段状态</td><td colspan=\"1\" rowspan=\"2\">2×n字节物理区段1的Bytel</td><td colspan=\"1\" rowspan=\"1\">B7</td><td colspan=\"1\" rowspan=\"1\">B6</td><td colspan=\"1\" rowspan=\"1\">B5</td><td colspan=\"1\" rowspan=\"1\">B4</td><td colspan=\"1\" rowspan=\"1\">B3</td><td colspan=\"1\" rowspan=\"1\">B2</td><td colspan=\"1\" rowspan=\"1\">B1</td><td colspan=\"1\" rowspan=\"1\">B0</td></tr><tr><td colspan=\"2\" rowspan=\"1\">区段1故障锁闭状态\"：01b:区段未故障锁闭；10b:区段故障锁闭；00b：非法状态；11b:默认值</td><td colspan=\"2\" rowspan=\"1\">区段1保护锁闭状态：01b:区段未保护锁闭；10b:区段保护锁闭；00b：非法状态；11b:默认值</td><td colspan=\"2\" rowspan=\"1\">区段1进路锁闭状态：01b：区段未进路锁闭；10b:区段进路锁闭；00b：非法状态；11b:默认值</td><td colspan=\"2\" rowspan=\"1\">区段1占用状态\"：00b：区段占用；01b：非法状态；10b：区段空闲；11b：默认值</td></tr><tr><td colspan=\"1\" rowspan=\"1\">物理区段1的Byte2</td><td colspan=\"2\" rowspan=\"1\">预留</td><td colspan=\"2\" rowspan=\"1\">区段1锁闭方向：01b：上行运营方向；10b：下行运营方向；00b：无锁闭方向；11b:默认值</td><td colspan=\"2\" rowspan=\"1\">区段1封锁状态：01b：区段封锁；10b：区段未封锁；00b：非法状态；11b:默认值</td><td colspan=\"2\" rowspan=\"1\">区段1ARB状态：01b：区段ARB;10b：区段未ARB；00b：非法状态；11b:默认值</td></tr><tr><td colspan=\"10\" rowspan=\"1\">采集轨道继电器状态。1.不同厂家转换时，物理区段中任意一个逻辑区段锁闭，则认为物理区段锁闭；2.故障锁闭显示级别优先于进路锁闭，进路锁闭优先于保护区段锁闭；3.进路锁闭包括列车进路、引导进路、调车进路锁闭。区段进路锁闭状态的一种，不满足解锁原则漏解锁时。协议要求同一计轴内所有锁闭的逻辑区段方向应一致。</td></tr></table>",
+        "bbox": [
+            100,
+            732,
+            878,
+            893
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET 04011.5—2018 ",
+        "bbox": [
+            607,
+            84,
+            878,
+            102
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "discarded",
+        "text": "11 ",
+        "bbox": [
+            840,
+            904,
+            861,
+            919
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "table",
+        "img_path": "",
+        "table_caption": [
+            ""
+        ],
+        "table_footnote": [],
+        "bbox": [
+            119,
+            154,
+            895,
+            764
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "5.4.3 逻辑区段状态信息 ",
+        "text_level": 1,
+        "bbox": [
+            121,
+            774,
+            414,
+            796
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "本CI应将互联互通相关范围内的本联锁区管辖范围的逻辑区段状态发送给邻站CI。相邻CI间逻辑区段索引顺序应保持一致。逻辑区段状态信息见表6。",
+        "bbox": [
+            119,
+            801,
+            900,
+            875
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "discarded",
+        "text": "12 ",
+        "bbox": [
+            135,
+            905,
+            161,
+            919
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET04011.5—2018 ",
+        "bbox": [
+            121,
+            89,
+            392,
+            106
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "table",
+        "img_path": "images/715b20441d5a50fad99fbdedb3fc308c439b37c6e24a89a69142aed6283517bd.jpg",
+        "table_caption": [
+            "表6逻辑区段状态信息"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>字段</td><td rowspan=1 colspan=1>长度</td><td rowspan=1 colspan=8>说明</td></tr><tr><td rowspan=1 colspan=1>包含的逻辑区段数量</td><td rowspan=1 colspan=1>1字节</td><td rowspan=1 colspan=8>互联互通相关范围内的本联锁区管辖范围内逻辑区段数量n</td></tr><tr><td rowspan=3 colspan=1>逻辑X段状态“</td><td rowspan=2 colspan=1>2xn字节逻辑区段1的Bytel</td><td rowspan=1 colspan=1>B7</td><td rowspan=1 colspan=1>B6</td><td rowspan=1 colspan=1>B5</td><td rowspan=1 colspan=1>B4</td><td rowspan=1 colspan=1>B3</td><td rowspan=1 colspan=1>B2</td><td rowspan=1 colspan=1>B1</td><td rowspan=1 colspan=1>B0</td></tr><tr><td rowspan=1 colspan=2>区段1锁闭方向：01b：上行运营方向；10b：下行运营方向；00b:无锁方向；11b;</td><td rowspan=1 colspan=2>区段1保护锁闭状态：01h：区段未保护锁闭；10b.区段保状态；11b:默认值</td><td rowspan=1 colspan=2>区段1进路锁闭状态”：01b:区段未进路锁闭；10b:区段进路锁闭；00b：法状认值</td><td rowspan=1 colspan=2>区段1占用状态：00b:非CBTC车占用；01b:CBTC车占用；10b:区段空闲；1Ib:默认值</td></tr><tr><td rowspan=1 colspan=1>逻辑区段1的Byte2</td><td rowspan=1 colspan=2>预留</td><td rowspan=1 colspan=2>预留</td><td rowspan=1 colspan=2>故障锁段未;区段故00b：非法状态；11b:默认值</td><td rowspan=1 colspan=2>区段1封锁状态：01b：区段封锁；10h：区段未封锁；00b：非法状态；11b:默认值</td></tr><tr><td rowspan=1 colspan=10>物理区段利逻辑区段中占用、锁闭等状态信息均应同时发送，主要基于到以下几点：a)CBTC和后备模式下，CI对于列车占用状态获取方式包含物理区段、逻辑区段占川：b）互联互通的接口文件中需要兼容各家产品特点，不同厂家的产品内部逻辑或以物理区段的锁闭、占用状态为主，或以逻辑区段的占用、锁闭状态为主：c)为解决相邻联锁集中区站场状态显示不一致问题，应同时发送物理区段和逻辑区段；d)将处理后的逻辑区段占用状态发送给对方，发送方保证发送的状态应与本方人机界而显示状态一致，接收方可直接用于人机界面显示相邻线路复视区域内逻辑区段状态；e）进路销闭包括列车进路引导进路调车进路销团</td></tr></table>",
+        "bbox": [
+            100,
+            148,
+            878,
+            882
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            157,
+            872,
+            645,
+            888
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET04011.5—2018 ",
+        "bbox": [
+            609,
+            85,
+            880,
+            102
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "discarded",
+        "text": "13 ",
+        "bbox": [
+            838,
+            904,
+            864,
+            919
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "5.4.4 信号机状态信息",
+        "text_level": 1,
+        "bbox": [
+            114,
+            143,
+            385,
+            164
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "本CI应将互联互通相关范围内的本联锁区管辖范围内的信号机状态发送给邻站CI。联锁分界点处信号机属于接车方联锁管辖，若联锁分界点有外置保护区段，则发车方联锁也应向接车方联锁发送该信号机状态信息。若联锁分界点无外置保护区段，则发车方联锁不发该信号机状态信息。相邻CI间信号机索引顺序应保持一致。信号机状态信息见表7。",
+        "bbox": [
+            114,
+            170,
+            895,
+            296
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "table",
+        "img_path": "images/30399c1491a88c9813007d967687f783230fd38a3e040177c08975d17ce8444d.jpg",
+        "table_caption": [
+            "表7 信号机状态信息"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>字段</td><td rowspan=1 colspan=1>长度</td><td rowspan=1 colspan=8>说明</td></tr><tr><td rowspan=1 colspan=1>包含的信号机数量</td><td rowspan=1 colspan=1>1字节</td><td rowspan=1 colspan=8>互联互通相关范围内的本联锁区管辖范围的信号机数量n</td></tr><tr><td rowspan=4 colspan=1>信号机状态“</td><td rowspan=2 colspan=1>3xn字节信号机1的Bytel</td><td rowspan=1 colspan=1>B7</td><td rowspan=1 colspan=1>B6</td><td rowspan=1 colspan=1>B5</td><td rowspan=1 colspan=1>B4</td><td rowspan=1 colspan=1>B3</td><td rowspan=1 colspan=1>B2</td><td rowspan=1 colspan=1>B1</td><td rowspan=1 colspan=1>B0</td></tr><tr><td rowspan=1 colspan=8>信号机1显示状态：00000000b:断丝;00010001b：红灯；00010010b：黄灯;00010100b：绿灯；00011000b:红黄灯;11111111b：默认值；其他：非法</td></tr><tr><td rowspan=1 colspan=1>信号机1的Byte2</td><td rowspan=1 colspan=2>信号机1保护区段命令°：01b:保护建立请求；10b:保护取消请求；00b:无命令；11b:默认值</td><td rowspan=1 colspan=2>信号机1接近锁闭：01b：接近锁闭；10b：未接近锁闭；00b:非法状态；11b:默认值</td><td rowspan=1 colspan=2>信号机1封锁状态：01b:封锁；10b:未封锁；00b：非法状态；11b:默认值</td><td rowspan=1 colspan=2>信号机1亮灭状态：01b:点灯；10b:灭灯；00b：非法状态；11b:默认值</td></tr><tr><td rowspan=1 colspan=1>信号机1的Byte3</td><td rowspan=1 colspan=2>预留</td><td rowspan=1 colspan=2>预留</td><td rowspan=1 colspan=2>预留</td><td rowspan=1 colspan=2>信号机1保护区段有效标志：01b：保护区段有效；</td></tr></table>",
+        "bbox": [
+            116,
+            326,
+            895,
+            898
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "discarded",
+        "text": "14 ",
+        "bbox": [
+            133,
+            907,
+            159,
+            922
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET04011.5-2018",
+        "bbox": [
+            116,
+            90,
+            388,
+            107
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "table",
+        "img_path": "images/ce39e1fa6470ecdefd6eeb33642ef62659ce81031ca03589beaaadee3344b3c2.jpg",
+        "table_caption": [
+            "表7信号机状态信息(续）"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td>字段</td><td>长度</td><td colspan=\"3\">说明</td></tr><tr><td>信号 机状 态</td><td>信号机 1的 Byte3</td><td>预留 分界处的信号机，发车站联锁向接车站联锁仅发送保护区段命令，其他状态</td><td>预留</td><td>预留</td><td>10b：保护区 段无效； 00b：非法状 态； 11h:默认值</td></tr><tr><td colspan=\"6\">发送默认值；接车站联锁向发车站联锁仅发送的保护区段命令为“无命令”， 其他信息发送有效值。 信号机的有效状态包括：亮红、亮黄、亮绿、亮红黄、灭红、灭绿、灭黄。 a）灭绿、灭黄定义：CBTC模式进路信号开放； b）亮绿、亮黄定义：后备模式进路信号开放； c）亮红黄定义：引导信号开放； d）断丝定义：亮灯时灯丝继电器落下； e)针对常态点灯的信号机：在联锁控区边界处，接车站信号机开放作为发车 站信号开放检查条件的场景下（无论实体或者虚拟）：接车站信号机亮绿、 亮黄满足发车站信号开放（灭灯开放或者点灯开放）对此条件的检查。 1．发车站联锁向接车站办理的终端在分界点处的进路完整锁闭且其保护区 段建立的触发区段占用条件都具备时开始发送保护区段建立请求，直到保</td></tr><tr><td colspan=\"6\">护区段已锁闭： 2.发车站联锁收到保护区段停稳信息时，或发车站连接分界点处的区段解锁 时发送“保护取消请求”，直到保护区段已解锁； 3．其他情况发送无命令； 4.主进路与对应保护区段属于不同CI时，保护区段所届CI收到主进路所属CI</td></tr><tr><td colspan=\"4\">发送的“保护取消请求”时，可不考虑主进路CI内线路情况，无条件采信。 “发送方CI应保证：发送“保护区段有效”状态时，“逻辑区段状态信息”包中，</td><td colspan=\"2\"></td></tr><tr><td colspan=\"4\">该保护区段内所有逻辑区段的“保护锁闭状态”字段取值均为“区段保护锁 闭”。主进路CI判断保护区段是否可用时，除“保护区段有效标志”字段外， 可不对保护区段CI范围内的其他条件进行判断。若主进路CI进行了其他判 断，则由主进路CI保证系统的可用性。</td><td colspan=\"2\"></td></tr></table>",
+        "bbox": [
+            97,
+            151,
+            873,
+            890
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET04011.5—2018 ",
+        "bbox": [
+            602,
+            82,
+            873,
+            99
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "discarded",
+        "text": "15 ",
+        "bbox": [
+            835,
+            904,
+            859,
+            919
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "5.4.5 站台门状态信息 ",
+        "text_level": 1,
+        "bbox": [
+            121,
+            144,
+            392,
+            164
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "本CI将互联互通相关范围内的本联锁区管辖范围的站台门状态信息发送给邻站CI。相邻CI间站台门索引顺序应保持一致。站台门状态信息见表8。",
+        "bbox": [
+            123,
+            170,
+            902,
+            244
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "table",
+        "img_path": "images/844f63155be3b42b2205342caefd6d3002cf991c5f5050bac47579d4ed949a62.jpg",
+        "table_caption": [
+            "表8 站台门状态信息"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>字段</td><td rowspan=1 colspan=1>长度</td><td rowspan=1 colspan=8>说  明</td></tr><tr><td rowspan=1 colspan=1>包含的信息单元数量</td><td rowspan=1 colspan=1>1字节</td><td rowspan=1 colspan=8>互联互通相关范围内的本联锁区管辖范围内站台门数量n</td></tr><tr><td rowspan=2 colspan=1>信息单元状态</td><td rowspan=2 colspan=1>0.5×n字节（进位取整）</td><td rowspan=1 colspan=1>B7</td><td rowspan=1 colspan=1>B6</td><td rowspan=1 colspan=1>B5</td><td rowspan=1 colspan=1>B4</td><td rowspan=1 colspan=1>B3</td><td rowspan=1 colspan=1>B2</td><td rowspan=1 colspan=1>B1</td><td rowspan=1 colspan=1>B0</td></tr><tr><td rowspan=1 colspan=4>站台门2状态</td><td rowspan=1 colspan=2>站台门1旁路标志：01b:未旁路；10b:旁路；00b：非法状态；11b:默认值</td><td rowspan=1 colspan=2>站台门1开关状态：01b：开门；10b:关门且锁闭；00b：非法状态；11b:默认值</td></tr></table>",
+        "bbox": [
+            121,
+            281,
+            902,
+            607
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "5.4.6 站台紧急关闭按钮信息",
+        "text_level": 1,
+        "bbox": [
+            121,
+            621,
+            469,
+            643
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "本CI将互联互通相关范围内的本联锁区管辖范围的站台紧急关闭信息发送给邻站 $\\mathrm { C I }$ 。相邻CI间站台紧急关闭索引顺序应保持一致。站台紧急关闭按钮信息见表9。",
+        "bbox": [
+            123,
+            648,
+            902,
+            722
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "table",
+        "img_path": "images/763822cc61d11ee503ff1996d8065bd8594bbb4b4d7af8e280038d2f9bfdd182.jpg",
+        "table_caption": [
+            "表9 站台紧急关闭按钮信息"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td colspan=\"1\" rowspan=\"1\">字段长度</td><td colspan=\"1\" rowspan=\"1\">字段长度</td><td colspan=\"8\" rowspan=\"1\">说明</td></tr><tr><td colspan=\"1\" rowspan=\"1\">包含的元数量</td><td colspan=\"1\" rowspan=\"1\"></td><td colspan=\"8\"></td></tr><tr><td colspan=\"1\" rowspan=\"1\">字段长度</td><td colspan=\"1\" rowspan=\"1\">字段长度</td><td colspan=\"8\" rowspan=\"1\">说   明</td></tr><tr><td colspan=\"1\" rowspan=\"2\">信息单元状态</td><td colspan=\"1\" rowspan=\"2\">0.25 ×n字节（进位取整）</td><td colspan=\"1\" rowspan=\"1\">B7</td><td colspan=\"1\" rowspan=\"1\">B6</td><td colspan=\"1\" rowspan=\"1\">R5</td><td colspan=\"1\" rowspan=\"1\">B4</td><td colspan=\"1\" rowspan=\"1\">B3</td><td colspan=\"1\" rowspan=\"1\">B2</td><td colspan=\"1\" rowspan=\"1\">B1</td><td colspan=\"1\" rowspan=\"1\">B0</td></tr><tr><td colspan=\"2\" rowspan=\"1\">紧急关闭4状态</td><td colspan=\"2\" rowspan=\"1\">紧急关闭3状态</td><td colspan=\"2\" rowspan=\"1\">紧急关闭2状态</td><td colspan=\"2\" rowspan=\"1\">紧急关闭按钮1状态：01b:按下；10b:术按下；00b:非法状态；11b:默认值</td></tr></table>",
+        "bbox": [
+            123,
+            760,
+            902,
+            872
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "discarded",
+        "text": "16 ",
+        "bbox": [
+            138,
+            905,
+            166,
+            920
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET04011.5—2018 ",
+        "bbox": [
+            123,
+            85,
+            395,
+            104
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "table",
+        "img_path": "",
+        "table_caption": [
+            ""
+        ],
+        "table_footnote": [],
+        "bbox": [
+            92,
+            154,
+            871,
+            392
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "text",
+        "text": "CIATION ",
+        "bbox": [
+            342,
+            383,
+            590,
+            432
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "text",
+        "text": "5.4.7照查状态信息 ",
+        "text_level": 1,
+        "bbox": [
+            92,
+            410,
+            338,
+            430
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "text",
+        "text": "表10。 本口将互政由内的木職鎖的服世状志信自",
+        "bbox": [
+            92,
+            436,
+            871,
+            511
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "table",
+        "img_path": "images/c53421c44c7bc5a6eb851cfa74f4668d535be37d1826a1a907f77fcf6135507f.jpg",
+        "table_caption": [
+            "表10 照查状态信息"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>字段长度</td><td rowspan=1 colspan=1>字段长度</td><td rowspan=1 colspan=8>城市          说</td></tr><tr><td rowspan=1 colspan=1>包含的信息单元数量</td><td rowspan=1 colspan=1>1字节</td><td rowspan=1 colspan=8>城市 轨道互联互通相关范围内的本联锁区管辖范围的照查数量n</td></tr><tr><td rowspan=2 colspan=1>信息单元状态</td><td rowspan=2 colspan=1>0.25 ×n字节（进位取整）</td><td rowspan=1 colspan=1>B7</td><td rowspan=1 colspan=1>B6</td><td rowspan=1 colspan=1>B5</td><td rowspan=1 colspan=1>B4</td><td rowspan=1 colspan=1>B3</td><td rowspan=1 colspan=1>B2</td><td rowspan=1 colspan=1>B1</td><td rowspan=1 colspan=1>BO</td></tr><tr><td rowspan=1 colspan=2>照查4状态</td><td rowspan=1 colspan=2>照查3状态</td><td rowspan=1 colspan=2>照查2状态</td><td rowspan=1 colspan=2>照查1状态&quot;：01b:照查落下；10b:照查吸起；00b:非法状态；11b:默认值</td></tr><tr><td rowspan=1 colspan=10>“照查条件在具体工程中做详细定义。例如：照查条件常态吸起，在发车站末区段锁闭时落下，上电锁闭时照查状态为落下。</td></tr></table>",
+        "bbox": [
+            90,
+            553,
+            871,
+            867
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET 04011.5—2018 ",
+        "bbox": [
+            600,
+            84,
+            871,
+            101
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "discarded",
+        "text": "17 ",
+        "bbox": [
+            830,
+            902,
+            857,
+            917
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "text",
+        "text": "5.4.8 防淹门信息",
+        "text_level": 1,
+        "bbox": [
+            123,
+            131,
+            345,
+            153
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "本CI将互联互通相关范围内的本联锁区管辖范围的防淹门信息发送给邻站CI。相邻CI间防淹门索引顺序应保持一致。防淹门信息见表11。",
+        "bbox": [
+            123,
+            158,
+            902,
+            230
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "table",
+        "img_path": "images/1007c5ccc9323e3d5439f431290407d6338740c683227f677864b23c7409a4d1.jpg",
+        "table_caption": [
+            "表11 防淹门信息"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>字段长度</td><td rowspan=1 colspan=1>字段长度</td><td rowspan=1 colspan=8>说  明</td></tr><tr><td rowspan=1 colspan=1>包含的信息单元数量</td><td rowspan=1 colspan=1>1字节</td><td rowspan=1 colspan=8>互联互通相关范围内的本联锁区管辖范围的防淹门数量n</td></tr><tr><td rowspan=2 colspan=1>信息单元状态</td><td rowspan=2 colspan=1>n字节</td><td rowspan=1 colspan=1>B7</td><td rowspan=1 colspan=1>B6</td><td rowspan=1 colspan=1>B5</td><td rowspan=1 colspan=1>B4</td><td rowspan=1 colspan=1>B3</td><td rowspan=1 colspan=1>B2</td><td rowspan=1 colspan=1>B1</td><td rowspan=1 colspan=1>B0</td></tr><tr><td rowspan=1 colspan=2>预留</td><td rowspan=1 colspan=2>防淹门1关门允许：01b:允许；10b：不允许；00b：非法状态；11b:默认值</td><td rowspan=1 colspan=2>防淹门1关门请求：01b：请求；10b:未请求；00b:非法状态；11b:默认值</td><td rowspan=1 colspan=2>防淹门1状态：01b:关闭；10b：开放；00b：非法状态；11b:默认值</td></tr></table>",
+        "bbox": [
+            123,
+            267,
+            902,
+            560
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "5.4.9上电锁闭状态信息",
+        "text_level": 1,
+        "bbox": [
+            123,
+            575,
+            421,
+            595
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "本CI将本站上电锁闭状态信息发送给邻站CI。上电锁闭状态信息见表12。",
+        "bbox": [
+            126,
+            602,
+            904,
+            648
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "table",
+        "img_path": "images/699adfd21afe7b16e86231e4d1bca47d5aede8fa7a407d4c76274dc4d37042b1.jpg",
+        "table_caption": [
+            "表12上电锁闭状态信息"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>字段</td><td rowspan=1 colspan=1>长度</td><td rowspan=1 colspan=1>说明</td></tr><tr><td rowspan=1 colspan=1>包含的信息单元数量</td><td rowspan=1 colspan=1>1字节</td><td rowspan=1 colspan=1>本CI上电锁闭状态数量n</td></tr><tr><td rowspan=1 colspan=1>信息单元状态</td><td rowspan=1 colspan=1>n字节</td><td rowspan=1 colspan=1>上电锁闭状态：0x55：设置上电锁闭；Oxaa：未设置上电锁闭；0xff:默认值；其他：非法码字</td></tr></table>",
+        "bbox": [
+            126,
+            685,
+            904,
+            872
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "discarded",
+        "text": "18 ",
+        "bbox": [
+            140,
+            905,
+            169,
+            920
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET04011.5-2018",
+        "bbox": [
+            123,
+            84,
+            397,
+            102
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "5.4.10临时限速信息",
+        "text_level": 1,
+        "bbox": [
+            100,
+            129,
+            359,
+            151
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "本CI应将互联互通相关范围内的本联锁管辖范围的临时限速区段状态发送给邻站CI。相邻CI间临时限速区段索引顺序应保持一致。临时限速信息见表13。",
+        "bbox": [
+            100,
+            156,
+            880,
+            232
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "table",
+        "img_path": "images/6baa3ba28a374c10fb988d7b6345a660de9df450f04f98de3f1a7fe0af8cd8d7.jpg",
+        "table_caption": [
+            "表13临时限速信息"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>字段</td><td rowspan=1 colspan=1>长度</td><td rowspan=1 colspan=8>说   明</td></tr><tr><td rowspan=1 colspan=1>包含的临时限速区段数量</td><td rowspan=1 colspan=1>1字节</td><td rowspan=1 colspan=8>互联互通相关范围内的本联锁区管辖范围的临时限速区段数量n</td></tr><tr><td rowspan=2 colspan=1>临时限速区段状态</td><td rowspan=2 colspan=1>0.25 ×n字节（进位取整）</td><td rowspan=1 colspan=1>B7</td><td rowspan=1 colspan=1>B6</td><td rowspan=1 colspan=1>B5</td><td rowspan=1 colspan=1>B4</td><td rowspan=1 colspan=1>B3</td><td rowspan=1 colspan=1>B2</td><td rowspan=1 colspan=1>B1</td><td rowspan=1 colspan=1>B0</td></tr><tr><td rowspan=1 colspan=2>临时限速区段4TSR状态：01b:区段设置TSR；10b:区段禾设置TSR；00b：非法状态；11b:默认值</td><td rowspan=1 colspan=2>临时限速区段3TSR状态：01b:区段设置TSR；10b：区段未设置TSR；00b：非法状态；11b:默认值</td><td rowspan=1 colspan=2>临时限速区段2TSR状态：01b：区段设置TSR；10b：区段未设置TSR；00b：非法状态；11b:默认值</td><td rowspan=1 colspan=2>临时限速区段ITSR状态：01b：区段设置TSR；10b:区段未设置TSR；00b:非法状态；11b:默认值</td></tr></table>",
+        "bbox": [
+            100,
+            272,
+            878,
+            632
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "5.4.11城市自定义信息",
+        "text_level": 1,
+        "bbox": [
+            100,
+            648,
+            383,
+            670
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "本CI将互联互通相关范围内的本联锁管辖范围的城市自定义信息发送给邻站CI，见表14。",
+        "bbox": [
+            100,
+            675,
+            878,
+            723
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "table",
+        "img_path": "images/9d3078852866bfba814794c0782404b62ed94184881fc914f41c95669fd95eb2.jpg",
+        "table_caption": [
+            "表14城市自定义信息"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>字段</td><td rowspan=1 colspan=1>长度</td><td rowspan=1 colspan=1>明</td></tr><tr><td rowspan=1 colspan=1>城市自定义</td><td rowspan=1 colspan=1>n字节</td><td rowspan=1 colspan=1>报文内容为城市自定义</td></tr></table>",
+        "bbox": [
+            100,
+            762,
+            878,
+            826
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "5.4.12厂商自定义信息",
+        "text_level": 1,
+        "bbox": [
+            100,
+            843,
+            383,
+            865
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "本CI将互联互通相关范围内的本联锁管辖范围的厂商自定义信息",
+        "bbox": [
+            150,
+            870,
+            876,
+            892
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET 04011.5—2018 ",
+        "bbox": [
+            607,
+            82,
+            878,
+            101
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "discarded",
+        "text": "19 ",
+        "bbox": [
+            838,
+            900,
+            864,
+            915
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "发送给邻站CI，见表15。",
+        "bbox": [
+            119,
+            132,
+            380,
+            154
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "table",
+        "img_path": "images/549c1ab0be12158ca22bee9953a33a9be8b0a3e8dee2c04d04090aa6fb7da8b9.jpg",
+        "table_caption": [
+            "表15厂商自定义信息"
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=1 colspan=1>字段</td><td rowspan=1 colspan=1>长度</td><td rowspan=1 colspan=1>说明</td></tr><tr><td rowspan=1 colspan=1>厂商自定义</td><td rowspan=1 colspan=1>n字节</td><td rowspan=1 colspan=1>报文内容为厂商自定义</td></tr></table>",
+        "bbox": [
+            116,
+            193,
+            895,
+            257
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            383,
+            292,
+            628,
+            306
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "discarded",
+        "text": "20 ",
+        "bbox": [
+            130,
+            907,
+            159,
+            922
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "discarded",
+        "text": "T/CAMET04011.5—2018 ",
+        "bbox": [
+            119,
+            87,
+            390,
+            107
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "text",
+        "text": "中国城市轨道交通协会团体标准  \n城市轨道交通基于通信的列车运行  \n控制系统（CBTC）互联互通接口规范  \n第5部分：计算机联锁（CI）间接口  \nT/CAMET04011.5—2018  \n\\*  \n中国铁道出版社有限公司出版发行  \n（100054，北京市西城区右安门西街8号）  \n公司网址：http：//www.tdpress.com  \n北京铭成印刷有限公司印刷  \n开本： $8 8 0 \\ m m \\times 1 \\ 2 3 0 \\ \\ m m$ 1/32印张：1字数：24千  \n2019年5月第1版2019年5月第1次印刷  \n书号： $1 5 1 1 3 \\cdot 5 7 3 0$ 定价：15.00元  \n版权所有侵权必究  \n凡购买铁道版图书，如有印制质量问题，请与本公司发行部联系调换。  \n发行部电话：路（021）73174，市（010）51873174",
+        "bbox": [
+            226,
+            473,
+            795,
+            877
+        ],
+        "page_idx": 24
+    },
+    {
+        "type": "discarded",
+        "text": "151135730定价：15.00元",
+        "bbox": [
+            647,
+            765,
+            861,
+            924
+        ],
+        "page_idx": 25
+    },
+    {
+        "type": "discarded",
+        "text": "",
+        "bbox": [
+            919,
+            745,
+            947,
+            932
+        ],
+        "page_idx": 25
+    },
+    {
+        "type": "discarded",
+        "text": "",
+        "bbox": [
+            916,
+            28,
+            950,
+            624
+        ],
+        "page_idx": 25
+    }
+]

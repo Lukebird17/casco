@@ -1,0 +1,22 @@
+# RAG 问答系统依赖
+
+# 核心依赖
+python-dotenv>=1.0.0
+openai>=1.0.0
+
+# LangChain 相关
+langchain>=0.1.0
+langchain-openai>=0.0.5
+langchain-core>=0.1.0
+
+# 工具库
+tiktoken>=0.5.0
+numpy>=1.24.0
+
+# RAG-Anything (本地安装)
+# cd RAG-Anything && pip install -e .
+
+# 可选依赖（用于增强功能）
+# pillow>=10.0.0  # 图像处理
+# reportlab>=4.0.0  # PDF 生成
+
