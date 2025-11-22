@@ -8,10 +8,22 @@
 
 from VectorBase import VectorStore
 from LLM import OpenAIChat
-from Embeddings import OpenAIEmbedding
+from my_BGE_embedding import BGEEmbedding  # 导入你刚写好的BGE类
 from enhanced_agent import EnhancedRAGAgent
 import json
+import os
+import numpy as np
 
+RESULTS_FILE = "enhanced_demo_results.json"
+
+def convert(o):
+    if isinstance(o, np.float32) or isinstance(o, np.float64):
+        return float(o)
+    if isinstance(o, np.int32) or isinstance(o, np.int64):
+        return int(o)
+    if isinstance(o, np.ndarray):
+        return o.tolist()
+    raise TypeError(f"Object of type {type(o).__name__} is not JSON serializable")
 
 def main():
     """主函数：演示增强版智能体的使用"""
@@ -23,12 +35,12 @@ def main():
     # 1. 加载向量数据库
     print("📂 加载向量数据库...")
     vector_store = VectorStore()
-    vector_store.load_vector('./storage_demo')
+    vector_store.load_vector('./storage_bge_hierarchical')
     print(f"✅ 加载完成，文档数量: {len(vector_store.document)}\n")
     
     # 2. 初始化模型
     print("🤖 初始化模型...")
-    embedding = OpenAIEmbedding()
+    embedding = BGEEmbedding()
     llm = OpenAIChat()
     print("✅ 模型初始化完成\n")
     
@@ -44,50 +56,86 @@ def main():
     
     # 4. 测试问题
     test_questions = [
-        "南京地铁S7号线的运营里程，在江苏省内已运营地铁长度中排第几？",
-        # 可以添加更多测试问题
-    ]
-    
-    print("="*60)
-    print("开始处理问题\n")
+        "根据文档《2024_Communications-Based Train Control》，图 5.11 所示的网状控制回路结构，ATO 子系统是如何实现自身的控制回路的？请阐述其如何获取输入（Messglieder），如何形成车辆轨迹（Fahrzeugtrajektorie），以及如何将轨迹作为目标值传递给列车的控制设备（Steuergerät)"
+        ]
     
     results = []
-    for i, question in enumerate(test_questions, 1):
-        print(f"\n{'='*60}")
-        print(f"问题 {i}: {question}")
-        print(f"{'='*60}\n")
+    if test_questions:
+        question = test_questions[0]
+        print(f"\n============================================================")
+        print(f"问题: {question}")
+        print(f"============================================================\n")
         
-        # 5. 执行查询（使用完整增强功能）
-        result = agent.query_with_full_features(question)
-        
-        # 6. 显示答案
-        print(f"\n✅ 答案:")
-        print(f"{result['answer']}\n")
-        
-        # 7. 显示推理链（可选）
-        if result.get('reasoning_chain'):
-            print("\n" + "="*60)
-            print("推理过程:")
-            print("="*60)
-            print(result['reasoning_chain'].format_chain(detailed=False))
-        
-        # 8. 显示Token使用情况
-        if result.get('token_usage'):
-            print(f"\n📊 本次查询Token消耗:")
-            print(f"  • 总计: {result['token_usage']['total_tokens']:,} tokens")
-        
-        # 9. 格式化输出（符合竞赛要求）
-        formatted_output = agent.format_output(result, include_reasoning=False)
-        results.append(formatted_output)
-        
-        print("\n" + "="*60)
+        try:
+            # 调用智能体，获取结果
+            full_result_text = agent.query_with_full_features(question)
+            
+            # 存储当前问题的结果
+            results.append({
+                "question_id": 1,  # 固定ID为1
+                "question": question,
+                "answer": full_result_text,
+                "status": "Success"
+            })
+            print(f"✅ 问题处理成功。")
+            
+        except Exception as e:
+            # 捕获错误，记录下来
+            print(f"❌ 问题发生错误，无法获取答案: {e}")
+            results.append({
+                "question_id": 1,  # 固定ID为1
+                "question": question,
+                "answer": None,
+                "status": f"Error: {str(e)}"
+            })
+            
+        finally:
+            # 新增/修改：处理完毕后保存结果
+            with open(RESULTS_FILE, 'w', encoding='utf-8') as f:
+                json.dump(results, f, ensure_ascii=False, indent=4, default=convert)
+            print(f"✅ 结果已保存到 {RESULTS_FILE}")
+
+    print("\n所有问题处理完毕。")
+    print("\n\n所有问题处理完毕。")
     
-    # 10. 保存结果
-    print("\n💾 保存结果...")
-    with open('enhanced_demo_results.json', 'w', encoding='utf-8') as f:
-        json.dump(results, f, ensure_ascii=False, indent=2)
-    print("✅ 结果已保存到: enhanced_demo_results.json\n")
     
+    # for i, question in enumerate(test_questions, 1):
+    #     print(f"\n{'='*60}")
+    #     print(f"问题 {i}: {question}")
+    #     print(f"{'='*60}\n")
+        
+    #     # 5. 执行查询（使用完整增强功能）
+    #     result = agent.query_with_full_features(question)
+        
+    #     # 6. 显示答案
+    #     print(f"\n✅ 答案:")
+    #     print(f"{result['answer']}\n")
+        
+    #     # 7. 显示推理链（可选）
+    #     if result.get('reasoning_chain'):
+    #         print("\n" + "="*60)
+    #         print("推理过程:")
+    #         print("="*60)
+    #         print(result['reasoning_chain'].format_chain(detailed=False))
+        
+    #     # 8. 显示Token使用情况
+    #     if result.get('token_usage'):
+    #         print(f"\n📊 本次查询Token消耗:")
+    #         print(f"  • 总计: {result['token_usage']['total_tokens']:,} tokens")
+        
+    #     # 9. 格式化输出（符合竞赛要求）
+    #     formatted_output = agent.format_output(result, include_reasoning=False)
+    #     results.append(formatted_output)
+        
+    #     print("\n" + "="*60)
+    
+    # # 10. 保存结果
+    # print("\n💾 保存结果...")
+    # final_output = {"items": results}
+    # with open('enhanced_demo_results.json', 'w', encoding='utf-8') as f:
+    #     json.dump(final_output, f, ensure_ascii=False, indent=2) # 写入 final_output
+    # print("✅ 结果已保存到: enhanced_demo_results.json\n")
+    # ...
     # 11. 显示性能报告
     print("\n" + "="*60)
     print("性能报告")
@@ -115,7 +163,8 @@ def demo_advanced_features():
     long_text = "这是一段很长的文本。\n" * 500
     print(f"原始文本: {len(long_text)} 字符, {tracker.count_tokens(long_text)} tokens")
     
-    optimized = tracker.optimize_context(long_text, max_tokens=200)
+    optimized = tracker.optimize_context(long_text, max_tokens=30000)
+    # optimized = tracker.optimize_context(long_text, max_tokens=200)
     print(f"优化后: {len(optimized)} 字符, {tracker.count_tokens(optimized)} tokens")
     print(f"节省: {len(long_text) - len(optimized)} 字符\n")
     

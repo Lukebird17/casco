@@ -64,8 +64,6 @@ multiprocess==0.70.16
 murmurhash==1.0.13
 mypy-extensions==1.1.0
 nest-asyncio==1.6.0
-networkx==3.5
-numpy==2.3.0
 openai==1.109.1
 orjson==3.11.3
 ormsgpack==1.11.0
@@ -96,7 +94,6 @@ requests-toolbelt==1.0.0
 rich==14.2.0
 scikit-learn==1.7.2
 scikit-network==0.33.3
-scipy==1.16.2
 setuptools==80.9.0
 shellingham==1.5.4
 six==1.17.0
