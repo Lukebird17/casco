@@ -8,7 +8,7 @@
 
 import json
 import re
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple, Optional,Union, Any
 from VectorBase import VectorStore
 from LLM import OpenAIChat
 from Embeddings import OpenAIEmbedding
@@ -16,7 +16,67 @@ from token_tracker import TokenTracker, TokenOptimizer
 from reasoning_chain import ReasoningChain
 from advanced_document_processor import VersionComparator, AdvancedTableExtractor
 import os
+from LLM import OpenAIChat
 
+PROMPT_TEMPLATES = {
+    'basic': """请基于以下文档内容，准确回答问题。总是使用中文回答。
+
+文档内容：{context}
+
+问题：{query}
+
+要求：
+1. 直接从文档中提取准确答案
+2. 如果是数字、日期、名称，必须完全准确
+3. 不要添加文档中没有的信息
+4. 回答简洁准确
+
+请基于上述文档回答：""",
+    
+    'intermediate': """请综合分析以下多个文档片段，完整回答问题。总是使用中文回答。
+
+文档内容：{context}
+
+问题：{query}
+
+要求：
+1. 综合多个片段的信息
+2. 如需排序或对比，仔细分析所有数据
+3. 完整列出所有相关内容
+4. 保持答案结构化
+
+请基于上述文档详细回答：""",
+    
+    'advanced': """请深入分析以下文档，进行跨文档推理和对比。总是使用中文回答。
+
+文档内容：{context}
+
+问题：{query}
+
+要求：
+1. 识别不同文档/版本间的关键差异
+2. 进行逻辑推理和演变分析
+3. 明确指出信息来源
+4. 结构化呈现对比结果
+5. 提供清晰的推理过程
+
+请基于上述文档进行深入分析：""",
+
+    'default': """请基于以下文档内容，回答问题。总是使用中文回答。
+
+文档内容：{context}
+
+问题：{query}
+
+要求：
+1. 直接从文档中提取准确答案
+2. 如果是数字、日期、名称，必须完全准确
+3. 不要添加文档中没有的信息
+4. 回答简洁准确
+
+请基于上述文档回答："""
+  
+}
 
 class EnhancedRAGAgent:
     """
@@ -50,6 +110,13 @@ class EnhancedRAGAgent:
         # 统计信息
         self.query_count = 0
         self.cache = {}  # 简单的查询缓存
+
+        self.temp_map = {
+            'basic': 0.3,         # 事实提取，要求精确
+            'intermediate': 0.5,  # 综合分析，允许轻微推理
+            'advanced': 0.7,      # 深度推理/创造性分析，允许更高探索性
+            'default': 0.3        # 默认值
+        }
     
     def analyze_query_type(self, query: str) -> str:
         """
@@ -116,35 +183,53 @@ class EnhancedRAGAgent:
         
         return terms
     
-    def multi_query_retrieve(self, query: str, k: int = 5) -> List[Dict]:
+    def multi_query_retrieve(self, query: str, k: int = 5) -> List[Dict[str, Union[str, float]]]:
         """
-        多查询检索
+        多查询检索（已集成多语言查询翻译依赖）
         Args:
             query: 查询问题
             k: 每个查询的检索数量
         Returns:
-            检索结果列表
+            检索结果列表 (List[Dict] 包含 content, score/relevance, lang 等)
         """
         queries = self.enhance_query(query)
-        all_results = []
+        all_results: List[Dict[str, Union[str, float]]] = []
         seen_contents = set()
         
         # 追踪Embedding消耗
         if self.token_tracker:
+            # 追踪的是增强后的所有查询的 embedding 消耗
             self.token_tracker.track_embedding(queries)
         
         for q in queries:
-            results = self.vector_store.query(q, self.embedding, k=k)
-            for result in results:
-                if result not in seen_contents:
-                    seen_contents.add(result)
+            
+            ### 核心修改：集成查询翻译依赖 ###
+            # 假设 VectorStore.query 已经修改，可以接受 LLM 类和实例，并在内部执行翻译
+            # 同时假设它现在返回 List[Dict]，包含 'content', 'score' 和 'lang' 字段
+            results_with_metadata = self.vector_store.query(
+                query=q,
+                EmbeddingModel=self.embedding,
+                llm_translator_class=OpenAIChat, # LLM 类本身 (用于调用静态翻译方法)
+                llm_instance=self.llm,          # LLM 实例 (用于执行翻译)
+                k=k
+            )
+            
+            for result in results_with_metadata:
+                content_key = result['content'] # 用内容作为去重键
+                if content_key not in seen_contents:
+                    seen_contents.add(content_key)
+                    
+                    # 重新组装结果，确保格式一致，并包含语言信息
                     all_results.append({
-                        'content': result,
-                        'query': q,
-                        'relevance': 1.0
+                        'content': result['content'],
+                        # 使用 score 作为初始 relevance，后续 rerank 会更新
+                        'relevance': result.get('score', 1.0),
+                        'lang': result.get('lang', 'unknown'), # 确保包含语言信息
+                        'query': q, # 记录是哪个增强查询找到的
                     })
         
-        return all_results[:k*2]  # 限制总数
+        # 原代码中的去重和限制总数逻辑
+        return all_results[:k*2] # 限制总数
     
     def rerank_results(self, query: str, results: List[Dict]) -> List[Dict]:
         """
@@ -165,6 +250,58 @@ class EnhancedRAGAgent:
         results.sort(key=lambda x: x['relevance'], reverse=True)
         return results
     
+    def _perform_multi_query_and_lingual_retrieval(self, query: str, k: int) -> List[Dict]:
+        """
+        统一的检索执行函数：
+        1. 生成增强查询 (Multi-Query)。
+        2. 对每个查询，调用支持动态翻译的 vector_store.query 进行多语言检索。
+        3. 合并和去重结果。
+        """
+        final_results = [] # ❗ 关键修复：提供默认值
+
+        # 1. 生成增强查询 (Multi-Query)
+        # 假设 self.enhance_query(query) 返回一个查询字符串列表
+        queries = self.enhance_query(query)
+        if not queries:
+            queries = [query] # 至少使用原始查询
+            
+        all_results = []
+        
+        if self.current_reasoning_chain:
+            self.current_reasoning_chain.add_retrieval_step(
+                f"检索完成，原始召回 {len(all_results)} 条。", # description
+            f"去重后保留 {len(final_results)} 条，进行重排序。"  # evidence
+            )
+
+        # 2. 遍历所有生成的查询并进行多语言检索
+        for q in queries:
+            # ❗ 调用已修改的 vector_store.query，并传入翻译依赖
+            results = self.vector_store.query(
+                query=q,
+                EmbeddingModel=self.embedding,
+                k=k,
+                llm_translator_class=OpenAIChat, # 传入 LLM 类 (用于调用 translate_query 静态方法)
+                llm_instance=self.llm           # 传入 LLM 实例 (用于执行翻译 API 调用)
+            )
+            all_results.extend(results)
+        
+        # 3. 结果去重 (基于 content) 和排序 (基于 similarity)
+        if all_results: # 只有当有结果时才进行去重和排序
+            # 注意：这里使用 content 去重是为了避免不同查询召回相同片段，并保留相似度最高的
+            unique_results = {r['content']: r for r in all_results}
+            final_results = sorted(
+                unique_results.values(), 
+                key=lambda x: x.get('similarity', 0.0), 
+                reverse=True
+            )
+        if self.current_reasoning_chain:
+            self.current_reasoning_chain.add_retrieval_step(
+                f"检索完成，原始召回 {len(all_results)} 条。", # description
+            f"去重后保留 {len(final_results)} 条，进行重排序。"  # evidence
+            )
+            
+        return final_results
+
     def basic_retrieve(self, query: str, reasoning_chain: ReasoningChain) -> Tuple[List[Dict], str]:
         """
         基础检索策略
@@ -180,12 +317,12 @@ class EnhancedRAGAgent:
             f"检索数量: k=3"
         )
         
-        results = self.multi_query_retrieve(query, k=3)
+        results = self._perform_multi_query_and_lingual_retrieval(query, k=3)
         results = self.rerank_results(query, results)
-        
+        langs = set(r.get('lang', 'unknown') for r in results)
         reasoning_chain.add_retrieval_step(
             f"检索到{len(results)}个相关文档片段",
-            f"来源查询: {len(self.enhance_query(query))}个"
+            f"来源查询: {len(self.enhance_query(query))}个, 涉及语言: {', '.join(langs)}"
         )
         
         context = "\n\n---\n\n".join([f"[文档片段 {i+1}]\n{r['content']}" 
@@ -207,12 +344,12 @@ class EnhancedRAGAgent:
             f"检索数量: k=8"
         )
         
-        results = self.multi_query_retrieve(query, k=8)
+        results = self._perform_multi_query_and_lingual_retrieval(query, k=8)
         results = self.rerank_results(query, results)
-        
+        langs = set(r.get('lang', 'unknown') for r in results)
         reasoning_chain.add_retrieval_step(
             f"检索到{len(results)}个文档片段，进行综合分析",
-            f"重排序后保留前{min(len(results), 8)}个最相关片段"
+            f"重排序后保留前{min(len(results), 8)}个最相关片段, 涉及语言: {', '.join(langs)}"
         )
         
         context = "\n\n---\n\n".join([f"[文档片段 {i+1}]\n{r['content']}" 
@@ -235,12 +372,12 @@ class EnhancedRAGAgent:
         )
         
         # 第一轮：广泛检索
-        results_r1 = self.multi_query_retrieve(query, k=10)
+        results_r1 = self._perform_multi_query_and_lingual_retrieval(query, k=10)
         results_r1 = self.rerank_results(query, results_r1)
-        
+        langs = set(r.get('lang', 'unknown') for r in results_r1)
         reasoning_chain.add_retrieval_step(
             f"第一轮检索完成，获得{len(results_r1)}个文档片段",
-            f"覆盖多个文档源"
+            f"覆盖多个文档源, 涉及语言: {', '.join(langs)}"
         )
         
         # 检测是否为版本对比问题
@@ -297,7 +434,8 @@ class EnhancedRAGAgent:
         context_parts.append("=== 检索到的相关文档 ===\n")
         
         for i, result in enumerate(results):
-            context_parts.append(f"\n【文档片段 {i+1}】")
+            lang_info = f" (语言: {result.get('lang', 'unknown')})" if 'lang' in result else ""
+            context_parts.append(f"\n【文档片段 {i+1}】{lang_info}")
             context_parts.append(result['content'])
             context_parts.append("")
         
@@ -331,8 +469,12 @@ class EnhancedRAGAgent:
         if self.token_tracker:
             self.token_tracker.track_retrieval(context)
         
-        # 构建提示词
-        prompt = self._build_prompt(query, context, query_type)
+        # 2. 选择 Prompt 模板
+        prompt_template = PROMPT_TEMPLATES.get(query_type, PROMPT_TEMPLATES['default'])
+        prompt = prompt_template.format(context=context, query=query)
+
+        # 3. 获取对应的温度
+        temperature = self.temp_map.get(query_type, self.temp_map['default'])
         
         reasoning_chain.add_step(
             "生成",
@@ -340,8 +482,13 @@ class EnhancedRAGAgent:
             f"提示词长度: {len(prompt)}字符"
         )
         
-        # 调用LLM生成答案
-        answer = self.llm.chat(prompt, [], context)
+        # 4. 调用 LLM 生成答案
+        answer = self.llm.chat(
+            prompt, 
+            [], 
+            context,
+            temperature=temperature # <-- 传入对应的温度
+        )
         
         # 追踪LLM消耗
         if self.token_tracker:
@@ -356,47 +503,9 @@ class EnhancedRAGAgent:
     
     def _build_prompt(self, query: str, context: str, query_type: str) -> str:
         """构建提示词"""
-        prompts = {
-            'basic': """请基于以下文档内容，准确回答问题。
-
-问题：{query}
-
-要求：
-1. 直接从文档中提取准确答案
-2. 如果是数字、日期、名称，必须完全准确
-3. 不要添加文档中没有的信息
-4. 回答简洁准确
-
-请基于上述文档回答：""",
-            
-            'intermediate': """请综合分析以下多个文档片段，完整回答问题。
-
-问题：{query}
-
-要求：
-1. 综合多个片段的信息
-2. 如需排序或对比，仔细分析所有数据
-3. 完整列出所有相关内容
-4. 保持答案结构化
-
-请基于上述文档详细回答：""",
-            
-            'advanced': """请深入分析以下文档，进行跨文档推理和对比。
-
-问题：{query}
-
-要求：
-1. 识别不同文档/版本间的关键差异
-2. 进行逻辑推理和演变分析
-3. 明确指出信息来源
-4. 结构化呈现对比结果
-5. 提供清晰的推理过程
-
-请基于上述文档进行深入分析："""
-        }
-        
-        template = prompts.get(query_type, prompts['basic'])
-        return template.format(query=query)
+        template = PROMPT_TEMPLATES.get(query_type, PROMPT_TEMPLATES['basic'])
+        # 模板中同时包含 {query} 和 {context} 占位符
+        return template.format(query=query, context=context)
     
     def check_answer_quality(self, answer: str, query: str) -> bool:
         """
