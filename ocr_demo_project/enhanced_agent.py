@@ -372,7 +372,7 @@ class EnhancedRAGAgent:
 
         # 加载auto cot示例
         self.auto_cot_prompt_builder = AutoCotPromptBuilder(
-            demo_path=os.path.join(os.path.dirname(__file__), "cot", "auto_cot_demos.json")
+            demo_path=os.path.join(os.path.dirname(__file__),  "auto_cot_demos.json")
         )
     
     def analyze_query_type(self, query: str) -> str:
@@ -425,53 +425,53 @@ class EnhancedRAGAgent:
         
         return terms
     
-    def multi_query_retrieve(self, query: str, k: int = 5) -> List[Dict[str, Union[str, float]]]:
-        """
-        多查询检索（已集成多语言查询翻译依赖）
-        Args:
-            query: 查询问题
-            k: 每个查询的检索数量
-        Returns:
-            检索结果列表 (List[Dict] 包含 content, score/relevance, lang 等)
-        """
-        queries = self.enhance_query(query)
-        all_results: List[Dict[str, Union[str, float]]] = []
-        seen_contents = set()
+    # def multi_query_retrieve(self, query: str, k: int = 5) -> List[Dict[str, Union[str, float]]]:
+    #     """
+    #     多查询检索（已集成多语言查询翻译依赖）
+    #     Args:
+    #         query: 查询问题
+    #         k: 每个查询的检索数量
+    #     Returns:
+    #         检索结果列表 (List[Dict] 包含 content, score/relevance, lang 等)
+    #     """
+    #     queries = self.enhance_query(query)
+    #     all_results: List[Dict[str, Union[str, float]]] = []
+    #     seen_contents = set()
         
-        # 追踪Embedding消耗
-        if self.token_tracker:
-            # 追踪的是增强后的所有查询的 embedding 消耗
-            self.token_tracker.track_embedding(queries)
+    #     # 追踪Embedding消耗
+    #     if self.token_tracker:
+    #         # 追踪的是增强后的所有查询的 embedding 消耗
+    #         self.token_tracker.track_embedding(queries)
         
-        for q in queries:
+    #     for q in queries:
             
-            ### 核心修改：集成查询翻译依赖 ###
-            # 假设 VectorStore.query 已经修改，可以接受 LLM 类和实例，并在内部执行翻译
-            # 同时假设它现在返回 List[Dict]，包含 'content', 'score' 和 'lang' 字段
-            results_with_metadata = self.vector_store.query(
-                query=q,
-                EmbeddingModel=self.embedding,
-                llm_translator_class=OpenAIChat, # LLM 类本身 (用于调用静态翻译方法)
-                llm_instance=self.llm,          # LLM 实例 (用于执行翻译)
-                k=k
-            )
+    #         ### 核心修改：集成查询翻译依赖 ###
+    #         # 假设 VectorStore.query 已经修改，可以接受 LLM 类和实例，并在内部执行翻译
+    #         # 同时假设它现在返回 List[Dict]，包含 'content', 'score' 和 'lang' 字段
+    #         results_with_metadata = self.vector_store.query(
+    #             query=q,
+    #             EmbeddingModel=self.embedding,
+    #             llm_translator_class=OpenAIChat, # LLM 类本身 (用于调用静态翻译方法)
+    #             llm_instance=self.llm,          # LLM 实例 (用于执行翻译)
+    #             k=k
+    #         )
             
-            for result in results_with_metadata:
-                content_key = result['content'] # 用内容作为去重键
-                if content_key not in seen_contents:
-                    seen_contents.add(content_key)
+    #         for result in results_with_metadata:
+    #             content_key = result['content'] # 用内容作为去重键
+    #             if content_key not in seen_contents:
+    #                 seen_contents.add(content_key)
                     
-                    # 重新组装结果，确保格式一致，并包含语言信息
-                    all_results.append({
-                        'content': result['content'],
-                        # 使用 score 作为初始 relevance，后续 rerank 会更新
-                        'relevance': result.get('score', 1.0),
-                        'lang': result.get('lang', 'unknown'), # 确保包含语言信息
-                        'query': q, # 记录是哪个增强查询找到的
-                    })
+    #                 # 重新组装结果，确保格式一致，并包含语言信息
+    #                 all_results.append({
+    #                     'content': result['content'],
+    #                     # 使用 score 作为初始 relevance，后续 rerank 会更新
+    #                     'relevance': result.get('score', 1.0),
+    #                     'lang': result.get('lang', 'unknown'), # 确保包含语言信息
+    #                     'query': q, # 记录是哪个增强查询找到的
+    #                 })
         
-        # 原代码中的去重和限制总数逻辑
-        return all_results[:k*2] # 限制总数
+    #     # 原代码中的去重和限制总数逻辑
+    #     return all_results[:k*2] # 限制总数
     
     def rerank_results(self, query: str, results: List[Dict]) -> List[Dict]:
         """

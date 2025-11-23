@@ -56,7 +56,7 @@ def main():
     
     # 4. 测试问题
     test_questions = [
-        "根据文档《2024_Communications-Based Train Control》，图 5.11 所示的网状控制回路结构，ATO 子系统是如何实现自身的控制回路的？请阐述其如何获取输入（Messglieder），如何形成车辆轨迹（Fahrzeugtrajektorie），以及如何将轨迹作为目标值传递给列车的控制设备（Steuergerät)"
+        "根据 GB/T 43267—2023（预期功能安全），在场景要素结构中，可移动实体的第 2 层要素和第 3 层要素分别是什么？（需完整列出第 3 层中所有实体类型）"
         ]
     
     results = []
@@ -99,44 +99,6 @@ def main():
     print("\n\n所有问题处理完毕。")
     
     
-    # for i, question in enumerate(test_questions, 1):
-    #     print(f"\n{'='*60}")
-    #     print(f"问题 {i}: {question}")
-    #     print(f"{'='*60}\n")
-        
-    #     # 5. 执行查询（使用完整增强功能）
-    #     result = agent.query_with_full_features(question)
-        
-    #     # 6. 显示答案
-    #     print(f"\n✅ 答案:")
-    #     print(f"{result['answer']}\n")
-        
-    #     # 7. 显示推理链（可选）
-    #     if result.get('reasoning_chain'):
-    #         print("\n" + "="*60)
-    #         print("推理过程:")
-    #         print("="*60)
-    #         print(result['reasoning_chain'].format_chain(detailed=False))
-        
-    #     # 8. 显示Token使用情况
-    #     if result.get('token_usage'):
-    #         print(f"\n📊 本次查询Token消耗:")
-    #         print(f"  • 总计: {result['token_usage']['total_tokens']:,} tokens")
-        
-    #     # 9. 格式化输出（符合竞赛要求）
-    #     formatted_output = agent.format_output(result, include_reasoning=False)
-    #     results.append(formatted_output)
-        
-    #     print("\n" + "="*60)
-    
-    # # 10. 保存结果
-    # print("\n💾 保存结果...")
-    # final_output = {"items": results}
-    # with open('enhanced_demo_results.json', 'w', encoding='utf-8') as f:
-    #     json.dump(final_output, f, ensure_ascii=False, indent=2) # 写入 final_output
-    # print("✅ 结果已保存到: enhanced_demo_results.json\n")
-    # ...
-    # 11. 显示性能报告
     print("\n" + "="*60)
     print("性能报告")
     print("="*60)

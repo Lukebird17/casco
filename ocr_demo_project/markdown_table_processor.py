@@ -5,7 +5,7 @@
 @Time    :   2025/11/21
 @Desc    :   Markdown文件批量表格识别、转换和替换工具
 '''
-
+import json  # 新增
 import os
 import re
 import shutil
@@ -52,96 +52,121 @@ def load_prompt_template(file_path: str) -> str:
 def html_table_to_natural_language(html_content: str) -> str:
     """
     通用表格转换函数 (硬编码逻辑)：
-    将包含 rowspan 和 colspan 的 HTML 表格转换为 H1 C1 H2 C2...Hn Cn; 格式。
-    
-    :param html_content: 完整的 HTML table 字符串。
-    :return: 转换后的自然语言字符串，每行以分号结束。
+    将包含 rowspan / colspan 的 HTML 表格转换为【行级字典列表】的 JSON 字符串。
+    每一行数据 -> 一个字典，形如：
+    {"城市": "南京", "线路数(条)": "15", "线路名称": "S7号线", "运营里程(公里)": "30.20", ...}
+
+    :param html_content: 完整的 <table>...</table> HTML 字符串。
+    :return: JSON 数组字符串，如：
+             [
+               {"城市": "...", "线路数(条)": "...", ...},
+               ...
+             ]
+             如果无法识别为有效表格，则返回空字符串 ""（触发 LLM 兜底）。
     """
-    # 匹配 <tr>...</tr> 块
+    # 1. 匹配所有 <tr>...</tr>
     match_rows = re.findall(r'<tr[^>]*>(.*?)</tr>', html_content, re.DOTALL | re.IGNORECASE)
     if not match_rows:
         return ""
-    
-    # 匹配 <t[dh]...>...</t[dh]> 单元格
-    cell_pattern = re.compile(r'<t[dh][^>]*?((?:\s*colspan=["\']?(\d+)["\']?)?)(?:\s*rowspan=["\']?(\d+)["\']?)?>\s*(.*?)\s*</t[dh]>', 
-                               re.DOTALL | re.IGNORECASE)
-    
-    # --- 1. 提取并确定 Headers (H) ---
+
+    # 2. 匹配单元格 <td>/<th>，解析 colspan、rowspan、内容
+    #   group 1: colspan 数值（可空）
+    #   group 2: rowspan 数值（可空）
+    #   group 3: 单元格内部 HTML
+    cell_pattern = re.compile(
+        r'<t[dh][^>]*?(?:\s*colspan=["\']?(\d+)["\']?)?(?:\s*rowspan=["\']?(\d+)["\']?)?[^>]*>\s*(.*?)\s*</t[dh]>',
+        re.DOTALL | re.IGNORECASE
+    )
+
+    # --- 1. 提取并确定表头 ---
     header_row_content = match_rows[0]
     header_cells = cell_pattern.findall(header_row_content)
-    
-    headers = []
-    for match in header_cells:
-        colspan = int(match[1] or '1')
-        header_text = re.sub(r'<[^>]+>', '', match[3]).strip()
-        
-        # 忽略“序号”列 (根据用户在 table_prompt.txt 中的历史规则 4)
-        if header_text.strip() in ("序号", "序号 "):
-             headers.extend([""] * colspan) # 用空字符串占位，在输出时跳过
+
+    headers: List[str] = []
+    for colspan_str, rowspan_str, inner_html in header_cells:
+        colspan = int(colspan_str) if colspan_str else 1
+        header_text = re.sub(r'<[^>]+>', '', inner_html).strip()
+
+        # 忽略“序号”列：用空字符串占位，后续跳过这一列
+        if header_text in ("序号", "序号 "):
+            headers.extend([""] * colspan)
         else:
-             headers.extend([header_text] * colspan)
-        
+            headers.extend([header_text] * colspan)
+
     num_cols = len(headers)
     if num_cols == 0:
-        return "" # 识别不到表格的表头，跳过
+        # 表头都没识别出来，视为失败，交给 LLM
+        return ""
 
-    # --- 2. 处理 Data Rows (C) ---
+    # --- 2. 处理数据行 ---
     data_rows_content = match_rows[1:]
-    output_lines = []
-    
-    # 状态跟踪 for rowspan: {column_index: {'value': 'content', 'count': remaining_rows}}
+
+    # 记录 rowSpan 状态：每列一个 dict，value/剩余行数
     span_state = {i: {'value': None, 'count': 0} for i in range(num_cols)}
 
+    row_dicts = []  # 要返回的字典列表
+
     for row_content in data_rows_content:
-        # 2a. 继承上一行因 rowspan 留下的值
+        # 2.1 先继承 rowspan 留下的值
         current_logical_row = [None] * num_cols
         for i in range(num_cols):
             if span_state[i]['count'] > 0:
                 current_logical_row[i] = span_state[i]['value']
                 span_state[i]['count'] -= 1
-        
+
+        # 2.2 解析本行新出现的单元格
         cells = cell_pattern.findall(row_content)
         col_idx = 0
 
-        # 2b. 处理当前行的新单元格
-        for match in cells:
+        for colspan_str, rowspan_str, inner_html in cells:
+            # 跳过已经被 rowSpan 占用的位置
             while col_idx < num_cols and current_logical_row[col_idx] is not None:
                 col_idx += 1
-            
             if col_idx >= num_cols:
                 break
-            
-            colspan = int(match[1] or '1')
-            rowspan = int(match[2] or '1')
-            
-            value = re.sub(r'<[^>]+>', '', match[3]).strip()
-            
+
+            colspan = int(colspan_str) if colspan_str else 1
+            rowspan = int(rowspan_str) if rowspan_str else 1
+
+            value = re.sub(r'<[^>]+>', '', inner_html).strip()
+
+            # 写入当前行的逻辑单元格（考虑 colspan）
             for offset in range(colspan):
                 current_col = col_idx + offset
                 if current_col < num_cols:
                     current_logical_row[current_col] = value
 
+            # 记录 rowspan 状态：后续几行沿用同样的值
             if rowspan > 1:
-                span_state[col_idx] = {'value': value, 'count': rowspan - 1}
-            
+                for offset in range(colspan):
+                    current_col = col_idx + offset
+                    if current_col < num_cols:
+                        span_state[current_col] = {'value': value, 'count': rowspan - 1}
+
             col_idx += colspan
-        
-        # 3. 格式化输出: H1 C1 H2 C2 ... Hn Cn;
-        final_line_parts = []
+
+        # 2.3 把当前逻辑行转成 dict（key: 表头文本；value: 单元格文本）
+        row_dict = {}
         for h, c in zip(headers, current_logical_row):
-            # 如果表头是空（如被忽略的“序号”列），或者内容是 None/空，则跳过
-            if h == "" or c is None or c == "":
+            # 被忽略的列（如“序号”），或真正为空的列，直接跳过
+            if not h or c is None or c == "":
                 continue
-            
-            final_line_parts.append(f"{h} {c}")
-                 
-        # 如果整行都没有有效内容，则跳过此行
-        if not final_line_parts:
+            key = h.strip()
+            val = str(c).strip()
+            row_dict[key] = val
+
+        # 整行如果没有任何有效键值对，就跳过
+        if not row_dict:
             continue
 
-        output_lines.append(" ".join(final_line_parts) + ";")
-        
-    return "\n".join(output_lines)
+        row_dicts.append(row_dict)
+
+    # 没有有效数据行，视为失败，交给 LLM
+    if not row_dicts:
+        return ""
+
+    # 3. 转成 JSON 字符串（行级字典列表）
+    return json.dumps(row_dicts, ensure_ascii=False, indent=2)
 
 # def convert_table_to_nl(llm: OpenAIChat, html_table_content: str, prompt_template: str) -> str:
 #     """
@@ -188,7 +213,12 @@ def process_markdown_file(file_path: str, llm, prompt_template: str):
     
     # 识别不到表格的直接跳过
     if not table_blocks:
-        print(f"⚠️ 跳过文件: '{file_name}' (未识别到任何表格块)")
+        print(f"ℹ️ 文件: '{file_name}' (未识别到表格，直接复制原内容)")
+        try:
+            with open(output_file_path, 'w', encoding='utf-8') as f:
+                f.write(content)
+        except Exception as e:
+             print(f"❌ 错误: 写入文件 '{file_name}' 失败: {e}")
         return
 
     new_content = content
@@ -214,11 +244,15 @@ def process_markdown_file(file_path: str, llm, prompt_template: str):
             converted_text = hardcoded_result
             method = "Hardcoded"
         else:
+            row_tags = re.findall(r'<tr\b', table_html, flags=re.IGNORECASE)
+            if len(row_tags) <= 1:
+                print(f"⚠️ 文件 '{file_name}', 块 {table_count}: 检测到单行元数据表格，跳过（不调用 LLM，保留原表格）。")
+                continue
             # --- 4. LLM 转换 (作为后备) ---
             print(f"🔄 文件 '{file_name}', 块 {table_count}: 硬编码失败或结果为空，尝试调用 LLM...")
             
             # 使用包含可选 DIV 标题的完整 table_block 作为 LLM 的输入
-            full_prompt = prompt_template.format(html_table_content=table_block)
+            full_prompt = prompt_template.replace("{html_table_content}", table_block)
             try:
                 # 假设 llm.get_completion 是调用 LLM 的方法
                 llm_result = llm.get_completion(full_prompt)

@@ -98,7 +98,7 @@ class OpenAIChat(BaseModel):
             cls._translation_cache[cache_key] = text
             return text
         
-        lang_map = {'en': '英文', 'es': '西班牙语', 'fr': '法语', 'zh': '中文', 'ja': '日文', 'ko': '韩文'}
+        lang_map = {'en': '英文', 'es': '西班牙语', 'fr': '法语', 'zh': '中文', 'ja': '日文', 'ko': '韩文', 'de': '德语'}
         target_lang_name = lang_map.get(target_lang, '目标语言')
         
         # 构造翻译任务的 Prompt
@@ -150,7 +150,7 @@ class OpenAIChat(BaseModel):
 
             # 2. 存储到缓存并返回
             cls._translation_cache[cache_key] = translated_text
-            lang_map = {'en': '英语', 'es': '西班牙语', 'fr': '法语', 'zh': '中文', 'ja': '日语', 'ko': '韩语'}
+            lang_map = {'en': '英语', 'es': '西班牙语', 'fr': '法语', 'zh': '中文', 'ja': '日语', 'ko': '韩语', 'de': '德语'}
             target_lang_name = lang_map.get(target_lang, '目标语言')
             print(f"✅ 查询已成功翻译为 '{target_lang_name}'。")
             return translated_text
