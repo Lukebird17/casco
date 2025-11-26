@@ -16,6 +16,7 @@ import numpy as np
 
 RESULTS_FILE = "enhanced_demo_results.json"
 REASONING_LOG_FILE = "reasoning_log.txt"
+QUESTION_FILE = "questions_list.txt"
 
 def convert(o):
     if isinstance(o, np.float32) or isinstance(o, np.float64):
@@ -84,6 +85,25 @@ def save_reasoning_incrementally(query: str, reasoning_content: str):
     except Exception as e:
         print(f"❌ 保存推理日志失败: {e}")
 
+def load_questions_from_file(file_path):
+    """从文本文件中加载题目列表"""
+    questions = []
+    if not os.path.exists(file_path):
+        print(f"⚠️ 警告: 题目文件 {file_path} 不存在，将使用空列表。")
+        return []
+        
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line: # 跳过空行
+                    questions.append(line)
+        print(f"✅ 已从 {file_path} 加载 {len(questions)} 道题目")
+        return questions
+    except Exception as e:
+        print(f"❌ 读取题目文件失败: {e}")
+        return []
+
 def main():
     """主函数：演示增强版智能体的使用"""
     
@@ -113,13 +133,16 @@ def main():
     )
     print("✅ 智能体创建完成\n")
     
-    # 4. 测试问题
-    test_questions = [
-        "R2DATO项目D13.1可交付成果的安全分析部分（Part 3）采用了哪种专注于'不安全控制行为'（UCA）的新型分析方法？该方法的结果与D13.1的系统规格部分（Part 2）在哪个工作包（WP）中得到了持续跟进和更新？"
+    test_questions = load_questions_from_file(QUESTION_FILE)
+    if not test_questions:
+        print("⚠️ 未加载到题目，使用默认测试题。")
+        test_questions = [
+            "请比较《城市轨道交通全自动运行系统 通用技术条件》和《城市轨道交通全自动运行系统运营技术和管理规范（试行）》中，对于全自动列车列车过标或欠标时的处置原则有何异同。",
+            
         ]
-    
     if test_questions:
         for idx, question in enumerate(test_questions):
+            contexts = []
             print(f"\n============================================================")
             print(f"正在处理第{idx+1}/{len(test_questions)} 题: {question}")
             print(f"============================================================\n")
@@ -133,7 +156,9 @@ def main():
                 # 调用智能体，获取结果
                 result_dict = agent.query_with_full_features(question)
                 # 1. 提取上下文纯文本 (符合 items[].retrieved_contexts 格式)
-                contexts = [res['content'] for res in result_dict.get('results', [])]
+                for res in result_dict.get('results', []):
+                    clean_text = agent._clean_content_for_json(res['content'])
+                    contexts.append(clean_text)
                 
                 # 2. 填充结果项
                 item["retrieved_contexts"] = contexts

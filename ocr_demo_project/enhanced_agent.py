@@ -246,6 +246,26 @@ class QuestionDifficultyClassifier:
             '是多少', '何时', '什么状态', '定义', '是什么',
             '金额', '数量', '日期', '时间'
         ]
+
+    def _get_reasoning(self, classification: str, question: str) -> str:
+        """生成分类理由（补全缺失的方法）"""
+        reasons = []
+        # 简单反向查找匹配了哪个正则，用于解释
+        patterns = []
+        if classification == 'advanced':
+            patterns = self.advanced_patterns
+        elif classification == 'intermediate':
+            patterns = self.intermediate_patterns
+        else:
+            return "未命中复杂模式，默认为基础事实类问题"
+
+        for p in patterns:
+            if re.search(p, question, re.IGNORECASE):
+                # 清理正则符号，使其更易读
+                readable_p = p.replace(r'\s*', ' ').replace(r'.*', '...').replace('\\', '')
+                reasons.append(f"命中特征词: '{readable_p}'")
+        
+        return " | ".join(reasons[:3]) # 只展示前3个理由
     
     def classify(self, question: str) -> str:
         """
@@ -425,94 +445,83 @@ class EnhancedRAGAgent:
         
         return terms
     
-    def _build_context_with_metadata(self, results: List[Dict]) -> str:
+    def _clean_content_for_json(self, raw_content: str) -> str:
         """
-        构建美观、包含章节元信息的上下文格式
-        解决问题：去除冗余换行，直观展示来源章节
+        专门用于 JSON 输出的清洗函数
+        输入: "【所在章节: ... > ... > 章节名】\n正文..."
+        输出: "《章节名》\n正文..."
+        """
+        content = raw_content.strip()
+        source_title = ""
+        body_text = content
+        
+        if content.startswith("【所在章节:") and "】" in content:
+            try:
+                end_idx = content.find("】")
+                raw_title = content[:end_idx].replace("【所在章节:", "").strip()
+                source_title = raw_title
+                
+                body_text = content[end_idx+1:].strip()
+                
+                return f"《{source_title}》\n{body_text}"
+            except:
+                pass
+        
+        body_text = body_text.replace('\n', ' ').replace('\r', '')
+        body_text = re.sub(r'\s+', ' ', body_text).strip()
+        if source_title:
+            return f"《{source_title}》 {body_text}"
+        # 如果解析失败或没有头信息，返回原文本
+        return body_text
+    
+    def _build_context_for_llm(self, results: List[Dict], query: str = "") -> str:
+        """
+        统一构建给 LLM 看的上下文（Markdown格式）
+        特点：路径简化、清晰的标题、版本/语言标记
         """
         context_parts = []
+        if query:
+            context_parts.append(f"=== 针对问题 '{query}' 的相关文档资料 ===\n")
         
         for i, result in enumerate(results):
             content = result['content'].strip()
             idx = i + 1
+            lang = result.get('lang', 'unknown')
             
-            # === 1. 智能解析章节标题 ===
-            # 默认标题
+            # 1. 智能提取与简化标题
             source_title = "未知章节来源"
             body_text = content
-
-            # 检测内容是否包含【所在章节: ...】头信息 (根据你提供的JSON数据特征)
+            
             if content.startswith("【所在章节:") and "】" in content:
                 try:
-                    end_bracket_index = content.find("】")
-                    # 提取标题 (去除 '【所在章节:' 和 '】' )
-                    raw_title = content[:end_bracket_index]
-                    source_title = raw_title.replace("【所在章节:", "").replace("】", "").strip()
-                    # 提取正文 (跳过标题部分)
-                    body_text = content[end_bracket_index+1:].strip()
-                except Exception:
-                    # 解析失败时回退到原始全文
+                    end_idx = content.find("】")
+                    raw_title = content[:end_idx].replace("【所在章节:", "").strip()
+                    
+                    # 路径简化逻辑：只保留最后两级 (例如: A > B > C -> B > C)
+                    parts = raw_title.split(">")
+                    if len(parts) > 1:
+                        source_title = " > ".join([p.strip() for p in parts[-2:]])
+                    else:
+                        source_title = raw_title
+                    
+                    body_text = content[end_idx+1:].strip()
+                except:
                     pass
             
-            # === 2. 构建清晰的文档块 ===
-            # 使用 Markdown 风格的 Header，既美观又能被 LLM 识别为结构化数据
+            # 2. 构建文档块
+            header = f"### 文档 [{idx}] ({lang}): {source_title}"
             doc_block = (
-                f"### 来源 [{idx}]: {source_title}\n"  # 清晰的标题行
-                f"{body_text}"                         # 紧凑的正文
+                f"{header}\n"
+                f"{'-' * len(header)}\n"  # 下划线增加视觉区分
+                f"{body_text}\n"
             )
             context_parts.append(doc_block)
+            
+        context_parts.append("\n=== 资料结束 ===")
         
-        # === 3. 使用简洁的分隔符 ===
-        # 相比原来的 \n\n---\n\n，这里使用更紧凑的换行，但在不同文档间保留足够间隔
-        return "\n\n" + ("=" * 40) + "\n\n".join(context_parts)
+        # 使用双换行连接，保持清晰
+        return "\n\n".join(context_parts)
     
-    # def multi_query_retrieve(self, query: str, k: int = 5) -> List[Dict[str, Union[str, float]]]:
-    #     """
-    #     多查询检索（已集成多语言查询翻译依赖）
-    #     Args:
-    #         query: 查询问题
-    #         k: 每个查询的检索数量
-    #     Returns:
-    #         检索结果列表 (List[Dict] 包含 content, score/relevance, lang 等)
-    #     """
-    #     queries = self.enhance_query(query)
-    #     all_results: List[Dict[str, Union[str, float]]] = []
-    #     seen_contents = set()
-        
-    #     # 追踪Embedding消耗
-    #     if self.token_tracker:
-    #         # 追踪的是增强后的所有查询的 embedding 消耗
-    #         self.token_tracker.track_embedding(queries)
-        
-    #     for q in queries:
-            
-    #         ### 核心修改：集成查询翻译依赖 ###
-    #         # 假设 VectorStore.query 已经修改，可以接受 LLM 类和实例，并在内部执行翻译
-    #         # 同时假设它现在返回 List[Dict]，包含 'content', 'score' 和 'lang' 字段
-    #         results_with_metadata = self.vector_store.query(
-    #             query=q,
-    #             EmbeddingModel=self.embedding,
-    #             llm_translator_class=OpenAIChat, # LLM 类本身 (用于调用静态翻译方法)
-    #             llm_instance=self.llm,          # LLM 实例 (用于执行翻译)
-    #             k=k
-    #         )
-            
-    #         for result in results_with_metadata:
-    #             content_key = result['content'] # 用内容作为去重键
-    #             if content_key not in seen_contents:
-    #                 seen_contents.add(content_key)
-                    
-    #                 # 重新组装结果，确保格式一致，并包含语言信息
-    #                 all_results.append({
-    #                     'content': result['content'],
-    #                     # 使用 score 作为初始 relevance，后续 rerank 会更新
-    #                     'relevance': result.get('score', 1.0),
-    #                     'lang': result.get('lang', 'unknown'), # 确保包含语言信息
-    #                     'query': q, # 记录是哪个增强查询找到的
-    #                 })
-        
-    #     # 原代码中的去重和限制总数逻辑
-    #     return all_results[:k*2] # 限制总数
     
     def rerank_results(self, query: str, results: List[Dict]) -> List[Dict]:
         """
@@ -533,7 +542,7 @@ class EnhancedRAGAgent:
         results.sort(key=lambda x: x['relevance'], reverse=True)
         return results
     
-    def _perform_multi_query_and_lingual_retrieval(self, query: str, k: int) -> List[Dict]:
+    def _perform_multi_query_and_lingual_retrieval(self, query: str, k: int, reasoning_chain: ReasoningChain) -> List[Dict]:
         """
         统一的检索执行函数：
         1. 生成增强查询 (Multi-Query)。
@@ -545,6 +554,17 @@ class EnhancedRAGAgent:
         # 1. 生成增强查询 (Multi-Query)
         # 假设 self.enhance_query(query) 返回一个查询字符串列表
         queries = self.enhance_query(query)
+
+        # === 新增：记录查询增强细节 ===
+        if reasoning_chain:
+            # 记录具体的查询词，让用户知道Agent扩展了什么
+            reasoning_chain.add_step(
+                "查询增强",
+                f"将原始问题扩展为 {len(queries)} 个检索式",
+                f"检索式列表: {str(queries)}" 
+            )
+        # ============================
+
         if not queries:
             queries = [query] # 至少使用原始查询
             
@@ -584,6 +604,7 @@ class EnhancedRAGAgent:
             )
             
         return final_results
+    
 
     def basic_retrieve(self, query: str, reasoning_chain: ReasoningChain) -> Tuple[List[Dict], str]:
         """
@@ -600,15 +621,16 @@ class EnhancedRAGAgent:
             f"检索数量: k=3"
         )
         
-        results = self._perform_multi_query_and_lingual_retrieval(query, k=3)
+        results = self._perform_multi_query_and_lingual_retrieval(query, k=3, reasoning_chain=reasoning_chain)
         results = self.rerank_results(query, results)
         langs = set(r.get('lang', 'unknown') for r in results)
+
         reasoning_chain.add_retrieval_step(
             f"检索到{len(results)}个相关文档片段",
             f"来源查询: {len(self.enhance_query(query))}个, 涉及语言: {', '.join(langs)}"
         )
         
-        context = self._build_context_with_metadata(results)
+        context = self._build_context_for_llm(results, query)
         
         return results, context
     
@@ -626,7 +648,7 @@ class EnhancedRAGAgent:
             f"检索数量: k=8"
         )
         
-        results = self._perform_multi_query_and_lingual_retrieval(query, k=8)
+        results = self._perform_multi_query_and_lingual_retrieval(query, k=8, reasoning_chain=reasoning_chain)
         results = self.rerank_results(query, results)
         langs = set(r.get('lang', 'unknown') for r in results)
         reasoning_chain.add_retrieval_step(
@@ -634,8 +656,7 @@ class EnhancedRAGAgent:
             f"重排序后保留前{min(len(results), 8)}个最相关片段, 涉及语言: {', '.join(langs)}"
         )
         
-        context = "\n\n---\n\n".join([f"[文档片段 {i+1}]\n{r['content']}" 
-                                       for i, r in enumerate(results)])
+        context = self._build_context_for_llm(results)
         
         return results, context
     
@@ -654,7 +675,7 @@ class EnhancedRAGAgent:
         )
         
         # 第一轮：广泛检索
-        results_r1 = self._perform_multi_query_and_lingual_retrieval(query, k=10)
+        results_r1 = self._perform_multi_query_and_lingual_retrieval(query, k=10, reasoning_chain=reasoning_chain)
         results_r1 = self.rerank_results(query, results_r1)
         langs = set(r.get('lang', 'unknown') for r in results_r1)
         reasoning_chain.add_retrieval_step(
@@ -680,7 +701,7 @@ class EnhancedRAGAgent:
                 )
         
         # 构建结构化上下文
-        context = self._build_structured_context(results_r1[:10], query)
+        context = self._build_context_for_llm(results_r1[:10], query)
         
         return results_r1[:10], context
     
@@ -710,18 +731,19 @@ class EnhancedRAGAgent:
         
         return version_docs
     
-    def _build_structured_context(self, results: List[Dict], query: str) -> str:
-        """构建结构化上下文"""
-        context_parts = []
-        context_parts.append("=== 检索到的相关文档 ===\n")
+    # def _build_structured_context(self, results: List[Dict], query: str) -> str:
+    #     """构建结构化上下文"""
+    #     context_parts = []
+    #     context_parts.append("=== 检索到的相关文档 ===\n")
         
-        for i, result in enumerate(results):
-            lang_info = f" (语言: {result.get('lang', 'unknown')})" if 'lang' in result else ""
-            context_parts.append(f"\n【文档片段 {i+1}】{lang_info}")
-            context_parts.append(result['content'])
-            context_parts.append("")
+    #     for i, result in enumerate(results):
+    #         lang_info = f" (语言: {result.get('lang', 'unknown')})" if 'lang' in result else ""
+    #         context_parts.append(f"\n【文档片段 {i+1}】{lang_info}")
+    #         context_parts.append(result['content'])
+    #         context_parts.append("")
         
-        return "\n".join(context_parts)
+    #     return "\n".join(context_parts)
+
     
     def generate_answer_with_reasoning(self, query: str, context: str, 
                                        query_type: str, reasoning_chain: ReasoningChain) -> str:
@@ -835,10 +857,26 @@ class EnhancedRAGAgent:
         self.current_reasoning_chain = reasoning_chain
         
         # 分析问题类型
-        query_type = self.analyze_query_type(query)
+        # === 修改点：获取详细分类信息 ===
+        cls_result = self.question_classifier.classify_with_details(query)
+        query_type = cls_result['difficulty']
+
+        # 提取分类依据 (命中特征)
+        matched_feats_str = '; '.join(cls_result['matched_features']) if cls_result['matched_features'] else "无明显特征"
+        tech_terms = self.extract_technical_terms(query)
+        tech_terms_str = str(tech_terms) if tech_terms else "无"
+
+        # 构建详细理由字符串 (修复日志显示问题)
+        analysis_text = (
+            f"置信度: {cls_result['confidence']:.0%}\n"
+            f"命中特征: {matched_feats_str}\n"  # 这里显示真正的分类特征
+            f"提取术语: {tech_terms_str}\n"      # 这里显示 GB/T 等术语
+            f"判定理由: {cls_result['reasoning']}"
+        )
+
         reasoning_chain.add_analysis_step(
-            f"问题分类为{query_type}类型",
-            f"关键特征: {self.extract_technical_terms(query)}"
+            f"问题分类为{query_type}类型",  
+            analysis_text             
         )
         
         # 尝试生成答案
@@ -857,6 +895,7 @@ class EnhancedRAGAgent:
             )
             
             # 质量检查
+
             if self.check_answer_quality(answer, query):
                 reasoning_chain.add_verification_step(
                     "答案质量检查通过",
@@ -902,11 +941,6 @@ class EnhancedRAGAgent:
             # 保底策略
             else:
                 reasoning_text = str(reasoning_chain)
-
-            # 打印到终端 (使用提取好的文本)
-        print("\n" + "═"*20 + " 🧠 系统推理链 " + "═"*20)
-        print(reasoning_text)
-        print("═"*56 + "\n")
         
         return {
             'query': query,
@@ -919,34 +953,6 @@ class EnhancedRAGAgent:
         }
     
 
-    # def format_output(self, result: Dict, include_reasoning: bool = False) -> Dict:
-    #     """
-    #     格式化输出（完全符合示例模板.json的要求）
-    #     Args:
-    #         result: 查询结果 (包含 'query', 'answer', 'results')
-    #         include_reasoning: 是否包含推理链（模板不要求，但调试有用）
-    #     Returns:
-    #         格式化的输出
-    #     """
-        
-    #     # 1. 提取纯文本列表，符合 "retrieved_contexts": [ "内容1", "内容2" ] 的要求
-    #     # 限制最多返回 OUTPUT_CONFIG['max_retrieval_results'] (默认为 10)
-    #     context_list = [r['content'] for r in result['results'][:10]] 
-        
-    #     output = {
-    #         "question": result['query'],        # 字段名修正：'query' -> 'question'
-    #         "retrieved_contexts": context_list, # 字段名修正：'result' -> 'retrieved_contexts'
-    #         "answer": result['answer']
-    #     }
-        
-    #     # 可选：包含推理链和token统计（不属于模板要求，但有助于内部调试）
-    #     if include_reasoning and result.get('reasoning_chain'):
-    #         output["reasoning"] = result['reasoning_chain'].to_dict()
-    #     if result.get('token_usage'):
-    #         output["token_usage"] = result['token_usage']
-            
-    #     return output
-    
     def get_performance_report(self) -> str:
         """获取性能报告"""
         report = []
