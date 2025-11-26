@@ -425,6 +425,47 @@ class EnhancedRAGAgent:
         
         return terms
     
+    def _build_context_with_metadata(self, results: List[Dict]) -> str:
+        """
+        构建美观、包含章节元信息的上下文格式
+        解决问题：去除冗余换行，直观展示来源章节
+        """
+        context_parts = []
+        
+        for i, result in enumerate(results):
+            content = result['content'].strip()
+            idx = i + 1
+            
+            # === 1. 智能解析章节标题 ===
+            # 默认标题
+            source_title = "未知章节来源"
+            body_text = content
+
+            # 检测内容是否包含【所在章节: ...】头信息 (根据你提供的JSON数据特征)
+            if content.startswith("【所在章节:") and "】" in content:
+                try:
+                    end_bracket_index = content.find("】")
+                    # 提取标题 (去除 '【所在章节:' 和 '】' )
+                    raw_title = content[:end_bracket_index]
+                    source_title = raw_title.replace("【所在章节:", "").replace("】", "").strip()
+                    # 提取正文 (跳过标题部分)
+                    body_text = content[end_bracket_index+1:].strip()
+                except Exception:
+                    # 解析失败时回退到原始全文
+                    pass
+            
+            # === 2. 构建清晰的文档块 ===
+            # 使用 Markdown 风格的 Header，既美观又能被 LLM 识别为结构化数据
+            doc_block = (
+                f"### 来源 [{idx}]: {source_title}\n"  # 清晰的标题行
+                f"{body_text}"                         # 紧凑的正文
+            )
+            context_parts.append(doc_block)
+        
+        # === 3. 使用简洁的分隔符 ===
+        # 相比原来的 \n\n---\n\n，这里使用更紧凑的换行，但在不同文档间保留足够间隔
+        return "\n\n" + ("=" * 40) + "\n\n".join(context_parts)
+    
     # def multi_query_retrieve(self, query: str, k: int = 5) -> List[Dict[str, Union[str, float]]]:
     #     """
     #     多查询检索（已集成多语言查询翻译依赖）
@@ -567,8 +608,7 @@ class EnhancedRAGAgent:
             f"来源查询: {len(self.enhance_query(query))}个, 涉及语言: {', '.join(langs)}"
         )
         
-        context = "\n\n---\n\n".join([f"[文档片段 {i+1}]\n{r['content']}" 
-                                       for i, r in enumerate(results)])
+        context = self._build_context_with_metadata(results)
         
         return results, context
     
@@ -781,7 +821,7 @@ class EnhancedRAGAgent:
     
     def query_with_full_features(self, query: str, max_retries: int = 2) -> Dict:
         """
-        完整功能的查询（集成所有增强特性）
+        完整功能的查询（集成所有增强特性）是enhanced_agent.py的核心
         Args:
             query: 用户问题
             max_retries: 最大重试次数
@@ -844,46 +884,68 @@ class EnhancedRAGAgent:
                 query, answer, query_type, len(results),
                 self.token_tracker.usage
             )
+
+        # 因为 ReasoningChain 类可能没有 __str__ 方法，我们手动提取 steps
+        reasoning_text = ""
+        if reasoning_chain:
+            # 尝试调用内置格式化方法（如果有）
+            if hasattr(reasoning_chain, 'format_chain'):
+                reasoning_text = reasoning_chain.format_chain()
+            # 或者如果有 steps 属性，手动拼接
+            elif hasattr(reasoning_chain, 'steps'):
+                log_lines = []
+                for step in reasoning_chain.steps:
+                    # 假设 step 是字典，如果是对象则转 str
+                    content = str(step) 
+                    log_lines.append(content)
+                reasoning_text = "\n".join(log_lines)
+            # 保底策略
+            else:
+                reasoning_text = str(reasoning_chain)
+
+            # 打印到终端 (使用提取好的文本)
+        print("\n" + "═"*20 + " 🧠 系统推理链 " + "═"*20)
+        print(reasoning_text)
+        print("═"*56 + "\n")
         
         return {
             'query': query,
             'query_type': query_type,
             'answer': answer,
             'results': results,
-            'reasoning_chain': str(reasoning_chain) if reasoning_chain else None,  
+            'reasoning_chain': reasoning_text,  
             'token_usage': self.token_tracker.get_summary() if self.token_tracker else None,
             'attempt': attempt + 1
         }
     
-    # 文件: enhanced_agent.py (在 EnhancedRAGAgent 类内部)
 
-    def format_output(self, result: Dict, include_reasoning: bool = False) -> Dict:
-        """
-        格式化输出（完全符合示例模板.json的要求）
-        Args:
-            result: 查询结果 (包含 'query', 'answer', 'results')
-            include_reasoning: 是否包含推理链（模板不要求，但调试有用）
-        Returns:
-            格式化的输出
-        """
+    # def format_output(self, result: Dict, include_reasoning: bool = False) -> Dict:
+    #     """
+    #     格式化输出（完全符合示例模板.json的要求）
+    #     Args:
+    #         result: 查询结果 (包含 'query', 'answer', 'results')
+    #         include_reasoning: 是否包含推理链（模板不要求，但调试有用）
+    #     Returns:
+    #         格式化的输出
+    #     """
         
-        # 1. 提取纯文本列表，符合 "retrieved_contexts": [ "内容1", "内容2" ] 的要求
-        # 限制最多返回 OUTPUT_CONFIG['max_retrieval_results'] (默认为 10)
-        context_list = [r['content'] for r in result['results'][:10]] 
+    #     # 1. 提取纯文本列表，符合 "retrieved_contexts": [ "内容1", "内容2" ] 的要求
+    #     # 限制最多返回 OUTPUT_CONFIG['max_retrieval_results'] (默认为 10)
+    #     context_list = [r['content'] for r in result['results'][:10]] 
         
-        output = {
-            "question": result['query'],        # 字段名修正：'query' -> 'question'
-            "retrieved_contexts": context_list, # 字段名修正：'result' -> 'retrieved_contexts'
-            "answer": result['answer']
-        }
+    #     output = {
+    #         "question": result['query'],        # 字段名修正：'query' -> 'question'
+    #         "retrieved_contexts": context_list, # 字段名修正：'result' -> 'retrieved_contexts'
+    #         "answer": result['answer']
+    #     }
         
-        # 可选：包含推理链和token统计（不属于模板要求，但有助于内部调试）
-        if include_reasoning and result.get('reasoning_chain'):
-            output["reasoning"] = result['reasoning_chain'].to_dict()
-        if result.get('token_usage'):
-            output["token_usage"] = result['token_usage']
+    #     # 可选：包含推理链和token统计（不属于模板要求，但有助于内部调试）
+    #     if include_reasoning and result.get('reasoning_chain'):
+    #         output["reasoning"] = result['reasoning_chain'].to_dict()
+    #     if result.get('token_usage'):
+    #         output["token_usage"] = result['token_usage']
             
-        return output
+    #     return output
     
     def get_performance_report(self) -> str:
         """获取性能报告"""

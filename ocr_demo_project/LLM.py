@@ -92,7 +92,7 @@ class OpenAIChat(BaseModel):
         # 1. 缓存检查
         cache_key = (text, target_lang)
         if cache_key in cls._translation_cache:
-            print(f"✅ 翻译缓存命中: '{text}' -> {target_lang}")
+            #print(f"✅ 翻译缓存命中: '{text}' -> {target_lang}")
             return cls._translation_cache[cache_key]
         if target_lang == 'zh':
             cls._translation_cache[cache_key] = text
@@ -152,7 +152,7 @@ class OpenAIChat(BaseModel):
             cls._translation_cache[cache_key] = translated_text
             lang_map = {'en': '英语', 'es': '西班牙语', 'fr': '法语', 'zh': '中文', 'ja': '日语', 'ko': '韩语', 'de': '德语'}
             target_lang_name = lang_map.get(target_lang, '目标语言')
-            print(f"✅ 查询已成功翻译为 '{target_lang_name}'。")
+            #print(f"✅ 查询已成功翻译为 '{target_lang_name}'。")
             return translated_text
             
         except Exception as e:
