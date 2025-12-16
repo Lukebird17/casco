@@ -51,6 +51,7 @@ desktop.ini
 
 # 项目特定 - MinerU相关
 .mineru_cache/
+.mineru_output/
 mineru_output_*/
 test_output*/
 *.meta
@@ -102,7 +103,8 @@ logs/
 .cache/
 .huggingface/
 .hf/
-
+**cache**/
+**output**/
 # 压缩文件（如果不想提交）
 *.zip
 *.tar.gz

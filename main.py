@@ -21,11 +21,12 @@ def main():
 
     print("📚 正在初始化RAG Agent...")
     
-    # 初始化RAG Agent
+    # 初始化RAG Agent（启用多模态检索）
     agent = RAGAgent(
         model=MODEL_NAME,
         enable_tracking=True,
-        enable_cot=True
+        enable_cot=True,
+        use_multimodal=True  # ✅ 启用多模态检索（文本+图片）
     )
 
     # 检查知识库
@@ -39,10 +40,17 @@ def main():
         return
 
     print(f"✅ 知识库已加载，包含 {count} 个文档片段")
+    
+    # 显示多模态统计
+    if agent.use_multimodal and agent.hybrid_retriever:
+        mm_stats = agent.hybrid_retriever.get_stats()
+        print(f"📸 图片索引: {mm_stats['images']} 张")
+    
     print()
     print("💡 功能特色：")
     print("  • 智能问题分类")
     print("  • 多查询增强检索")
+    print("  • 多模态检索 (文本+图片) ✨")
     print("  • 答案质量检查")
     print("  • Token追踪和优化")
     if agent.enable_cot:

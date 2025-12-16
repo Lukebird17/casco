@@ -42,7 +42,7 @@ class DynamicDBManager:
             chunk_size=CHUNK_SIZE,
             chunk_overlap=CHUNK_OVERLAP
         )
-        self.ocr_processor = EnhancedOCRProcessor(ocr_engine="paddleocr")
+        self.ocr_processor = EnhancedOCRProcessor(use_cache=True)
         
         # 文档元数据缓存
         self.metadata_file = "vector_db_metadata.json"

@@ -88,8 +88,24 @@ class EnhancedOCRProcessor:
         if os.path.exists(cache_path):
             try:
                 with open(cache_path, 'r', encoding='utf-8') as f:
+                    cached_data = json.load(f)
                     print(f"   📦 从缓存加载: {Path(cache_path).name}")
-                    return json.load(f)
+                    
+                    # 检查缓存是否包含新字段（images）
+                    if 'images' not in cached_data or cached_data['images'] is None:
+                        print(f"   🔄 缓存版本旧，重新解析图片信息...")
+                        # 重新解析输出目录（不需要重新运行 MinerU）
+                        if 'output_dir' in cached_data and os.path.exists(cached_data['output_dir']):
+                            file_name = os.path.basename(file_path)
+                            updated_result = self._parse_mineru_output(
+                                cached_data['output_dir'], 
+                                file_name
+                            )
+                            # 更新缓存
+                            self._save_to_cache(file_path, updated_result)
+                            return updated_result
+                    
+                    return cached_data
             except Exception as e:
                 print(f"   ⚠️  缓存加载失败: {e}")
         return None
@@ -134,9 +150,10 @@ class EnhancedOCRProcessor:
         # 准备输出目录
         if output_dir is None:
             file_basename = Path(file_path).stem
+            # 输出到项目根目录的 .mineru_output，避免递归处理
             output_dir = os.path.join(
-                os.path.dirname(file_path), 
-                f"mineru_output_{file_basename}"
+                ".mineru_output", 
+                file_basename
             )
         os.makedirs(output_dir, exist_ok=True)
         
@@ -149,19 +166,22 @@ class EnhancedOCRProcessor:
             
             print(f"   🔧 执行: {' '.join(cmd)}")
             print(f"   ⏳ 处理中...（可能需要几分钟）")
+            print(f"\n{'='*60}")
+            print("MinerU 输出:")
+            print('='*60)
             
-            # 执行命令
+            # 执行命令（实时显示输出）
             result = subprocess.run(
                 cmd,
-                capture_output=True,
                 text=True,
                 timeout=600,  # 10分钟超时
                 cwd=os.getcwd()
             )
             
+            print('='*60)
+            
             if result.returncode != 0:
-                print(f"   ❌ MinerU处理失败")
-                print(f"   错误: {result.stderr}")
+                print(f"   ❌ MinerU处理失败 (退出码: {result.returncode})")
                 return None
             
             print(f"   ✅ MinerU处理完成")
@@ -196,7 +216,7 @@ class EnhancedOCRProcessor:
             original_filename: 原始文件名
             
         Returns:
-            解析后的结果字典
+            解析后的结果字典，包含详细的图片信息
         """
         result = {
             'original_file': original_filename,
@@ -205,12 +225,14 @@ class EnhancedOCRProcessor:
             'text_blocks': 0,
             'image_count': 0,
             'table_count': 0,
-            'content': ''
+            'content': '',
+            'images': []  # 新增：详细的图片信息列表
         }
         
         try:
             # 查找生成的Markdown文件
             md_files = list(Path(output_dir).rglob('*.md'))
+            markdown_content = ''
             
             if md_files:
                 md_file = md_files[0]  # 取第一个MD文件
@@ -227,13 +249,19 @@ class EnhancedOCRProcessor:
                 result['image_count'] = markdown_content.count('![')
                 result['table_count'] = markdown_content.count('|')
             
-            # 查找提取的图片
+            # 查找提取的图片文件
             image_files = []
             for ext in ['.png', '.jpg', '.jpeg']:
                 image_files.extend(Path(output_dir).rglob(f'*{ext}'))
             
-            result['image_files'] = [str(f) for f in image_files]
-            result['image_count'] = len(image_files)
+            # 解析图片详细信息（包括上下文）
+            result['images'] = self._extract_image_info(
+                markdown_content, 
+                image_files, 
+                original_filename,
+                output_dir
+            )
+            result['image_count'] = len(result['images'])
             
             return result
             
@@ -241,16 +269,189 @@ class EnhancedOCRProcessor:
             print(f"   ⚠️  解析输出失败: {e}")
             return result
     
+    def _build_image_page_mapping(self, output_dir: str) -> Dict[str, int]:
+        """
+        从 MinerU 的 middle.json 构建图片hash到页码的映射
+        
+        Args:
+            output_dir: MinerU 输出目录
+            
+        Returns:
+            字典：{image_hash: page_number}
+        """
+        import json
+        from pathlib import Path
+        
+        mapping = {}
+        
+        try:
+            # 查找 middle.json 文件
+            middle_json_path = None
+            for json_file in Path(output_dir).rglob('*_middle.json'):
+                middle_json_path = json_file
+                break
+            
+            if not middle_json_path or not middle_json_path.exists():
+                return mapping
+            
+            # 解析 middle.json
+            with open(middle_json_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            pdf_info = data.get('pdf_info', [])
+            
+            # 遍历每一页
+            for page_idx, page_data in enumerate(pdf_info):
+                page_number = page_idx + 1  # 页码从1开始
+                
+                # 遍历页面中的所有块
+                for block in page_data.get('preproc_blocks', []):
+                    # 查找图片块
+                    if block.get('type') in ['image', 'image_body']:
+                        # 递归查找 image_path
+                        self._extract_image_paths_from_block(block, page_number, mapping)
+            
+            return mapping
+            
+        except Exception as e:
+            print(f"   ⚠️  构建图片页码映射失败: {e}")
+            return mapping
+    
+    def _extract_image_paths_from_block(self, block: Dict, page_number: int, mapping: Dict):
+        """
+        递归从块中提取图片路径
+        
+        Args:
+            block: 块数据
+            page_number: 页码
+            mapping: 映射字典（会被修改）
+        """
+        # 检查当前块
+        if isinstance(block, dict):
+            # 如果有 image_path 字段
+            if 'image_path' in block:
+                img_path = block['image_path']
+                # 提取hash（不含扩展名）
+                img_hash = Path(img_path).stem
+                mapping[img_hash] = page_number
+            
+            # 递归检查子块
+            for key in ['blocks', 'lines', 'spans']:
+                if key in block and isinstance(block[key], list):
+                    for sub_block in block[key]:
+                        self._extract_image_paths_from_block(sub_block, page_number, mapping)
+        elif isinstance(block, list):
+            for item in block:
+                self._extract_image_paths_from_block(item, page_number, mapping)
+    
+    def _extract_image_info(self, markdown_content: str, image_files: List, 
+                           original_filename: str, output_dir: str) -> List[Dict]:
+        """
+        从 markdown 中提取图片信息及其上下文
+        
+        Args:
+            markdown_content: Markdown 内容
+            image_files: 图片文件路径列表
+            original_filename: 原始文件名
+            output_dir: 输出目录
+            
+        Returns:
+            图片信息列表，每个元素包含：
+            - image_path: 图片绝对路径
+            - image_name: 图片文件名
+            - filename: 源文件名
+            - page_number: 准确的页码（从MinerU的middle.json中提取）
+            - context_before: 图片前的文本（100字符）
+            - context_after: 图片后的文本（100字符）
+            - section: 所在章节标题
+        """
+        import re
+        import json
+        
+        images_info = []
+        
+        # 1. 从 middle.json 构建图片hash到页码的映射
+        image_hash_to_page = self._build_image_page_mapping(output_dir)
+        
+        # 构建图片文件名到路径的映射
+        image_name_to_path = {}
+        for img_path in image_files:
+            img_name = Path(img_path).name
+            image_name_to_path[img_name] = str(img_path)
+        
+        # 使用正则表达式找到所有图片引用: ![...](images/xxx.jpg)
+        image_pattern = r'!\[(.*?)\]\((.*?)\)'
+        matches = list(re.finditer(image_pattern, markdown_content))
+        
+        # 按章节分割 markdown
+        lines = markdown_content.split('\n')
+        current_section = "未分类"
+        
+        for match in matches:
+            alt_text = match.group(1)
+            img_ref = match.group(2)  # 如: images/xxx.jpg
+            
+            # 提取图片文件名
+            img_name = Path(img_ref).name
+            
+            # 查找实际图片路径
+            img_full_path = image_name_to_path.get(img_name)
+            if not img_full_path:
+                # 尝试在输出目录中查找
+                possible_path = Path(output_dir) / img_ref
+                if possible_path.exists():
+                    img_full_path = str(possible_path)
+                else:
+                    continue  # 图片不存在，跳过
+            
+            # 获取图片在 markdown 中的位置
+            img_position = match.start()
+            
+            # 提取上下文（前后各100个字符）
+            context_before = markdown_content[max(0, img_position-100):img_position].strip()
+            context_after = markdown_content[img_position+len(match.group(0)):img_position+len(match.group(0))+100].strip()
+            
+            # 尝试找到所在章节（向前查找最近的标题）
+            text_before_img = markdown_content[:img_position]
+            section_matches = list(re.finditer(r'^#{1,6}\s+(.+)$', text_before_img, re.MULTILINE))
+            if section_matches:
+                current_section = section_matches[-1].group(1).strip()
+            
+            # 从映射中获取准确的页码（如果有的话）
+            # 提取图片的hash部分（不含扩展名）
+            img_hash = Path(img_name).stem
+            accurate_page = image_hash_to_page.get(img_hash, None)
+            
+            # 如果没有找到准确页码，使用估算（向前查找，每10个双换行算一页）
+            if accurate_page is None:
+                accurate_page = len(text_before_img.split('\n\n')) // 10 + 1
+            
+            images_info.append({
+                'image_path': img_full_path,
+                'image_name': img_name,
+                'filename': original_filename,
+                'page_number': accurate_page,
+                'context_before': context_before[-100:],  # 限制长度
+                'context_after': context_after[:100],
+                'context': context_before[-50:] + ' [图片] ' + context_after[:50],
+                'section': current_section,
+                'alt_text': alt_text,
+            })
+        
+        return images_info
+    
     def process_pdf(self, pdf_path: str, output_dir: str = None) -> str:
         """
         处理PDF文件，返回提取的文本
+        
+        Note: 这个方法只返回文本内容，如需图片信息请使用 process_file()
         
         Args:
             pdf_path: PDF文件路径
             output_dir: 输出目录
             
         Returns:
-            提取的文本内容
+            提取的文本内容（markdown格式）
         """
         result = self.process_file(pdf_path, output_dir)
         if result:

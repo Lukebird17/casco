@@ -29,7 +29,7 @@ cat > ~/.magic-pdf.json << 'EOF'
     "models-dir": "",
     "layoutreader-model-dir": "",
     "table-config": {
-        "is_table_recog_enable": false,
+        "is_table_recog_enable": true,
         "max_time": 400
     },
     "formula-config": {

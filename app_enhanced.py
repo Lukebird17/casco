@@ -31,22 +31,35 @@ def initialize_system():
     global agent, db_manager, ocr_processor
     
     try:
-        # 初始化RAG Agent
+        # 初始化RAG Agent（启用多模态检索）
         agent = RAGAgent(
             model=MODEL_NAME,
             enable_tracking=True,
-            enable_cot=True
+            enable_cot=True,
+            use_multimodal=True  # ✅ 启用多模态检索（文本+图片）
         )
         
         # 初始化数据库管理器
         db_manager = DynamicDBManager(agent.vector_store)
         
-        # 初始化OCR处理器
-        ocr_processor = EnhancedOCRProcessor(ocr_engine="paddleocr")
+        # 初始化OCR处理器（MinerU）
+        ocr_processor = EnhancedOCRProcessor(use_cache=True)
         
         # 统计信息
         stats = db_manager.get_statistics()
         count = agent.vector_store.get_collection_count()
+        
+        # 获取多模态统计
+        multimodal_info = ""
+        if agent.use_multimodal and agent.hybrid_retriever:
+            mm_stats = agent.hybrid_retriever.get_stats()
+            multimodal_info = f"""
+📸 多模态索引:
+  • 文本文档: {mm_stats['text_documents']}
+  • 图片数量: {mm_stats['images']}
+  • 文本权重: {mm_stats['text_weight']:.0%}
+  • 图片权重: {mm_stats['image_weight']:.0%}
+"""
         
         return f"""✅ 系统初始化成功！
 
@@ -54,7 +67,7 @@ def initialize_system():
   • 总文档片段: {count}
   • 课程数量: {stats['total_courses']}
   • 文件数量: {stats['total_files']}
-
+{multimodal_info}
 🔧 功能模块:
   ✓ RAG智能检索
   ✓ Auto-CoT推理
@@ -62,7 +75,7 @@ def initialize_system():
   ✓ 答案质量检查
   ✓ OCR图文识别
   ✓ 动态数据库管理
-  ✓ 多模态输入
+  ✓ 多模态检索 (文本+图片) ✨
 """
     except Exception as e:
         return f"❌ 初始化失败: {str(e)}"
@@ -422,7 +435,8 @@ def create_enhanced_ui():
                         chatbot = gr.Chatbot(
                             label="对话窗口",
                             height=600,
-                            elem_id="chatbot"
+                            elem_id="chatbot",
+                            type="messages"  # 使用新的消息格式
                         )
                         
                         with gr.Row():
@@ -476,7 +490,11 @@ def create_enhanced_ui():
                         """)
                     
                     with gr.Column():
-                        image_chatbot = gr.Chatbot(label="图片对话", height=400)
+                        image_chatbot = gr.Chatbot(
+                            label="图片对话",
+                            height=400,
+                            type="messages"  # 使用新的消息格式
+                        )
                         enable_reasoning_img = gr.Checkbox(label="显示推理链", value=False)
                         enable_token_img = gr.Checkbox(label="显示Token统计", value=False)
             

@@ -1,5 +1,5 @@
 import os
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Tuple
 from pathlib import Path
 
 from config import DATA_DIR
@@ -22,27 +22,38 @@ class DocumentLoader:
             self.ocr_processor = None
             print("⚠️  MinerU不可用，将使用基础解析器")
 
-    def load_pdf(self, file_path: str) -> List[Dict]:
-        """加载PDF文件，按页返回内容（优先使用MinerU）
+    def load_pdf(self, file_path: str) -> Tuple[List[Dict], List[Dict]]:
+        """加载PDF文件，返回文本内容和图片信息（优先使用MinerU）
 
         要求：
         1. 优先使用MinerU处理PDF文件
         2. 提取文本内容并格式化
-        3. 格式化为"--- 第 X 页 ---\n文本内容\n"
-        4. 返回pdf内容列表，每个元素包含 {"text": "..."}
+        3. 提取图片信息
+        
+        Returns:
+            (pages, images): 页面文本列表和图片信息列表
         """
         pages = []
+        images = []
         
         # 优先使用MinerU
         if self.ocr_processor:
             try:
-                result = self.ocr_processor.process_pdf(file_path)
-                if result:
-                    # MinerU返回的是完整的markdown文本
-                    # 我们将整个文档作为一页返回
-                    formatted_text = f"--- PDF文档（MinerU处理） ---\n{result}\n"
+                # 直接调用 process_file 获取完整结果（包括文本和图片）
+                full_result = self.ocr_processor.process_file(file_path)
+                
+                if full_result and full_result.get('content'):
+                    # 提取文本内容
+                    markdown_content = full_result['content']
+                    formatted_text = f"--- PDF文档（MinerU处理） ---\n{markdown_content}\n"
                     pages.append({"text": formatted_text})
-                    return pages
+                    
+                    # 提取图片信息
+                    if 'images' in full_result and full_result['images']:
+                        images = full_result['images']
+                        print(f"   📸 提取到 {len(images)} 张图片")
+                    
+                    return pages, images
             except Exception as e:
                 print(f"⚠️  MinerU处理失败，尝试基础解析器: {e}")
         
@@ -58,7 +69,7 @@ class DocumentLoader:
         except Exception as e:
             print(f"❌ 加载PDF文件失败 {file_path}: {e}")
         
-        return pages
+        return pages, images
 
     def load_pptx(self, file_path: str) -> List[Dict]:
         """加载PPT文件，按幻灯片返回内容（优先使用MinerU）
@@ -143,14 +154,19 @@ class DocumentLoader:
             print(f"加载TXT文件失败 {file_path}: {e}")
             return ""
 
-    def load_document(self, file_path: str) -> List[Dict[str, str]]:
-        """加载单个文档，PDF和PPT按页/幻灯片分割，返回文档块列表"""
+    def load_document(self, file_path: str) -> Tuple[List[Dict[str, str]], List[Dict]]:
+        """加载单个文档，PDF和PPT按页/幻灯片分割，返回文档块列表和图片列表
+        
+        Returns:
+            (documents, images): 文档块列表和图片信息列表
+        """
         ext = os.path.splitext(file_path)[1].lower()
         filename = os.path.basename(file_path)
         documents = []
+        images = []
 
         if ext == ".pdf":
-            pages = self.load_pdf(file_path)
+            pages, images = self.load_pdf(file_path)
             for page_idx, page_data in enumerate(pages, 1):
                 documents.append(
                     {
@@ -200,15 +216,20 @@ class DocumentLoader:
         else:
             print(f"不支持的文件格式: {ext}")
 
-        return documents
+        return documents, images
 
-    def load_all_documents(self) -> List[Dict[str, str]]:
-        """加载数据目录下的所有文档"""
+    def load_all_documents(self) -> Tuple[List[Dict[str, str]], List[Dict]]:
+        """加载数据目录下的所有文档
+        
+        Returns:
+            (documents, images): 所有文档块列表和所有图片信息列表
+        """
         if not os.path.exists(self.data_dir):
             print(f"数据目录不存在: {self.data_dir}")
-            return None
+            return [], []
 
         documents = []
+        all_images = []
 
         for root, dirs, files in os.walk(self.data_dir):
             for file in files:
@@ -216,8 +237,10 @@ class DocumentLoader:
                 if ext in self.supported_formats:
                     file_path = os.path.join(root, file)
                     print(f"正在加载: {file_path}")
-                    doc_chunks = self.load_document(file_path)
+                    doc_chunks, images = self.load_document(file_path)
                     if doc_chunks:
                         documents.extend(doc_chunks)
+                    if images:
+                        all_images.extend(images)
 
-        return documents
+        return documents, all_images

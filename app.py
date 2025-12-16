@@ -77,7 +77,8 @@ def initialize_agent():
             agent = RAGAgent(
                 model=MODEL_NAME,
                 enable_tracking=True,
-                enable_cot=True
+                enable_cot=True,
+                use_multimodal=True  # ✅ 启用多模态检索（文本+图片）
             )
             
             count = agent.vector_store.get_collection_count()
@@ -349,7 +350,8 @@ def create_ui():
                     chatbot = gr.Chatbot(
                         label="对话窗口",
                         height=500,
-                        elem_id="chatbot"
+                        elem_id="chatbot",
+                        type="messages"  # 使用新的消息格式
                     )
                     
                     with gr.Row():

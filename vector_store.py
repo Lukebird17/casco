@@ -51,6 +51,10 @@ class VectorStore:
             # 清理文本：移除多余的换行和空格
             text = text.replace("\n", " ").strip()
             
+            # 如果文本为空，返回 None
+            if not text:
+                return None
+            
             # 调用OpenAI Embedding API
             response = self.client.embeddings.create(
                 input=text,
@@ -61,9 +65,9 @@ class VectorStore:
             return response.data[0].embedding
         
         except Exception as e:
-            print(f"获取embedding失败: {e}")
-            # 返回零向量作为fallback（实际应用中应该更好地处理）
-            return [0.0] * 1536  # text-embedding-3-small的维度是1536
+            print(f"⚠️  获取embedding失败: {e}")
+            # 返回 None 表示失败，调用者应该跳过这个文档
+            return None
 
     def add_documents(self, chunks: List[Dict[str, str]]) -> None:
         """添加文档块到向量数据库
@@ -78,6 +82,8 @@ class VectorStore:
         # 批量处理以提高效率
         batch_size = 10
         
+        skipped_count = 0
+        
         for i in tqdm(range(0, len(chunks), batch_size), desc="添加文档"):
             batch_chunks = chunks[i:i + batch_size]
             
@@ -88,15 +94,20 @@ class VectorStore:
             metadatas = []
             
             for idx, chunk in enumerate(batch_chunks):
+                # 获取embedding
+                embedding = self.get_embedding(chunk['content'])
+                
+                # 如果 embedding 为 None，跳过这个文档
+                if embedding is None:
+                    skipped_count += 1
+                    continue
+                
                 # 生成唯一ID
                 doc_id = f"{chunk['filename']}_page{chunk['page_number']}_chunk{chunk['chunk_id']}_{i+idx}"
                 ids.append(doc_id)
                 
                 # 文档内容
                 documents.append(chunk['content'])
-                
-                # 获取embedding
-                embedding = self.get_embedding(chunk['content'])
                 embeddings.append(embedding)
                 
                 # 元数据
@@ -109,8 +120,18 @@ class VectorStore:
                 }
                 metadatas.append(metadata)
             
+            # 如果这个批次没有有效数据，跳过
+            if not ids:
+                continue
+            
             # 批量添加到ChromaDB
             try:
+                # 重新获取 collection 引用以确保有效
+                self.collection = self.chroma_client.get_or_create_collection(
+                    name=self.collection_name, 
+                    metadata={"description": "课程材料向量数据库"}
+                )
+                
                 self.collection.add(
                     ids=ids,
                     documents=documents,
@@ -118,9 +139,13 @@ class VectorStore:
                     metadatas=metadatas
                 )
             except Exception as e:
-                print(f"添加批次失败: {e}")
+                print(f"❌ 添加批次失败: {e}")
+                skipped_count += len(ids)
         
-        print(f"✅ 成功添加 {len(chunks)} 个文档块到向量数据库")
+        success_count = len(chunks) - skipped_count
+        print(f"✅ 成功添加 {success_count} 个文档块到向量数据库")
+        if skipped_count > 0:
+            print(f"⚠️  跳过 {skipped_count} 个文档块（embedding 失败或文本过长）")
 
     def search(self, query: str, top_k: int = TOP_K) -> List[Dict]:
         """搜索相关文档
@@ -136,6 +161,11 @@ class VectorStore:
         try:
             # 1. 获取查询的embedding
             query_embedding = self.get_embedding(query)
+            
+            # 如果 embedding 失败，返回空结果
+            if query_embedding is None:
+                print("❌ 查询 embedding 失败")
+                return []
             
             # 2. 使用ChromaDB进行向量搜索
             results = self.collection.query(

@@ -62,40 +62,28 @@ class TextSplitter:
 
     def split_documents(self, documents: List[Dict[str, str]]) -> List[Dict[str, str]]:
         """切分多个文档。
-        对于PDF和PPT，已经按页/幻灯片分割，不再进行二次切分
-        对于DOCX和TXT，进行文本切分
+        所有文档都进行文本切分，以确保不超过 embedding 模型的 token 限制
         """
         chunks_with_metadata = []
 
         for doc in tqdm(documents, desc="处理文档", unit="文档"):
             content = doc.get("content", "")
             filetype = doc.get("filetype", "")
-
-            if filetype in [".pdf", ".pptx"]:
+            
+            # 所有类型的文档都进行切分
+            chunks = self.split_text(content)
+            
+            for i, chunk in enumerate(chunks):
                 chunk_data = {
-                    "content": content,
+                    "content": chunk,
                     "filename": doc.get("filename", "unknown"),
                     "filepath": doc.get("filepath", ""),
                     "filetype": filetype,
                     "page_number": doc.get("page_number", 0),
-                    "chunk_id": 0,
+                    "chunk_id": i,
                     "images": doc.get("images", []),
                 }
                 chunks_with_metadata.append(chunk_data)
-
-            elif filetype in [".docx", ".txt"]:
-                chunks = self.split_text(content)
-                for i, chunk in enumerate(chunks):
-                    chunk_data = {
-                        "content": chunk,
-                        "filename": doc.get("filename", "unknown"),
-                        "filepath": doc.get("filepath", ""),
-                        "filetype": filetype,
-                        "page_number": 0,
-                        "chunk_id": i,
-                        "images": [],
-                    }
-                    chunks_with_metadata.append(chunk_data)
 
         print(f"\n文档处理完成，共 {len(chunks_with_metadata)} 个块")
         return chunks_with_metadata

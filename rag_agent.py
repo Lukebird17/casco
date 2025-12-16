@@ -10,6 +10,7 @@ from config import (
     TOP_K,
 )
 from vector_store import VectorStore
+from hybrid_retriever import HybridRetriever
 from token_tracker import TokenTracker
 from reasoning_chain import ReasoningChain
 from auto_cot_prompting import AutoCotPromptBuilder
@@ -37,12 +38,27 @@ class RAGAgent:
         model: str = MODEL_NAME,
         enable_tracking: bool = True,
         enable_cot: bool = True,
+        use_multimodal: bool = True,  # 新增：是否使用多模态检索
     ):
         self.model = model
+        self.use_multimodal = use_multimodal
 
         self.client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_API_BASE)
 
+        # 初始化检索器
         self.vector_store = VectorStore()
+        
+        if use_multimodal:
+            try:
+                self.hybrid_retriever = HybridRetriever()
+                print("✅ 多模态检索已启用（文本+图片）")
+            except Exception as e:
+                print(f"⚠️  多模态检索初始化失败: {e}")
+                print("   回退到纯文本检索")
+                self.use_multimodal = False
+                self.hybrid_retriever = None
+        else:
+            self.hybrid_retriever = None
 
         # 不同难度的温度设置
         self.temp_map = {
@@ -212,13 +228,13 @@ class RAGAgent:
     
     def rerank_results(self, query: str, results: List[Dict]) -> List[Dict]:
         """
-        重排序检索结果（移植自Casco）
+        重排序检索结果（支持多模态：文本+图片）
         
         基于关键词匹配度重新排序
         
         参数:
             query: 原始查询
-            results: 检索结果
+            results: 检索结果（可能包含文本和图片）
             
         返回:
             重排序后的结果
@@ -231,7 +247,15 @@ class RAGAgent:
         
         # 计算每个结果的匹配度
         for result in results:
-            content_lower = result['content'].lower()
+            # 获取文本内容（支持多模态）
+            if result.get('type') == 'image':
+                # 图片类型：使用 description 字段
+                content = result.get('description', '') + ' ' + result.get('metadata', {}).get('context', '')
+            else:
+                # 文本类型：使用 content 字段
+                content = result.get('content', '')
+            
+            content_lower = content.lower()
             
             # 计算关键词匹配数
             match_count = sum(1 for keyword in query_keywords if keyword in content_lower)
@@ -259,7 +283,7 @@ class RAGAgent:
     
     def multi_query_retrieve(self, query: str, k: int) -> List[Dict]:
         """
-        多查询检索（移植自Casco）
+        多查询检索（支持多模态）
         
         参数:
             query: 查询问题
@@ -278,12 +302,27 @@ class RAGAgent:
         
         for i, q in enumerate(queries, 1):
             print(f"     查询 {i}/{len(queries)}: {q[:50]}{'...' if len(q) > 50 else ''}")
-            results = self.vector_store.search(q, top_k=k)
+            
+            # 使用混合检索（如果启用）
+            if self.use_multimodal and self.hybrid_retriever:
+                search_results = self.hybrid_retriever.search(
+                    query=q,
+                    top_k=k,
+                    include_images=True
+                )
+                results = search_results['combined']  # 获取合并后的结果
+            else:
+                results = self.vector_store.search(q, top_k=k)
+            
             print(f"     → 找到 {len(results)} 个相关文档")
             
-            # 去重（基于content）
+            # 去重（基于content或image_path）
             for result in results:
-                content_key = result['content'][:100]  # 用前100字符作为去重键
+                if result.get('type') == 'image':
+                    content_key = f"img_{result.get('image_path', '')}"
+                else:
+                    content_key = result.get('content', '')[:100]
+                    
                 if content_key not in seen_contents:
                     seen_contents.add(content_key)
                     all_results.append(result)
@@ -380,10 +419,10 @@ class RAGAgent:
     
     def _format_context(self, results: List[Dict]) -> str:
         """
-        格式化上下文（标准格式）
+        格式化上下文（支持多模态：文本+图片）
         
         参数:
-            results: 检索结果列表
+            results: 检索结果列表（可能包含文本和图片）
             
         返回:
             格式化的上下文字符串
@@ -395,9 +434,18 @@ class RAGAgent:
         context_parts.append("【相关课程材料】\n")
         
         for idx, doc in enumerate(results, 1):
-            filename = doc['filename']
-            page_num = doc['page_number']
-            content = doc['content']
+            # 获取文件信息（兼容多模态）
+            if doc.get('type') == 'image':
+                # 图片类型
+                filename = doc.get('filename', 'unknown')
+                page_num = doc.get('page_number', 0)
+                content = f"[图片]\n路径: {doc.get('image_path', 'N/A')}\n描述: {doc.get('description', 'N/A')}"
+            else:
+                # 文本类型
+                filename = doc.get('filename', 'unknown')
+                page_num = doc.get('page_number', 0)
+                content = doc.get('content', 'N/A')
+            
             match_ratio = doc.get('match_ratio', 0)
             
             # 格式化每个文档片段
@@ -417,10 +465,10 @@ class RAGAgent:
     
     def _build_structured_context(self, results: List[Dict], query: str) -> str:
         """
-        构建结构化上下文（高级题专用，移植自Casco）
+        构建结构化上下文（支持多模态：文本+图片）
         
         参数:
-            results: 检索结果
+            results: 检索结果（可能包含文本和图片）
             query: 原始查询
             
         返回:
@@ -433,18 +481,29 @@ class RAGAgent:
         context_parts.append("=== 检索到的相关文档 ===\n")
         
         for idx, doc in enumerate(results, 1):
-            filename = doc['filename']
-            page_num = doc['page_number']
-            content = doc['content']
+            # 获取文件信息（兼容多模态）
+            if doc.get('type') == 'image':
+                # 图片类型
+                filename = doc.get('filename', 'unknown')
+                page_num = doc.get('page_number', 0)
+                content = f"[图片]\n路径: {doc.get('image_path', 'N/A')}\n描述: {doc.get('description', 'N/A')}"
+                icon = "🖼️"
+            else:
+                # 文本类型
+                filename = doc.get('filename', 'unknown')
+                page_num = doc.get('page_number', 0)
+                content = doc.get('content', 'N/A')
+                icon = "📄"
+            
             match_ratio = doc.get('match_ratio', 0)
             
             # 结构化格式
             context_parts.append(f"\n【文档片段 {idx}】(相关度: {match_ratio:.1%})")
             
             if page_num > 0:
-                context_parts.append(f"📄 来源：《{filename}》第 {page_num} 页")
+                context_parts.append(f"{icon} 来源：《{filename}》第 {page_num} 页")
             else:
-                context_parts.append(f"📄 来源：《{filename}》")
+                context_parts.append(f"{icon} 来源：《{filename}》")
             
             context_parts.append(f"\n{content}\n")
             context_parts.append("")
