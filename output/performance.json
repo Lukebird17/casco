@@ -1,0 +1,92 @@
+[
+    {
+        "retrieval_ms": 6696,
+        "generation_ms": 15625,
+        "prompt_tokens_est": 319,
+        "answer_tokens_est": 38
+    },
+    {
+        "retrieval_ms": 6503,
+        "generation_ms": 15173,
+        "prompt_tokens_est": 737,
+        "answer_tokens_est": 57
+    },
+    {
+        "retrieval_ms": 5975,
+        "generation_ms": 13942,
+        "prompt_tokens_est": 627,
+        "answer_tokens_est": 52
+    },
+    {
+        "retrieval_ms": 13600,
+        "generation_ms": 31735,
+        "prompt_tokens_est": 682,
+        "answer_tokens_est": 91
+    },
+    {
+        "retrieval_ms": 10066,
+        "generation_ms": 23488,
+        "prompt_tokens_est": 913,
+        "answer_tokens_est": 160
+    },
+    {
+        "retrieval_ms": 14849,
+        "generation_ms": 34648,
+        "prompt_tokens_est": 396,
+        "answer_tokens_est": 756
+    },
+    {
+        "retrieval_ms": 12638,
+        "generation_ms": 29489,
+        "prompt_tokens_est": 957,
+        "answer_tokens_est": 188
+    },
+    {
+        "retrieval_ms": 17450,
+        "generation_ms": 40716,
+        "prompt_tokens_est": 1342,
+        "answer_tokens_est": 1201
+    },
+    {
+        "retrieval_ms": 14007,
+        "generation_ms": 32683,
+        "prompt_tokens_est": 1100,
+        "answer_tokens_est": 678
+    },
+    {
+        "retrieval_ms": 18637,
+        "generation_ms": 43487,
+        "prompt_tokens_est": 1331,
+        "answer_tokens_est": 499
+    },
+    {
+        "retrieval_ms": 13095,
+        "generation_ms": 30557,
+        "prompt_tokens_est": 1100,
+        "answer_tokens_est": 283
+    },
+    {
+        "retrieval_ms": 15957,
+        "generation_ms": 37233,
+        "prompt_tokens_est": 1254,
+        "answer_tokens_est": 1226
+    },
+    {
+        "retrieval_ms": 11830,
+        "generation_ms": 27603,
+        "prompt_tokens_est": 770,
+        "answer_tokens_est": 829
+    },
+    {
+        "retrieval_ms": 19965,
+        "generation_ms": 46586,
+        "prompt_tokens_est": 935,
+        "answer_tokens_est": 1687
+    },
+    {
+        "retrieval_ms": 17258,
+        "generation_ms": 40269,
+        "prompt_tokens_est": 1573,
+        "answer_tokens_est": 1270
+    }
+]

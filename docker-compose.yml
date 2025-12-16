@@ -1,0 +1,25 @@
+version: '3'
+services:
+  rag-service:
+    image: team12:latest
+    build: .
+    volumes:
+      - ./output:/app/output
+      - ./storage:/app/storage
+      - ./storage_graph:/app/storage_graph
+      - ./storage_table_gxt:/app/storage_table_gxt
+    environment:
+      OPENAI_API_MODEL: BAAI/bge-m3
+      OPENAI_API_KEY: sk-aqrqxoeqrbfsfhvjhjpozbivejsqhhsqvagukbdlbzjfaawr
+      OPENAI_BASE_URL: https://api.siliconflow.cn/v1/
+      CLOUD_MODEL: Qwen2.5-72B-Instruct
+      CLOUD_API_KEY: sk-wxZp2QgCmvkdng8o9dHhyvBAU8MJOUjjsSx5fJDO7l31KJhA
+      CLOUD_BASE_URL: https://ai.api.coregpu.cn/v1/
+      PADDLEOCR_API_URL: https://app-u613z0mda075e806.aistudio-app.com/
+      PADDLEOCR_API_TOKEN: "4841eede08d825fbb60c8a95e5f1ea5bde773d1e"
+      MULTIMODAL: Qwen2.5-VL-72B-Instruct
+      MULTIMODAL_API_KEY: sk-wxZp2QgCmvkdng8o9dHhyvBAU8MJOUjjsSx5fJDO7l31KJhA
+      MULTIMODAL_API_URL: https://ai.api.coregpu.cn/v1/
+      HF_ENDPOINT: https://hf-mirror.com
+    restart: no  # 程序运行完成后容器自动退出
+    working_dir: /app  # 容器工作目录（需与Dockerfile一致）

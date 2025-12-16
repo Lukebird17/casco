@@ -1,0 +1,584 @@
+[
+  {
+    "index": 9537,
+    "source_text": "《GB∕T 34590.6-2022道路车辆功能安全第6部分：产品开发：软件层面》\n——软件安全要求的实现(见7.4.11)，例如，提供软件安全机制有效性的证据，如被监控要素与监控器之间的独立性；或 ——所需软件架构要素的共存（见7.4.6、7.4.8和7.4.9和GB/T34590.9—2022第6章）。 软件架构层级的安全分析及相关失效分析的作用是支持设计规范和设计验证活动。 此分析也可以揭示...",
+    "context_text": "《GB∕T 34590.6-2022道路车辆功能安全第6部分：产品开发：软件层面》\n示例 3：通信协议可包含的诸如通信对象的标识符、保持活动的消息、活动的计数器、序列号、错误检测码和纠错码的信息。 示例 4：适当的验证方法可以被视为详细的安全分析，以识别需要采取保护机制的关键数据交换。静态和语义代码分析以及控制流和数据流分析的结果能提供证据证明免于干扰。 --- ## 附录 E (资料性) # 软件架构层级安全分析及相关失效分析的应用 ### E.1 目的 本附录阐述了安全分析及相关失效分析在软件架构层级可能的应用。本附录中提供的示例旨在支持对这些分析的理解，并为应用提供指导。 ### E.2...",
+    "question": "在《GB∕T 34590.6-2022道路车辆功能安全第6部分：产品开发：软件层面》中，如何通过分析信号流A1到A8的引导词示例（如“在...之后/晚于”、“在...之前/早于”、“无”、“多于”、“少于”）来识别和评估可能导致违反安全要求的软件架构设计缺陷？"
+  },
+  {
+    "index": 9329,
+    "source_text": "《GB∕T 34590.5-2022道路车辆功能安全第5部分：产品开发：硬件层面》\n注 $ ^{2} $ ：具有安全相关可用性要求的相关项（即失去某一功能可能导致危害事件）与不具有安全相关可用性要求的相关项一样，受相同硬件架构度量的要求和目标的约束。 ### 8.3 本章的输入 #### 8.3.1 前提条件 应具备下列信息： ——硬件安全需求规范，按照6.5.1； ——硬件设计规范，按照7.5....",
+    "context_text": "《GB∕T 34590.5-2022道路车辆功能安全第5部分：产品开发：硬件层面》\n本章的目的是提供基于硬件架构度量的证据，来证明相关项硬件架构设计在安全相关的随机硬件失效探测和控制方面的适用性。 ### 8.2 总则 本章描述了两种硬件架构的度量，用于评估相关项架构应对随机硬件失效的有效性。 这些度量和关联的目标值在相关项层面对相关项的硬件要素进行评估，并与第9章描述的对随机硬件失效导致违背安全目标的评估互为补充。 这些度量所针对的随机硬件失效仅限于相关项中某些安全相关电子和电气硬件元器件，即那些能对安全目标的违背或实现有显著影响的元器件，并限于这些元器件的单点故障、残余故障和潜伏故障。对于...",
+    "question": "在《GB∕T 34590.5-2022道路车辆功能安全第5部分：产品开发：硬件层面》中，对于等级为 ASIL(B)、C 和 D 的安全目标，硬件架构度量的目标值如何影响安全机制的设计选择，特别是在单点故障、残余故障和潜伏故障的处理上？"
+  },
+  {
+    "index": 7744,
+    "source_text": "《GB∕T 12758-2023 城市轨道交通信号系统通用技术条件》\n#### 7.5.1 功能要求 7.5.1.1 应实现信号系统子系统间、子系统内部以及与外部接口设备间安全可靠的信息交换。 7.5.1.2 应制定相应的安全防护策略，同时应具备多种方式和层次的访问控制安全机制，且应满足信息安全防护等级的要求。 7.5.1.3 应具备数据通信网络管理功能。 #### 7.5.2 技术要求 7.5....",
+    "context_text": "《GB∕T 12758-2023 城市轨道交通信号系统通用技术条件》\n7.4.2.10 联锁道岔应能实现进路锁闭、区段锁闭及人工锁闭，应能实行单独操纵和进路选动；影响行车效率的联动道岔宜采用同时启动方式。 7.4.2.11 进路锁闭应分为预先锁闭和接近锁闭。进路解锁应分为进路一次性解锁方式和逐段解锁方式。锁闭的进路可随列车运行自动解锁或人工办理取消进路解锁，并应防止错误解锁。当接近锁闭时，取消进路应延时解锁或收到停车保证信息后立即解锁。延时解锁时间应保证列车能在进路解锁前安全停车。 7.4.2.12 进路办理宜采用进路的始终端控制方式，也可采用其他进路控制方式。当联锁设备与行车指挥控制设备结合...",
+    "question": "在城市轨道交通信号系统中，当联锁道岔的控制模式从联锁集中控制转换为人工现地控制时，需要考虑哪些安全措施和操作流程，以确保转换过程中的行车安全？"
+  },
+  {
+    "index": 2037,
+    "source_text": "《27_metro_train_control_systems》\n<div style=\"text-align: center;\">Figure 1 – Simplified block diagram of a typical metro train control system.</div>",
+    "context_text": "《27_metro_train_control_systems》\nATO is the subsystem that drives the train between stations within the constraints established by the ATP subsystem. The functionality of the ATO will vary depending on the grade of automation – if the railway is fully automated the ATO will need to replace all the f...",
+    "question": "在地铁列车控制系统中，ATO子系统的安全完整性等级（SIL）定义为2，而ATP子系统需要持续准确地知道列车的位置和速度。基于这两点，如果一个地铁系统从半自动升级到全自动，ATO和ATP子系统之间的交互和依赖关系将如何变化，以确保系统的安全性和可靠性？"
+  },
+  {
+    "index": 4934,
+    "source_text": "《Baseline4-r1_subset-026_v400》\n[38] [39] (The ERTMS/ETCS on-board equipment is interfaced to the National System through an STM) AND (The ERTMS/ETCS level switches to 0,1 or 2) AND (a National Trip Pr...",
+    "context_text": "《Baseline4-r1_subset-026_v400》\n--- ## ERA * UNISIG * EEIG ERTMS USERS GROUP\n\n《Baseline4-r1_subset-026_v400》\n[18] [19] (the train/engine receives and uses a trip order given by balise) AND (override is not active) (driver selects &quot;exit Shunting&quot;) AND (train is at standstill).;\n[18] [20] (th...",
+    "question": "在《Baseline4-r1_subset-026_v400》中，当列车接收到由应答器（balise）发出的停车命令且“覆盖”功能未激活时，哪些条件组合会导致列车采取不同的制动措施（服务制动或紧急制动），并请分析这些条件组合之间的主要差异。"
+  },
+  {
+    "index": 1885,
+    "source_text": "《24_Points》\ntiming factors that need to be considered in determining the total time of operation, including the time that elapses between the signaller initiating the setting of a route over a set of ...",
+    "context_text": "《24_Points》\n--- Figure 1 – A point machine with integral levers for manual operation and for switching between auto and manual. Photo Francis How.\n\n《24_Points》\n<div style=\"text-align: center;\"><img src=\"https://pplines-online.bj.bcebos.com/deploy/official/paddleocr/pp-ocr-vl//8a84265a-20d6-4c4f-b2b2...",
+    "question": "在设计铁路道岔时，考虑到“run-through”情况，比较传统锁定道岔与可追踪道岔（trailable points）的设计差异，以及这些差异如何影响道岔的安全性和维护成本。"
+  },
+  {
+    "index": 240,
+    "source_text": "《13_train protection_update》\n“Describe a system which provides train protection for a stop signal or limit of movement authority. Using a diagram, clearly describe each of the following: (i) How the s...",
+    "context_text": "《13_train protection_update》\nWe hope our 'Back to Basics' series is interesting to all members, bringing topics that underpin our profession into focus in a simply understood, yet comprehensive way, making continuing professional development straightforward.\n\n《13_train protection_update》\nWe particul...",
+    "question": "基于《13_train protection_update》中描述的列车保护系统，如果一个列车在接近显示停止信号或移动授权限制的信号机时，其速度控制系统出现故障，无法正常减速，那么该系统将如何确保列车不会越过停止信号或超出移动授权限制？请结合系统的工作流程、控制逻辑以及与信号系统的接口进行分析。"
+  },
+  {
+    "index": 5758,
+    "source_text": "《Baseline4-r1_subset-026_v400》\nName Description Qualifier for the Radio Network type Indicates with which radio communication system(s) the trackside is fitted. Qualifier for the Radio Network type In...",
+    "context_text": "《Baseline4-r1_subset-026_v400》\nName Description Qualifier for track kilometre direction. Qualifier to indicate the direction of counting of the geographical position track kilometre in relation to the geographical position reference balise group directionality. Qualifier for track kilometre directio...",
+    "question": "在《Baseline4-r1_subset-026_v400》标准中，如果一个列车从一个使用FRMCS+GSM-R无线电网络的国家进入一个仅使用GSM-R无线电网络的国家，且在进入新国家的第一个应答器组中Q_NEWCOUNTRY值为1，那么在该应答器组之前和之后的应答器组中，Q NETWORKTYPE的值将如何变化？"
+  },
+  {
+    "index": 8637,
+    "source_text": "《GB∕T 20438.7-2017 电气电子可编程电子安全相关系统的功能安全　第7部分技术和措施概述》\n设计复审 C.5.16  \n设计规则检查(DRC) E.37  \n设计和编码标准 C.2.6  \n生产工艺的质量控制 E.43  \n适度降级 C.3.8  \n时间触发架构 C.3.11  \n时间排序规范语言(LOTOS) C.2.4.5  \n时间佩特里(Peri)网 B.2.3.3  \n事件树...",
+    "context_text": "《GB∕T 20438.7-2017 电气电子可编程电子安全相关系统的功能安全　第7部分技术和措施概述》\n来自温度传感器和条件报警的交错  \n  \n报文 ..... A.10.4  \n浪涌抗扰性测试 ..... B.6.2  \n老化测试 ..... E.40  \n离线数值分析 ..... C.2.3  \n利用冗余硬件进行测试 ..... A.2.1  \n利用软件进行相互比较 ..... A.3.5  \n利用软件进行自测试:漫步位(单通道) ..... A.3.2  \n利用软件进行自测试:有限模式数  \n  \n（单通道） ..... A.3.1  \n利用一个修改的汉明码进行 RAM 监视， --...",
+    "question": "在《GB∕T 20438.7-2017 电气电子可编程电子安全相关系统的功能安全 第7部分技术和措施概述》中，比较“利用软件进行自测试:漫步位(单通道)”（A.3.2）和“‘漫步路径’法 RAM 测试”（A.5.2），分析两者在检测RAM故障时的主要差异和各自的适用场景。"
+  },
+  {
+    "index": 4077,
+    "source_text": "《Baseline3-r2_subset-026_v360》\n##### 7.5. 0.3 A NVMAXREDADH3",
+    "context_text": "《Baseline3-r2_subset-026_v360》\n##### 7.5. 0.2 A NVMAXREDADH2\n\n《Baseline3-r2_subset-026_v360》\nName Description Maximum deceleration under reduced adhesion conditions (2) Maximum deceleration under reduced adhesion conditions applicable for trains:  • with brake position “Passenger train in P”, and  •...",
+    "question": "在《Baseline3-r2_subset-026_v360》标准中，比较“最大减速度在低附着条件下的限制（2）”（NVMAXREDADH2）和“最大减速度在低附着条件下的限制（3）”（NVMAXREDADH3）的适用范围和特殊值设置，分析这两种设置对不同类型列车（乘客列车与货运列车）在低附着条件下的制动策略有何不同影响？"
+  },
+  {
+    "index": 10804,
+    "source_text": "《R122020_201116_Wanstead_Park_23012020》\na. Network Rail’s inspection and maintenance processes were insufficiently rigorous to identify timber deterioration before an unsafe situation developed (parag...",
+    "context_text": "《R122020_201116_Wanstead_Park_23012020》\nc. Network Rail was not aware of the severity of the longitudinal timber degradation and so took no action to deal with this (paragraph 95, see action already taken (paragraphs 171 to 173) hence no recommendation, Learning point 2) d. the condition of the trai...",
+    "question": "基于Wanstead Park事故报告中的信息，分析并比较Network Rail的轨道检查与维护流程和VTG的车辆检查流程，指出两者在预防事故方面的主要不足，并提出改进措施。"
+  },
+  {
+    "index": 6031,
+    "source_text": "《Baseline4-r1_subset-026_v400》\n--- ## ERA * UNISIG * EEIG ERTMS USERS GROUP",
+    "context_text": "《Baseline4-r1_subset-026_v400》\n--- ## ERA * UNISIG * EEIG ERTMS USERS GROUP\n\n《Baseline4-r1_subset-026_v400》\nClause number ETCS on-board requirement Clause classification ETCS trackside requirement Clause classification Definition Clause classification Informative Clause classification Others;\nClause...",
+    "question": "在《Baseline4-r1_subset-026_v400》标准中，ETCS车载要求和轨旁要求的条款分类均为“x”，这表明这些条款在标准中的角色是什么？结合条款4.5至4.8的内容，分析这些条款主要涉及ETCS系统的哪些方面，并推断出它们对系统设计的影响。"
+  },
+  {
+    "index": 6383,
+    "source_text": "《era spd 2023-2025》\nProject Name 001MRA1116;\nProject Name NSA Monitoring implementation FTE 4.62 Additional FTE from SAP 0.31 Budget assigned € 142,500 Output indicator No. of audit reports delivered ...",
+    "context_text": "《era spd 2023-2025》\nProject Name 006REC1128;\nProject Name Manage the evolution of Telematics application for freight (TAF TSI) FTE 1.42 Budget assigned € 18,050 Output indicator Change requests included in TAF technical appendices, according to the CCM process Output Target Q4 2023;\nProject Name Man...",
+    "question": "在《era spd 2023-2025》中，比较“Manage the evolution of Telematics application for freight (TAF TSI)”和“Manage the evolution of Telematics application for passengers (TAP TSI)”两个项目的输出目标，分析为什么TAP TSI项目的输出目标在Q2和Q4 2023都有，而TAF TSI项目只有Q4 2023的输出目标，这反映了两者在项目管理和实施上的哪些可能差异？"
+  },
+  {
+    "index": 9051,
+    "source_text": "《GB∕T 34590.11-2022道路车辆功能安全第11部分：半导体应用指南》\n表 D.5 使用与图 C.1 相同的格式报告了永久性故障的定量分析示例。分析中考虑的安全机制是：——电压监控器探测过压(安全机制 SM2)和欠压(安全机制 SM1)失效； ——独立 ADC 通道检测调节电压的变化高于  $ \\Delta = 5 \\, mV $  (安全机制 SM3)，安全机制在 5.2.4.11 ...",
+    "context_text": "《GB∕T 34590.11-2022道路车辆功能安全第11部分：半导体应用指南》\n元器件 总计 子元器件 总计 安全相关组件或非安全相关组件 总计 失效模式 总计 在缺少安全机制时，失效模式对IC级别的潜在影响a 总计 故障模型b 总计 失效分布 总计 失效率FIT 总计 安全故障数量 总计 预防违背安全要求的安全机制 总计 对于违背安全要求的失效模式覆盖率 总计 残余或单点故障失效率FIT 总计 预防潜伏故障的安全机制 总计 对于潜伏失效的失效模式覆盖率 总计 潜伏多点故障失效率FIT 1.16×10-3;\n元器件 总失效率 子元器件 总失效率 安全相关组件或非安全相关组件 总失效率 失效...",
+    "question": "根据《GB∕T 34590.11-2022道路车辆功能安全第11部分：半导体应用指南》中提供的安全机制（SM1、SM2、SM3、SM5、SM6）及其失效模式覆盖率，如果需要设计一个具有更高单点故障度量和潜伏故障度量的系统，哪些安全机制的组合最有可能实现这一目标，为什么？"
+  },
+  {
+    "index": 2683,
+    "source_text": "《Baseline3-mr1_subset-026_v340》\nONBOARD-FUNCTIONS Manage Route Suitability RELATED SRS § 3.12.2 F S X L S X O S X;\nONBOARD-FUNCTIONS Manage Text Display to the driver RELATED SRS § 3.12.3 S B X F S X ...",
+    "context_text": "《Baseline3-mr1_subset-026_v340》\nONBOARD-FUNCTIONS Request MA on reception of &quot;track ahead free up to the level 2/3 transition location&quot; (only level 0,1,NTC) RELATED SRS § 3.8.2.7.1 S B X F S X L S X S R X O S X U N X T R X P T X S N X;\nONBOARD-FUNCTIONS Request MA on track description dele...",
+    "question": "在《Baseline3-mr1_subset-026_v340》中，哪些功能与速度监控和管理直接相关，并且在触发紧急制动时可能被优先考虑？请根据功能的描述和优先级规则进行推理。"
+  },
+  {
+    "index": 310,
+    "source_text": "《15_Telecoms》\nSome railways provide lineside telephones for the public at level crossings so they can contact the signaller in an emergency or to obtain permission to cross the track. Other lineside p...",
+    "context_text": "《15_Telecoms》\nIf there is an accident it is important that the emergency services can be contacted quickly to help with recovery and reach any injured people. In many cases the emergency services provide their own communications systems but when access distances are extended, for example in sub-surf...",
+    "question": "在铁路的子系统中，当需要在地下车站、隧道或偏远地区提供应急服务通信支持时，比较使用铁路提供的线路电话与应急服务自带的通信系统，哪种方式在技术实现上更为复杂，为什么？"
+  },
+  {
+    "index": 11077,
+    "source_text": "《R2DATO_D13.1_Moving-Block-Specifications-applying a train-centric approach》\n(e.g., whether or not to \"stop if in SR\" balise, whether or not to apply packet 88, whether or not to apply reference balis...",
+    "context_text": "《R2DATO_D13.1_Moving-Block-Specifications-applying a train-centric approach》\nThe general experience with a substantial subset of today's interlockings (IXL) is that there is no standardised interface to it which causes a lot of project engineering and development effort in interfacing systems. Often...",
+    "question": "在ETCS的实施过程中，不同国家的非标准化规则和选择使用不同的Class B系统如何影响列车控制系统的集成复杂度和项目周期？"
+  },
+  {
+    "index": 1244,
+    "source_text": "《2024_Communications-Based Train Control (CBTC) Komponenten, Funktionen und Betrieb (German Edition) _LarsSchnieder》\n• Daten zur Gleistopologie wie Weichen, Kreuzungen und Gleisenden.",
+    "context_text": "《2024_Communications-Based Train Control (CBTC) Komponenten, Funktionen und Betrieb (German Edition) _LarsSchnieder》\n## V orbereitung des Simulationsmodells Für den in der Simulation zu betrachtenden Streckenbereich müssen die für die Durchführung der verschiedenen Betrachtungen erforderlichen Grund...",
+    "question": "在CBTC系统中，如何利用基础设施数据、安全逻辑数据和车辆运行规定数据来优化列车在复杂轨道拓扑（如包含多条岔线和交叉点）上的运行效率？"
+  },
+  {
+    "index": 226,
+    "source_text": "《13_train protection_update》\nOther ETCS levels also exist, including those working with a national ATP system through a Specific Transmission Module (Level STM), and Level 0 when an equipped train is ...",
+    "context_text": "《13_train protection_update》\nLevel 2 adds a Radio Block Centre (RBC) and provides continuous update of movement authority and all associated infrastructure data by radio. For ETCS the currently specified radio link is via a continuously open GSM-R call. However, this is likely to change as train rad...",
+    "question": "结合Level 2和Level 3的描述，分析在引入4G/LTE或5G技术后，哪种ETCS级别更有利于实现自动列车操作（ATO）的全面部署，并说明理由。"
+  },
+  {
+    "index": 8353,
+    "source_text": "《GB∕T 20438.6-2017 电气,电子,可编程电子安全相关系统的功能安全 第6部分》\n$ PFH_{SYS}=7.7\\times10^{-7}/h $  ## 属于安全完整性等级2 b）在 1002 中将单一输出设备改变为两个设备 $ \\beta=10\\%,\\beta_{D}=5\\% $  --- $$ PFH_{s}=5.2\\times10^{-7}/h $$   $$ PFH_{L}...",
+    "context_text": "《GB∕T 20438.6-2017 电气,电子,可编程电子安全相关系统的功能安全 第6部分》\n结构 1001 DC 0% $ \\lambda_{D}=0.5E-06 $ 5.0E-07;\n结构 1001 DC 60% $ \\lambda_{D}=0.5E-06 $ 2.0E-07;\n结构 1001 DC 90% $ \\lambda_{D}=0.5E-06 $ 5.0E-08;\n结构 1001 DC 99% $ \\lambda_{D}=0.5E-06 $ 5.0E-09;\n结构 注:此表摘自表B.12。 DC 注:此表摘自表B.12。 $ \\lambda_{D}=0.5E-06 $ 注:此表摘...",
+    "question": "根据《GB∕T 20438.6-2017 电气,电子,可编程电子安全相关系统的功能安全 第6部分》中提供的数据，如果要将一个当前属于安全完整性等级1的系统提升至安全完整性等级2，通过改变输入传感器类型和安装方式（将 $ \\beta $ 从 20% 改进为 10%， $ \\beta_{D} $ 从 10% 改进为 5%）与将单一输出设备改变为两个设备（$ \\beta=10\\%,\\beta_{D}=5\\% $）两种方法，哪一种方法对系统整体的PFH值降低效果更显著，为什么？"
+  },
+  {
+    "index": 4005,
+    "source_text": "《Baseline3-r2_subset-026_v360》\n--- ## ERA * UNISIG * EEIG ERTMS USERS GROUP \n<table border=1 style='margin: auto; width: max-content;'><tr><td style='text-align: center;'></td><td style='text-align: c...",
+    "context_text": "《Baseline3-r2_subset-026_v360》\nDescription Transmitted by Messages between trackside and on-board devices, which contain information used by applications outside the ERTMS/ETCS system. Any Messages between trackside and on-board devices, which contain information used by applications outside the ERT...",
+    "question": "在《Baseline3-r2_subset-026_v360》标准中，当 NID_XUSER = 102 时，NID_NTC 字段的长度为 8 位，而当 M_LEVELTR = 1 时，NID_NTC 字段同样为 8 位。请分析这两种情况下 NID_NTC 字段的作用是否相同，并说明理由。"
+  },
+  {
+    "index": 1438,
+    "source_text": "《2024_Communications-Based Train Control (CBTC) Komponenten, Funktionen und Betrieb (German Edition) _LarsSchnieder》\n- Phase 5: Das neue Signalsystem wird umfassenden Testaktivitäten in der realen Bet...",
+    "context_text": "《2024_Communications-Based Train Control (CBTC) Komponenten, Funktionen und Betrieb (German Edition) _LarsSchnieder》\n• Phase 3: Bei typischen sicherungstechnischen Projekten wird der Betreiber höchstwahrscheinlich Schulungseinrichtungen für das Personal der Betriebsleitzentrale (Schult et al. 2015) ...",
+    "question": "在CBTC系统的不同测试阶段（Phase 3, Phase 4, Phase 5），每个阶段对运营规则和程序的验证重点有何不同，这些验证重点如何影响最终运营规则的完善？"
+  },
+  {
+    "index": 5986,
+    "source_text": "《Baseline4-r1_subset-026_v400》\nClause number ETCS on-board requirement Clause classification ETCS trackside requirement Clause classification Definition Clause classification Informative Clause classi...",
+    "context_text": "《Baseline4-r1_subset-026_v400》\nClause number ETCS on-board requirement Clause classification ETCS trackside requirement Clause classification Definition Clause classification Informative Clause classification Others;\nClause number 3.15.9.6 Clause classification x;\nClause number 3.15.10 Clause classi...",
+    "question": "在《Baseline4-r1_subset-026_v400》标准中，从3.16.2.4到3.16.2.5.1.1的条款，哪些具体子条款涉及了ETCS车载设备与地面设备之间的数据交换过程，这些子条款在数据交换的安全性和效率方面提出了哪些不同的要求？"
+  },
+  {
+    "index": 7776,
+    "source_text": "《GB∕T 20438.1-2017 电气_电子_可编程电子安全相关系统的功能安全第1部分：一般要求》\n图 1 GB/T 20438 的整体框架 ..... 3  \n图 2 整体安全生命周期 ..... 9  \n图 3 E/E/PE 系统安全生命周期(实现阶段) ..... 10  \n图 4 软件安全生命周期(实现阶段) ..... 11  \n图 5 整体安全生命周期与 E/E/PE 系统安全生命...",
+    "context_text": "《GB∕T 20438.1-2017 电气_电子_可编程电子安全相关系统的功能安全第1部分：一般要求》\n# 中华人民共和国国家标准 GB/T 20438.1—2017/IEC 61508-1:2010 代替 GB/T 20438.1—2006 # 电气/电子/可编程电子安全相关系统的功能安全 第1部分:一般要求 # Functional safety of electrical/electronic/programmable electronic safety-related systems—Part 1: General requirements (IEC 61508-1:2010, IDT...",
+    "question": "在《GB∕T 20438.1-2017 电气_电子_可编程电子安全相关系统的功能安全第1部分：一般要求》中，新增的功能安全管理中人员能力的要求与修改的评估独立性评价方法之间存在怎样的关联，这种关联如何影响E/E/PE系统的安全性和可靠性？"
+  },
+  {
+    "index": 12899,
+    "source_text": "《T_CAMET 04010.4-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通系统规范 第4部分-互联互通危害分析》\n编号 编号 事故场景 安全要求/运用限制条件;\n编号 Ref-1.2 事故场景 列车侧面相撞 编号 PH-48 互联互通 他线RM模式列车进入联络线时侧面撞击本线非装备列车 危害编号 SHA-27 互联互通信号系统场景危害分解 联络线计轴点设置不满足侧防安...",
+    "context_text": "《T_CAMET 04010.4-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通系统规范 第4部分-互联互通危害分析》\n编号 编号 事故场景 安全要求/运用限制条件;\n编号 Ref-1.2 事故场景 列车侧面相撞 编号 PH-47 互联互通 本线非装备列车侧面撞击进入联络线的他线RM模式列车 危害编号 SHA-26 互联互通信号系统场景危害分解 跨线进路设计时，不符合跨线进路信号开放要求 安全要求 SR-S-67 安全要求 互联互通跨线进路应遵循统一原则，保证进路正确 系统功能 进路/区段锁闭;\n编号 Ref-1.2 事故场景 列车侧面相撞 编号 PH-47 互联互通 ...",
+    "question": "在城市轨道交通基于通信的列车运行控制系统(CBTC)互联互通系统规范中，针对联络线CI-CI和ZC-ZC接口信息传输错误的安全要求有何异同，这些差异对系统设计有何影响？"
+  },
+  {
+    "index": 13946,
+    "source_text": "《T_CAMET 04012.2-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通测试规范第2部分-点式部分测试及验证》\n功能名称 测试需求编号 应答器报文结构定义——线路编号 CBTC-IF-BALISE-MSG-ITC-17;\n功能名称 功能内容 应答器报文结构定义——线路编号 线路编号对应变量名为NID_L，采用10位表示 线路编号采用区域内统一编号的方式，可在区域线路...",
+    "context_text": "《T_CAMET 04012.2-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通测试规范第2部分-点式部分测试及验证》\n功能名称 测试需求编号 应答器报文结构定义——报文计数器 CBTC-IF-BALISE-MSG-ITC-15;\n功能名称 功能内容 应答器报文结构定义——报文计数器 报文计数器对应变量名为M_MCOUNT，采用8位表示。单个应答器会对应多条报文，本变量表示本报文在这些报文中的序号。固定应答器只包含一条报文，M_MCOUNT设为255。有源应答器默认报文，M_MCOUNT设为252。LEU默认报文，M_MCOUNT设为0。M_MCOUNT值禁用253和2...",
+    "question": "在CBTC系统中，如果一个有源应答器接收到LEU发送的默认报文，其M_MCOUNT值应设为0还是252？请根据应答器报文结构定义中的规定进行推理并说明理由。"
+  },
+  {
+    "index": 6770,
+    "source_text": "《era spd 2024-2026》\nGroup and Grade 2019 Average seniority in the grade among reclassified staff 2020 Average seniority in the grade among reclassified staff 2021 Average seniority in the grade among ...",
+    "context_text": "《era spd 2024-2026》\nDecision N° 123 of the Administrative Board of the European Railway Agency on the general provisions for implementing Article 87(1) of the Conditions of Employment of Other Servants of the European Union and implementing the first paragraph of Article 44 of the Staff Regulations....",
+    "question": "根据《era spd 2024-2026》中提供的数据，AD 5 至 AD 14 级别和 AST 1 至 AST 10 级别（包括 AST/SC 1 至 AST/SC 5）的临时员工和合同员工在2018年至2023年的平均职级年限，哪一组别在2022年的平均职级年限变化最大？请分析可能的原因。"
+  },
+  {
+    "index": 9883,
+    "source_text": "《GB∕T 43267-2023道路车辆预期功能安全》\n[22] EN 50126-2:2017 Railway Applications—The Specification and Demonstration of Reliability, Availability, Maintainability and Safety (RAMS)—Part 2: Systems Approach to Sa...",
+    "context_text": "《GB∕T 43267-2023道路车辆预期功能安全》\n[15] ISO 11452-4 Road vehicles—Component test methods for electrical disturbances from narrowband radiated electromagnetic energy—Part 4: Harness excitation methods [16] ISO/IEC/IEEE 15288, Systems and software engineering—System life cycle processes [17] ISO 20077 Road V...",
+    "question": "在《GB∕T 43267-2023道路车辆预期功能安全》及其引用的多个标准中，哪些标准特别强调了系统生命周期过程中的安全性和质量管理体系要求，它们在铁路车辆与道路车辆的应用中有哪些共通点和差异？"
+  },
+  {
+    "index": 10329,
+    "source_text": "《IEEE Std 1474.1-2025 IEEE Standard for Communications-Based Train Control (CBTC) Performance and Functional Requirements》\nUsers of IEEE Standards documents should be aware that these documents may be...",
+    "context_text": "《IEEE Std 1474.1-2025 IEEE Standard for Communications-Based Train Control (CBTC) Performance and Functional Requirements》\nSubject to payment of the appropriate licensing fees, IEEE will grant users a limited, non-exclusive license to photocopy portions of any individual standard for company or orga...",
+    "question": "在使用《IEEE Std 1474.1-2025 IEEE Standard for Communications-Based Train Control (CBTC) Performance and Functional Requirements》时，如果发现该标准已超过10年未更新，且存在多个修正案和勘误表，用户应如何确保所使用的信息既是最新的又是准确的，同时考虑到版权使用限制？"
+  },
+  {
+    "index": 8198,
+    "source_text": "《GB∕T 20438.4-2017 电气电子可编程电子安全相关系统的功能安全 第4部分：定义和缩略语》\n<div style=\"text-align: center;\"><img src=\"https://pplines-online.bj.bcebos.com/deploy/official/paddleocr/pp-ocr-vl//91e4c15d-f13a-477c-99b6-59bc69...",
+    "context_text": "《GB∕T 20438.4-2017 电气电子可编程电子安全相关系统的功能安全 第4部分：定义和缩略语》\n<div style=\"text-align: center;\"><img src=\"https://pplines-online.bj.bcebos.com/deploy/official/paddleocr/pp-ocr-vl//91e4c15d-f13a-477c-99b6-59bc6980486a/markdown_0/imgs/img_in_image_box_235_854_1105_1288.jpg?authorization=bce-auth-v1%2F5cfe9a5e14...",
+    "question": "根据《GB∕T 20438.4-2017 电气电子可编程电子安全相关系统的功能安全 第4部分：定义和缩略语》中功能单元的配置和归纳的观点，分析在设计一个铁路安全系统时，如何通过功能单元的层级配置来优化系统的安全性和可靠性？"
+  },
+  {
+    "index": 13732,
+    "source_text": "《T_CAMET 04012.1-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通测试规范第l部分-CBTC部分测试及验证》\n功能名称 测试需求编号 物理接口 CBTC-IF-V0BC/ATS-MSG-CTC-I;\n功能名称 功能内容 物理接口 V0BC与ATS之间采用冗余网络进行通信。ATS与V0BC之间的网络拓扑结构采用A网-A网，B网-B网两个链路;\n功能名称 测试需求...",
+    "context_text": "《T_CAMET 04012.1-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通测试规范第l部分-CBTC部分测试及验证》\n功能名称 测试需求编号 CI向VOBC发送厂商自定义帧 CBTC-IF-VOBC/CI-MSG-CTC-25;\n功能名称 功能内容 CI向VOBC发送厂商自定义帧 自定义信息，用于实现各厂商特有功能。各厂商分别定制，VOBC收到非本厂商的厂商自定义帧后，可不进行处理。发送方判断接收方与自己属于同一厂商时方可发送;\n功能名称 测试需求 CI向VOBC发送厂商自定义帧 见各厂商设计文件; #### 6.7.17 CI 向 VOBC 发送注销回复帧 CI...",
+    "question": "在CBTC系统中，CI向VOBC发送注销回复帧时，为何规定“注销回复”包、“状态信息”包、“心跳”包不应同时存在于同一GAL包中，这种设计对系统通信效率和安全性有何影响？"
+  },
+  {
+    "index": 4126,
+    "source_text": "《Baseline3-r2_subset-026_v360》\n##### 7.5.1.29 D SUITABILITY",
+    "context_text": "《Baseline3-r2_subset-026_v360》\nName Description;\nName Length of variable Distance to start of reversing permitted area Minimum Value Distance to start of reversing permitted area Maximum Value Distance to start of reversing permitted area Resolution/formula;\nName 15 bits Distance to start of reversi...",
+    "question": "在《Baseline3-r2_subset-026_v360》标准中，距离变量（如距离可逆区域开始、国际 SSP 轮廓中下一个不连续点的距离、以及路线适宜性变化点的距离）的分辨率（10 cm、1 m 或 10 m）取决于 Q_SCALE 参数。请分析并解释 Q_SCALE 参数的不同设置如何影响这些距离变量的精度和系统性能，特别是在高速和低速列车运行场景中。"
+  },
+  {
+    "index": 11488,
+    "source_text": "《R2DATO_D37.3_Requirements-specification-to-FA1-WP8-9》\nFigure 7 illustrates the track layout for the Hospitalet-Aragó section, a full description of this line and the others is available at  $ [7] $ .",
+    "context_text": "《R2DATO_D37.3_Requirements-specification-to-FA1-WP8-9》\nScenario Reference TTD Current (ETCS Level 2) VSS - Rolling Stock Current;\nScenario 1 TTD Current VSS From 25 m to max. TTD length Rolling Stock All trains with TIMs; --- ### 5.7 SPAIN: CERCANÍAS BARCELONA #### 5.7.1 Infrastructure\n\n《R2DATO_D37....",
+    "question": "在《R2DATO_D37.3_Requirements-specification-to-FA1-WP8-9》文档中，比较西班牙巴塞罗那和法国里尔的铁路项目，两者都计划使用ETCS Level 2信号系统，但巴塞罗那项目涉及现有线路的改造，而里尔项目则包括新线路的建设。基于这些信息，分析并推理在实施ETCS Level 2时，两个项目各自面临的主要挑战和设计考量可能有哪些不同？"
+  },
+  {
+    "index": 10942,
+    "source_text": "《R142020_201119_Bromsgrove_23032020》\n'All employees have a duty to report if they feel the onset of fatigue at the commencement or at any point during their shift, to the Control Duty Manager.' ---",
+    "context_text": "《R142020_201119_Bromsgrove_23032020》\nAlthough the driver had been awake for approximately 13 hours before starting his shift, there is no evidence to suggest that he was particularly tired at the time of the accident. His time awake would have affected his level of fatigue later in the shift, $ ^{2}...",
+    "question": "根据DB Cargo的‘疲劳管理政策’和事故报告中的描述，分析在此次事故中，如果司机在签到时或行程中报告了疲劳或个人问题，是否可能改变事故的结果，并解释原因。"
+  },
+  {
+    "index": 5832,
+    "source_text": "《Baseline4-r1_subset-026_v400》\n##### 7.5.1.155 V AXLELOAD \nName Description; --- Length of variable 7 bits Minimum Value 0 km/h Maximum Value 600 km/h Resolution/formula 5 km/h;\nLength of variable Spe...",
+    "context_text": "《Baseline4-r1_subset-026_v400》\n###### 7.5.1.154.1 T_VBC\n\n《Baseline4-r1_subset-026_v400》\nName Description VBC validity period Time period in which the VBC is applicable VBC validity period Time period in which the VBC is applicable VBC validity period Time period in which the VBC is applicable;\nName ...",
+    "question": "在《Baseline4-r1_subset-026_v400》标准中，VBC 有效期限（T_VBC）的最大值为 6120 小时（255 天），而绝对正速度（Absolute Positive Speed）和授权移动终点的允许速度（Permitted speed at the End of Movement Authority）的最大值均为 600 km/h。请分析这三种参数的最大值设定背后的逻辑差异，并讨论这些差异对系统设计的影响。"
+  },
+  {
+    "index": 10294,
+    "source_text": "《IEEE 1474.1-2004》\n$$  CBTC system availability=system MTBFF/(system MTBFF+system MTTRS) $$  where System MTTRS is the sum of the system MTTR and the mean travel times for maintenance personnel to tra...",
+    "context_text": "《IEEE 1474.1-2004》\n1—Catastrophic = Fatality, system loss, or severe environmental damage. 2—Critical = Severe injury, severe occupational illness, major system or environmental damage. 3—Marginal = Minor injury, minor occupational illness, or minor system or environmental damage. 4—Negligible = Les...",
+    "question": "根据《IEEE 1474.1-2004》中对CBTC系统可用性的定义，如果一个CBTC系统的MTBFF为10000小时，MTTR为2小时，且维护人员到达故障现场的平均时间为1小时，那么该系统的可用性是多少？进一步地，如果要将系统可用性提高到99.99%，在不改变MTBFF的情况下，需要将维护人员的平均到达时间减少到多少？"
+  },
+  {
+    "index": 8258,
+    "source_text": "《GB∕T 20438.5-2017 电气,电子,可编程电子安全相关系统的功能安全 第5部分：确定安全完整性等级的方法示例》\n选择的方法应取决于应用领域和所考虑的特定环境。附录 C、附录 D、附录 E、附录 F 和附录 G 列出了定性和定量的方法并为说明基础的原理进行了简化。通过这些附录，说明了一系列方法的通用原理，但不提供明确的计算。如使用附录中提到的方法需查询有关原始材料。 注：如想获取更多关...",
+    "context_text": "《GB∕T 20438.5-2017 电气,电子,可编程电子安全相关系统的功能安全 第5部分：确定安全完整性等级的方法示例》\n注3：单一E/E/PE安全相关系统不一定是单通道架构。 注 $ ^{4} $ ：对于非复杂系统，通过安全相关系统的设计实现更优目标安全完整性是可能的。但对于相对复杂的系统（例如可编程电子安全相关系统），这些限值代表了目前能够达到的水平。 --- 基于工业实践中获取的经验和判断，设定了避免和控制系统性故障的要求；即使发生系统性故障的可能性一般不能量化，但 GB/T 20438 允许为一个特定的安全功能做出声明，即如果标准中的所有要求都满足，认为与安全功能相关的目标失效量已...",
+    "question": "在《GB∕T 20438.5-2017》中，对于复杂和非复杂E/E/PE安全相关系统，标准如何通过不同的方法和要求来确保达到相同的安全完整性等级？请比较并说明这些方法在实际应用中的选择依据。"
+  },
+  {
+    "index": 4896,
+    "source_text": "《Baseline4-r1_subset-026_v400》\n4.4.20.1.11 While the ERTMS/ETCS on-board is in Passive Shunting mode, the reception of level transition orders has no immediate effect. The level transition announcemen...",
+    "context_text": "《Baseline4-r1_subset-026_v400》\n4.4.20.1.9 If a desk of the Passive Shunting engine is opened and \"Stop Shunting on desk opening\" information previously received from balise group is stored onboard, the ERTMS/ETCS on-board equipment shall switch to Stand By mode.\n\n《Baseline4-r1_subset-026_v400》\n4.4.2...",
+    "question": "在《Baseline4-r1_subset-026_v400》中，当ERTMS/ETCS车载设备处于被动调车模式时，接收到的等级转换命令和通信会话建立命令的处理方式有何异同，这些处理方式对系统安全性和连续运行有何影响？"
+  },
+  {
+    "index": 9008,
+    "source_text": "《GB∕T 34590.11-2022道路车辆功能安全第11部分：半导体应用指南》\n参考编号 1 相关失效减轻 栅极驱动器附近的温度检测（可接受的距离取决于散热路径的热阻，可通过热仿真得出，检测元件可以是电阻器或双极型晶体管），并且在过温情况下关闭栅极驱动器电源。电源电压调节器中的电流限制，以限制可使芯片升温的功率，并使调节器进入指定的欠压复位状态。独立路径（高边和低边路径，每个由开关晶体管及其相...",
+    "context_text": "《GB∕T 34590.11-2022道路车辆功能安全第11部分：半导体应用指南》\n--- 要素 简称和描述 冗余要素 简称和描述 相关失效引发源 共享资源 相关失效引发源 单个物理性根本原因 相关失效分析 避免(A)或控制(C)故障的措施 相关失效分析 验证方法;\n要素 CPU计算 冗余要素 冗余CPU+硬件比较器 相关失效引发源 影响属于CPU的逻辑和属于冗余CPU的逻辑的闩锁 相关失效分析 (A)按照工艺设计规则做物理分隔，以隔离标准单元避免闩锁(A)与由软错误导致的闩锁相关的物理分隔 相关失效分析 设计规则分析物理布局检查; 在 DFA 带来了架构上的增强之后，微控制器组件框图（见图 ...",
+    "question": "在《GB∕T 34590.11-2022道路车辆功能安全第11部分：半导体应用指南》中，针对栅极驱动器的相关失效引发源和耦合机制，比较三种不同的相关失效减轻措施（温度检测、电流测量、物理分离），哪一种措施在防止相关失效方面更为有效，为什么？"
+  },
+  {
+    "index": 6210,
+    "source_text": "《CZJST 0028—2015城市轨道交通CBTC信号系统-ATP子系统规范》\na) 地面 ATP 传送给 ATS 的信息包括以下内容: 1) 首次上电临时限速确认申请信息 2) 临时限速一次确认信息 3) 临时限速二次确认信息 4) 全线临时限速状态信息 --- ## 5 ）校时信息 b) 首次上电临时限速确认申请信息指地面 ATP 首次上电时向 ATS 汇报上电，并上传存储或初始设置的临时限...",
+    "context_text": "《CZJST 0028—2015城市轨道交通CBTC信号系统-ATP子系统规范》\n--- 8.1.7 车载 ATP/ATO 可通过安全或非安全接口输出表 4 中的开关量信息。 车载 ATP/ATO 输出信号 最大常用制动 安全接口 /;\n车载 ATP/ATO 输出信号 注：“/”表示“对是否安全接口不做要求” 安全接口 注：“/”表示“对是否安全接口不做要求”; 8.1.8 车载 ATP/ATO 可通过电压或电流或通信输出或者继电器级位编码方式输出期望的牵引/制动加速度值。 8.1.9 车载 ATP/ATO 应能与列车管理系统（TMS）实现信息交换。 8.1.10 车载 ATP/ATO 宜能向...",
+    "question": "根据《CZJST 0028—2015城市轨道交通CBTC信号系统-ATP子系统规范》中关于车载 ATP/ATO 与 ATS 以及地面 ATP 与 ATS 之间的信息交换要求，比较并分析在“临时限速”设置/取消过程中，车载 ATP/ATO 与地面 ATP 的角色和功能差异，以及这种设计对系统安全性和效率的影响。"
+  },
+  {
+    "index": 13618,
+    "source_text": "《T_CAMET 04012.1-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通测试规范第l部分-CBTC部分测试及验证》\n功能名称 测试需求编号 模式转换 CBTC-F-ATP-34-CTC-7;\n功能名称 功能内容 模式转换 驾驶模式转换。列车驾驶模式等级由高至低分别为：AM、CM、RM。各驾驶模式满足转换条件可由人工转换，也可自动转换，车载设备应予以记录和显示。为保证...",
+    "context_text": "《T_CAMET 04012.1-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通测试规范第l部分-CBTC部分测试及验证》\n功能名称 测试需求编号 模式转换 CBTC-F-ATP-34-CTC-5;\n功能名称 功能内容 模式转换 驾驶模式转换.列车驾驶模式等级由高至低分别为：AM、CM、RM.各驾驶模式满足转换条件可由人工转换，也可自动转换，车载设备应予以记录和显示。为保证行车安全，列车驾驶模式由AM、CM转换为RM时，列车应停车.驾驶模式由低等级向高等级转换时，列车宜不停车转换驾驶模式;\n功能名称 测试需求 模式转换 驾驶模式的自动转换，点式控制等级AM→连续式控制等...",
+    "question": "在城市轨道交通CBTC系统中，当列车从连续式控制等级的AM模式转换为RM模式时，根据不同的场景（如进入转换轨和进入车辆段/停车场），其转换流程有何不同，这些差异背后的逻辑是什么？"
+  },
+  {
+    "index": 8213,
+    "source_text": "《GB∕T 20438.4-2017 电气电子可编程电子安全相关系统的功能安全 第4部分：定义和缩略语》\n注2：失效率及其不确定度可用传统的统计学由现场反馈数据估算，在使用寿命期间（即老化后至报废前）一个简单项的失效率几乎等于常量， $ \\lambda(t)\\equiv\\lambda $ 。 注3：在给定区间 $$ 0,T $$ 内 $ \\lambda(t) $ 的平均值， $ \\lambda_{...",
+    "context_text": "《GB∕T 20438.4-2017 电气电子可编程电子安全相关系统的功能安全 第4部分：定义和缩略语》\n安全相关组件的属性，定义为平均安全失效率加上检测出的平均危险失效率，与平均安全失效率加上平均危险失效率之比。公式如下：  $$  SFF=(\\sum\\lambda_{Savg}+\\sum\\lambda_{Ddavg})/(\\sum\\lambda_{Savg}+\\sum\\lambda_{Ddavg}+\\sum\\lambda_{Duavg}) $$  如失效率是基于一个常数失效率，则公式简化为：  $$  SFF=(\\sum\\lambda_{S}+\\sum\\lambda_{Dd})/(\\sum...",
+    "question": "在铁路安全系统设计中，如果一个系统由多个冗余组件构成，且这些组件的失效率在使用寿命期间几乎为常量，那么该系统的平均失效率（$\\lambda_{avg}$）与系统失效率（$\\lambda_{as}$）在实际应用中会有何不同？这种差异对系统的要求时危险失效平均概率（PFD$_{avg}$）有何影响？"
+  },
+  {
+    "index": 13846,
+    "source_text": "《T_CAMET 04012.2-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通测试规范第2部分-点式部分测试及验证》\n功能名称 测试需求编号 确定 CBTC 列车位置 CBTC-F-ATP-2-ITC-6;\n功能名称 功能内容 确定 CBTC 列车位置 列车完整性检测。CBTC 系统应能实现列车的完整性检测。当车载设备检测到列车完整性信息丢失，列车完整性检查电路中断时，应...",
+    "context_text": "《T_CAMET 04012.2-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通测试规范第2部分-点式部分测试及验证》\n功能名称 测试需求编号 确定 CBTC 列车位置 CBTC-F-ATP-2-ITC-4;\n功能名称 功能内容 确定 CBTC 列车位置 位置误差校正。CBTC 列车位置的确定应考虑测距误差的影响，并对位置误差考虑合适的余量;\n功能名称 测试需求 确定 CBTC 列车位置 装备 CBTC 系统、处于 RM 控制级别的车载 ATP 设备，在向 ATS 汇报列车位置的同时，也汇报车载 ATP 系统考虑到安全因素而计算的位置不确定性（包括列车的正反向运行）; ...",
+    "question": "在CBTC系统中，当列车处于点式控制级别和RM控制级别时，车载ATP设备在检测到列车完整性丢失后，其处理方式有何不同，这些不同对后续追踪列车的安全防护措施有何影响？"
+  },
+  {
+    "index": 1792,
+    "source_text": "《22_Interfaces and Interactions between Railway Control v2》\nIf a passenger train is stopped at a signal and any part of the train is within a station platform, passengers may attempt to board or aligh...",
+    "context_text": "《22_Interfaces and Interactions between Railway Control v2》\nThe ability of a driver to see signals at the minimum reading distance can be adversely affected by the walls of the tunnels, particularly if clearance within the tunnel is tight, or the tunnel is curved. It can be difficult for a driver to...",
+    "question": "在铁路控制中，哪些环境因素共同影响司机对信号的识别，特别是在隧道出口和桥梁附近，以及如何通过信号的位置设计来减轻这些影响？"
+  },
+  {
+    "index": 12242,
+    "source_text": "《R2DATO_D7.1_Requirements-and-specifications-for-Data-Factory》\nThe attribute Occlusion of type Single-Select shall be set for all annotations within camera (visual + infrared) images and LiDAR point c...",
+    "context_text": "《R2DATO_D7.1_Requirements-and-specifications-for-Data-Factory》\nAnnotations shall have precision of at least 3 px, i.e. they shall not differ by more than 3 px from the representation of the physical object unless specified differently by the annotation type. ## DAE-903 - Assign sensor-depended attri...",
+    "question": "在《R2DATO_D7.1_Requirements-and-specifications-for-Data-Factory》中，如果一个物体在相机图像中被其他物体遮挡了50%，同时有30%的部分超出了图像边界，那么该物体的注释属性“Occlusion”和“isTruncated”应该如何设置？"
+  },
+  {
+    "index": 7358,
+    "source_text": "《ES-10306- 202270 0815 IF Manresa (english version)》\nLa CIAF realizó entrevistas al personal de ADIF, Renfe Viajeros e Irvia que tuvo relación con el suceso. También se han llevado a cabo reuniones co...",
+    "context_text": "《ES-10306- 202270 0815 IF Manresa (english version)》\nLa CIAF consideró necesario solicitar información adicional a ADIF para conocer las condiciones de tráfico de la estación de Manresa el día del suceso y a Renfe para conocer las comunicaciones entre el centro de gestión y el maquinista el día del ...",
+    "question": "基于ADIF和Renfe Viajeros提交的调查报告延迟情况，以及CIAF对信息完整性的要求，可以推断出哪些可能的原因导致了CIAF调查过程中的信息获取障碍？"
+  },
+  {
+    "index": 734,
+    "source_text": "《2011_“7·23”甬温线特别重大铁路交通事故调查报告》\n此次事故造成的 40 名死亡人员当中，有旅客 37 人、司乘人员 3 人（其中：男性 25 人、女性 15 人；当场死亡 25 人、送医院途中死亡 13 人、医治无效死亡 2 人）；172 名受伤人员当中，有旅客 169 人、司乘人员 3 人（其中：男性 94 人、女性 78 人）。 <div style=\"text-align: ce...",
+    "context_text": "《2011_“7·23”甬温线特别重大铁路交通事故调查报告》\n14 时 50 分，中铁二十四局抢险救援人员将两台 300 吨汽车吊就位，开始对桥上车体吊移施救。15 时 10 分，D3115 次列车第 15 号车厢被吊至桥下；16 时 30 分，D301 次列车第 5 号车厢被吊至桥下。此时，考虑到车厢里可能还有幸存者，吊动车厢会造成再次伤害，且在吊动过程中，也可能会造成遗体、遗物从车厢里滑落。因此，决定在 --- 桥上对 D3115 次列车 16 号车厢搜救完毕后再吊离。17 时，当把压在 D3115 次列车 16 号车厢上的 D301 次列车 1 号车厢走行部吊开后，救援人员立即进入 16...",
+    "question": "在“7·23”甬温线特别重大铁路交通事故的救援过程中，为什么D3115次列车第16号车厢的救援工作比其他车厢更为复杂和谨慎，这反映了在处理类似事故时应考虑哪些关键因素？"
+  },
+  {
+    "index": 7164,
+    "source_text": "《era spd 2025-2027》\nDecision N° 121 of the Administrative Board of the European Railway Agency laying down the general implementing provisions on the procedure governing the engagement and use of temp...",
+    "context_text": "《era spd 2025-2027》\nFunction Group CA FG IV Grade 18 Average number of years in grade of reclassified staff N/A Average number of years in grade of reclassified staff (55) N/A;\nFunction Group CA FG IV Grade 17 Staff in activity at 01.01.2023 1 Average number of years in grade of reclassified staff (...",
+    "question": "根据《era spd 2025-2027》中提供的不同职级的员工重新分类的平均年限，以及内部流动政策的描述，可以推断出哪些职级的员工在重新分类后更可能参与内部流动，为什么？"
+  },
+  {
+    "index": 7471,
+    "source_text": "《ES-10306- 202270 0815 IF Manresa (english version)》\nA pesar de que el CG de Rodalies dispone de la información sobre las jornadas de los maquinistas en sus aplicaciones informáticas, el CG de Rodalie...",
+    "context_text": "《ES-10306- 202270 0815 IF Manresa (english version)》\n<div style=\"text-align: center;\">Imagen 17 Malla de circulación teórica entre Sant Vicenç de Castellet y Calaf entre las 16:00 y las 18:40. En marrón, los trenes regionales y en rojo los servicios de Rodalies.</div> ---\n\n《ES-10306- 202270 0815 IF ...",
+    "question": "基于提供的信息，分析并比较在 Manresa 站点，由 CG de Rodalies 和 RCM 分别负责的职责差异，以及这种职责分配如何影响了站点操作的效率和安全性？"
+  },
+  {
+    "index": 8232,
+    "source_text": "《GB∕T 20438.4-2017 电气电子可编程电子安全相关系统的功能安全 第4部分：定义和缩略语》\n[10] ISO 8402:1994 Quality management and quality assurance—Vocabulary [11] IEC 60601 (all parts) Medical electrical equipment [12] GB/T 2900.13—20...",
+    "context_text": "《GB∕T 20438.4-2017 电气电子可编程电子安全相关系统的功能安全 第4部分：定义和缩略语》\n## 符合项安全手册 safety manual for compliant items 为确保系统满足 GB/T 20438 标准的要求，针对规定的组件安全功能，提供与组件功能安全有关的所有信息的文档。 #### 3.8.18  ## 经使用证明 proven in use 针对一个组件的特定配置，基于对其运行经验的分析，证明危险的系统性故障的可能性足够低，使得每个使用该组件的安全功能达到其要求的安全完整性等级。 --- ## 參 考 文 献 [1] GB/T 21109(所有部分) 过...",
+    "question": "在电气/电子/可编程电子安全相关系统的功能安全标准中，如何利用“经使用证明”（proven in use）的概念来评估一个组件的安全完整性等级（SIL），并说明这一评估方法与通过“符合项安全手册”（safety manual for compliant items）进行评估的主要区别和联系？"
+  },
+  {
+    "index": 10056,
+    "source_text": "《IEEE 1474.1-2004》\nThe CBTC system means time between functional failure (MTBFF) requirements (see 5.4.3) shall include consideration of all Type 1 and Type 2 failures. The CBTC system means time betw...",
+    "context_text": "《IEEE 1474.1-2004》\na) Type 1: Those failures, or combination of failures, that impact on-time performance of the transit system. b) Type 2: Those failures, or combination of failures, that do not impact on-time performance of the transit system, but do result in some other loss of specified CBTC fun...",
+    "question": "根据《IEEE 1474.1-2004》中对CBTC系统可用性、MTBFF和MTBF的要求，分析并比较在评估这些指标时，硬件故障和软件错误的考虑范围有何不同，以及这种差异对系统设计和维护策略的影响是什么？"
+  },
+  {
+    "index": 2446,
+    "source_text": "《Baseline3-mr1_subset-026_v340》\n&lt; r1 -p1- Indication status;\nNormal status t2 &gt; -p3- &lt; r1 -p1- t2 &gt; -p3- &lt; r1 -p1- Overspeed status;\nNormal status t3 &gt; -p2- &lt; r1 -p1- t3 &gt; -p2-...",
+    "context_text": "《Baseline3-mr1_subset-026_v340》\n(∗) Depending on its functionality and the desired configuration, the national system can be addressed either via an STM using the standard interface of via another national solution.\n\n《Baseline3-mr1_subset-026_v340》\nto from 0;\nto from NTC NTC a);\nto from 1;\nto from 2...",
+    "question": "根据《Baseline3-mr1_subset-026_v340》中描述的触发条件和状态转换逻辑，当列车的估计速度超过最大限制速度（MRSP）加上警告速度增量（dV_warning(MRSP)），但不超过最大限制速度加上服务制动干预速度增量（dV_sbi(MRSP)），且列车前端的最大安全位置超过干预距离（d_SBI2(est)）时，系统将进入哪种状态？请解释这一状态转换的逻辑及其可能的原因。"
+  },
+  {
+    "index": 9872,
+    "source_text": "《GB∕T 43267-2023道路车辆预期功能安全》\n<div style=\"text-align: center;\"><img src=\"https://pplines-online.bj.bcebos.com/deploy/official/paddleocr/pp-ocr-vl//1cf0afbb-f078-4779-a7bf-27de9b4c840b/markdown_0/imgs/im...",
+    "context_text": "《GB∕T 43267-2023道路车辆预期功能安全》\n<div style=\"text-align: center;\"><img src=\"https://pplines-online.bj.bcebos.com/deploy/official/paddleocr/pp-ocr-vl//1cf0afbb-f078-4779-a7bf-27de9b4c840b/markdown_0/imgs/img_in_image_box_330_510_843_938.jpg?authorization=bce-auth-v1%2F5cfe9a5e1454405eb2a975c43eace6ec%2F20...",
+    "question": "根据《GB∕T 43267-2023道路车辆预期功能安全》中提供的无保护左转场景和时间间隔的累积概率分布数据，如果自车决定在对向来车（他车）之前通过交汇点，为了确保安全，自车驾驶员应至少为他车预留多长时间间隔 $X_{1}$，才能使不安全情形1的发生概率低于10%？"
+  },
+  {
+    "index": 14133,
+    "source_text": "《T_CAMET 04018.1-2019城市轨道交通 CBTC信号系统规范第1部分：ATP子系统》\n9.1.5 ATP/ATO 车载设备宜能够通过安全或非安全接口采集表 2 中开关量信息。 ATP/ATO车载设备输入信号 ATP已切除 安全接口 /;\nATP/ATO车载设备输入信号 车辆保持制动已施加 安全接口 是;\nATP/ATO车载设备输入信号 注：“/”表示“对是否安全接口不做要求”。 安...",
+    "context_text": "《T_CAMET 04018.1-2019城市轨道交通 CBTC信号系统规范第1部分：ATP子系统》\n本部分主要起草人：唐涛、郜春海、黄友能、刘波、刘宏杰、杨旭文、王伟、崔科、汪小勇、耿鹏、刘帅、尹逊政、刘剑。 --- ## 城市轨道交通 CBTC 信号系统规范 第 1 部分: ATP 子系统 ## 1 范围 T/CAMET 04018 的本部分规定了城市轨道交通 CBTC 信号系统中 ATP 子系统的一般要求、环境条件、性能要求、功能要求、接口与通道要求、电磁兼容防护要求、供电及电源设备要求等。 本部分适用于 120 km/h 及以下的地铁、轻轨、单轨、磁浮系统、自动导向轨道系统、市域快速轨...",
+    "question": "根据《T_CAMET 04018.1-2019城市轨道交通 CBTC信号系统规范第1部分：ATP子系统》中关于车载设备输入和输出信号的安全接口要求，分析并比较哪些信号被明确要求为安全接口，哪些信号对是否为安全接口不做要求，归纳这些要求背后的逻辑，并解释为何某些信号需要被定义为安全接口而其他信号则不需要。"
+  },
+  {
+    "index": 1177,
+    "source_text": "《2024_Communications-Based Train Control (CBTC) Komponenten, Funktionen und Betrieb (German Edition) _LarsSchnieder》\nDie Verfügbarkeit automatisierter Zugbeeinflussungssysteme ist für ihren sicheren B...",
+    "context_text": "《2024_Communications-Based Train Control (CBTC) Komponenten, Funktionen und Betrieb (German Edition) _LarsSchnieder》\n• Maßnahmen des physischen Zugriffsschutzes: Gewisse Bedrohungen setzen einen direkten (physischen) Zugriff auf die informationstechnischen Systeme des Betreibers voraus. Ein mögliche...",
+    "question": "在CBTC系统中，为了提高系统的可用性，需要采取哪些措施来优化其子系统的故障容忍度和平均无故障时间，并简要说明这些措施如何相互作用以增强整体系统的可用性？"
+  },
+  {
+    "index": 8092,
+    "source_text": "《GB∕T 20438.3-2017 电气,电子,可编程电子安全相关系统的功能安全 第3部分》\n技术/措施 针对由软件来确保的安全需求的完整性 技术/措施 针对由软件来确保的安全需求的正确性 属性 没有规范本身的错误,包括:语义含糊 属性 安全要求的可理解性 属性 针对由软件来确保的安全需求,没有非安全功能的不利干扰 属性 为验证和确认提供基础的能力;\n技术/措施 1a 技术/措施 半形式化方法 ...",
+    "context_text": "《GB∕T 20438.3-2017 电气,电子,可编程电子安全相关系统的功能安全 第3部分》\nSIL 1/2 严格度R R1;\nSIL 3 严格度R R2,如果可用;\nSIL 4 严格度R 可用的最高严格度; #### C.1.3 使用方法—2 尽管附录 A 推荐了具体的技术，只要满足生命周期阶段的要求和目标，也允许应用其他措施和技术。 前面已经指出影响软件系统性能力的因素有很多，并且不可能给出一种算法，通过选择和组合技术 --- 来保证在任何给定应用中实现期望的属性。 可能会有几种有效的方法来实现期望的属性，并且应该认识到，系统开发者也许能够提供可选的证据。为了论证不同于附录 A 的技术选...",
+    "question": "在《GB∕T 20438.3-2017》中，形式化方法（技术/措施 1b）和半形式化方法（技术/措施 1a）都用于确保软件安全需求的正确性和完整性，但它们在实现这些属性时的效果和限制有所不同。基于这些信息，如果一个项目需要在SIL 3等级下确保软件安全需求的正确性和完整性，同时考虑到领域专家的使用友好性和减少规范中的歧义，应该选择哪种方法，并说明理由？"
+  },
+  {
+    "index": 7795,
+    "source_text": "《GB∕T 20438.1-2017 电气_电子_可编程电子安全相关系统的功能安全第1部分：一般要求》\n--- ## 表 1 (续)",
+    "context_text": "《GB∕T 20438.1-2017 电气_电子_可编程电子安全相关系统的功能安全第1部分：一般要求》\n安全生命周期阶段 图2的方框号 安全生命周期阶段 标题;\n安全生命周期阶段 5 安全生命周期阶段 整体安全要求分配 目的 7.6.1：为指定的E/E/PE安全相关系统和其他风险降低措施分配安全功能，这些安全功能包含于整体安全要求（安全功能要求和安全完整性要求）规范之中；给每个由E/E/PE安全相关系统执行的安全功能分配安全完整性等级 范围 由整体范围确定的输出决定 要求所在的条款 7.6.2 输入 根据安全功能要求和安全完整性要求规定的整体安全要求规范 输出 整体安全功能分配的信息，它们的目...",
+    "question": "在《GB∕T 20438.1-2017》的安全生命周期中，从整体安全要求分配到整体安全确认的阶段（阶段5至阶段13），哪些输入和输出信息是连续传递且相互依赖的，这些信息如何影响E/E/PE安全相关系统的最终确认？"
+  },
+  {
+    "index": 13849,
+    "source_text": "《T_CAMET 04012.2-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通测试规范第2部分-点式部分测试及验证》\n功能名称 测试需求编号 确定CBTC列车位置 CBTC-F-ATP-2-ITC-9;\n功能名称 功能内容 确定CBTC列车位置 确定列车停站位置.CBTC系统应根据不同的列车长度， 确定列车的停站位置;\n功能名称 测试需求 确定CBTC列车位置 装备CBT...",
+    "context_text": "《T_CAMET 04012.2-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通测试规范第2部分-点式部分测试及验证》\n功能名称 测试需求编号 确定CBTC列车位置 CBTC-F-ATP-2-ITC-7;\n功能名称 功能内容 确定CBTC列车位置 列车完整性检测。CBTC系统应能实现列车的完整性检测。当车载设备检测到列车完整性信息丢失，列车完整性检查电路中断时，应对列车实施紧急制动，并丢失定位，同时系统应对后续追踪列车进行安全防护，保证后续列车安全运行; --- 功能名称 测试需求 确定CBTC列车位置 1)处于点式控制级别的车载ATP设备，检测到本车的完整性丢失，列车...",
+    "question": "在CBTC系统中，当列车处于点式控制级别时，如果列车完整性检测失败和退行防护触发，两者都会导致列车紧急制动，但它们后续的处理方式有何不同？这些处理方式如何影响列车的恢复操作和系统的整体安全性？"
+  },
+  {
+    "index": 6878,
+    "source_text": "《era spd 2024-2026》\nNote: In addition to the balanced input/output ratio for the priority areas, efficiency gains are also embedded and measured with the same indicators. The latter represent the deli...",
+    "context_text": "《era spd 2024-2026》\na.) Drive an optimal resourcing of policy priority areas, matched by proportional outputs and outcomes, including efficiency gains b.) Maintain proper resourcing and further efficiency gains for the authority tasks c.) Ensure a reduction in the Agency’s administrative FTE allocat...",
+    "question": "根据《era spd 2024-2026》中关于NSA和NoBo监测的资源分配和审计数量的指标，分析并比较这两个监测活动在2022年至2027年期间的资源效率提升策略，以及这些策略如何影响各自的审计活动频率和质量。"
+  },
+  {
+    "index": 11926,
+    "source_text": "《R2DATO_D7.1_Requirements-and-specifications-for-Data-Factory》\n### SR 5.4 – Application partitioning - The Data Factory shall partition the data, applications and services based on their criticality. ...",
+    "context_text": "《R2DATO_D7.1_Requirements-and-specifications-for-Data-Factory》\n- The Data Factory shall control the communication at zone boundaries. - The Data Factory shall enforce the compartmentalization defined in the risk-based zones and conduits model. ### SR 5.3 – Zone boundary protection\n\n《R2DATO_D7.1_Requ...",
+    "question": "在《R2DATO_D7.1_Requirements-and-specifications-for-Data-Factory》中，Data Factory 的哪些安全措施共同作用以确保在外部系统或用户尝试通过通用个人消息系统（如E-Mail、Facebook、Twitter等）进行通信时，能够有效防止这些通信对控制系统的潜在威胁？请根据文档中的相关要求进行推理和归纳。"
+  },
+  {
+    "index": 7739,
+    "source_text": "《GB∕T 12758-2023 城市轨道交通信号系统通用技术条件》\n7.3.2.7 FAO 线路 ATO 子系统除应符合 7.3.2.1～7.3.2.6 的要求外，还应符合下列要求： a）应采用必要的冗余技术； b) ATO 车载设备应根据列车运行自动化等级配置休眠唤醒设备； c) 当列车在站台停车后，停车位置未在精确停车范围内且未超出允许跳跃的范围时，ATO子系统应能控制列车跳跃，完成自动对标...",
+    "context_text": "《GB∕T 12758-2023 城市轨道交通信号系统通用技术条件》\n--- 7.2.2.24 存在直交流牵引供电制式转换需求的线路，信号系统可根据需要向车辆提供转换控制的使能及指令。 ### 7.3 列车自动运行 #### 7.3.1 功能要求 7.3.1.1 应自动或人工启动列车并实现站间自动运行。 7.3.1.2 应控制列车实现车站定点停车、车站通过和有司机监督或无司机监督的折返作业。 7.3.1.3 与行车指挥控制子系统相结合，应实现列车运行自动调整。 7.3.1.4 应具有车门和站台屏蔽门开闭的自动控制功能。 7.3.1.5 应具有列车运行节能控制功能。 7.3.1.6 FAO 线路...",
+    "question": "在城市轨道交通信号系统中，FAO线路的ATO子系统相较于非FAO线路的ATO子系统，增加了哪些特定功能以支持更高水平的自动化运行，并且这些功能如何影响列车的运行安全与效率？"
+  },
+  {
+    "index": 7586,
+    "source_text": "《GBT+46097-2025_城市轨道交通全自动运行系统 通用技术条件》\n### 7.2 列车安全移动 #### 7.2.1 安全进路 7.2.1.1 系统应能实现自动或人工方式排列进路。 7.2.1.2 系统应基于进路起点及终点为待排列的进路确定进路要素，进路要素应包括进路侧冲防护要素和保护区段，并应检查所有已确定进路要素的可用性。当所排列进路的所有要素均已在规定位置时，系统应锁闭该进路的所有...",
+    "context_text": "《GBT+46097-2025_城市轨道交通全自动运行系统 通用技术条件》\n基本功能 GOA3 基本功能 GOA4;\n基本功能 监控线路 基本功能 列车与障碍物相撞防护 自动化等级 系统 自动化等级 系统;\n基本功能 监控线路 基本功能 自动区域人员防护 自动化等级 系统 自动化等级 系统;\n基本功能 监督乘客乘降 基本功能 允许发车 自动化等级 系统 自动化等级 系统;\n基本功能 监督乘客乘降 基本功能 客室门和站台屏蔽门联动 自动化等级 系统 自动化等级 系统;\n基本功能 监督乘客乘降 基本功能 再关客室门和站台屏蔽门 自动化等级 系统 自动化等级 系统;\n基本功能 监督乘客乘降 基本功能...",
+    "question": "在城市轨道交通全自动运行系统中，当列车运行在连续通信控制级别时，如果安全进路丢失，系统将如何调整列车的移动授权终点，并与联锁控制级别下的列车移动授权方式有何不同？"
+  },
+  {
+    "index": 11357,
+    "source_text": "《R2DATO_D13.1_Moving-Block-Specifications-applying a train-centric approach》\nAlternative MBS could have a capability that allows to derive the delta between the current and the uploaded new/next Domai...",
+    "context_text": "《R2DATO_D13.1_Moving-Block-Specifications-applying a train-centric approach》\n=> [SDR-22] There shall be a “safety responsible” entity which is in a valid position to define a (sufficiently large & restrictive) URA which covers the area in said AoC which is about to change during the upcoming data (D...",
+    "question": "在《R2DATO_D13.1_Moving-Block-Specifications-applying a train-centric approach》中，考虑到URA的定义和验证过程，如何确保在数据更新过程中，从安全责任实体到MBS的URA传输既准确又未被篡改，同时满足SIL-4的安全要求？"
+  },
+  {
+    "index": 7026,
+    "source_text": "《era spd 2025-2027》\n##### B.1.4. ERA1218 – Manage ERTMS long term evolution",
+    "context_text": "《era spd 2025-2027》\nIndicator VA decisions Target 100% of decisions taken according to the legal framework deadlines; ##### B.1.3. ERA3400 – Delivering TA\n\n《era spd 2025-2027》\nProgramme&#x27;s objectives FTE Deliver TA decisions according to the legal framework in an harmonised way 1.72;\nProgramme&#...",
+    "question": "比较ERA3400和ERA1218两个项目的目标，哪个项目在维护和增强规范方面投入的资源更多，这些资源的分配如何反映各自项目的重点？"
+  },
+  {
+    "index": 13913,
+    "source_text": "《T_CAMET 04012.2-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通测试规范第2部分-点式部分测试及验证》\n功能名称 测试需求编号 CBTC的运行列车识别号 CBTC-F-ATS-48-ITC-1;\n功能名称 功能内容 CBTC的运行列车识别号 CBTC的运行列车识别号.每一个运行在CBTC区域 内的装备CBTC的列车都应该分配一个运行列车识别 号.列车识别号应...",
+    "context_text": "《T_CAMET 04012.2-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通测试规范第2部分-点式部分测试及验证》\nATO 自诊断、故障报警及数据记录功能的测试和验证方法详见表 93。 功能名称 测试需求编号 ATO 自诊断、故障报警及数据记录 CBTC-F-ATO-45-ITC-1;\n功能名称 功能内容 ATO 自诊断、故障报警及数据记录 自诊断、故障报警及数据记录。ATO 子系统应具有自诊断功能，记录和分析故障报警信息，并能将报警信息传至中心 ATS;\n功能名称 测试需求 ATO 自诊断、故障报警及数据记录 模拟 ATO 设备故障。在车载人机界面上显示相应的报警...",
+    "question": "在CBTC系统中，ATO子系统的自诊断、故障报警及数据记录功能与ATS系统的列车识别号追踪功能如何协同工作，以确保在ATO设备故障导致列车识别号丢失时，ATS系统仍能准确追踪并恢复列车的识别号？"
+  },
+  {
+    "index": 7771,
+    "source_text": "《GB∕T 12758-2023 城市轨道交通信号系统通用技术条件》\n3）信号设备可采用综合接地系统，其接地电阻不应大于 $ 1\\Omega $ 。 ## 15 环境条件 15.1 设备正常工作时的温度、相对湿度及平均气压条件应符合表 2 的规定。 ---",
+    "context_text": "《GB∕T 12758-2023 城市轨道交通信号系统通用技术条件》\n14.2.2 信号设备与接触网或接触轨带电部分之间应留有安全距离。信号电缆线路与强电线路应分开敷设，当二者存在交叉时，宜相互垂直交叉敷设，且在二者间距不满足设计要求时，应采取防护措施。 14.2.3 信号金属结构物的装设应采取防护牵引迷流对金属和隧道体的电蚀措施。 14.2.4 轨旁设备应防止最大牵引回流、钢轨不均衡电流的影响。相邻轨旁设备应防止工作频率的相互串扰。 14.2.5 装设单轨条轨道电路的车站，相邻轨道电路并联的牵引轨条数应符合轨道电路设备要求。双轨条轨道电路区段的接地引线不应直接引至钢轨。 14.2.6 信号设...",
+    "question": "根据《GB∕T 12758-2023 城市轨道交通信号系统通用技术条件》中关于信号设备接地的规定，比较保护地线、工作地线和综合接地系统的接地电阻要求，并分析在实际工程中选择不同接地方式时应考虑的主要因素是什么？"
+  },
+  {
+    "index": 12604,
+    "source_text": "《T_CAMET 04010.1-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通系统规范 第1部分 系统总体要求》\nc）当车站 ATS 子系统设备故障时，车站 CI 设备可实现按自动进路方式、自动折返进路方式控制在线列车的运行。 d）当控制中心 ATS 子系统和车站 ATS 子系统同时故障时，系统应由车站值班员人工办理进路方式控制列车的运行。 e）ATS 子系统应具有完善的...",
+    "context_text": "《T_CAMET 04010.1-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通系统规范 第1部分 系统总体要求》\n5.1.2.22 ATS 子系统应将自身的报警信息，宜将 ATP 车载子系统、ATO 子系统、CI 子系统的报警信息传至控制中心维护工作站、车站维护工作站、综合维修中心的信号监测报警工作站。 5.1.2.23 ATS 子系统应对高峰和非高峰运营时段的列车运营实施不同的能源优化运行方案，非高峰运营时段在不降低服务质量的前提下，采用节能运行等曲线控制列车运行并保证乘客的舒适度。 5.1.2.24 ATS 子系统应实现功能及控制范围的职责授权，在工作站上 ---...",
+    "question": "根据《T_CAMET 04010.1-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通系统规范 第1部分 系统总体要求》中关于 ATS 子系统故障处理的规定，当控制中心 ATS 子系统和车站 ATS 子系统同时发生故障时，系统将如何确保列车的正常运行，并且这种应急措施与单一子系统故障时的措施有何不同？"
+  },
+  {
+    "index": 7301,
+    "source_text": "《era spd 2025-2027》\nAction 2023 (87) Indicator 2024 Pg code 2025 2022 baseline 2026 Target 2027;\nAction A5. Ensure proper input/output for the clean-up of national rules (91) Indicator A5.1. No. of FT...",
+    "context_text": "《era spd 2025-2027》\nAction 2023 (87) Indicator 2024 Pg code 2025 2022 baseline 2026 Target 2027;\nAction A2. Ensure proper input/output for NoBo monitoring Indicator A2.4 A new common framework for NoBos, DeBos and AsBo assessment and monitoring set up by the Agency (new legal base may be needed) Tar...",
+    "question": "根据《era spd 2025-2027》中关于 ERTMS 和 TSIs 的相关工作指标，比较 Action A3 和 Action A4 在人员配置（FTEs）上的增长趋势，并分析这种资源配置差异可能反映出的项目优先级或挑战。"
+  },
+  {
+    "index": 4762,
+    "source_text": "《Baseline4-r1_subset-026_v400》\n4.4.6.1.7 If a desk of the sleeping engine is opened while the train is running (this is an abnormal operation), the ERTMS/ETCS on-board equipment shall switch to Stand-...",
+    "context_text": "《Baseline4-r1_subset-026_v400》\n4.4.6.1.5 Sleeping mode shall be automatically detected on-board via the train interface.\n\n《Baseline4-r1_subset-026_v400》\n4.4.6.1.6 If possible, the train must not be stopped due to a safety critical fault in a sleeping engine. The ERTMS/ETCS on-board equipment should ...",
+    "question": "在 ERTMS/ETCS 系统中，当列车处于运行状态且某个发动机处于休眠模式时，如果该发动机的控制台被打开，系统将如何响应？此外，如果发动机从休眠模式中唤醒，系统又将采取哪些措施来确保安全并报告状态变化？"
+  },
+  {
+    "index": 12740,
+    "source_text": "《T_CAMET 04010.3-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通系统规范 第3部分-车载电子地图》\n定义 接管ZC连接方向列表 变量名定义 Q_ZCaffDir 数据长度(字节) 1 数据范围 0x55:上行0xAA:下行0:无所属接管ZC1其他无效 含义 所属接管ZC1的连接方向。参见5.3.3;\n定义 接管ZC连接方向列表 变量名定义 Q_ZCaffDi...",
+    "context_text": "《T_CAMET 04010.3-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通系统规范 第3部分-车载电子地图》\n--- #### 5.2.2 窗口大小 此处窗口均指针对轨道区段停车点(参见5.3.10)所开的窗口。 窗口大小指停车点到对应窗边界的距离，示意如图6所示。\n\n《T_CAMET 04010.3-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通系统规范 第3部分-车载电子地图》\n定义 轨道区段\n数据整体结构 变量名定义 M_STRUCT_\nTRACK 数据长度\n(字节) N_\nTRACK*\nN+4 含义 轨道区段数据整体的数据结构定义:...",
+    "question": "在城市轨道交通基于通信的列车运行控制系统(CBTC)中，如果一个轨道区段同时有多个接管ZC和接管ATS，如何确定该轨道区段的最终控制方向？请结合轨道区段的运营方向与轨道区段描述默认方向的对应关系（M_DIR_REF）以及接管ZC和接管ATS的连接方向列表（Q_ZCaffDir和Q_ATSaffDir）进行分析。"
+  },
+  {
+    "index": 4802,
+    "source_text": "《Baseline4-r1_subset-026_v400》\nc) a list of expected balise groups, if this list has been sent by the RBC. The train shall be tripped if overpassing a balise group that is not in the list. (When an em...",
+    "context_text": "《Baseline4-r1_subset-026_v400》\n4.4.11.1.2 This mode is used when the system does not know the route. For example: a) After the ERTMS/ETCS on-board equipment starts-up (awakening of the train). b) To pass a signal at danger / override an EOA. c) After a trackside failure (for example: loss of radio c...",
+    "question": "在 ERTMS/ETCS 系统的 Staff Responsible 模式下，如果列车在启动后立即接收到一个非空的预期应答器组列表，与未接收到任何列表相比，列车在遇到未列在预期列表中的应答器组时，其行为有何不同？这种差异对列车的安全运行有何影响？"
+  },
+  {
+    "index": 9302,
+    "source_text": "《GB∕T 34590.5-2022道路车辆功能安全第5部分：产品开发：硬件层面》\n——增加了列项 a)、b) 中关于“附加的安全机制”的要求（见 8.4.4）； ——增加了关于 SPFM 目标值相关公式的示例（见 8.4.7）； ——更改了总则的描述（见9.2，2017年版的9.2）； ——增加了关于“本要求的 ASIL 适用等级”的内容（见 9.4.1.1）； ——增加了“证明单一硬件元器件单...",
+    "context_text": "《GB∕T 34590.5-2022道路车辆功能安全第5部分：产品开发：硬件层面》\n本文件代替 GB/T 34590.5—2017《道路车辆功能安全 第5部分：产品开发：硬件层面》，与 GB/T 34590.5—2017 相比，主要技术变化如下： ——标准适用范围由“量产乘用车”更改为“除轻便摩托车外的量产道路车辆”（见第1章，2017年版的第1章）； ——增加了摩托车的适用性要求(见4.5); ——增加了载货汽车、客车、专用汽车、挂车的适用性要求（见4.6）； ——更改了第5章的标题（见第5章，2017年版的第5章）； ——更改了关于目的的描述（见5.1，2017年版的5.1）； ——更改了...",
+    "question": "GB/T 34590.5-2022相较于GB/T 34590.5-2017，在硬件层面产品开发中对不同类型的量产道路车辆的适用性要求有何具体变化，这些变化反映了标准制定者怎样的考量？"
+  },
+  {
+    "index": 14130,
+    "source_text": "《T_CAMET 04018.1-2019城市轨道交通 CBTC信号系统规范第1部分：ATP子系统》\n--- ## 前言 T/CAMET 04018《城市轨道交通 CBTC 信号系统规范》分为以下五个部分： ——第1部分:ATP子系统; ——第2部分：ATO子系统； ——第3部分: ATS子系统; ——第4部分：CI子系统； ——第 5 部分: 基于 WLAN 的 DCS 子系统。 本部分是 T/...",
+    "context_text": "《T_CAMET 04018.1-2019城市轨道交通 CBTC信号系统规范第1部分：ATP子系统》\n前言 …… V  \n  \n1 范围 …… 1  \n  \n2 规范性引用文件 …… 1  \n  \n3 术语和定义 …… 2  \n  \n4 缩略语 …… 5  \n  \n5 一般要求 …… 6  \n  \n6 环境条件 …… 7  \n  \n7 性能要求 …… 8  \n  \n7.1 安全性要求 …… 8  \n  \n7.2 可靠性、可用性要求 …… 8  \n  \n7.3 可维护性要求 …… 8  \n  \n7.4 追踪间隔时间和旅行速度要求 …… 9  \n  \n7.5 性能指标 …… 9  \n  \n8 功能...",
+    "question": "根据《T_CAMET 04018.1-2019城市轨道交通 CBTC信号系统规范第1部分：ATP子系统》中关于ATP车载设备输入信号的安全接口要求，结合8.13车门状态监控和8.12开门防护的功能要求，分析在车门状态信号（如左门开、左门关、右门开、右门关）对是否为安全接口不做要求的情况下，这些信号如何影响ATP子系统的车门监控和开门防护功能的实现？"
+  },
+  {
+    "index": 274,
+    "source_text": "《14_Operator interfaces》\nThe operator retains the capability to set routes manually at any time, and where this is necessary the operator can switch off ARS for an individual train, or for an 'ARS sub...",
+    "context_text": "《14_Operator interfaces》\nWhen trains are running late, it is very likely that conflicts will arise where two trains require to run over the same section of track at the same time. This can arise when routes converge or cross, and at crossing points on single lines (see the article by John Francis in...",
+    "question": "在铁路运营中，当ARS（自动路线设置系统）能够使用动态时刻表时，与仅使用静态每日更新时刻表相比，如何影响操作员在处理列车延误和冲突时的工作流程和决策效率？"
+  },
+  {
+    "index": 2889,
+    "source_text": "《Baseline3-mr1_subset-026_v340》\nValue stored on-board NC_CDTRAIN Transmitted value to X=1 RBC NC_TRAIN;\nValue stored on-board 0 Transmitted value to X=1 RBC xxx xxxx xxxx xx1x;\nValue stored on-board 1...",
+    "context_text": "《Baseline3-mr1_subset-026_v340》\nDescription Transmitted to Validated train data. RBC Validated train data. RBC Validated train data. RBC;\nDescription Content Validated train data. Variable Validated train data. Length Validated train data. Comment;\nDescription Content Validated train data. NID_PACKE...",
+    "question": "根据《Baseline3-mr1_subset-026_v340》中关于 NC_TRAIN 的设置规则，如果列车的 NC_CDTRAIN 值为 2，那么在向 RBC 传输数据时，NC_TRAIN 的值会是什么？请解释你的推理过程。"
+  },
+  {
+    "index": 1017,
+    "source_text": "《2023_北京地铁昌平线“12·14”列车追尾事故调查报告》\n## （三） 行业监管质效不够高 “十四五”现代综合交通运输体系发展规划提出，要深入实施公交优先发展战略，持续深化国家公交都市建设。当前，本市处于率先基本实现社会主义现代化的关键时期，对综合交通运输体系发展提出新要求，公共交通运输行业进入完善设施网络、精 --- 准补齐短板的关键期。市交通委作为行业监管部门，推动公共交通运行安全和应急...",
+    "context_text": "《2023_北京地铁昌平线“12·14”列车追尾事故调查报告》\n--- ## （二） 运营单位主体责任落实不到位\n\n《2023_北京地铁昌平线“12·14”列车追尾事故调查报告》\n市地铁公司是国内最早成立的城市轨道交通运营企业，应充分发挥先发优势和国有企业的带头示范作用，在安全管理上坚持与时俱进，建立完善具有领先水平的现代化安全管理体系和精细化制度标准规范。但是，市地铁公司面对轨道交通发展新形势新要求，没有及时健全安全管理制度，未根据内部机构变化及时更新安全生产责任制；工作落实原则要求多、实施细则少，未及时根据运营线路情况变化和列车在不同线路运行可能遇到的极端情况，制定明确具体的限速或降速制度...",
+    "question": "根据《2023_北京地铁昌平线“12·14”列车追尾事故调查报告》中提到的市地铁公司在安全管理上的不足，以及市交通委在行业监管和应急处置准备上的问题，可以推断出哪些具体的改进措施能够有效预防类似事故的再次发生，并提高整体运营安全水平？"
+  },
+  {
+    "index": 13567,
+    "source_text": "《T_CAMET 04012.1-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通测试规范第l部分-CBTC部分测试及验证》\n功能名称 测试需求编号 确定目标点 CBTC-F-ATP-9-CTC-1;\n功能名称 功能内容 确定目标点 确定目标点为了确保列车不超过移动授权，CBTC系统应确定一个目标点;\n功能名称 测试需求 确定目标点 装备CBTC设备，处于连续式控制级别的列车...",
+    "context_text": "《T_CAMET 04012.1-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通测试规范第l部分-CBTC部分测试及验证》\n功能名称 测试需求编号 确定前方安全进路限制 CBTC-F-ATP-7-CTC-1;\n功能名称 功能内容 确定前方安全进路限制 前方安全进路限制。对于每辆CBTC列车，系统应确定列车的安全进路位置;\n功能名称 测试需求 确定前方安全进路限制 装备CBTC设备、处于连续式控制等级的列车，前方进路锁闭并开放，地面ATP设备将移动授权延伸至进路内方; --- #### 6.3.11 确定移动授权 确定移动授权功能的测试和验证方法详见表25。\n\n《T_CA...",
+    "question": "在CBTC系统中，当站台紧急关闭按钮被按下时，地面ATP设备如何根据列车是否已进入站台区域来决定发送给车载ATP的控制命令信息，以确保列车安全？"
+  },
+  {
+    "index": 1837,
+    "source_text": "《24_Points》\nThe electrical contacts for both switch rails are combined into points detection circuits, the outputs of which are fed back to the interlocking via fail-safe relay circuits or a high inte...",
+    "context_text": "《24_Points》\nThe positions of both switch rails are detected, firstly to be sure that the tip of the closed switch rail is sufficiently close to the stock rail that a wheel flange could not pass between the two rails; and secondly to be sure that the gap between the stock rail and the open switch rai...",
+    "question": "结合机械和电气检测系统的描述，分析在铁路道岔控制中，直接机械检测与电气检测相比，各自的优势和局限性是什么？"
+  },
+  {
+    "index": 13678,
+    "source_text": "《T_CAMET 04012.1-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通测试规范第l部分-CBTC部分测试及验证》\n功能名称 测试需求编号 通信模型描述 CBTC_IF_ZC/ZC-MSG-CTC-1;\n功能名称 功能内容 通信模型描述 安全功能模块和通信功能模块应由各厂家ZC子系统内部功能实现，分别用于实现安全功能和对外通信功能，ZC-ZC通信协议模型详见T/GA...",
+    "context_text": "《T_CAMET 04012.1-2018-城市轨道交通 基于通信的列车运行控制系统(CBTC)互联互通测试规范第l部分-CBTC部分测试及验证》\n功能名称 测试需求编号 站台紧急关闭按钮信息 CBTC-IF-CI/CI-MSG-CTC-23;\n功能名称 功能内容 站台紧急关闭按钮信息 本CI应将互联互通相关范围内的本联锁管辖范围的站台紧急关闭信息发送给邻站CI。相邻CI间临时限速区段索引顺序应保持一致。详见T/CAMET 04011.5章节5.4.6表9;\n功能名称 测试需求 站台紧急关闭按钮信息 1) 在跨线区域中设置对不同的区段临时限速，验证临站联锁显示同本站联锁一致；2) 通过对跨线相...",
+    "question": "在CBTC系统中，站台紧急关闭按钮信息、城市自定义包和厂商自定义包的传输机制有何异同，这些差异对跨线列车运行控制有何潜在影响？"
+  },
+  {
+    "index": 1926,
+    "source_text": "《24_Points》\n<div style=\"text-align: center;\"><img src=\"https://pplines-online.bj.bcebos.com/deploy/official/paddleocr/pp-ocr-vl//b049bec1-6da8-444d-a0d2-ab62ff29428e/markdown_0/imgs/img_in_image_box_0...",
+    "context_text": "《24_Points》\nA second problem is snow, which can cause an obstruction between the stock and switch rails, preventing the points from fully moving to the required position. Originally the only solution was to send people out to clear the snow. Later, gas-powered switch heaters were fitted to the outsi...",
+    "question": "结合雪对道岔的影响以及温度变化对连杆的影响，分析并比较这两种情况下，铁路维护人员采取的措施及其对铁路运营安全性和效率的影响。"
+  },
+  {
+    "index": 2826,
+    "source_text": "《Baseline3-mr1_subset-026_v340》\nDescription Transmitted by The packet gives the characteristics needed to enter a route. Any The packet gives the characteristics needed to enter a route. Any The packe...",
+    "context_text": "《Baseline3-mr1_subset-026_v340》\n--- ## ERA * UNISIG * EEIG ERTMS USERS GROUP\n\n《Baseline3-mr1_subset-026_v340》\nDescription Transmitted by The packet gives details concerning the track ahead to support the driver when e.g. lower pantograph Any The packet gives details concerning the track ahead to sup...",
+    "question": "在《Baseline3-mr1_subset-026_v340》标准中，当 Q_SUITABILITY 的值为牵引系统时，M_LINEGAUGE 包含哪些具体信息，这些信息如何影响列车进入特定路线的决策？"
+  },
+  {
+    "index": 8362,
+    "source_text": "《GB∕T 20438.6-2017 电气,电子,可编程电子安全相关系统的功能安全 第6部分》\n在多通道系统中所有通道发生独立硬件随机失效从而使所有通道同时处于故障状态的概率是有限的。因为随机硬件失效被假设在时间上是随机发生的，与单通道失效率相比，同时发生影响并行通道的这种失效的概率是很低的。可以使用成熟的技术计算此概率，但是，如果失效不是彼此完全独立，所得的结果会过于乐观。 相关失效一般被划分为...",
+    "context_text": "《GB∕T 20438.6-2017 电气,电子,可编程电子安全相关系统的功能安全 第6部分》\n请见参考文献的 $$ 10 $$ ～ $$ 12 $$ 。 --- # 附录 D (资料性附录) # E/E/PE 系统中与硬件相关的共因失效影响的量化方法 ### D.1 概述 #### D.1.1 介绍 GB/T 20438 中混合使用了许多处理系统性失效的措施。但是无论这些措施有多完善，还是存在发生系统性失效的残余概率。虽然这不会严重影响到单通道系统的可靠性计算，但是多通道系统中可能存在影响多于一个通道（或冗余安全系统的多个部件）的潜在失效，即：共因失效，在对多通道或者冗余系统进行可靠性计算时...",
+    "question": "在多通道E/E/PE系统中，如果采用内部诊断测试功能来预防共因失效，假设测试覆盖率为99%，那么与没有此功能的系统相比，共因失效的概率会降低多少？请结合系统性失效和随机硬件失效的特点进行分析。"
+  },
+  {
+    "index": 3976,
+    "source_text": "《Baseline3-r2_subset-026_v360》\nPacket Number 0 Packet Name Position Report Page N° 39;\nPacket Number 1 Packet Name Position Report based on two balise groups Page N° 39;\nPacket Number 2 Packet Name On...",
+    "context_text": "《Baseline3-r2_subset-026_v360》\n--- ## — ERA — UNISIG * EEIG ERTMS USERS GROUP\n\n《Baseline3-r2_subset-026_v360》\nPacket Number 131 Packet Name RBC transition order Page N° 33;\nPacket Number 132 Packet Name Danger for Shunting information Page N° 34;\nPacket Number 133 Packet Name Radio infill area infor...",
+    "question": "在《Baseline3-r2_subset-026_v360》标准中，哪些数据包与车载系统版本的确认和使用有关，这些数据包在系统版本管理中扮演了什么角色？"
+  },
+  {
+    "index": 3698,
+    "source_text": "《Baseline3-r2_subset-026_v360》\n4.4.20.1.8 If a desk of the Passive Shunting engine is opened and no \"Stop Shunting on desk opening\" information previously received from balise group is stored onboard,...",
+    "context_text": "《Baseline3-r2_subset-026_v360》\n4.4.20.1.6 When the active desk is closed, the ERTMS/ETCS on-board equipment shall switch to Passive Shunting mode if the function \"Continue Shunting on desk closure\" is active and the \"passive shunting input signal\" is received from the train interface. If the functio...",
+    "question": "在《Baseline3-r2_subset-026_v360》标准中，当列车从Shunting模式切换到Passive Shunting模式后，如果操作台被重新打开，ERTMS/ETCS车载设备将如何决定其模式切换，具体取决于哪些条件？"
+  },
+  {
+    "index": 8736,
+    "source_text": "《GB∕T 34590.10-2022道路车辆功能安全第10部分：指南》\n$$ T_{service}\\leqslant\\frac{PMHF 目标值 -\\lambda_{SPF}-\\lambda_{RF}-(\\lambda_{SM1,DPF,latent}\\times\\lambda_{IF,DPF}+\\lambda_{IF,DPF,latent}\\times\\lambda_{SMI,SPF})\\t...",
+    "context_text": "《GB∕T 34590.10-2022道路车辆功能安全第10部分：指南》\n注5：当  $ T_{service} $  被假定等于0用于计算时， $ M_{PMHF} = \\lambda_{SPF} + \\lambda_{RF} + (\\lambda_{SMI,DPF,latent} \\times \\lambda_{IF,DPF} + \\lambda_{IF,DPF,latent} \\times \\lambda_{SMI,DPF}) \\times 0.5 \\times T_{lifetime} $ 。\n\n《GB∕T 34590.10-2022道路车辆功能安全第10部分：指南》\nc) 如果 PM...",
+    "question": "在《GB∕T 34590.10-2022道路车辆功能安全第10部分：指南》中，如果一个系统的 PMHF 目标值设定为 0.01/h，且已知 $ \\lambda_{SPF} = 0.002/h $, $ \\lambda_{RF} = 0.001/h $, $ \\lambda_{SM1,DPF,latent} = 0.0005/h $, $ \\lambda_{IF,DPF} = 0.0003/h $, $ \\lambda_{IF,DPF,latent} = 0.0004/h $, $ \\lambda_{SMI,SPF} = 0.0002/h $, $ T_{lifetime} = 100000h $, 以及 $ \\lambda_{SM1,DPF,detected} = 0.0006/h $, $ \\lambda_{IF,DPF,detected} = 0.0007/h $，那么为了达到 PMHF 的目标值，服务时间 $ T_{service} $ 需要满足什么条件？请通过计算说明。"
+  },
+  {
+    "index": 6296,
+    "source_text": "《era spd 2023-2025》\n# 1 Outcome indicators The level of implementation of TAF and TAP TSI as monitored through the annual “Safety and Interoperability Progress Report”;\n# 2 Outcome indicators Evolutio...",
+    "context_text": "《era spd 2023-2025》\nIf additional budget and resources become available in 2023, these would allow the Agency to work on the identification of bottlenecks, opportunities, and areas for improvement to foster a coordinated traffic management at EU level. All this is a pre-condition to further increase...",
+    "question": "根据《era spd 2023-2025》中提到的铁路安全领域的三个中间成果，结合2023至2025年的预算分配情况，分析这些中间成果的实现可能受到哪些因素的限制或促进，并提出相应的建议。"
+  },
+  {
+    "index": 9541,
+    "source_text": "《GB∕T 34590.6-2022道路车辆功能安全第6部分：产品开发：软件层面》\n——每个已识别故障的关键性，基于其是否违背分配给架构要素的安全目标或安全要求以及其所分配的 ASIL 等级； ——改进架构设计是否能够消除已识别的薄弱环节或降低已识别故障的关键性； ——已确定的开发期间安全措施的有效性，以及这些措施是否能够基于其关键性和相应的理由充分减轻已识别故障的危害（例如，在分析中考虑使用软件...",
+    "context_text": "《GB∕T 34590.6-2022道路车辆功能安全第6部分：产品开发：软件层面》\n在分析过程中，可以在使用演绎法或归纳法时应用引导词。在分析过程中，如果需要的话，可以进一步细化引导词（例如，为了更好地匹配特定的设计方面）。 在分析过程中，按照所选择的方法（例如，后续功能或处理链）使用引导词来生成问题，使用这些问题检查设计并揭示可能的薄弱点及其后果。表 E.2 所示为信号  $ A_{1} $  到  $ A_{n} $  的由引导词支持的分析示例。\n\n《GB∕T 34590.6-2022道路车辆功能安全第6部分：产品开发：软件层面》\n引导词示例 多于 解释 信号值超出允许范围 后果 功能O将...",
+    "question": "在《GB∕T 34590.6-2022道路车辆功能安全第6部分：产品开发：软件层面》中，对于软件架构设计复杂性较高的系统，如何通过综合考虑故障的关键性、架构设计的改进可能性以及开发期间安全措施的有效性，来决定是否在运行期间实施额外的安全机制？"
+  },
+  {
+    "index": 10227,
+    "source_text": "《IEEE 1474.1-2004》\nd) The procedures by which the contractor will integrate and coordinate the system safety efforts, including assignment of the system safety requirements to action organizations and...",
+    "context_text": "《IEEE 1474.1-2004》\nb) The responsibility and authority of system safety personnel, other contractor organizational elements involved in the system safety effort, subcontractors, and system safety groups. It shall identify the methods by which safety personnel may raise issues of concern directly to ...",
+    "question": "在《IEEE 1474.1-2004》中，系统安全人员的职责、权限以及与项目管理层面的沟通机制是如何确保系统安全问题得到及时和有效解决的？请结合文档中关于系统安全人员的职责分配、资源控制、程序协调、以及管理决策过程的具体条款进行分析。"
+  },
+  {
+    "index": 6608,
+    "source_text": "《era spd 2024-2026》\n2024 80.08 2025 81.87 2026 81.08;\n2024 € 3,766,092 2025 € 4,205,967 2026 € 4,198,123; --- Strategic Statement 2 & 3 2 Rail will become the backbone that supports an environmentally...",
+    "context_text": "《era spd 2024-2026》\nThe service 'Management of Innovation and long-term evolution of the Agency' will continue to steer the research & innovation policy of the Agency and its future development. It will also be in charge of coordinating the Agency's input to the work on the System Pillar. The Agency...",
+    "question": "根据《era spd 2024-2026》中关于铁路数据和数字化议程的描述，结合多式联运（MaaS）和物流即服务（LaaS）的发展目标，分析并推理出2023年及未来几年内，哪些具体措施或技术进步最有可能促进铁路成为多式联运系统的骨干，并解释这些措施如何影响铁路的国际互操作性和安全性。"
+  },
+  {
+    "index": 4544,
+    "source_text": "《Baseline3-r2_subset-026_v360》\n--- ## ERA * UNISIG * EEIG ERTMS USERS GROUP",
+    "context_text": "《Baseline3-r2_subset-026_v360》\n--- ## ERA * UNISIG * EEIG ERTMS USERS GROUP\n\n《Baseline3-r2_subset-026_v360》\nClause number ETCS on-board requirement Clause classification ETCS trackside requirement Clause classification Definition Clause classification Informative Clause classification Others;\nClause...",
+    "question": "在《Baseline3-r2_subset-026_v360》标准中，从4.4.6.3到4.4.11.1.3.1 a)的条款，哪些条款主要涉及ETCS车载系统与地面系统之间的数据交换和处理，这些条款在确保列车安全运行方面扮演了什么角色？"
+  },
+  {
+    "index": 10328,
+    "source_text": "《IEEE Std 1474.1-2025 IEEE Standard for Communications-Based Train Control (CBTC) Performance and Functional Requirements》\n## Updating of IEEE Standards documents",
+    "context_text": "《IEEE Std 1474.1-2025 IEEE Standard for Communications-Based Train Control (CBTC) Performance and Functional Requirements》\n## Photocopies\n\n《IEEE Std 1474.1-2025 IEEE Standard for Communications-Based Train Control (CBTC) Performance and Functional Requirements》\nSubject to payment of the appropriate ...",
+    "question": "根据《IEEE Std 1474.1-2025 IEEE Standard for Communications-Based Train Control (CBTC) Performance and Functional Requirements》的更新和审查机制，如果一个CBTC标准文档自发布以来已超过10年且未进行修订，用户在使用时应如何确保其内容的有效性和适用性，同时考虑到可能存在的新版本或修正？"
+  },
+  {
+    "index": 1075,
+    "source_text": "《2024_Communications-Based Train Control (CBTC) Komponenten, Funktionen und Betrieb (German Edition) _LarsSchnieder》\n- Fotoelektrisches Detektionsverfahren: Dieses Detektionsverfahren ist geeignet, ei...",
+    "context_text": "《2024_Communications-Based Train Control (CBTC) Komponenten, Funktionen und Betrieb (German Edition) _LarsSchnieder》\n<div style=\"text-align: center;\"><img src=\"https://pplines-online.bj.bcebos.com/deploy/official/paddleocr/pp-ocr-vl//7a1f0e7c-cc1f-41b2-8e59-a9058b036e5b/markdown_0/imgs/img_in_image_...",
+    "question": "在地铁列车的消防安全设计中，比较并分析使用光电检测法和热检测法的优缺点，以及在何种情况下更适合使用水雾灭火系统？"
+  },
+  {
+    "index": 3292,
+    "source_text": "《Baseline3-mr1_subset-026_v340》\nName Description Validity time for the End section in the MA Time for which the End section is valid measured from the moment the train reaches the location; ---",
+    "context_text": "《Baseline3-mr1_subset-026_v340》\nName Description Time between two cyclic requests for a movement authority When the train asks for a movement authority request, it will repeat its request every T_CYCRQST seconds until it receives a new MA Time between two cyclic requests for a movement authority Whe...",
+    "question": "在《Baseline3-mr1_subset-026_v340》标准中，比较“时间间隔请求移动授权（T_CYCRQST）”、“LSSMA 显示延迟”和“目标速度在 LOA 的有效性时间”的最大值和特殊值，分析这些时间参数设置对列车运行安全性和效率的影响。"
+  },
+  {
+    "index": 2564,
+    "source_text": "《Baseline3-mr1_subset-026_v340》\n4.4.8.1.9 When the switch to shunting is ordered by trackside, a driver acknowledgement is requested. 4.4.8.1.9.1 Note: in Shunting mode the train is only partially sup...",
+    "context_text": "《Baseline3-mr1_subset-026_v340》\n- in level 2 and 3 areas, the on-board shall ask the trackside for an authorisation. The switch to shunting is possible only after receiving such authorisation. The trackside can send a list of balises, that the train is allowed to pass while in SH, together with the ...",
+    "question": "在 ERTMS/ETCS 系统中，当列车从正常运行模式切换到调车模式时，不同级别的系统（Level 1、Level 2 和 Level 3）在授权和司机确认方面有何不同，这些差异对调车操作的安全性有何影响？"
+  },
+  {
+    "index": 5807,
+    "source_text": "《Baseline4-r1_subset-026_v400》\n--- ## ERA * UNISIG * EEIG ERTMS USERS GROUP",
+    "context_text": "《Baseline4-r1_subset-026_v400》\n##### 7.5.1.139 Q TEXTI DISPLAY\n\n《Baseline4-r1_subset-026_v400》\nName Description Qualifier for the combination of text message sub-condition Q_TEXTDISPLAY defines whether the start/end sub-conditions for text message are to be combined or not Qualifier for the combinat...",
+    "question": "在《Baseline4-r1_subset-026_v400》标准中，Q_TEXTDISPLAY 和 Qualifier for reporting acknowledgement of text by driver 这两个参数的设置如何影响列车司机对文本信息的处理流程？具体来说，当 Q_TEXTDISPLAY 设置为 1 且 Qualifier for reporting acknowledgement of text by driver 也设置为 1 时，司机需要在什么条件下确认信息，以及这些信息的显示和确认过程有何特点？"
+  },
+  {
+    "index": 2058,
+    "source_text": "《27_metro_train_control_systems》\nModern metros are designed to deal with such incidents and the CBTC technology is considered when planning the line in terms of overruns and optimising safety and perf...",
+    "context_text": "《27_metro_train_control_systems》\nSystems engineering underpins the successful deployment of most metro signalling and train control projects, with the 'V' lifecycle clearly and accurately implemented throughout.\n\n《27_metro_train_control_systems》\nReliability, Availability, Maintainability and Safety ...",
+    "question": "在现代地铁项目中，如何通过系统集成测试（如伦敦Crossrail项目中的实验室全仿真和目标硬件集成）与传统方法（如ALARP和SFAIRP原则的应用）的比较，分析各自在确保地铁列车控制系统的安全性和性能优化方面的优势和局限性？"
+  },
+  {
+    "index": 11267,
+    "source_text": "《R2DATO_D13.1_Moving-Block-Specifications-applying a train-centric approach》\n--- => [SDR-16]: Between controlled region and unsupervised region, the movement of non-communicating trains shall be detec...",
+    "context_text": "《R2DATO_D13.1_Moving-Block-Specifications-applying a train-centric approach》\n[S1-UCA-MBS-17] Train T1 is at standstill and located at the left track of railway point P1. The reported train length of LEN1 or T1 is shorter than the physical train length LEN2. Therefore, MBS mistakenly assumes that T1 ...",
+    "question": "在《R2DATO_D13.1_Moving-Block-Specifications-applying a train-centric approach》中，比较[S1-UCA-MBS-17]和[S2-UCA-MBS-17]两个场景，分析MBS系统在处理列车长度报告不准确和未装备列车尾部检测设备（TTDs）的非监督区域时，其安全机制的差异和不足，并提出可能的改进措施。"
+  }
+]
