@@ -1,0 +1,112 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+
+# 虚拟环境
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# 系统文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# 项目特定 - 数据目录
+**/data/
+**/data**/
+
+# 项目特定 - 向量数据库
+**/vector_db/
+**vector**/
+
+# 项目特定 - MinerU相关
+.mineru_cache/
+mineru_output_*/
+test_output*/
+*.meta
+
+# 项目特定 - 输出目录
+output/
+enhanced_reports/
+storage/
+storage_graph/
+storage_table_gxt/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# 模型文件
+*.pkl
+*.h5
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+*.onnx
+
+# 配置文件（可能包含敏感信息）
+.env
+.env.local
+config.local.py
+*.key
+*.pem
+*.p12
+*.crt
+
+# 临时文件
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+
+# 日志文件
+*.log
+logs/
+*.log.*
+
+# 缓存目录
+.cache/
+.huggingface/
+.hf/
+
+# 压缩文件（如果不想提交）
+*.zip
+*.tar.gz
+*.rar
+
+# 其他
+=4.0.0
