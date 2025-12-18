@@ -1,5 +1,8 @@
 from typing import List, Dict, Optional, Tuple
 import re
+import base64
+import io
+from PIL import Image
 
 from openai import OpenAI
 
@@ -7,6 +10,8 @@ from config import (
     OPENAI_API_KEY,
     OPENAI_API_BASE,
     MODEL_NAME,
+    TEXT_MODEL_NAME,
+    MULTIMODAL_MODEL_NAME,
     TOP_K,
 )
 from vector_store import VectorStore
@@ -36,11 +41,15 @@ class RAGAgent:
     def __init__(
         self,
         model: str = MODEL_NAME,
+        text_model: str = TEXT_MODEL_NAME,  # 新增：纯文本模型
+        multimodal_model: str = MULTIMODAL_MODEL_NAME,  # 新增：多模态模型
         enable_tracking: bool = True,
         enable_cot: bool = True,
         use_multimodal: bool = True,  # 新增：是否使用多模态检索
     ):
-        self.model = model
+        self.model = model  # 默认模型（向后兼容）
+        self.text_model = text_model  # 纯文本模型
+        self.multimodal_model = multimodal_model  # 多模态模型
         self.use_multimodal = use_multimodal
 
         self.client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_API_BASE)
@@ -132,7 +141,7 @@ class RAGAgent:
             问题类型
         """
         # 高级题特征
-        advanced_keywords = ['对比', '演变', '如何', '怎么', '计算', '区别', 
+        advanced_keywords = ['对比', '演变', '如何', '计算', '区别', 
                             '哪', '版本', '分别', '不同', 'baseline', '变化', '差异',
                             '为什么', '原因', '解释']
         
@@ -581,6 +590,9 @@ class RAGAgent:
         context: str,
         chat_history: Optional[List[Dict]] = None,
         query_type: str = 'basic',
+        image: Optional[str] = None,  # 新增：图片路径或base64
+        file_content: Optional[str] = None,  # 新增：文件内容
+        use_multimodal_model: bool = False,  # 新增：是否使用多模态模型
     ) -> str:
         """
         生成回答（集成Auto-CoT和Token追踪）
@@ -590,17 +602,20 @@ class RAGAgent:
             context: 检索到的上下文
             chat_history: 对话历史
             query_type: 问题类型（用于选择温度和CoT）
+            image: 图片路径或base64（可选）
+            file_content: 文件内容（可选）
+            use_multimodal_model: 是否使用多模态模型
         """
-        # 【新增】Token优化上下文
-        if self.token_tracker:
-            original_len = len(context)
-            context = self.token_tracker.optimize_context(context, max_tokens=8000)
-            if len(context) < original_len and self.current_reasoning_chain:
-                self.current_reasoning_chain.add_step(
-                    "优化",
-                    f"上下文过长，优化至{self.token_tracker.count_tokens(context)} tokens",
-                    f"原始: {original_len}字符 -> 优化后: {len(context)}字符"
-                )
+        # 【暂时注释】Token优化上下文 - 先确保基本功能正确
+        # if self.token_tracker:
+        #     original_len = len(context)
+        #     context = self.token_tracker.optimize_context(context, max_tokens=8000)
+        #     if len(context) < original_len and self.current_reasoning_chain:
+        #         self.current_reasoning_chain.add_step(
+        #             "优化",
+        #             f"上下文过长，优化至{self.token_tracker.count_tokens(context)} tokens",
+        #             f"原始: {original_len}字符 -> 优化后: {len(context)}字符"
+        #         )
         
         messages = [{"role": "system", "content": self.system_prompt}]
 
@@ -629,7 +644,48 @@ class RAGAgent:
 
 请根据上述课程材料回答学生的问题。如果材料中有相关内容，请优先使用并标注来源；如果材料不足以完整回答，请诚实说明。"""
 
-        messages.append({"role": "user", "content": user_text})
+        # 【新增】构建多模态消息（如果有图片或文件）
+        if image or file_content:
+            # 多模态消息格式
+            user_content = []
+            
+            # 添加文本内容
+            user_content.append({
+                "type": "text",
+                "text": user_text
+            })
+            
+            # 添加图片
+            if image:
+                # 支持本地路径和base64
+                if image.startswith('data:image'):
+                    # base64格式
+                    user_content.append({
+                        "type": "image_url",
+                        "image_url": {"url": image}
+                    })
+                else:
+                    # 本地文件路径
+                    try:
+                        img = Image.open(image)
+                        buffered = io.BytesIO()
+                        img.save(buffered, format="PNG")
+                        img_base64 = base64.b64encode(buffered.getvalue()).decode()
+                        user_content.append({
+                            "type": "image_url",
+                            "image_url": {"url": f"data:image/png;base64,{img_base64}"}
+                        })
+                    except Exception as e:
+                        print(f"  ⚠️ 图片加载失败: {e}")
+            
+            # 添加文件内容（如果有）
+            if file_content:
+                user_content[0]["text"] += f"\n\n【文件内容】\n{file_content}"
+            
+            messages.append({"role": "user", "content": user_content})
+        else:
+            # 纯文本消息
+            messages.append({"role": "user", "content": user_text})
         
         # 根据问题类型选择温度
         temperature = self.temp_map.get(query_type, 0.5)
@@ -645,16 +701,28 @@ class RAGAgent:
             )
 
         try:
+            # 【新增】根据输入类型选择模型
+            if use_multimodal_model or image or file_content:
+                selected_model = self.multimodal_model
+                model_type = "多模态模型"
+            else:
+                selected_model = self.text_model
+                model_type = "文本模型"
+            
             # 显示上下文信息
             if self.token_tracker:
                 context_tokens = self.token_tracker.count_tokens(user_text)
                 print(f"  📝 上下文长度: {len(context)} 字符, {context_tokens} tokens")
             
-            print(f"  🌐 正在调用LLM API ({self.model})...")
+            print(f"  🌐 正在调用LLM API ({selected_model} - {model_type})...")
+            if image:
+                print(f"     🖼️ 包含图片输入")
+            if file_content:
+                print(f"     📄 包含文件内容 ({len(file_content)} 字符)")
             print(f"     这可能需要几秒到几十秒，请耐心等待...")
             
             response = self.client.chat.completions.create(
-                model=self.model, 
+                model=selected_model, 
                 messages=messages, 
                 temperature=temperature,
                 max_tokens=1500
@@ -705,7 +773,9 @@ class RAGAgent:
 
     def answer_question(
         self, query: str, chat_history: Optional[List[Dict]] = None, 
-        top_k: int = TOP_K, max_retries: int = 2
+        top_k: int = TOP_K, max_retries: int = 2,
+        image: Optional[str] = None,  # 新增：图片路径
+        file_content: Optional[str] = None,  # 新增：文件内容
     ) -> Dict[str, any]:
         """
         回答问题（完整流程，集成所有Casco功能）
@@ -727,6 +797,8 @@ class RAGAgent:
             chat_history: 对话历史
             top_k: 检索文档数量（可选）
             max_retries: 最大重试次数
+            image: 图片路径（可选，用于多模态查询）
+            file_content: 文件内容（可选）
             
         返回:
             生成的回答
@@ -751,7 +823,12 @@ class RAGAgent:
                 context = "（未检索到特别相关的课程材料）"
 
             # 生成回答
-            answer = self.generate_response(query, context, chat_history, query_type)
+            # 判断是否使用多模态模型：有图片或文件内容时使用
+            use_multimodal = bool(image or file_content)
+            answer = self.generate_response(
+                query, context, chat_history, query_type,
+                image=image, file_content=file_content, use_multimodal_model=use_multimodal
+            )
             
             # 【新增】质量检查
             if self.check_answer_quality(answer, query):
@@ -788,6 +865,10 @@ class RAGAgent:
                 query, answer, query_type, len(retrieved_docs),
                 self.token_tracker.usage
             )
+        
+        # 保存检索结果供外部访问（用于API citations）
+        self.last_context_docs = retrieved_docs
+        self.last_retrieval_results = retrieved_docs
 
         return answer
 

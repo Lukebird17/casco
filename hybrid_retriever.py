@@ -99,33 +99,43 @@ class HybridRetriever:
         # 1. 文本检索
         if text_query:
             try:
+                print(f"  🔎 HybridRetriever: 开始文本检索, query='{text_query}', top_k={text_k}")
                 text_results = self.text_store.search(text_query, top_k=text_k)
+                print(f"  ✅ HybridRetriever: 文本检索返回 {len(text_results)} 个结果")
                 results["text_results"] = text_results
             except Exception as e:
                 print(f"⚠️  文本检索失败: {e}")
+                import traceback
+                traceback.print_exc()
         
         # 2. 图片检索
         if include_images:
             try:
+                print(f"  🖼️  HybridRetriever: 开始图片检索, image_k={image_k}")
                 if image_query:
                     # 以图搜图
-                    image_results = self.image_store.search_by_image(image_query, top_k=image_k)
+                    image_results = self.image_store.search_by_text(image_query, top_k=image_k)
                 elif text_query:
                     # 以文搜图
                     image_results = self.image_store.search_by_text(text_query, top_k=image_k)
                 else:
                     image_results = []
                 
+                print(f"  ✅ HybridRetriever: 图片检索返回 {len(image_results)} 个结果")
                 results["image_results"] = image_results
             except Exception as e:
                 print(f"⚠️  图片检索失败: {e}")
+                import traceback
+                traceback.print_exc()
         
         # 3. 合并结果
+        print(f"  🔀 HybridRetriever: 合并结果, 文本={len(results['text_results'])}, 图片={len(results['image_results'])}")
         results["combined"] = self._merge_results(
             results["text_results"],
             results["image_results"],
             top_k
         )
+        print(f"  ✅ HybridRetriever: 合并后共 {len(results['combined'])} 个结果")
         
         return results
     

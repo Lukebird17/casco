@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white text-google-gray-900 font-sans antialiased;
+    margin: 0;
+    padding: 0;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  /* Gemini 风格消息气泡 */
+  .message-bubble {
+    @apply p-4 rounded-gemini max-w-[80%] shadow-gemini transition-all duration-200;
+  }
+  
+  .message-user {
+    @apply bg-google-blue-50 ml-auto border border-google-blue-100;
+  }
+  
+  .message-assistant {
+    @apply bg-google-gray-50 mr-auto border border-google-gray-100;
+  }
+  
+  /* 输入框 */
+  .input-gemini {
+    @apply w-full px-4 py-3 rounded-full border border-google-gray-300 
+           focus:outline-none focus:ring-2 focus:ring-google-blue-500 
+           transition-all duration-200 text-base;
+  }
+  
+  /* 按钮 */
+  .btn-primary {
+    @apply px-6 py-3 bg-gradient-to-r from-google-blue-700 to-google-blue-500 
+           text-white rounded-full font-medium hover:shadow-gemini-hover 
+           transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0;
+  }
+  
+  .btn-secondary {
+    @apply px-4 py-2 bg-google-gray-100 text-google-gray-700 rounded-full 
+           hover:bg-google-gray-200 transition-all duration-200;
+  }
+  
+  .btn-icon {
+    @apply p-2 rounded-full hover:bg-google-gray-100 transition-colors duration-200;
+  }
+  
+  /* 卡片 */
+  .card-gemini {
+    @apply bg-white rounded-xl p-5 shadow-gemini hover:shadow-gemini-hover 
+           transition-all duration-200 border border-google-gray-100;
+  }
+  
+  .card-citation {
+    @apply bg-google-gray-50 rounded-lg p-3 mb-2 cursor-pointer
+           hover:bg-google-gray-100 transition-all duration-200;
+  }
+  
+  /* 侧边栏 */
+  .sidebar {
+    @apply bg-google-gray-50 border-r border-google-gray-200 h-screen 
+           overflow-y-auto;
+  }
+  
+  .session-item {
+    @apply p-3 rounded-lg cursor-pointer transition-all duration-200
+           hover:bg-google-gray-100;
+  }
+  
+  .session-item-active {
+    @apply bg-google-blue-50 border-2 border-google-blue-500;
+  }
+  
+  /* 加载动画 */
+  .typing-indicator {
+    @apply flex space-x-2;
+  }
+  
+  .typing-dot {
+    @apply w-2 h-2 bg-google-gray-400 rounded-full animate-bounce;
+  }
+  
+  .typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  /* 滚动条 */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-google-gray-100;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-google-gray-300 rounded-full hover:bg-google-gray-400;
+  }
+  
+  /* 渐变文字 */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-google-blue-600 to-google-blue-500;
+  }
+}
+
+/* 自定义动画 */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Markdown 样式 */
+.markdown-content {
+  @apply text-google-gray-900;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+  @apply font-bold my-4;
+}
+
+.markdown-content h1 {
+  @apply text-2xl;
+}
+
+.markdown-content h2 {
+  @apply text-xl;
+}
+
+.markdown-content h3 {
+  @apply text-lg;
+}
+
+.markdown-content p {
+  @apply my-2 leading-relaxed;
+}
+
+.markdown-content code {
+  @apply bg-google-gray-100 px-1.5 py-0.5 rounded text-sm font-mono;
+}
+
+.markdown-content pre {
+  @apply bg-google-gray-900 text-white p-4 rounded-lg overflow-x-auto my-4;
+}
+
+.markdown-content pre code {
+  @apply bg-transparent p-0;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  @apply my-2 ml-6;
+}
+
+.markdown-content li {
+  @apply my-1;
+}
+
+.markdown-content a {
+  @apply text-google-blue-600 hover:underline;
+}
+
+.markdown-content blockquote {
+  @apply border-l-4 border-google-gray-300 pl-4 my-4 italic;
+}
+
+

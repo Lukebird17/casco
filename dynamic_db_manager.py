@@ -125,22 +125,27 @@ class DynamicDBManager:
                 return {'success': False, 'error': '文档内容为空'}
             
             # 2. 文本切分
-            chunks = self.text_splitter.split_text(content)
-            print(f"  ✂️  切分为 {len(chunks)} 个文本块")
+            text_chunks = self.text_splitter.split_text(content)
+            print(f"  ✂️  切分为 {len(text_chunks)} 个文本块")
             
-            # 3. 添加到向量库（带课程标签）
-            metadatas = [
+            # 3. 构建文档块（包含内容和元数据）
+            chunks = [
                 {
+                    'content': text,
                     'filename': filename,
-                    'course': course_name,
+                    'filepath': file_path,
+                    'filetype': file_ext[1:],  # 去掉点号
+                    'page_number': 0,  # 整个文档，无法确定具体页码
                     'chunk_id': i,
+                    'course': course_name,
                     'file_hash': file_hash,
                     'add_time': datetime.now().isoformat()
                 }
-                for i in range(len(chunks))
+                for i, text in enumerate(text_chunks)
             ]
             
-            self.vector_store.add_documents(chunks, metadatas)
+            # 4. 添加到向量库
+            self.vector_store.add_documents(chunks)
             print(f"  ✅ 已添加到向量库（课程: {course_name}）")
             
             # 4. 更新元数据
@@ -178,17 +183,16 @@ class DynamicDBManager:
             }
     
     def _load_with_ocr(self, file_path: str, file_ext: str) -> str:
-        """使用OCR加载文档"""
-        if file_ext == '.pdf':
-            results = self.ocr_processor.process_pdf(file_path)
-            return self.ocr_processor.format_results_with_page_num(results, 'pdf')
-        elif file_ext == '.docx':
-            results = self.ocr_processor.process_docx(file_path)
-            return self.ocr_processor.format_results_with_page_num(results, 'docx')
-        elif file_ext == '.pptx':
-            results = self.ocr_processor.process_pptx(file_path)
-            return self.ocr_processor.format_results_with_page_num(results, 'pptx')
+        """使用OCR加载文档（基于MinerU）"""
+        if file_ext in ['.pdf', '.docx', '.pptx']:
+            # 使用 MinerU 处理
+            result = self.ocr_processor.process_file(file_path)
+            if result and result.get('content'):
+                return result['content']
+            else:
+                raise Exception(f"MinerU 处理失败: {file_path}")
         else:
+            # 其他文件类型使用默认加载器
             return self.document_loader.load_file(file_path)
     
     def add_directory(self, 
