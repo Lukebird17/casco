@@ -76,6 +76,20 @@ export const getSessionMessages = async (sessionId) => {
 };
 
 /**
+ * 删除会话
+ */
+export const deleteSession = async (sessionId) => {
+  return await client.delete(`/api/sessions/${sessionId}`);
+};
+
+/**
+ * 重命名会话
+ */
+export const renameSession = async (sessionId, newName) => {
+  return await client.put(`/api/sessions/${sessionId}/rename`, { name: newName });
+};
+
+/**
  * 生成测验
  */
 export const generateQuiz = async (data) => {
@@ -132,5 +146,7 @@ export const uploadFile = async (file) => {
 };
 
 export default client;
+
+
 
 

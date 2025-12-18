@@ -370,3 +370,6 @@ const QuizPanel = ({ open, onClose }) => {
 export default QuizPanel;
 
 
+
+
+

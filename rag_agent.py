@@ -593,6 +593,7 @@ class RAGAgent:
         image: Optional[str] = None,  # 新增：图片路径或base64
         file_content: Optional[str] = None,  # 新增：文件内容
         use_multimodal_model: bool = False,  # 新增：是否使用多模态模型
+        enable_socratic: bool = False,  # 新增：苏格拉底模式
     ) -> str:
         """
         生成回答（集成Auto-CoT和Token追踪）
@@ -622,8 +623,35 @@ class RAGAgent:
         if chat_history:
             messages.extend(chat_history)
 
-        # 【新增】根据问题类型选择是否使用CoT
-        if self.enable_cot and self.cot_builder and query_type in ['intermediate', 'advanced']:
+        # 【新增】根据问题类型和模式选择prompt
+        if enable_socratic:
+            # 苏格拉底模式：通过反问引导思考
+            user_text = f"""你是一位苏格拉底式的导师，通过提问引导学生思考，而不是直接给出答案。
+
+【背景知识】
+{context}
+
+【学生问题】
+{query}
+
+请按照苏格拉底式教学法回应：
+1. 不要直接给出答案
+2. 通过2-3个递进的引导性问题帮助学生自己思考
+3. 问题应该从简单到复杂，引导学生逐步发现答案
+4. 语气要鼓励和启发
+5. 可以给出一些提示或线索，但不要直接透露答案
+
+现在开始引导学生思考："""
+            
+            if self.current_reasoning_chain:
+                self.current_reasoning_chain.add_step(
+                    "苏格拉底模式",
+                    "启用引导式提问",
+                    "通过反问帮助学生思考"
+                )
+            print(f"  🤔 启用苏格拉底模式")
+            
+        elif self.enable_cot and self.cot_builder and query_type in ['intermediate', 'advanced']:
             # 使用Auto-CoT构建提示词
             user_text = self.cot_builder.build_prompt(query, context, max_examples=2)
             
@@ -774,30 +802,24 @@ class RAGAgent:
     def answer_question(
         self, query: str, chat_history: Optional[List[Dict]] = None, 
         top_k: int = TOP_K, max_retries: int = 2,
-        image: Optional[str] = None,  # 新增：图片路径
-        file_content: Optional[str] = None,  # 新增：文件内容
+        image: Optional[str] = None,  # 图片路径或base64
+        file_content: Optional[str] = None,  # 文件内容
+        enable_socratic: bool = False,  # 苏格拉底模式
     ) -> Dict[str, any]:
         """
-        回答问题（完整流程，集成所有Casco功能）
+        回答问题（完整流程，按照新的多模态处理逻辑）
         
-        完整功能：
-        1. 问题分析和分类 ✅
-        2. 查询增强（多查询生成） ✅
-        3. 多查询检索 ✅
-        4. 结果重排序 ✅
-        5. 分层检索策略 ✅
-        6. 动态温度控制 ✅
-        7. Token追踪和优化 ✅
-        8. 推理链记录 ✅
-        9. Auto-CoT推理 ✅
-        10. 答案质量检查和重试 ✅
+        处理逻辑：
+        1. 纯文本输入：文字+图片库检索 → 文本模型
+        2. 有图片输入：描述图片 → 用增强query检索 → 原图+context → 多模态模型
+        3. 有文件输入：用原始query检索 → 文件内容+context → 多模态模型
         
         参数:
             query: 用户问题
             chat_history: 对话历史
-            top_k: 检索文档数量（可选）
+            top_k: 检索文档数量
             max_retries: 最大重试次数
-            image: 图片路径（可选，用于多模态查询）
+            image: 图片路径或base64（可选）
             file_content: 文件内容（可选）
             
         返回:
@@ -805,61 +827,97 @@ class RAGAgent:
         """
         self.query_count += 1
         
-        # 【新增】创建推理链
+        # 创建推理链
         self.current_reasoning_chain = ReasoningChain(query)
         
-        # 1. 分析问题类型
-        query_type = self.analyze_query_type(query)
+        # ========== 根据输入类型确定处理策略 ==========
         
-        # 2-6. 尝试生成答案（带重试机制）
-        answer = None
-        attempt = 0
-        
-        for attempt in range(max_retries):
-            # 智能检索
-            context, retrieved_docs = self.retrieve_context(query, top_k=top_k)
-
-            if not context:
-                context = "（未检索到特别相关的课程材料）"
-
-            # 生成回答
-            # 判断是否使用多模态模型：有图片或文件内容时使用
-            use_multimodal = bool(image or file_content)
+        if image:
+            # ===== 情况2: 有图片输入 =====
+            print("\n📷 检测到图片输入，使用多模态处理流程")
+            
+            # 2.1 描述图片
+            from multimodal_input_handler import MultimodalInputHandler
+            handler = MultimodalInputHandler()
+            
+            # 如果是base64，先转换为PIL Image
+            if image.startswith('data:image'):
+                import base64
+                import io
+                image_data = image.split('base64,')[1]
+                image_bytes = base64.b64decode(image_data)
+                from PIL import Image as PILImage
+                pil_image = PILImage.open(io.BytesIO(image_bytes))
+                result = handler.handle_image_input(pil_image, query)
+            else:
+                # 本地路径
+                from PIL import Image as PILImage
+                pil_image = PILImage.open(image)
+                result = handler.handle_image_input(pil_image, query)
+            
+            enhanced_query = result['enhanced_query']
+            image_path = result['image_path']
+            
+            # 2.2 用增强的query检索（包含图片描述）
+            query_type = self.analyze_query_type(enhanced_query)
+            context, retrieved_docs = self.retrieve_context(enhanced_query, top_k=top_k)
+            
+            # 2.3 生成回答：原图 + context → 多模态模型
             answer = self.generate_response(
                 query, context, chat_history, query_type,
-                image=image, file_content=file_content, use_multimodal_model=use_multimodal
+                image=image_path,  # 传原图
+                file_content=None,
+                use_multimodal_model=True,  # 强制使用多模态模型
+                enable_socratic=enable_socratic
             )
             
-            # 【新增】质量检查
-            if self.check_answer_quality(answer, query):
-                if self.current_reasoning_chain:
-                    self.current_reasoning_chain.add_verification_step(
-                        "答案质量检查通过",
-                        f"答案长度: {len(answer)}字符, 尝试次数: {attempt + 1}"
-                    )
-                break
-            else:
-                # 质量不够，重试
-                if attempt < max_retries - 1:
-                    print(f"  ⚠️  答案质量不够，进行第 {attempt + 2} 次尝试...")
-                    if self.current_reasoning_chain:
-                        self.current_reasoning_chain.add_step(
-                            "重试",
-                            f"第{attempt+1}次尝试质量不够，升级策略重试",
-                            "增加检索范围",
-                            confidence=0.5
-                        )
-                    # 可以在这里调整策略，比如增加top_k
-                    top_k = min(top_k + 3, 10)
+        elif file_content:
+            # ===== 情况3: 有文件输入 =====
+            print("\n📄 检测到文件输入，使用多模态处理流程")
+            
+            # 3.1 用原始query检索
+            query_type = self.analyze_query_type(query)
+            context, retrieved_docs = self.retrieve_context(query, top_k=top_k)
+            
+            # 3.2 生成回答：文件内容 + context → 多模态模型
+            answer = self.generate_response(
+                query, context, chat_history, query_type,
+                image=None,
+                file_content=file_content,  # 传文件内容
+                use_multimodal_model=True,  # 强制使用多模态模型
+                enable_socratic=enable_socratic
+            )
+            
+        else:
+            # ===== 情况1: 纯文本输入 =====
+            print("\n📝 纯文本输入，使用文本模型")
+            
+            # 1.1 分析问题类型
+            query_type = self.analyze_query_type(query)
+            
+            # 1.2 在文字和图片库都检索
+            context, retrieved_docs = self.retrieve_context(query, top_k=top_k)
+            
+            # 1.3 生成回答：使用纯文本模型
+            answer = self.generate_response(
+                query, context, chat_history, query_type,
+                image=None,
+                file_content=None,
+                use_multimodal_model=False,  # 强制使用文本模型
+                enable_socratic=enable_socratic
+            )
         
-        # 【新增】设置最终答案和结论
+        if not context:
+            context = "（未检索到特别相关的课程材料）"
+        
+        # 设置最终答案和结论
         if self.current_reasoning_chain:
             self.current_reasoning_chain.set_final_answer(answer)
             self.current_reasoning_chain.add_conclusion_step(
                 f"查询完成，共{len(self.current_reasoning_chain.steps)}个推理步骤"
             )
         
-        # 【新增】记录查询日志
+        # 记录查询日志
         if self.token_tracker:
             self.token_tracker.log_query(
                 query, answer, query_type, len(retrieved_docs),

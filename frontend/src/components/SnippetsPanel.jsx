@@ -172,3 +172,6 @@ const SnippetsPanel = ({ open, onClose, currentSessionId }) => {
 export default SnippetsPanel;
 
 
+
+
+

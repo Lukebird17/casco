@@ -1,8 +1,11 @@
 import os
+import subprocess
+import tempfile
+import shutil
 from typing import List, Dict, Optional, Tuple
 from pathlib import Path
 
-from config import DATA_DIR
+from config import DATA_DIR, LIBREOFFICE_PATH
 from enhanced_ocr import EnhancedOCRProcessor, MINERU_AVAILABLE
 
 
@@ -12,15 +15,100 @@ class DocumentLoader:
         data_dir: str = DATA_DIR,
     ):
         self.data_dir = data_dir
-        self.supported_formats = [".pdf", ".pptx", ".docx", ".txt"]
+        self.supported_formats = [".pdf", ".pptx", ".docx", ".txt", ".md"]
         
         # 初始化MinerU处理器
         if MINERU_AVAILABLE:
             self.ocr_processor = EnhancedOCRProcessor()
-            print("✅ MinerU已启用，将用于处理PDF/PPTX/DOCX")
+            print("✅ MinerU已启用，将用于处理PDF")
         else:
             self.ocr_processor = None
             print("⚠️  MinerU不可用，将使用基础解析器")
+    
+    def check_libreoffice(self) -> bool:
+        """检查LibreOffice是否可用"""
+        try:
+            # 优先使用配置的路径
+            if os.path.exists(LIBREOFFICE_PATH):
+                result = subprocess.run(
+                    [LIBREOFFICE_PATH, '--version'],
+                    capture_output=True,
+                    timeout=5
+                )
+                if result.returncode == 0:
+                    print(f"   ✅ 使用配置的LibreOffice: {LIBREOFFICE_PATH}")
+                    return True
+            
+            # 回退到系统PATH中的libreoffice
+            result = subprocess.run(
+                ['libreoffice', '--version'],
+                capture_output=True,
+                timeout=5
+            )
+            if result.returncode == 0:
+                print(f"   ✅ 使用系统LibreOffice")
+                return True
+            return False
+        except:
+            return False
+    
+    def convert_to_pdf(self, file_path: str) -> Optional[str]:
+        """
+        使用LibreOffice将PPTX/DOCX转换为PDF（如果可用）
+        
+        Returns:
+            转换后的PDF文件路径，如果失败或LibreOffice不可用则返回None
+        """
+        # 检查LibreOffice是否可用
+        if not self.check_libreoffice():
+            print(f"   ℹ️  LibreOffice不可用，将使用基础解析器")
+            return None
+        
+        try:
+            # 创建临时目录
+            temp_dir = tempfile.mkdtemp()
+            
+            # 确定使用哪个LibreOffice
+            libreoffice_cmd = LIBREOFFICE_PATH if os.path.exists(LIBREOFFICE_PATH) else 'libreoffice'
+            
+            # 使用LibreOffice转换
+            cmd = [
+                libreoffice_cmd,
+                '--headless',
+                '--convert-to', 'pdf',
+                '--outdir', temp_dir,
+                file_path
+            ]
+            
+            print(f"   🔄 使用LibreOffice转换为PDF: {os.path.basename(file_path)}")
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=60  # 60秒超时
+            )
+            
+            if result.returncode == 0:
+                # 查找生成的PDF文件
+                pdf_filename = os.path.splitext(os.path.basename(file_path))[0] + '.pdf'
+                pdf_path = os.path.join(temp_dir, pdf_filename)
+                
+                if os.path.exists(pdf_path):
+                    print(f"   ✅ 转换成功: {pdf_filename}")
+                    return pdf_path
+                else:
+                    print(f"   ⚠️  未找到转换后的PDF文件")
+                    return None
+            else:
+                print(f"   ⚠️  LibreOffice转换失败，使用基础解析器")
+                return None
+                
+        except subprocess.TimeoutExpired:
+            print(f"   ⚠️  转换超时，使用基础解析器")
+            return None
+        except Exception as e:
+            print(f"   ⚠️  转换错误: {e}，使用基础解析器")
+            return None
 
     def load_pdf(self, file_path: str) -> Tuple[List[Dict], List[Dict]]:
         """加载PDF文件，返回文本内容和图片信息（优先使用MinerU）
@@ -72,29 +160,39 @@ class DocumentLoader:
         return pages, images
 
     def load_pptx(self, file_path: str) -> List[Dict]:
-        """加载PPT文件，按幻灯片返回内容（优先使用MinerU）
+        """加载PPTX文件
 
-        要求：
-        1. 优先使用MinerU处理PPT文件
-        2. 提取文本内容并格式化
-        3. 格式化为"--- 幻灯片 X ---\n文本内容\n"
-        4. 返回幻灯片内容列表，每个元素包含 {"text": "..."}
+        策略（优先级从高到低）：
+        1. 如果LibreOffice可用：转换为PDF → 用MinerU处理（OCR + 图片）
+        2. 如果LibreOffice不可用或转换失败：使用python-pptx提取文本（仅文本）
+        
+        注意：python-pptx只能提取文本，无法处理图片和复杂布局
         """
         slides = []
+        pdf_path = None
         
-        # 优先使用MinerU
+        # 策略1: 转换为PDF并用MinerU处理
         if self.ocr_processor:
             try:
-                result = self.ocr_processor.process_pptx(file_path)
-                if result:
-                    # MinerU返回的是完整的markdown文本
-                    formatted_text = f"--- PPTX文档（MinerU处理） ---\n{result}\n"
-                    slides.append({"text": formatted_text})
-                    return slides
+                pdf_path = self.convert_to_pdf(file_path)
+                if pdf_path:
+                    # 用MinerU处理转换后的PDF
+                    pages, images = self.load_pdf(pdf_path)
+                    # 清理临时PDF
+                    if os.path.exists(pdf_path):
+                        temp_dir = os.path.dirname(pdf_path)
+                        shutil.rmtree(temp_dir, ignore_errors=True)
+                    
+                    if pages:
+                        return pages
             except Exception as e:
-                print(f"⚠️  MinerU处理失败，尝试基础解析器: {e}")
+                print(f"⚠️  PDF转换+MinerU处理失败: {e}")
+                # 清理临时文件
+                if pdf_path and os.path.exists(pdf_path):
+                    temp_dir = os.path.dirname(pdf_path)
+                    shutil.rmtree(temp_dir, ignore_errors=True)
         
-        # 如果MinerU不可用或失败，使用基础解析器
+        # 策略2: 使用python-pptx基础解析器
         try:
             from pptx import Presentation
             prs = Presentation(file_path)
@@ -113,26 +211,44 @@ class DocumentLoader:
                     formatted_text = f"--- 幻灯片 {slide_num} ---\n{slide_text}\n"
                     slides.append({"text": formatted_text})
         except Exception as e:
-            print(f"❌ 加载PPT文件失败 {file_path}: {e}")
+            print(f"❌ 加载PPTX文件失败 {file_path}: {e}")
         
         return slides
 
     def load_docx(self, file_path: str) -> str:
-        """加载DOCX文件（优先使用MinerU）
-        要求：
-        1. 优先使用MinerU处理DOCX文件
-        2. 返回文本内容
+        """加载DOCX文件
+        
+        策略（优先级从高到低）：
+        1. 如果LibreOffice可用：转换为PDF → 用MinerU处理（OCR + 图片）
+        2. 如果LibreOffice不可用或转换失败：使用docx2txt提取文本（仅文本）
+        
+        注意：docx2txt只能提取文本，无法处理图片和复杂布局
         """
-        # 优先使用MinerU
+        pdf_path = None
+        
+        # 策略1: 转换为PDF并用MinerU处理
         if self.ocr_processor:
             try:
-                result = self.ocr_processor.process_docx(file_path)
-                if result:
-                    return result
+                pdf_path = self.convert_to_pdf(file_path)
+                if pdf_path:
+                    # 用MinerU处理转换后的PDF
+                    pages, images = self.load_pdf(pdf_path)
+                    # 清理临时PDF
+                    if os.path.exists(pdf_path):
+                        temp_dir = os.path.dirname(pdf_path)
+                        shutil.rmtree(temp_dir, ignore_errors=True)
+                    
+                    if pages:
+                        # 合并所有页面的文本
+                        return "\n".join([p["text"] for p in pages])
             except Exception as e:
-                print(f"⚠️  MinerU处理失败，尝试基础解析器: {e}")
+                print(f"⚠️  PDF转换+MinerU处理失败: {e}")
+                # 清理临时文件
+                if pdf_path and os.path.exists(pdf_path):
+                    temp_dir = os.path.dirname(pdf_path)
+                    shutil.rmtree(temp_dir, ignore_errors=True)
         
-        # 如果MinerU不可用或失败，使用基础解析器
+        # 策略2: 使用docx2txt基础解析器
         try:
             import docx2txt
             text = docx2txt.process(file_path)
@@ -152,6 +268,19 @@ class DocumentLoader:
                 return f.read()
         except Exception as e:
             print(f"加载TXT文件失败 {file_path}: {e}")
+            return ""
+    
+    def load_md(self, file_path: str) -> str:
+        """加载Markdown文件
+        要求：
+        1. 使用open读取MD文件（注意使用encoding="utf-8"）
+        2. 返回文本内容
+        """
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return f.read()
+        except Exception as e:
+            print(f"加载Markdown文件失败 {file_path}: {e}")
             return ""
 
     def load_document(self, file_path: str) -> Tuple[List[Dict[str, str]], List[Dict]]:
@@ -203,6 +332,18 @@ class DocumentLoader:
                 )
         elif ext == ".txt":
             content = self.load_txt(file_path)
+            if content:
+                documents.append(
+                    {
+                        "content": content,
+                        "filename": filename,
+                        "filepath": file_path,
+                        "filetype": ext,
+                        "page_number": 0,
+                    }
+                )
+        elif ext == ".md":
+            content = self.load_md(file_path)
             if content:
                 documents.append(
                     {

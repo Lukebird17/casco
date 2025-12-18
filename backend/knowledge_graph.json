@@ -1,0 +1,250 @@
+{
+  "entities": {
+    "中文分词": {
+      "type": "关键词",
+      "description": "出现12次",
+      "frequency": 12,
+      "sources": [
+        "2.3 中文分词与CRF.pdf"
+      ]
+    },
+    "要算法": {
+      "type": "关键词",
+      "description": "出现6次",
+      "frequency": 6,
+      "sources": [
+        "2.3 中文分词与CRF.pdf"
+      ]
+    },
+    "条件随机": {
+      "type": "关键词",
+      "description": "出现6次",
+      "frequency": 6,
+      "sources": [
+        "2.3 中文分词与CRF.pdf"
+      ]
+    },
+    "给定文本": {
+      "type": "关键词",
+      "description": "出现6次",
+      "frequency": 6,
+      "sources": [
+        "2.3 中文分词与CRF.pdf"
+      ]
+    },
+    "与条件随": {
+      "type": "关键词",
+      "description": "出现3次",
+      "frequency": 3,
+      "sources": [
+        "2.3 中文分词与CRF.pdf"
+      ]
+    },
+    "机场": {
+      "type": "关键词",
+      "description": "出现3次",
+      "frequency": 3,
+      "sources": [
+        "2.3 中文分词与CRF.pdf"
+      ]
+    },
+    "什么是中": {
+      "type": "关键词",
+      "description": "出现3次",
+      "frequency": 3,
+      "sources": [
+        "2.3 中文分词与CRF.pdf"
+      ]
+    },
+    "文分词": {
+      "type": "关键词",
+      "description": "出现3次",
+      "frequency": 3,
+      "sources": [
+        "2.3 中文分词与CRF.pdf"
+      ]
+    },
+    "的几个主": {
+      "type": "关键词",
+      "description": "出现3次",
+      "frequency": 3,
+      "sources": [
+        "2.3 中文分词与CRF.pdf"
+      ]
+    },
+    "最大匹配": {
+      "type": "关键词",
+      "description": "出现3次",
+      "frequency": 3,
+      "sources": [
+        "2.3 中文分词与CRF.pdf"
+      ]
+    },
+    "词性标注": {
+      "type": "关键词",
+      "description": "出现7次",
+      "frequency": 7,
+      "sources": [
+        "2.2 词性标注与隐马尔科夫模型.pdf"
+      ]
+    },
+    "科夫模型": {
+      "type": "关键词",
+      "description": "出现4次",
+      "frequency": 4,
+      "sources": [
+        "2.2 词性标注与隐马尔科夫模型.pdf"
+      ]
+    },
+    "什么是词": {
+      "type": "关键词",
+      "description": "出现4次",
+      "frequency": 4,
+      "sources": [
+        "2.2 词性标注与隐马尔科夫模型.pdf"
+      ]
+    },
+    "课程组": {
+      "type": "关键词",
+      "description": "出现3次",
+      "frequency": 3,
+      "sources": [
+        "2.2 词性标注与隐马尔科夫模型.pdf"
+      ]
+    },
+    "与隐马尔": {
+      "type": "关键词",
+      "description": "出现3次",
+      "frequency": 3,
+      "sources": [
+        "2.2 词性标注与隐马尔科夫模型.pdf"
+      ]
+    },
+    "性标注": {
+      "type": "关键词",
+      "description": "出现3次",
+      "frequency": 3,
+      "sources": [
+        "2.2 词性标注与隐马尔科夫模型.pdf"
+      ]
+    },
+    "处理": {
+      "type": "关键词",
+      "description": "出现2次",
+      "frequency": 2,
+      "sources": [
+        "2.2 词性标注与隐马尔科夫模型.pdf"
+      ]
+    },
+    "计算给定": {
+      "type": "关键词",
+      "description": "出现2次",
+      "frequency": 2,
+      "sources": [
+        "2.2 词性标注与隐马尔科夫模型.pdf"
+      ]
+    },
+    "文本出现": {
+      "type": "关键词",
+      "description": "出现2次",
+      "frequency": 2,
+      "sources": [
+        "2.2 词性标注与隐马尔科夫模型.pdf"
+      ]
+    },
+    "的概率": {
+      "type": "关键词",
+      "description": "出现2次",
+      "frequency": 2,
+      "sources": [
+        "2.2 词性标注与隐马尔科夫模型.pdf"
+      ]
+    }
+  },
+  "relationships": [
+    {
+      "source": "中文分词",
+      "target": "要算法",
+      "relation": "相关",
+      "description": "共同出现3次",
+      "weight": 3
+    },
+    {
+      "source": "中文分词",
+      "target": "条件随机",
+      "relation": "相关",
+      "description": "共同出现3次",
+      "weight": 3
+    },
+    {
+      "source": "中文分词",
+      "target": "与条件随",
+      "relation": "相关",
+      "description": "共同出现3次",
+      "weight": 3
+    },
+    {
+      "source": "要算法",
+      "target": "条件随机",
+      "relation": "相关",
+      "description": "共同出现3次",
+      "weight": 3
+    },
+    {
+      "source": "要算法",
+      "target": "给定文本",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "条件随机",
+      "target": "给定文本",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "条件随机",
+      "target": "与条件随",
+      "relation": "相关",
+      "description": "共同出现3次",
+      "weight": 3
+    },
+    {
+      "source": "词性标注",
+      "target": "科夫模型",
+      "relation": "相关",
+      "description": "共同出现5次",
+      "weight": 5
+    },
+    {
+      "source": "词性标注",
+      "target": "什么是词",
+      "relation": "相关",
+      "description": "共同出现4次",
+      "weight": 4
+    },
+    {
+      "source": "词性标注",
+      "target": "与隐马尔",
+      "relation": "相关",
+      "description": "共同出现3次",
+      "weight": 3
+    },
+    {
+      "source": "科夫模型",
+      "target": "什么是词",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "科夫模型",
+      "target": "与隐马尔",
+      "relation": "相关",
+      "description": "共同出现3次",
+      "weight": 3
+    }
+  ]
+}

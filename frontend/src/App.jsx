@@ -15,14 +15,21 @@ import QuizPanel from './components/QuizPanel';
 import FlashcardPanel from './components/FlashcardPanel';
 import KnowledgeGraphPanel from './components/KnowledgeGraphPanel';
 import DocumentViewer from './components/DocumentViewer';
+import ConfidencePanel from './components/ConfidencePanel';
+import DocumentOutlinePanel from './components/DocumentOutlinePanel';
+import ConceptSearchPanel from './components/ConceptSearchPanel';
+import KnowledgeBasePanel from './components/KnowledgeBasePanel';
+import SettingsPanel from './components/SettingsPanel';
 import { useChat } from './hooks/useChat';
 import { useSessions } from './hooks/useSessions';
 import { initializeSystem } from './api/client';
+import { initSettings, getSettings } from './utils/settings';
 import { Info, Loader2 } from 'lucide-react';
 
 function App() {
   const [initializing, setInitializing] = useState(true);
   const [enableSocratic, setEnableSocratic] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
   const [toolPanelOpen, setToolPanelOpen] = useState(false);
   const [snippetsPanelOpen, setSnippetsPanelOpen] = useState(false);
   const [heatmapPanelOpen, setHeatmapPanelOpen] = useState(false);
@@ -30,9 +37,15 @@ function App() {
   const [flashcardPanelOpen, setFlashcardPanelOpen] = useState(false);
   const [knowledgeGraphPanelOpen, setKnowledgeGraphPanelOpen] = useState(false);
   const [documentViewerOpen, setDocumentViewerOpen] = useState(false);
+  const [confidencePanelOpen, setConfidencePanelOpen] = useState(false);
+  const [outlinePanelOpen, setOutlinePanelOpen] = useState(false);
+  const [conceptSearchPanelOpen, setConceptSearchPanelOpen] = useState(false);
+  const [knowledgeBasePanelOpen, setKnowledgeBasePanelOpen] = useState(false);
+  const [settingsPanelOpen, setSettingsPanelOpen] = useState(false);
   const [activeTool, setActiveTool] = useState(null);
   const [viewerDocument, setViewerDocument] = useState(null);
   const [viewerHighlight, setViewerHighlight] = useState(null);
+  const [viewerPage, setViewerPage] = useState(null);
 
   // 会话管理
   const {
@@ -41,6 +54,8 @@ function App() {
     loading: sessionsLoading,
     newSession,
     switchSession,
+    deleteSession,
+    renameSession,
   } = useSessions();
 
   // 聊天管理
@@ -58,6 +73,14 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
+        // 初始化设置
+        initSettings();
+        
+        // 加载dark模式设置
+        const settings = getSettings();
+        setDarkMode(settings.theme === 'dark');
+        
+        // 初始化后端
         const result = await initializeSystem();
         if (result.success) {
           toast.success('系统初始化成功');
@@ -72,6 +95,15 @@ function App() {
 
     init();
   }, []);
+  
+  // 应用dark模式
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
 
   // 处理新会话
   const handleNewSession = async () => {
@@ -93,12 +125,37 @@ function App() {
     }
   };
 
+  // 处理删除会话
+  const handleDeleteSession = async (sessionId) => {
+    try {
+      const historyMessages = await deleteSession(sessionId);
+      setInitialMessages(historyMessages || []);
+    } catch (error) {
+      console.error('删除会话失败:', error);
+    }
+  };
+
+  // 处理重命名会话
+  const handleRenameSession = async (sessionId, newName) => {
+    try {
+      await renameSession(sessionId, newName);
+    } catch (error) {
+      console.error('重命名会话失败:', error);
+    }
+  };
+
   // 处理发送消息
   const handleSendMessage = async (message, options) => {
     try {
+      // 获取设置
+      const settings = getSettings();
+      
       await sendChatMessage(message, {
         ...options,
-        enableSocratic,
+        enableSocratic: settings.enableSocratic || enableSocratic,
+        temperature: settings.temperature,
+        maxTokens: settings.maxTokens,
+        retrievalK: settings.retrievalK,
       });
       
       // 如果有引用，自动打开工具面板
@@ -122,6 +179,10 @@ function App() {
     setFlashcardPanelOpen(false);
     setKnowledgeGraphPanelOpen(false);
     setDocumentViewerOpen(false);
+    setConfidencePanelOpen(false);
+    setOutlinePanelOpen(false);
+    setConceptSearchPanelOpen(false);
+    setSettingsPanelOpen(false);
     
     // 打开对应工具
     switch(toolId) {
@@ -141,12 +202,24 @@ function App() {
         setKnowledgeGraphPanelOpen(true);
         break;
       case 'database':
-        toast('知识库管理功能开发中...', { icon: '🚧' });
+        setKnowledgeBasePanelOpen(true);
         break;
       case 'documents':
         setViewerDocument(null);
         setViewerHighlight(null);
         setDocumentViewerOpen(true);
+        break;
+      case 'confidence':
+        setConfidencePanelOpen(true);
+        break;
+      case 'outline':
+        setOutlinePanelOpen(true);
+        break;
+      case 'concept-search':
+        setConceptSearchPanelOpen(true);
+        break;
+      case 'settings':
+        setSettingsPanelOpen(true);
         break;
       default:
         toast.success(`打开工具: ${toolId}`);
@@ -170,17 +243,17 @@ function App() {
   // 加载界面
   if (initializing) {
     return (
-      <div className="h-screen flex items-center justify-center bg-google-gray-50">
+      <div className="h-screen flex items-center justify-center bg-google-gray-50 dark:bg-gray-900">
         <div className="text-center">
           <Loader2 size={48} className="animate-spin text-google-blue-600 mx-auto mb-4" />
-          <p className="text-google-gray-600">正在初始化系统...</p>
+          <p className="text-google-gray-600 dark:text-gray-300">正在初始化系统...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="h-screen flex bg-google-gray-50">
+    <div className="h-screen flex bg-google-gray-50 dark:bg-gray-900">
       {/* Toast 通知 */}
       <Toaster 
         position="top-right"
@@ -206,7 +279,10 @@ function App() {
         currentSessionId={currentSessionId}
         onNewSession={handleNewSession}
         onSwitchSession={handleSwitchSession}
+        onDeleteSession={handleDeleteSession}
+        onRenameSession={handleRenameSession}
         onOpenTool={handleOpenTool}
+        onOpenSettings={() => handleOpenTool('settings')}
       />
 
       {/* 主内容区 */}
@@ -309,7 +385,60 @@ function App() {
         onClose={() => setDocumentViewerOpen(false)}
         filename={viewerDocument}
         highlightText={viewerHighlight}
+        page={viewerPage}
       />
+
+      {/* 置信度详情面板 */}
+      <ConfidencePanel
+        open={confidencePanelOpen}
+        onClose={() => setConfidencePanelOpen(false)}
+        confidence={confidence}
+      />
+
+      {/* 文档大纲面板 */}
+      <DocumentOutlinePanel
+        open={outlinePanelOpen}
+        onClose={() => setOutlinePanelOpen(false)}
+        onJumpToSection={(section) => {
+          setViewerDocument(section.filename);
+          setViewerHighlight(section.section);
+          setViewerPage(section.page || null);
+          setDocumentViewerOpen(true);
+        }}
+      />
+
+      {/* 概念快速定位面板 */}
+      <ConceptSearchPanel
+        open={conceptSearchPanelOpen}
+        onClose={() => setConceptSearchPanelOpen(false)}
+        onJumpTo={(location) => {
+          setViewerDocument(location.filename);
+          setViewerHighlight(location.highlight);
+          setViewerPage(location.page || null);
+          setDocumentViewerOpen(true);
+        }}
+      />
+
+      {/* 知识库管理面板 */}
+      <KnowledgeBasePanel
+        open={knowledgeBasePanelOpen}
+        onClose={() => setKnowledgeBasePanelOpen(false)}
+        onSwitch={(kbId) => {
+          toast.success(`已切换到知识库: ${kbId}`);
+          // 可以在这里触发重新加载数据
+        }}
+      />
+
+      {/* 设置面板 */}
+      <SettingsPanel
+        open={settingsPanelOpen}
+        onClose={() => setSettingsPanelOpen(false)}
+        darkMode={darkMode}
+        onDarkModeChange={setDarkMode}
+      />
+
+      {/* Toast 通知 */}
+      <Toaster position="top-right" />
     </div>
   );
 }

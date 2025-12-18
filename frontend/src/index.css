@@ -9,6 +9,11 @@
     padding: 0;
   }
   
+  /* Dark mode */
+  .dark body {
+    @apply bg-gray-900 text-gray-100;
+  }
+  
   * {
     box-sizing: border-box;
   }
@@ -184,5 +189,132 @@
 .markdown-content blockquote {
   @apply border-l-4 border-google-gray-300 pl-4 my-4 italic;
 }
+
+/* Dark Mode Styles */
+.dark {
+  color-scheme: dark;
+}
+
+.dark .message-user {
+  @apply bg-blue-900 border-blue-800;
+}
+
+.dark .message-assistant {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.dark .card-gemini {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.dark .card-citation {
+  @apply bg-gray-700 hover:bg-gray-600;
+}
+
+.dark .sidebar {
+  @apply bg-gray-900 border-gray-800;
+}
+
+.dark .session-item {
+  @apply hover:bg-gray-800;
+}
+
+.dark .session-item-active {
+  @apply bg-blue-900 border-blue-700;
+}
+
+.dark .btn-secondary {
+  @apply bg-gray-700 text-gray-200 hover:bg-gray-600;
+}
+
+.dark .btn-icon {
+  @apply hover:bg-gray-800;
+}
+
+.dark .input-gemini {
+  @apply bg-gray-800 border-gray-700 text-gray-100;
+}
+
+.dark .markdown-content {
+  @apply text-gray-100;
+}
+
+.dark .markdown-content code {
+  @apply bg-gray-800 text-gray-200;
+}
+
+.dark .markdown-content pre {
+  @apply bg-gray-950;
+}
+
+.dark ::-webkit-scrollbar-track {
+  @apply bg-gray-900;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-gray-700 hover:bg-gray-600;
+}
+
+/* 更多组件dark模式支持 */
+.dark input,
+.dark textarea,
+.dark select {
+  @apply bg-gray-800 border-gray-700 text-gray-100;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  @apply text-gray-500;
+}
+
+.dark button:not(.btn-primary) {
+  @apply text-gray-200;
+}
+
+.dark .bg-white {
+  @apply bg-gray-800 !important;
+}
+
+.dark .text-google-gray-900 {
+  @apply text-gray-100 !important;
+}
+
+.dark .text-google-gray-700 {
+  @apply text-gray-300 !important;
+}
+
+.dark .text-google-gray-600 {
+  @apply text-gray-400 !important;
+}
+
+.dark .text-google-gray-500 {
+  @apply text-gray-500 !important;
+}
+
+.dark .border-google-gray-200 {
+  @apply border-gray-700 !important;
+}
+
+.dark .border-google-gray-300 {
+  @apply border-gray-600 !important;
+}
+
+.dark .bg-google-gray-50 {
+  @apply bg-gray-900 !important;
+}
+
+.dark .bg-google-gray-100 {
+  @apply bg-gray-800 !important;
+}
+
+.dark .hover\:bg-google-gray-100:hover {
+  @apply hover:bg-gray-800 !important;
+}
+
+.dark .hover\:bg-google-gray-200:hover {
+  @apply hover:bg-gray-700 !important;
+}
+
+
 
 

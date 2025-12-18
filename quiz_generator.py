@@ -45,16 +45,21 @@ class QuizGenerator:
 
 难度等级：{difficulty_desc.get(difficulty, '中等')}
 
+题目类型要求：
+1. 选择题（单选题，4个选项）
+2. 判断题（正确/错误）
+3. 填空题（简单的关键词或短语填空）
+
 题目要求：
-1. 涵盖不同题型：选择题、判断题、简答题
-2. 题目要清晰、准确
-3. 答案要有详细解释
-4. 难度适中，符合学习目标
+- 题目要清晰、准确，基于给定内容
+- 答案要有详细解释
+- 填空题答案要简短明确（1-3个词）
+- 难度适中，符合学习目标
 
 内容：
 {context[:3000]}
 
-请以JSON格式返回，格式如下：
+请严格以JSON格式返回，格式如下：
 [
   {{
     "type": "choice",
@@ -65,15 +70,15 @@ class QuizGenerator:
   }},
   {{
     "type": "true_false",
-    "question": "判断题内容",
+    "question": "判断题内容（陈述句）",
     "correct_answer": "true",
     "explanation": "答案解释"
   }},
   {{
-    "type": "short_answer",
-    "question": "简答题内容",
-    "correct_answer": "参考答案",
-    "explanation": "评分要点"
+    "type": "fill_blank",
+    "question": "填空题内容，用____表示空格位置",
+    "correct_answer": "简短答案",
+    "explanation": "答案解释和关键词"
   }}
 ]
 

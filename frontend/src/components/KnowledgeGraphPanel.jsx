@@ -11,24 +11,39 @@ import axios from 'axios';
 const KnowledgeGraphPanel = ({ open, onClose }) => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [knowledgeBases, setKnowledgeBases] = useState([]);
+  const [selectedKB, setSelectedKB] = useState('default');
 
   // 加载统计
   useEffect(() => {
     if (open) {
+      loadKnowledgeBases();
       loadStats();
     }
-  }, [open]);
+  }, [open, selectedKB]);
+
+  const loadKnowledgeBases = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/knowledge-bases');
+      if (response.data.success) {
+        setKnowledgeBases(response.data.knowledge_bases);
+      }
+    } catch (error) {
+      console.error('加载知识库列表失败:', error);
+    }
+  };
 
   const loadStats = async () => {
     setLoading(true);
     try {
       const response = await axios.get('http://localhost:8000/api/knowledge-graph');
+      console.log('知识图谱数据:', response.data);
       if (response.data.success) {
         setStats(response.data.stats);
       }
     } catch (error) {
       console.error('加载知识图谱失败:', error);
-      toast.error('加载失败');
+      toast.error('加载知识图谱失败，请稍后重试');
     } finally {
       setLoading(false);
     }
@@ -68,6 +83,27 @@ const KnowledgeGraphPanel = ({ open, onClose }) => {
 
           {/* 内容 */}
           <div className="flex-1 overflow-y-auto p-4">
+            {/* 知识库选择 */}
+            {knowledgeBases.length > 0 && (
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-google-gray-700 mb-2">
+                  选择知识库
+                </label>
+                <select
+                  value={selectedKB}
+                  onChange={(e) => setSelectedKB(e.target.value)}
+                  className="w-full px-3 py-2 border border-google-gray-300 rounded-lg 
+                           focus:outline-none focus:ring-2 focus:ring-google-blue-500"
+                >
+                  {knowledgeBases.map((kb) => (
+                    <option key={kb.id} value={kb.id}>
+                      {kb.name} ({kb.document_count} 文档)
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
             {loading ? (
               <div className="text-center py-20 text-google-gray-500">
                 <div className="animate-spin h-8 w-8 border-4 border-google-blue-500 border-t-transparent rounded-full mx-auto mb-2"></div>
@@ -153,5 +189,7 @@ const KnowledgeGraphPanel = ({ open, onClose }) => {
 };
 
 export default KnowledgeGraphPanel;
+
+
 
 

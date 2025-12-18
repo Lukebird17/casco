@@ -35,18 +35,24 @@ export const useChat = (currentSessionId) => {
     setConfidence(null);
 
     try {
-      // 如果有文件，将文件内容添加到消息中
-      let finalMessage = message;
-      if (file && file.content) {
-        finalMessage = `${message}\n\n[文件内容: ${file.filename}]\n${file.content}`;
-      }
-
-      const response = await sendMessage({
-        message: finalMessage,
+      // 构建请求参数
+      const requestData = {
+        message: message,
         session_id: currentSessionId,
         enable_socratic: enableSocratic,
-        image_base64: image,
-      });
+      };
+
+      // 如果有图片，添加图片数据
+      if (image) {
+        requestData.image_base64 = image;
+      }
+
+      // 如果有文件，添加文件内容
+      if (file && file.content) {
+        requestData.file_content = file.content;
+      }
+
+      const response = await sendMessage(requestData);
 
       if (response.success) {
         // 添加 AI 回复

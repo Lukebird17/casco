@@ -6,6 +6,8 @@
 """
 
 import json
+import re
+from collections import Counter
 from typing import List, Dict, Tuple
 from pathlib import Path
 from openai import OpenAI
@@ -49,17 +51,79 @@ class KnowledgeGraph:
         except Exception as e:
             print(f"⚠️  保存知识图谱失败: {e}")
     
-    def extract_entities_and_relations(self, text: str, source: str = "") -> Tuple[List[Dict], List[Dict]]:
+    def extract_keywords_simple(self, text: str, source: str = "", top_n: int = 10) -> Tuple[List[Dict], List[Dict]]:
+        """
+        简单的关键词提取（基于词频，作为fallback方案）
+        
+        参数:
+            text: 文本内容
+            source: 来源
+            top_n: 提取前N个关键词
+        
+        返回:
+            (实体列表, 关系列表)
+        """
+        # 中文分词（简单版）
+        # 过滤掉常见停用词
+        stopwords = {'的', '了', '是', '在', '和', '有', '与', '等', '中', '对', '为', '都', '可以', '这', '就', '也', '我', '你', '他', '她', '我们', '一个', '一些', '这个', '那个', '什么', '怎么', '如何'}
+        
+        # 提取2-4个字的词
+        words = re.findall(r'[\u4e00-\u9fa5]{2,4}', text)
+        words = [w for w in words if w not in stopwords and len(w) >= 2]
+        
+        # 统计词频
+        word_counts = Counter(words)
+        top_keywords = word_counts.most_common(top_n)
+        
+        # 构建实体列表
+        entities = []
+        for keyword, count in top_keywords:
+            entities.append({
+                'name': keyword,
+                'type': '关键词',
+                'description': f'出现{count}次',
+                'source': source,
+                'frequency': count
+            })
+        
+        # 构建关系（共现关系）
+        relationships = []
+        keyword_list = [kw for kw, _ in top_keywords[:5]]  # 只用前5个
+        
+        # 简单的共现分析
+        sentences = re.split(r'[。！？\n]', text)
+        for i, kw1 in enumerate(keyword_list):
+            for kw2 in keyword_list[i+1:]:
+                # 检查是否在同一句出现
+                cooccur_count = sum(1 for sent in sentences if kw1 in sent and kw2 in sent)
+                if cooccur_count > 0:
+                    relationships.append({
+                        'source': kw1,
+                        'target': kw2,
+                        'relation': '相关',
+                        'description': f'共同出现{cooccur_count}次',
+                        'weight': cooccur_count
+                    })
+        
+        return entities, relationships
+    
+    def extract_entities_and_relations(self, text: str, source: str = "", use_simple: bool = True) -> Tuple[List[Dict], List[Dict]]:
         """
         从文本中提取实体和关系
         
         参数:
             text: 文本内容
             source: 来源
+            use_simple: 是否使用简单提取（默认True，更快更稳定）
         
         返回:
             (实体列表, 关系列表)
         """
+        # 优先使用简单方法（更稳定）
+        if use_simple:
+            return self.extract_keywords_simple(text, source)
+        
+        # LLM方法（可能失败）
         prompt = f"""请从以下文本中提取关键实体和它们之间的关系。
 
 文本：
@@ -123,40 +187,74 @@ class KnowledgeGraph:
             return entities, relationships
             
         except Exception as e:
-            print(f"提取实体和关系失败: {e}")
-            return [], []
+            print(f"⚠️ LLM提取失败: {e}，使用简单方法")
+            return self.extract_keywords_simple(text, source)
+    
+    def add_to_graph(self, entities: List[Dict], relationships: List[Dict]):
+        """
+        将实体和关系添加到图中
+        
+        参数:
+            entities: 实体列表
+            relationships: 关系列表
+        """
+        # 添加实体
+        for entity in entities:
+            name = entity.get('name', '')
+            if not name:
+                continue
+                
+            source = entity.get('source', '')
+            if name not in self.entities:
+                self.entities[name] = {
+                    'type': entity.get('type', '关键词'),
+                    'description': entity.get('description', ''),
+                    'frequency': entity.get('frequency', 1),
+                    'sources': [source] if source else []
+                }
+            else:
+                # 更新频率
+                self.entities[name]['frequency'] = self.entities[name].get('frequency', 1) + entity.get('frequency', 1)
+                # 合并来源
+                if source and source not in self.entities[name].get('sources', []):
+                    if 'sources' not in self.entities[name]:
+                        self.entities[name]['sources'] = []
+                    self.entities[name]['sources'].append(source)
+        
+        # 添加关系
+        for rel in relationships:
+            source_entity = rel.get('source', '')
+            target_entity = rel.get('target', '')
+            
+            if not source_entity or not target_entity:
+                continue
+            
+            # 检查是否已存在相同关系
+            exists = any(
+                r.get('source') == source_entity and 
+                r.get('target') == target_entity and 
+                r.get('relation') == rel.get('relation', '')
+                for r in self.relationships
+            )
+            
+            if not exists:
+                self.relationships.append({
+                    'source': source_entity,
+                    'target': target_entity,
+                    'relation': rel.get('relation', '相关'),
+                    'description': rel.get('description', ''),
+                    'weight': rel.get('weight', 1)
+                })
+        
+        # 保存图数据
+        self._save_graph()
     
     def add_entities_and_relations(self, text: str, source: str = ""):
         """提取并添加实体和关系到图中"""
         entities, relationships = self.extract_entities_and_relations(text, source)
         
-        # 添加实体
-        for entity in entities:
-            name = entity['name']
-            if name not in self.entities:
-                self.entities[name] = {
-                    'type': entity.get('type', '未知'),
-                    'description': entity.get('description', ''),
-                    'sources': [source]
-                }
-            else:
-                # 合并来源
-                if source not in self.entities[name]['sources']:
-                    self.entities[name]['sources'].append(source)
-        
-        # 添加关系
-        for rel in relationships:
-            # 检查是否已存在相同关系
-            exists = any(
-                r['source'] == rel['source'] and 
-                r['target'] == rel['target'] and 
-                r['relation'] == rel['relation']
-                for r in self.relationships
-            )
-            if not exists:
-                self.relationships.append(rel)
-        
-        self._save_graph()
+        # 使用add_to_graph方法
+        self.add_to_graph(entities, relationships)
         
         return len(entities), len(relationships)
     

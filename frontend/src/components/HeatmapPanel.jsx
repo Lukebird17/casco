@@ -193,3 +193,6 @@ const HeatmapPanel = ({ open, onClose }) => {
 export default HeatmapPanel;
 
 
+
+
+
