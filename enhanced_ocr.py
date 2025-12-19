@@ -230,7 +230,41 @@ class EnhancedOCRProcessor:
         }
         
         try:
-            # 查找生成的Markdown文件
+            # 【新增】1. 优先从content_list.json提取准确的页码信息
+            import json
+            content_list_files = list(Path(output_dir).rglob('*_content_list.json'))
+            page_text_mapping = {}  # {page_idx: [texts]}
+            
+            if content_list_files:
+                print(f"   📄 找到content_list.json，提取页码信息...")
+                try:
+                    with open(content_list_files[0], 'r', encoding='utf-8') as f:
+                        content_list = json.load(f)
+                    
+                    # 按页码组织文本
+                    for item in content_list:
+                        if item.get('type') in ['text', 'title', 'inline_equation', 'interline_equation']:
+                            page_idx = item.get('page_idx', 0)
+                            text = item.get('text', '').strip()
+                            if text:
+                                if page_idx not in page_text_mapping:
+                                    page_text_mapping[page_idx] = []
+                                page_text_mapping[page_idx].append(text)
+                    
+                    print(f"   ✅ 提取了 {len(page_text_mapping)} 页的文本内容")
+                    
+                    # 构建按页分割的内容
+                    result['pages'] = []
+                    for page_idx in sorted(page_text_mapping.keys()):
+                        page_content = '\n'.join(page_text_mapping[page_idx])
+                        result['pages'].append({
+                            'page_number': page_idx + 1,  # 转为1-based
+                            'content': page_content
+                        })
+                except Exception as e:
+                    print(f"   ⚠️  解析content_list失败: {e}")
+            
+            # 2. 查找生成的Markdown文件
             md_files = list(Path(output_dir).rglob('*.md'))
             markdown_content = ''
             
@@ -242,19 +276,24 @@ class EnhancedOCRProcessor:
                     markdown_content = f.read()
                 
                 result['markdown'] = markdown_content
-                result['content'] = markdown_content
+                
+                # 如果有页面信息，使用页面内容；否则使用markdown
+                if result.get('pages'):
+                    result['content'] = '\n\n'.join([p['content'] for p in result['pages']])
+                else:
+                    result['content'] = markdown_content
                 
                 # 统计信息
                 result['text_blocks'] = len(markdown_content.split('\n\n'))
                 result['image_count'] = markdown_content.count('![')
                 result['table_count'] = markdown_content.count('|')
             
-            # 查找提取的图片文件
+            # 3. 查找提取的图片文件
             image_files = []
             for ext in ['.png', '.jpg', '.jpeg']:
                 image_files.extend(Path(output_dir).rglob(f'*{ext}'))
             
-            # 解析图片详细信息（包括上下文）
+            # 4. 解析图片详细信息（包括页码）
             result['images'] = self._extract_image_info(
                 markdown_content, 
                 image_files, 

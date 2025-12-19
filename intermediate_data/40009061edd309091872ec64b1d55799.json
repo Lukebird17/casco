@@ -1,0 +1,1158 @@
+{
+  "pages": [
+    {
+      "text": "【第1页】\n操作系统课程引言\n【/第1页】",
+      "page_number": 1,
+      "section": ""
+    },
+    {
+      "text": "【第2页】\n版权声明\n• 本内容版权归上海交通大学并行与分布式系统研究所所有\n使用者可以将全部或部分本内容免费用于非商业用途\n• 使用者在使用全部或部分本内容时请注明来源– 内容来自：上海交通大学并行与分布式系统研究所+材料名字\n• 对于不遵守此声明或者其他违法使用本内容者，将依法保留追究权\n本内容的发布采用 Creative Commons Attribution 4.0 License– 完整文本：https://creativecommons.org/licenses/by/4.0/legalcode\n【/第2页】",
+      "page_number": 2,
+      "section": ""
+    },
+    {
+      "text": "【第3页】\n大纲\n为什么要学习操作系统  \n操作系统的历史  \n什么是操作系统  \n操作系统的分化  \n操作系统的不同架构  \n课程信息\n【/第3页】",
+      "page_number": 3,
+      "section": ""
+    },
+    {
+      "text": "【第4页】\n为什么学习操作系统\n【/第4页】",
+      "page_number": 4,
+      "section": ""
+    },
+    {
+      "text": "【第5页】\n为什么学习操作系统？ 三个“有助于”\n1. 有助于更好地理解底层发生了什么– 有能力解释一些现象并探索更多可能\n2. 有助于更好地驾驭硬件– 更高效、更安全地提高生产力\n3. 有助于做出更有影响力的工作– 底层的创新能够影响大范围的应用\n【/第5页】",
+      "page_number": 5,
+      "section": ""
+    },
+    {
+      "text": "【第6页】\n1. 有助于更好地理解底层发生了什么\nFile Explorer in Windows 11 can be speeded up drastically-you need to toggle full screen mode on and off\nFileExplorerinWindows11isnotparticularlyfastbutthankstoanunknownfeatureoftheprogram,awaywas found tospeeditupdrastically-youneed toenableanddisablefullscreenmode.Thismethod was reportedbythe userof the social network Xunder the nickname Vivi.\nWindows双击F11加速？\n【/第6页】\n\n【第6页·图片】(d7e10ab3eeae332eb2f4676b41afbfb5e0360aae73529e30cae2f0cfe7a955a0.jpg)\n该图片展示了一个Windows 11操作系统的桌面截图，主要焦点为一个处于全屏模式的文件资源管理器窗口，显示本地磁盘E:中的文件夹列表，包括“AppData”、“Program Files”等系统目录。背景中可见一个视频编辑软件（如OBS Studio）的界面，包含预览窗口和控制面板。屏幕底部任务栏...\n【/图片】\n\n\n【第6页·图片】(fdb0619aa5879f8477fb9bdf63614902926be2e266a74173b69725cdd6e2f296.jpg)\n该图片为网站“The Hacker News”的网页截图，顶部为深蓝色导航栏，左侧显示网站名称“The Hacker News”，右侧有“Get the Free Newsletter”黄色按钮。导航栏下方包含“Home”“Data Breaches”“Cyber Attacks”“Vulnerab...\n【/图片】\n\n\n【第6页·图片】(c870c67185c02768a9ee408bc741e4bfe5920f0fff3001c4ec029d5b525ed87a.jpg)\n图片展示了一只手正按压笔记本电脑键盘上的“Backspace”键，键盘区域清晰可见F10至F12功能键、Insert、Delete、PgUp、PgDn等按键。图片下方叠加白色文字：“Press 'BackSpace' 28 Times to Hack LINUX”，意为“按28次退格键来黑掉Linu...\n【/图片】\n",
+      "page_number": 6,
+      "section": ""
+    },
+    {
+      "text": "【第7页】\n1. 有助于更好地理解底层发生了什么\nDocker vs. Virtual Environment: A Comparison and User Manual\nGiovanni Solano Porras·Follow\nWhen it comes to software development and deployment, managing dependencies and isolating environments are crucial for ensuring consistency and reproducibility.Two popular solutions for achieving this are Docker and virtual environments.Inthis article,we willcompare Docker and virtual environments,discussing theirdifferences,benefits,and use cases.Furthermore,we will providea comprehensive manual for using both,empowering developers to make informed choices based on their specific needs.\n为什么Docker可以隔离不同的Python环境？什么是Namespace？是否也可以支持性能隔离？\n【/第7页】\n\n【第7页·图片】(2fd4962aab7250a3dfa418abe52de5fc7e5ae99beeff72c7acff3e76bcbc5a0e.jpg)\n该图片为一个简化的线描图标，描绘了一只手掌向上、手指微微弯曲的手势，掌心上方有三颗小圆点，形似闪光或火花，整体风格简洁、线条流畅，常用于表示“点赞”“鼓掌”或“庆祝”等积极互动行为。图标为黑白单色，无填充，具有典型的社交媒体或用户界面中“赞”或“支持”按钮的视觉特征。\n【/图片】\n\n\n【第7页·图片】(726c56f7ea08d8ad5d0eea75049ffdae4d6ca8f69ccb7e686a0a276188e4bd69.jpg)\n该图片为Docker的官方标志。画面主体是一只蓝色的鲸鱼，其背部承载着多层堆叠的集装箱，象征容器化技术。鲸鱼下方是深灰色的“docker”字样，字体简洁现代。整体设计风格扁平化，色彩以蓝色为主，传达出技术、稳定与可扩展的视觉印象。该标志广泛用于表示Docker容器平台，常出现在软件开发、部署和DevOps相关文档中。\n【/图片】\n\n\n【第7页·图片】(02ada9d8ed7bdbf06930047924224c25f06526ee326e6e81196931b1acf7d57f.jpg)\n该图片为一个简洁的层级结构图，顶部显示“Virtualenv”字样，下方通过一条水平线连接三个并列元素：“python”、“Python徽标”（蓝黄相间的蛇形图标）和“Package”。整体结构表明 Virtualenv 是一个用于管理 Python 解释器和包的工具，能够隔离不同 Python 环境中的 Python 解释器与依赖包，常用于解决项目间依赖冲突问题。\n【/图片】\n",
+      "page_number": 7,
+      "section": ""
+    },
+    {
+      "text": "【第8页】\n1. 有助于更好地理解底层发生了什么\n什么是Segmentation fault？为什么会发生？\n【/第8页】\n\n【第8页·图片】(bc026e8ce4d860cbc3ee13ead1f220438444c7cf7f10486b58b84f4ca19c2ce6.jpg)\n该图片展示了一个Linux终端的命令行界面，其中运行了MMOCR（一个基于PyTorch的OCR工具包）的文本识别脚本。用户首先尝试通过命令行执行`python mmocr/utils/ocr.py demo/demo_text_ocr.jpg --print-result`，随后在交互式Pytho...\n【/图片】\n",
+      "page_number": 8,
+      "section": ""
+    },
+    {
+      "text": "【第9页】\n2. 有助于更好地驾驭硬件\nLLaMA NUMA could be better #1437\nzrmopened this issue on May 14.19 comments zrm commented on May14·edited llama.cppismemorybound,let'ssee what hasalotofmemorybandwidth:\nNVIDIAV10032GB:900GB/s  \n2SEpyc 9000 (12xDDR5-4800/S):922GB/s  \nNVIDIAA10040GB:1555GB/s  \n2SXeon Max (HBM):2TB/s  \nNVIDIA A10080GB:2TB/s  \n8SXeon Scalablev4(8xDDR5-4800/S):2.45TB/s\nllama_print_timings:sample time=489.53   \nllama_print_timings: prompt eval time = 14   \nllama_print_timings: eval time = 48623.21\n125% faster is alright.\nI can submit a pull request that does the st\n【/第9页】\n\n【第9页·图片】(0ac6bda6563c07868867f1371db46f81af618136ae3447507273b8377c446896.jpg)\n该图片为一张Reddit帖子截图，来自r/programming板块，由用户alexeyr发布于5个月前。图片主体为一个卡通风格的羊驼头像（LLaMA的标志性形象），背景为蓝绿色网格和电路板图案，象征技术与计算。图片下方叠加白色文字，内容为：“We modified llama.cpp to loa...\n【/图片】\n",
+      "page_number": 9,
+      "section": ""
+    },
+    {
+      "text": "【第10页】\n2. 有助于更好地驾驭硬件\n90xspeedup\n#58(comment) presents the following code:\nfornin range(n_samples)： subgrad[i] $+ = 1 -$ y[n] $^ *$ $^ *$ $^ +$ b） $\\textbf { < } 1$ subgrad[i] $+ =$ self.lambda1 $^ { \\ast } \\ ( - 1$ $< 0$ $^ \\textrm { \\scriptsize + 2 * }$ self.lambda2 $^ *$ w[i]\nScalene proposes the following optimization:\n$\\#$ subgrad[:-1] $\\equiv$ np.sum（-y[:，None] $* \\times * ( y *$ $^ +$ $\\textbf { < } ~ 1$ subgrad[:-1] $+ =$ self.lambda1 $^ *$ np.sign(w) $^ \\textrm { \\scriptsize + 2 * }$ self.lambda2\\*W subgrad[-1] ${ } = { }$ np.sum(-y\\*（y $^ *$ (X.dot(w) $^ +$ b） $< 1 1$ ）\nScalene'sproposedoptimizationacceleratestheriginalcodebyatleast90x(89secondsto1second,whenrunning500 iterations),and takes fulladvantageofmultiplecores.\nPython矩阵运算优化\n【/第10页】\n\n【第10页·图片】(b0a8638d04569b21dd2888f1c6c06d56a075ceeb0178a7ef0b6fbb1762c5e057.jpg)\n该图为对数坐标系折线图，标题为“Matrix-Multiply Speedup vs. Pure Python”，展示矩阵乘法相对于纯Python实现的加速比。横轴表示不同优化技术：Python（基线）、C、parallel loops（并行循环）、memory optimization（内存优化）...\n【/图片】\n",
+      "page_number": 10,
+      "section": ""
+    },
+    {
+      "text": "【第11页】\n3. 有助于做出更有影响力的工作\nHarmonyOs Developer 设计开发分发文档开发者社区\nHarmonyOS NEXT Developer Preview 版本发布公告\n尊敬的开发者朋友，\n感谢您长期以来对 HarmonyOS的关心和支持。\n自 HarmonyOS 发布以来，我们不断寻求创新：从可大可小的弹性架构，到以分布式技术为基础的超级终端；从全栈赋能的工具套件，到方舟引擎带来的丝滑流畅，每一次技术突破只为成就用户更好的体验。\n我们对未来的探索从未止步，HarmonyOS NEXTDeveloper Preview 版本将搭载我们最新的底座技术和开放能力、开发套件..我们希望它能搭建起和开发者连接的桥梁，携手共建一个繁荣的鸿蒙生态。\n鸿蒙Next有什么不同？为何不再兼容Android？有哪些意义？\n【/第11页】\n\n【第11页·图片】(70e466fc10ffb385e16d6a9a075c65dd5f958281cf5329373137a85270fdeafd.jpg)\n图片展示了一场发布会现场，舞台中央大屏幕上显示“HarmonyOS NEXT 开发者预览版”字样，下方配有“一起干大事”的标语。背景为深邃星空，左侧有两名宇航员剪影，象征探索与创新。舞台灯光以蓝色为主调，营造科技感与未来感。一位演讲者站在舞台中央，面向观众，整体氛围庄重而充满愿景，体现鸿蒙系统迈向独立生态的决心与开放合作的号召。\n【/图片】\n",
+      "page_number": 11,
+      "section": ""
+    },
+    {
+      "text": "【第12页】\n共同推进开源鸿蒙OpenHarmony生态\n技术指导委员会主席\n技术指导委员会成员\n技术支撑组成员\n陈海波\nOpenHarmony项目群TSC主席\n臧斌宇OpenHarmony项目群TSC成员\n夏虞斌OpenHarmony技术指导委员会安全及机密计算TSG成员\n【/第12页】\n\n【第12页·图片】(70fd85a5e8554fc09af1481da48c2ee902794a4580c3ec993bdd9762b93bca16.jpg)\n这是一张人物肖像照，位于“OpenHarmony生态”相关介绍页面中，对应“技术支撑组成员”一栏。照片为圆形头像，背景为纯黑色，主体为一位戴眼镜的中年男性，身着深色西装、白色衬衫并系有领带，表情严肃，正视镜头。根据上下文文字，该人物为陈海波，现任OpenHarmony项目群TSC主席。\n【/图片】\n\n\n【第12页·图片】(543f0dcb385203f712420df3946d1bdc7bdc0b0ed6637e90d9bedfeda15417bb.jpg)\n这是一张人物头像照片，显示一位中年男性，戴眼镜，短发，穿着深色西装外套和浅色衬衫，系有领带。照片为圆形裁剪，背景为纯白色，整体风格正式、简洁，符合专业介绍或会议资料中的标准肖像照。该图片位于“陈海波 OpenHarmony项目群TSC主席”文字下方，应为其个人照片。\n【/图片】\n\n\n【第12页·图片】(62bce87b2f6e68c7708acbc8a40a2c5d86d4912f05f3926c99395bee604ae0f3.jpg)\n该图片展示的是“开放原子开源基金会OpenHarmony技术峰会”上“终端操作系统十大技术挑战方向特别贡献者”的颁奖合影。背景为蓝色星空主题，上方标有活动名称及奖项名称。画面中八位获奖者并排站立，每人手持花束。左侧以圆形头像突出显示上海交通大学的古金宇，并以黄色线条指向其在合影中的位置。其他获奖者分别来自编程语言TSG、北京理工大学、安全与机密计算TSG、兰州大学等机构，姓名与单位标注于上方。\n【/图片】\n\n\n【第12页·图片】(bb0bee7b7b667e21c2cd2dca0de4cfda85e393489464077aa13c95c6f8fe921c.jpg)\n这张图片展示了一群人于室内合影，背景悬挂蓝色横幅，上书“上海交通大学OpenHarmony技术俱乐部”。前排人员坐于椅子上，后排站立，多数着装为商务休闲或T恤，整体氛围正式而轻松。场景应为该技术俱乐部成立或活动的纪念合影，体现高校与OpenHarmony技术生态的结合。\n【/图片】\n\n\n【第12页·图片】(ec3c1ceafc0cbe9f8af7c3f6dd2108817c0f310aedc209211ef69dd074e8f77b.jpg)\n这是一张人物半身肖像照，照片中为一位戴眼镜的男性，身穿深色西装外套、浅蓝色衬衫，并系着一条粉紫色条纹领带。背景为纯白色，人物图像被置于一个圆形边框内，整体风格正式、专业，符合技术专家或学术人士的证件照或宣传照特征。根据上下文，该人物为夏虞斌，OpenHarmony技术指导委员会安全及机密计算TSG成员。\n【/图片】\n\n\n【第12页·图片】(60d83076fac9ca4009e64e0b633777286528eff8b0d6d629525d24f008b7a810.jpg)\n这张图片展示了四位年轻男性在一座欧式风格建筑前合影。背景建筑为米黄色石材外墙，有多扇拱形窗户和中央拱门，前方有水池倒影。四人站在一组色彩鲜艳的圆形艺术装置前，装置由粉、蓝、橙、紫、黄等色块组成，呈半圆排列。四人均佩戴证件挂绳，穿着休闲，面带微笑，其中两人比出“V”字手势。右下角有“知乎 @上交OH技术俱乐部”水印。整体氛围轻松，应为技术活动或会议期间的合影。\n【/图片】\n",
+      "page_number": 12,
+      "section": ""
+    },
+    {
+      "text": "【第13页】\n图灵奖与操作系统\n【/第13页】\n\n【第13页·图片】(4ded82dc9befc78cef0d467fe50b93dd8b52cffc55963df28db562e9039e6dd2.jpg)\n该图片为一张关于操作系统发展史的时间轴图，展示了从1949年到2019年关键操作系统里程碑及其相关图灵奖得主。时间轴上依次标注了：1949年Maurice Wilkes与EDSAC（第一台存储程序式电子计算机）；1964年Frederick Brooks与IBM System/360；1969年Fe...\n【/图片】\n",
+      "page_number": 13,
+      "section": ""
+    },
+    {
+      "text": "【第14页】\n计算机硬件在新应用需求下迅猛发展\n计算: 从通用计算走向领域计算，各种xPU不断繁荣– GPU、TPU、NPU、IPU等支撑人工智能算力需求\n存储：智能存储，存算一体，非易失内存（SCM），内存与持久存储走向融合\n数据中心网络：Infiniband等网络走向纳秒级时延\n广域网络：5G大连接、低时延、高可靠使能新型高吞吐、低时延广域计算\n【/第14页】\n\n【第14页·图片】(415b61dcd2aa09985a47630c02fb7ce4f40131001a965c14a067eaea5269ada1.jpg)\n该图展示了Hadoop存储栈的架构及其在执行一次操作时所经历的60层调用栈，从应用层到硬件设备层。图中左侧为分层结构，自上而下包括Hadoop应用层、DFS Client、DataNode、系统调用接口、虚拟文件系统、Page Cache、Ext4、通用块层、I/O调度层、MMC驱动及eMMC/UF...\n【/图片】\n",
+      "page_number": 14,
+      "section": ""
+    },
+    {
+      "text": "【第15页】\n操作系统的简单历史\n【/第15页】",
+      "page_number": 15,
+      "section": ""
+    },
+    {
+      "text": "【第16页】\n计算机诞生时的操作员\n1946年2月14日，世界上第一台通用计算机ENIAC在美国宾夕法尼亚大学诞生，请在这个特殊的节日多陪陪你的电脑\n【/第16页】\n\n【第16页·图片】(eaeb9b157c59c7cdfece5b327ecdd998910bc543b7cd75ca119fce49e89b1cda.jpg)\n图片展示的是世界上第一台通用电子计算机ENIAC的复原展品，陈列于玻璃展柜中。该设备由多个大型黑色机柜组成，布满密集的电线、开关和指示灯，正面标有“ENIAC”字样及英文说明：“THE WORLD'S FIRST ELECTRONIC LARGE SCALE GENERAL-PURPOSE DIGI...\n【/图片】\n\n\n【第16页·图片】(ba3d64cffda75292db7597b181d374659b9fbff522dc2365fd2aa5b88fdededf.jpg)\n这是一张由两张黑白历史照片组成的拼合图，展示了早期计算机系统（如ENIAC）的操作场景。上图中，两名女性操作员正在大型电子设备前工作，其中一人站立操作控制面板，另一人蹲坐调整密集的电缆与开关。下图中，两名女性在另一台大型机器前协作，一人站立手持工具，另一人蹲坐操作面板。整体画面呈现了20世纪40年代早期计算机的复杂布线与人工操作模式，反映了当时计算机操作员的重要角色。\n【/图片】\n",
+      "page_number": 16,
+      "section": ""
+    },
+    {
+      "text": "【第17页】\n批处理操作系统： GM-NAA I/O\nRobert L. Patrick和OwenMock于1956年建设\n– 运行在IBM 704上– 主要功能：批处理运行任务\n【/第17页】\n\n【第17页·图片】(5960135c33de0bccf1d8bfb11d71987e5b51fa1041fe223f05201bd5e71b1031.jpg)\n这是一张黑白历史照片，展示了一台大型早期计算机系统的机柜，该系统为GM-NAA I/O批处理操作系统，运行于IBM 704计算机上，由Robert L. Patrick和Owen Mock于1956年开发。机柜呈长方形，内部装有多个垂直排列的电子模块，布满密集的电路板和电子元件，部分模块带有标签和指...\n【/图片】\n",
+      "page_number": 17,
+      "section": ""
+    },
+    {
+      "text": "【第18页】\n通用操作系统： OS/360\nIBM System/360 OS，1964\n– 首个通用操作系统，首次将操作系统与计算机分离  \n– ISA：指令集架构  \n– 架构师：Gene Amdahl(Amdahl’s Law)  \n– 项目经理：Fred Brooks (《人月神话》，1999年图灵奖得主)\n【/第18页】\n\n【第18页·图片】(276ccba512b5bfef31a35ff3a31ad1751a89fba1767ff77ef16dfb5cffa439ee.jpg)\n这是一台IBM System/360计算机的实物展示，拍摄于博物馆或展览环境中。设备由多个垂直机柜组成，上部为控制面板，设有大量指示灯、开关和按钮，用于系统监控与操作；下部为密集的电路板和电子模块，布满黄色和黑色的连接线缆。整体结构庞大、复杂，体现了20世纪60年代大型计算机的典型硬件设计风格。该系统于1964年推出，是首个通用操作系统OS/360的运行平台，标志着操作系统与硬件分离的重要里程碑。\n【/图片】\n",
+      "page_number": 18,
+      "section": ""
+    },
+    {
+      "text": "【第19页】\n分时与多任务：Multics/Unix/Linux\nUnix: Cat Command\nMultics: Fernando Corbató(1990年图灵奖) MIT/GE, 1964分时，文件系统，动态链接等\nUnix: Ken Thompson, DennisRitchie (1983年图灵奖), 1969Shell，层次化文件系统\nLinux: Linus Torvalds, 1991最流行的开源操作系统\n【/第19页】\n\n【第19页·图片】(490cad98390989f0159fa84ccc2833eb4754705708ff372122d6c04eca1b2e25.jpg)\n该图片并列展示了两个标志性图像：左侧为红色同心圆环构成的“Multics”系统标志，背景为黑色，中心标有“Multics”字样，象征早期分时操作系统；右侧为Linux的官方吉祥物Tux——一只黑白相间、黄色喙和脚的卡通企鹅，代表现代开源操作系统。二者共同体现从Multics到Unix再到Linux的分时与多任务操作系统发展脉络。\n【/图片】\n\n\n【第19页·图片】(067801a1827f4526103ccb893cf5c16faa31690a2c854c4f581122cdd8a6ae02.jpg)\n该图片为一个红色向下箭头图标，背景为白色，箭头轮廓清晰，呈标准等腰三角形，顶部与上下边框相接，底部尖端朝下。此图标位于文本“Fernando Corbató(1990年图灵奖) MIT/GE, 1964分时，文件系统，动态链接等”与“Unix: Ken Thompson, Dennis Ritchi...\n【/图片】\n\n\n【第19页·图片】(edd036b333fc6bb2d876e36c173895d641681c9df4df3eb37bc5bbbf8ed855fc.jpg)\n该图片为一个红色向下箭头图标，背景为白色，箭头轮廓清晰，呈标准几何形状，位于矩形框内。此图标通常用于表示“下载”或“向下移动”操作，在上下文“图形界面：Xer”中可能象征图形界面技术的演进方向或数据流，结合前文提及的UNIX、Linux等操作系统发展史，暗示技术发展的延续性或资源获取路径。\n【/图片】\n",
+      "page_number": 19,
+      "section": ""
+    },
+    {
+      "text": "【第20页】\n图形界面： Xerox Alto/MacOS/Windows\nXerox Alto （1973）: 第一个图形化操作系统，首次使用鼠标 （ ChuckThacker，2009年图灵奖）\nMac OS (Apple LISA, 1983):1979年乔布斯访问Xerox PARC，意识到GUI的重要性，买下了GUI进行研究\nWindows 1.0 （1985）: 基于图形界面的操作系统\n【/第20页】\n\n【第20页·图片】(dbaef09637b565dfa9a82fe1fb086c8d4d6e6f5d3d44af68f75f37a0c1659052.jpg)\n该图片由左右两部分组成：左侧为Xerox Alto计算机的实物照片，展示其复古的主机结构、键盘、显示器及下方的磁盘驱动器，整体呈米白色，置于展柜中；右侧为Xerox Alto的用户界面截图，显示“UserView workspace”窗口，包含类浏览器、字体选择、文本编辑功能及像素化图标，底部有卡通风格的蘑菇与人物图案，体现早期图形化操作系统的界面设计。\n【/图片】\n\n\n【第20页·图片】(cd54fa9a2c2df29129849784f3f6b345d52d4fb27f5e3b218eb882bbce3ae6a7.jpg)\n图片显示一个红色的向下箭头，位于白色背景上，箭头顶部有一条黑色横线。该箭头为简洁的几何图形，呈对称三角形，尖端朝下，两侧有垂直的白色边框。根据上下文，此箭头用于表示技术演进或概念传递的方向，可能象征1979年乔布斯访问Xerox PARC后将图形化界面和鼠标技术引入苹果公司，进而影响Mac OS（Apple LISA, 1983）的发展。\n【/图片】\n\n\n【第20页·图片】(b2031560242a33951501b0cd138f1f4962a1b336059579141d266136cdc63350.jpg)\n该图片为一个红色的向下箭头图标，背景为白色，箭头轮廓清晰，呈标准的等腰三角形形状，尖端朝下，位于矩形框内。此图标通常用于表示“向下”、“下载”或“继续”等操作，在此处作为视觉引导，连接上下文中的历史事件（乔布斯访问Xerox PARC）与后续成果（Windows 1.0的发布），象征技术发展的演进方向。\n【/图片】\n",
+      "page_number": 20,
+      "section": ""
+    },
+    {
+      "text": "【第21页】\n现代操作系统\n【/第21页】\n\n【第21页·图片】(0ca32859a47e5c48c5c2e01e91cc44e2f5d0f2df68a0cac3ab277d0c7b8eb010.jpg)\n这是一张智能手表的屏幕截图，显示时间为10:09。屏幕顶部显示“Oak St”和温度“77°”，并配有天气图标（太阳与云）、定位图标和地球图标。中间区域有两个交互式卡片，分别显示“Good morning”（带太阳图标）和“Good night”（带月亮图标），暗示这是基于时间或场景的个性化通知或快捷操作界面。整体界面简洁，采用深色背景与白色文字，符合现代智能穿戴设备的UI设计风格。\n【/图片】\n\n\n【第21页·图片】(6cae32bc3c1b1e7dc73faefb94c14d3aee93f457c5520f0c3f2909f79f0fae45.jpg)\n这是一张iPhone主屏幕的截图，显示时间为09:41，状态栏有Wi-Fi和电池图标。屏幕背景为深红色渐变动态壁纸。主屏幕包含多行应用图标，包括FaceTime、日历（显示4号）、照片、相机、邮件、时钟、地图、天气、提醒事项、备忘录、股市、新闻、图书、App Store、播客、TV、健康、家庭、钱包...\n【/图片】\n\n\n【第21页·图片】(8bb51c8773843515c9ff2952989b01e76f17d8d13411cfb3c718fe50157c835b.jpg)\n该图片展示了一台平板电脑（疑似iPad）的主屏幕界面。屏幕顶部显示时间为9:41，日期为6月22日星期一。左侧有小组件区域，包含日历、天气（61°F）、新闻（如“Top Stories”）和“Discoveries”推荐内容。主屏幕排列着多个应用程序图标，如邮件、时钟、照片、相机、App Store...\n【/图片】\n\n\n【第21页·图片】(a116efb795bfe6a4484e89d4fd3a48b5e9834e59d95ce339481cbab073bc53d7.jpg)\n该图片展示了一部智能手机的主屏幕界面。屏幕顶部显示天气信息：当前温度8°C，夜间模式，空气质量良好，体感温度20°C/6°C。背景为蓝绿色渐变抽象图案。屏幕上有多个应用图标，包括QQ、微信、支付宝、抖音、淘宝、美团、百度地图、天气、时钟、设置、小红书、网易云音乐等。图标排列整齐，部分应用图标带有通知角标。整体界面设计简洁，符合主流安卓系统风格。\n【/图片】\n\n\n【第21页·图片】(7da22c870cb749456e64666c3948bce82b2e051a871bd4b1a509613df4d57d9a.jpg)\n该图片展示了一部智能手机的快速设置面板界面，时间为周二，5月28日，12:00。屏幕顶部显示Wi-Fi（连接至“Google Guest”）、蓝牙、手电筒（关闭）、深色主题、我的主页（连接至“Devices”）、OPay（电池电量显示）、飞行模式（关闭）和勿扰模式（关闭）等快捷开关。底部为正在播放的...\n【/图片】\n\n\n【第21页·图片】(54bb0e2030ab7abaefc1643304b150774d10aa27c8b43e1fcba54263379999d2.jpg)\n这是一张展示MacBook Pro笔记本电脑屏幕的图片，屏幕上显示了macOS操作系统的多任务界面。背景为渐变色桌面壁纸，前景中叠加了多个应用程序窗口，包括信息（Messages）、地图（Maps）、Safari浏览器、FaceTime、系统设置等。屏幕底部是Dock栏，排列着常用应用图标。整体画面突出macOS的多窗口管理与界面设计，体现其流畅的用户体验和视觉美感。\n【/图片】\n\n\n【第21页·图片】(7680514ff23e584e5db66a424872174567223f43fd80aea6b8c7df01ec9aa50a.jpg)\n该图片展示了操作系统设置界面的两个窗口。左侧为浅色主题的设置面板，包含用户、云服务、个性化、设备、应用、账户等图标化选项；右侧为深色主题的“个性化”设置窗口，显示主题选择（浅色、深色、自定义）、Accent Color（强调色）选择器及透明度调节滑块。背景为渐变蓝紫色桌面，底部任务栏显示多个应用图标，整体呈现现代操作系统的视觉风格。\n【/图片】\n\n\n【第21页·图片】(523a5c3aa703fd359d6a39f424d9ae0d9ba3fce4f5bd07007c408de6121d406a.jpg)\n该图片展示了一个Windows操作系统的桌面界面，背景为蓝色抽象波浪形图案，具有立体感和流动感，是Windows 11的默认壁纸。桌面左侧有两个图标：一个是“此电脑”（This PC），另一个是“Microsoft Edge”浏览器。任务栏位于屏幕底部，显示了开始菜单按钮、搜索、任务视图、文件资源管...\n【/图片】\n",
+      "page_number": 21,
+      "section": ""
+    },
+    {
+      "text": "【第22页】\n今天， 操作系统空前繁荣\n这些设备中， 都有操作系统么？\n【/第22页】\n\n【第22页·图片】(29d0a3addbb06e5323b46a5ec046c8a993c22adba4a4c9f16ad8680425f79958.jpg)\n该图片由八张子图组成，展示了多种现代科技设备与硬件，用于探讨“操作系统”的应用范围。上排从左至右依次为：一架涂有“CS19”标识的客机、一架多旋翼无人机、一架战斗机、一辆绿色特斯拉风格的电动跑车；下排从左至右依次为：火星探测器、工业机械臂、一颗标有“HYGON 中科海光”的CPU芯片、一块红色外壳的...\n【/图片】\n",
+      "page_number": 22,
+      "section": ""
+    },
+    {
+      "text": "【第23页】\n操作系统的定义\n【/第23页】",
+      "page_number": 23,
+      "section": ""
+    },
+    {
+      "text": "【第24页】\n什么是操作系统？\n你觉得以下哪些属于操作系统？\nA. Windows 10所包含的所有软件  \nB. Linux内核以及所有设备的驱动  \nC. 在Macbook上下载安装的第三方NTFS文件系统  \nD. 华为Mate 30出厂时所有的软件  \nE. 大疆无人机出厂时所有的软件  \nF. 火星车上运行的软件\n你觉得应当如何定义操作系统？\n【/第24页】",
+      "page_number": 24,
+      "section": ""
+    },
+    {
+      "text": "【第25页】\n操作系统：在硬件和应用之间的软件层\n操作系统和应用的关系\n• 服务应用：如提供硬件操作管理应用：如加载、调度等\n操作系统和硬件的关系\n管理硬件：操作硬件以完成功能• 抽象硬件：应用不关心硬件差异\n“操作系统是管理硬件资源、控制程序运行、改善人机界面和为应用软件提供支持的一种系统软件。” 《计算机百科全书(第2版)》\n“操作系统将有限的、离散的资源，高效地抽象为无限的、连续的资源。《操作系统：原理与实现》\n【/第25页】\n\n【第25页·图片】(296f69649f66285ec1a125d4398ac1c9be8903135f9d7fc75d1d855e1a95ea84.jpg)\n该图片展示了一个三层软件架构示意图，自上而下依次为：浅黄色矩形框标注“应用”，红色矩形框标注“操作系统”，深蓝色矩形框标注“硬件”。三者呈垂直堆叠结构，直观表现了应用运行于操作系统之上，操作系统管理并抽象硬件资源的层级关系，体现了操作系统作为应用与硬件之间的中间层作用。\n【/图片】\n",
+      "page_number": 25,
+      "section": ""
+    },
+    {
+      "text": "【第26页】\n操作系统的职责\n各种应用程序\n服务应用\n管理硬件\nCPU, Memory, GPU…\n【/第26页】\n\n【第26页·图片】(71be1a419ddd01485357ba0ad6305b721957ab21cb9110db9bad4bb659290a25.jpg)\n该图片为一张结构化示意图，展示操作系统在硬件与应用程序之间的桥梁作用。图中分为三行四列：第一行显示各类应用程序图标，左侧为Windows平台常用软件（如Word、LOL、IE浏览器），右侧为Android平台应用（如微信、淘宝、王者荣耀）；第二行展示操作系统，左侧为Windows系统（含蓝色窗口标志...\n【/图片】\n",
+      "page_number": 26,
+      "section": ""
+    },
+    {
+      "text": "【第29页】\n操作系统通过抽象履行职责\n【/第29页】\n\n【第29页·图片】(76f1c08f00478875e7c6f04f74b102efc8aac91f3a332b53819baa5a690b386a.jpg)\n该图展示了操作系统在移动设备中的抽象与管理作用。顶部为两个应用图标（游戏与微信），它们通过“网络抽象”和“屏幕抽象”与中间的“操作系统”（含Android标志）交互。操作系统向下管理不同硬件，底部展示了华为、小米、OPPO三种手机品牌，体现其对多样化硬件的统一管理能力。整体结构说明操作系统通过抽象层屏蔽硬件差异，为上层应用提供统一接口。\n【/图片】\n",
+      "page_number": 29,
+      "section": ""
+    },
+    {
+      "text": "【第30页】\n如果没有操作系统\n面向操作系统开发应用\n面向各款手机开发应用\nRedmi Xiaomi 11 Civi Xiaomi 12\n【/第30页】\n\n【第30页·图片】(0b78eb4cdc6c7bf82b0bdaea1e838ea6cde773cb65a756a55006492690abddb3.jpg)\n该图展示了一个应用开发与操作系统及手机品牌关系的示意图。上半部分显示一款游戏应用图标（标有“5v5”）可面向Android和Apple两大操作系统开发。下半部分展示同一游戏应用可适配华为、小米、OPPO等不同手机品牌设备，其中小米手机通过连接线与上方Android系统关联，表明其基于Android系统。整体结构说明应用开发需考虑操作系统兼容性，并可覆盖多个手机品牌。\n【/图片】\n",
+      "page_number": 30,
+      "section": ""
+    },
+    {
+      "text": "【第31页】\n如果没有操作系统\n【/第31页】\n\n【第31页·图片】(8bcffd205b077827a97a358e9e1ea3bfa1f15d76133cf21c0ca64693e60089ca.jpg)\n该图通过对比说明“操作系统”的概念。上半部分展示Android和Apple两大操作系统，以及典型应用（如游戏、微信）请求“显示我！”。下半部分以华为、小米、OPPO等品牌手机为例，说明不同手机品牌（如Redmi、Xiaomi 11、Civi、Xiaomi 12）均运行在各自的操作系统之上。右侧示意图...\n【/图片】\n",
+      "page_number": 31,
+      "section": ""
+    },
+    {
+      "text": "【第32页】\n究竟什么是操作系统？\n“操作系统”并没有严格的唯一定义\n– 是一个相对概念：相对“应用”而言– 操作系统也可包含运行在用户态的框架（framework）\n• 例如：SSL库、Dalvik（Java虚拟机）是否属于操作系统？\n– 对Android来说，属于操作系统框架层；App属于应用– 对Linux来说，不属于操作系统；hello属于应用\n我们课程中的操作系统：以hello作为典型应用\n【/第32页】",
+      "page_number": 32,
+      "section": ""
+    },
+    {
+      "text": "【第33页】\n从 Hello World 说起\n#include <stdio.h>   \nint main()   \n{ printf(\"Hello World!\\n\"); return 0;   \n}\n运行hello时，操作系统的作用？\nbash\\$ gcc hello.c -o hello\n# 运行一个hello world程序   \nbash\\$./hello   \nHello World! # 同时启动两个hello world程序 bash\\$ ./hello & ./hello [1] 144   \nHello World!   \nHello World!   \n[1]+ Done ./hello\n【/第33页】",
+      "page_number": 33,
+      "section": ""
+    },
+    {
+      "text": "【第34页】\n操作系统考虑的一些问题\n• hello 这个可执行文件存储在什么位置？是如何存储的？\n• hello 这个可执行文件是如何从硬盘加载到内存中运行的？\n• hello 这个可执行文件是如何将\"Hello World!\"这行字输出到屏幕？\n• 两个 hello 程序是如何同时运行在一个 CPU 上的？\n两个 hello 程序之间如果互相通信该怎么做？\n• 如果其中一个 hello 出bug了，如何保证另一个能不受影响正常运行？\n操作系统需要：1、服务应用；2、管理应用\n【/第34页】",
+      "page_number": 34,
+      "section": ""
+    },
+    {
+      "text": "【第35页】\n操作系统为应用提供的服务 （部分）\n为应用提供计算资源的抽象\n– CPU：进程/线程，数量不受物理CPU的限制– 内存：虚拟内存，大小不受物理内存的限制– I/O设备：将各种设备统一抽象为文件，提供统一接口\n为应用提供线程间的同步\n– 应用可以实现自己的同步原语（lock）– 操作系统提供了更高效的同步原语（与线程切换配合, 如futex）\n为应用提供进程间的通信\n– 应用可以利用网络进行进程间通信（如loopback设备）– 操作系统提供了更高效的本地通信机制（具有更丰富的语义，如pipe）\n【/第35页】",
+      "page_number": 35,
+      "section": ""
+    },
+    {
+      "text": "【第36页】\n操作系统对应用的管理 （部分）\n应用生命周期的管理– 应用的加载、迁移、销毁等操作\n计算资源的分配\n– CPU：线程的调度机制– 内存：物理内存的分配– I/O设备：设备的复用与分配\n安全与隔离\n– 应用程序内部：访问控制机制– 应用程序之间：隔离机制，包括错误隔离和性能隔离\n【/第36页】",
+      "page_number": 36,
+      "section": ""
+    },
+    {
+      "text": "【第37页】\n操作系统的功能： 管理\n• 问：如何避免一个流氓应用独占CPU资源？\nrogue.c\n• 方法-1：每10ms发生一个时钟中断（时间片）– 调度器决定下一个要运行的任务\nint main () { while (1);\n• 方法-2：可通过信号等打断当前任务执行– 如：kill -9 1951\n【/第37页】",
+      "page_number": 37,
+      "section": ""
+    },
+    {
+      "text": "【第38页】\n操作系统的功能： 管理\n• 问：如何通过3行代码卡死一个OS?– 例：rogue-1.c 可以fork出无数的进程\nrogue-1.c\nint main () { while (1) fork();\n}\n如何解决这个问题？\n– 方法一：万能方法——重启– 方法二：将代码运行在虚拟机中，虚拟机外的应用不受影响– 方法三：Linux cgroup （docker），预先设置应用最大占用资源\n【/第38页】",
+      "page_number": 38,
+      "section": ""
+    },
+    {
+      "text": "【第39页】\n操作系统的分化\n【/第39页】",
+      "page_number": 39,
+      "section": ""
+    },
+    {
+      "text": "【第40页】\n应用与操作系统的解耦\n• 在最早的时候，并不区分应用与操作系统– 所有功能都在一起，负责开发的也是同一批人\n随着功能越来越多，开始出现分化和分工\n– 有些底层功能被频繁复用，如对存储设备的操作– 这些常用的功能形成了特定的模块，通过接口与其他模块交互• 例如：存储模块，可将存储抽象成一个大数组– 但这并不一定需要操作系统——比如，可以以库的方式存在• 那么，为什么不能把操作系统作为一个库呢？\n【/第40页】",
+      "page_number": 40,
+      "section": ""
+    },
+    {
+      "text": "【第41页】\n特权级的必要性\n• 多道（Multi-programming）操作系统的诞生\n– 通过时分复用计算资源的方式，在一台计算机上同时运行多个应用程序\n新的问题：如何保证不同应用间的隔离？\n– 如果所有的应用均能完全控制硬件计算资源，则会导致混乱• 例如：某个应用希望关机，某个应用希望格式化硬盘  \n– 因此必须先让应用降权，不允许直接改变全局的系统状态• 例如：中断是否打开\n• 方案：必须要有不同的权限级——至少两种权限\n– 低权限：不允许改变全局系统状态，用来运行应用– 高权限：集中运行能改变全局系统状态的操作，形成了操作系统\n特权操作\n【/第41页】",
+      "page_number": 41,
+      "section": ""
+    },
+    {
+      "text": "【第42页】\n操作系统的分化\n【/第42页】\n\n【第42页·图片】(23d217649cacd5d684655f7a0b447996738d73870dbc1c2bfcf11a821d2db5a6.jpg)\n该图展示了软件与硬件交互的演化过程及操作系统的形成机制。初始阶段，软件直接运行于硬件之上。随后，软件被划分为“硬件无关部分”和“硬件抽象部分”，实现对硬件的抽象。进一步演化中，硬件抽象部分与“特权操作部分”结合，形成操作系统核心，运行于支持特权的硬件上。此时，软件被划分为“应用程序”（包含服务应用和...\n【/图片】\n",
+      "page_number": 42,
+      "section": ""
+    },
+    {
+      "text": "【第43页】\n对硬件 （CPU） 的要求\nCPU对软件提供的接口称为ISA\n– ISA: Instruction Set Architecture– 包含指令、寄存器等软件可见、可操作的接口\n• CPU相应分化出两个模式：非特权模式和特权模式\n– 非特权模式ISA：应用可使用的指令和寄存器• 包括各种运算指令、通用寄存器等  \n– 特权模式ISA：只有操作系统才可使用的指令和寄存器• 包括各种特权指令、系统寄存器等  \n– 从上到下的切换过程通常称为陷入（trap）\n【/第43页】",
+      "page_number": 43,
+      "section": ""
+    },
+    {
+      "text": "【第44页】\n非特权部分与特权部分的交互\n系统调用 （System Call）\n– 应用调用操作系统的机制，实现应用不能实现的功能  \n– 应用通过CPU的陷入机制进行模式切换（非特权→特权）• 有多种陷入方式，包括特定指令、异常、硬件中断等  \n– 操作系统内核通过特定的硬件指令返回应用（特权→非特权• 操作系统主动返回：如ARM的eret\n应用调用操作系统的功能，就像调用普通函数一样\n– 例如：库函数 printf() ->系统调用 write() ->内核实现 sys_write()• write(1, \"Hello World!\\n\", 13)\n【/第44页】",
+      "page_number": 44,
+      "section": ""
+    },
+    {
+      "text": "【第45页】\nHello运行中的系统调用 （strace）\n/\\* 运行hello程序 \\*/\nexecve(\"./hello\", [\"./hello\"], 0x7ffed5a79e80 /\\* 64 vars $* / ) = 0$\n/\\*将\\`\\`Hello World!\\n''写到标准输出中，在这里，1代表标准输出，13代表一共写了13个字符。 \\*\nwrite(1, \"Hello World!\\n\", 13Hello World!) = 13\n/\\* 执行结束后，hello程序退出\\*/exit_group(0)\n【/第45页】",
+      "page_number": 45,
+      "section": ""
+    },
+    {
+      "text": "【第46页】\n操作系统的不同架构\n【/第46页】",
+      "page_number": 46,
+      "section": ""
+    },
+    {
+      "text": "【第47页】\n瓦萨沉船：1626年到1628年间，瑞典国王下令建造的艘军舰，由于追求极致的续航力、容量、火力及防护力，整船被建成不合乎物理常规地高大笨重，再加上在建造时没有填入足够的压舱物，瓦萨号即便在港口停靠时也不能依靠自身保持平衡。尽管有着严重的结构缺陷，瓦萨号依然被允许起航：不出所料的是，在出海航行不到几分钟后，47瓦萨号便被一阵微风吹倒，继而全船倾覆。\n【/第47页】",
+      "page_number": 47,
+      "section": ""
+    },
+    {
+      "text": "【第48页】\n操作系统复杂性与结构\n操作系统中的\"瓦萨号\"\n– 1991-1995年，IBM投入20亿美元打造Workplace操作系统– 目标过于宏伟，系统过于复杂，导致项目失败– 间接导致IBM全力投入扶植Linux操作系统\n复杂系统的构建必须考虑其内部结构\n– 不同目标之间往往存在冲突– 不同需求之间需要进行权衡\n【/第48页】",
+      "page_number": 48,
+      "section": ""
+    },
+    {
+      "text": "【第49页】\n操作系统的不同目标\n用户目标\n– 方便使用– 容易学习– 功能齐全– 安全  \n– 流畅\n系统目标\n– 容易设计、实现  \n– 容易维护  \n– 灵活性  \n– 可靠性  \n– 高效性\n【/第49页】",
+      "page_number": 49,
+      "section": ""
+    },
+    {
+      "text": "【第50页】\n操作系统的架构及演进\n【/第50页】\n\n【第50页·图片】(68225a7b592191b5e69244b69c1947537c2e1258ac90fa07c51ccfc895a4f116.jpg)\n该图展示了操作系统内核架构的演进历程，从1960年代的宏内核（Monolithic Kernel）到2010年代的多内核（Multikernel）。图中以时间轴形式呈现四种主要架构：宏内核（绿色）、微内核（橙色）、外核（黄色）和多内核（蓝色），并分别标注其核心特征。下方以树状结构展示各架构的代表性系...\n【/图片】\n",
+      "page_number": 50,
+      "section": ""
+    },
+    {
+      "text": "【第51页】\n1 宏内核 （Monolithic Kernel）\n整个系统分为内核与应用两层\n– 内核：运行在特权级，集中控制所有计算资源– 应用：运行在非特权级，受内核管理，使用内核服务\n【/第51页】\n\n【第51页·图片】(807772c33ed6d9c7ea2936688cbd2a68f56208d7e15470217ee3c121d8af7ab5.jpg)\n该图展示了宏内核（Monolithic Kernel）架构的典型结构。图中上方为两个“用户进程”，通过“系统调用”与下方的“内核”进行交互。内核以红色矩形框表示，内部注明其整合了文件系统、内存管理、设备驱动、进程调度、同步原语、IPC等核心功能模块。整体结构清晰地体现了宏内核将操作系统核心功能集中于单一内核空间的特点，用户进程通过系统调用接口访问内核服务。\n【/图片】\n",
+      "page_number": 51,
+      "section": ""
+    },
+    {
+      "text": "【第52页】\n宏内核的优缺点分析\n宏内核拥有丰富的沉淀和积累\n– 拥有巨大的统一的社区和生态– 针对不同场景优化了30年\n宏内核的结构性缺陷\n– 安全性与可靠性问题：模块之间没有很强的隔离机制– 实时性支持：系统太复杂导致无法做最坏情况时延分析– 系统过于庞大而阻碍了创新：Linux代码行数已经过2800万\n【/第52页】",
+      "page_number": 52,
+      "section": ""
+    },
+    {
+      "text": "【第53页】\n宏内核难以满足的场景\n向上向下的扩展\n– 很难去剪裁/扩展一个宏内核系统支持从KB级别到TB级别的场景\n硬件异构性– 很难长期支持一些定制化的方式去解决一些特定问题\n功能安全– 一个广泛共识：Linux无法通过汽车安全完整性认证（ASIL-D）\n信息安全– 单点错误会导致整个系统出错，而现在有数百个安全问题（CVE）\n• 确定性时延– Linux花费10+年合并实时补丁，目前依然不确定是否能支持确定性时延\n【/第53页】",
+      "page_number": 53,
+      "section": ""
+    },
+    {
+      "text": "【第54页】\n2、 微内核的系统架构\n设计原则：最小化内核功能\n– 将操作系统功能移到用户态，称为\"服务\"（Server）– 在用户模块之间，使用消息传递机制通信\n【/第54页】\n\n【第54页·图片】(30d56bcf46d8f8793a8ed6822765ba76625aa7fc3c536c2bedb0fd08c0b1d0e7.jpg)\n该图展示了一种微内核（μkernel）架构下的操作系统设计。图中包含三个主要组件：位于顶层的“Process”（进程）、被红色虚线框标示为“隔离”的“FS”（文件系统服务），以及底层的“μkernel”（微内核）。进程通过“Slow IPC”（慢速进程间通信）与文件系统服务交互，体现了将操作系统功能（如文件系统）移至用户态作为独立服务，并通过消息传递机制进行通信的设计思想。\n【/图片】\n",
+      "page_number": 54,
+      "section": ""
+    },
+    {
+      "text": "【第55页】\n例：文件的创建\n【/第55页】\n\n【第55页·图片】(c41a6a9520e0a7ffd75474e9c525c53e549fc556fdc85c9b3ff63f262149fd30.jpg)\n该图展示了一个文件系统层次结构的简化模型。最上层为绿色的“Application”（应用程序），通过黑色箭头向下调用中间层的“File System”（文件系统），文件系统再通过黑色箭头调用“Disk Driver”（磁盘驱动器），最终由磁盘驱动器通过黑色箭头与底层灰色的“Disk”（磁盘）交互。所...\n【/图片】\n\n\n【第55页·图片】(f759dd88972f92586a6322a8cc7a3bb8a2d4a021973d0b30b3789e633d88b672.jpg)\n该图展示了微内核（Microkernel）操作系统的架构。图中，微内核作为核心层（粉色矩形），位于应用程序（App）、文件系统（File System）和磁盘驱动（Disk Driver）等用户态服务之下。这些服务通过蓝色双向箭头与微内核通信，表明它们通过消息传递机制与内核交互。磁盘驱动通过黑色和灰...\n【/图片】\n",
+      "page_number": 55,
+      "section": ""
+    },
+    {
+      "text": "【第56页】\n微内核的优缺点分析\n优点\n– 易于扩展：直接添加一个用户进程即可为操作系统增加服务– 易于移植：大部分模块与底层硬件无关– 更加可靠：在内核模式运行的代码量大大减少– 更加安全：即使存在漏洞，服务与服务之间存在进程粒度隔离– 更加健壮：单个模块出现问题不会影响到系统整体\n• 上世纪80/90年代，\"微内核\"一度成为下一代操作系统的代名词\n【/第56页】",
+      "page_number": 56,
+      "section": ""
+    },
+    {
+      "text": "【第57页】\n微内核的优缺点分析\n缺点\n– 性能较差：内核中的模块交互由函数调用变成了进程间通信– 生态欠缺：尚未形成像Linux一样具有广泛开发者的社区– 重用问题：重用宏内核操作系统提供兼容性，带来新问题\n【/第57页】\n\n【第57页·图片】(22e6c4d3d17ffd8889eee27d66b6efe43ad078d2289627064a3d76d753c81d64.jpg)\n该图对比了宏内核与微内核架构下两种调用机制的性能开销。左侧“函数调用”示意图显示，在宏内核中，函数调用耗时约30个时钟周期；右侧“同步进程间调用”示意图显示，在微内核架构中，服务-A与服务-B之间的同步进程间调用耗时约4500个时钟周期。图中通过红色箭头连接两个节点表示调用路径，直观呈现了微内核因进程隔离导致的显著性能开销，呼应了上下文关于宏内核重用优势与微内核兼容性代价的讨论。\n【/图片】\n\n\n【第57页·图片】(dadcdddb7d75bad02ca88a06283e6bae1a7b54904c99fafa2b06702985e6c087.jpg)\n该图包含两个部分：左侧为“同步进程间调用”示意图，展示服务-A通过微内核向服务-B发起调用，耗时约4500个周期；右侧为饼图，显示在SQLite中通信开销占总开销的30%。整体用于说明seL4微内核在进程间通信效率及系统开销方面的性能特征。\n【/图片】\n",
+      "page_number": 57,
+      "section": ""
+    },
+    {
+      "text": "【第58页】\nseL4： 被形式化证明的微内核\n对C的限制，以方便验证\n– 栈变量不得取引用必要时用全局变量– 不使用函数指针– 不适用union\n用Haskell构造原型\n– 用于验证 – 再手动转换为C\n【/第58页】\n\n【第58页·图片】(94876d6d2bb5ebd49b90372f45293a3e7fc26020255cf8a5a3ceed0501640465.jpg)\n该图展示了一个两阶段的系统开发流程，用于构建和验证微内核原型。Stage 1 从“Requirements”出发，通过手动实现生成“Haskell Prototype”，并将其与“Abstract Specification”通过“Iterate”循环迭代优化，同时通过“Automatic Tran...\n【/图片】\n",
+      "page_number": 58,
+      "section": ""
+    },
+    {
+      "text": "【第59页】\n教学用的微内核– 阿姆斯特丹自由大学，Andrew Tanenbaum教授\n被用于Intel的ME（管理引擎）模块– 也许是世界上用的最多的操作系统...\nMINIX: Intel's hidden in-chip operating system\nBuried deep inside your computer's Intel chip is the MINIX operating system and a software stack,which includes networking and a web server. It's slow, hard to get at,and insecure as insecure can be.\n【/第59页】\n\n【第59页·图片】(5dd351e7c59a095dadd4009ccfbed514b053527ad0886058b26a1901d418bf17.jpg)\n这是一张圆形头像照片，展示了一位中年男性，戴着眼镜，面带微笑，穿着浅色衬衫。背景为深绿色黑板，上面隐约可见粉笔字迹。根据上下文，该人物为阿姆斯特丹自由大学的Andrew Tanenbaum教授，以其在操作系统领域的教学和研究著称，特别是其开发的微内核系统，被用于Intel的管理引擎（ME）模块。\n【/图片】\n\n\n【第59页·图片】(49c7ee27ad2acf5991f02636d047ec37f2aa4f00a8f20c06f9f8ffc7ddc98f4a.jpg)\n该图片为ZDNet网站的网页顶部导航栏截图。左侧显示ZDNet的红色标志，旁边为搜索图标。导航栏背景为黑色，包含多个白色文字链接，如“VIDEOS”、“EXECUTIVE GUIDES”、“SECURITY”、“CLOUD”、“INNOVATION”、“CXO”、“HARDWARE”、“MORE”、...\n【/图片】\n",
+      "page_number": 59,
+      "section": ""
+    },
+    {
+      "text": "【第60页】\n微内核操作系统ChCore（课程实验裁剪于此）\n自主微内核ChCore\n• 初步形成微内核 $^ +$ 系统服务 $^ +$ 系统框架三层架构，可配置性与扩展性良好应用兼容：支持C、 $\\mathsf { C } { + + }$ 、Python语言开发、支持主要的POSIX接口体系结构：支持32/64位，支持ARMv8、x86-64、RISC-V、SPARC-V8学术成果：提出10倍性能提升的IPC设计和微内核高可靠机制 (ATC20, ICDCS21, ATC22)\n【/第60页】\n\n【第60页·图片】(6e5fc814bf66b85355edb83b6976f1e50a287e794e439c185dd45d0a534a7e01.jpg)\n该图片展示了一个自主微内核操作系统ChCore的架构与应用生态。左侧列出了支持的技术栈，包括TensorFlow、Python、ROS、SQLite、Redis、Lighttpd和LVGL等。中间为开发环境实拍图，显示嵌入式设备与开发电脑的调试场景。右侧以蓝色梯形图示呈现“领域框架赋能应用”，涵盖5...\n【/图片】\n\n\n【第60页·图片】(e90e2fe9b3203304aaf9ef268b736d9bdebb184373955167ff362fd3b0c9474b.jpg)\n该图展示了ChCore微内核操作系统的分层架构。自下而上包括：硬件平台层（含XPU、CPU、DSP、FPGA、RISC-V、ARM、SPARC等异构处理器）；微内核层（轻量化微内核与可配置系统服务，支持确定时延与隔离可靠）；微内核操作系统服务层（含进程、图形、驱动、文件系统、网络等服务）；顶层为领域...\n【/图片】\n\n\n【第60页·图片】(be051556aee9a13837334c5976e3ba647c0170bb6a784c099bd15ee5ada9f4fb.jpg)\n该图片展示了四种不同类型的嵌入式或计算硬件平台，从左至右依次为：红色外壳的树莓派（Raspberry Pi）开发板，配备多个USB接口和网络端口；一块绿色PCB板，带有散热风扇和多个扩展插槽；一块黑色主板，集成有散热片、LED指示灯和多种接口；以及一台服务器内部结构，包含多块硬盘、电源模块和连接线缆。这些设备用于展示混合内核架构在不同硬件平台上的应用，体现了从嵌入式系统到服务器环境的广泛适用性。\n【/图片】\n",
+      "page_number": 60,
+      "section": ""
+    },
+    {
+      "text": "【第61页】\n2.5、 混合内核架构\n宏内核与微内核的结合\n– 将需要性能的模块重新放回内核态– macOS / iOS：Mach微内核 $+ \\mathsf { B S D } 4 . 3 +$ 系统框架– Windows NT：微内核 $^ +$ 内核态的系统服务 $^ +$ 系统框架\n【/第61页】\n\n【第61页·图片】(1f11bbd3c349c346e7e0a2cd9268ca33202db57522f13ca0ef03ccd32f13afe7.jpg)\n该图对比了三种操作系统内核架构：单内核（Monolithic Kernel）、微内核（Microkernel）和混合内核（Hybrid kernel）。左侧单内核系统中，所有核心服务（如文件系统、调度、设备驱动）均运行在内核态；中间微内核系统仅保留基本功能（如IPC、虚拟内存、调度）在内核态，其余服...\n【/图片】\n",
+      "page_number": 61,
+      "section": ""
+    },
+    {
+      "text": "【第62页】\nWindows NT\nIntegral子系统（用户态）\n负责处理I/O、对象管理、安全、进程等\n环境子系统（用户态）– POSIX\nExecutive（内核态）– 为用户态子系统提供服务\nMicrokernel– 提供进程间同步等功能\n【/第62页】\n\n【第62页·图片】(e22c526eb8dd807c650663cc0807098ba4b285154f1f4f544e5689bbbbdcd8ed.jpg)\n该图展示了Windows NT操作系统架构的分层结构。顶层为用户态（User mode），包含集成子系统（如工作站服务、服务器服务、安全）和环境子系统（Win32、POSIX、OS/2），分别支持对应的应用程序。用户态通过Executive Services与内核态通信。内核态（Kernel mod...\n【/图片】\n",
+      "page_number": 62,
+      "section": ""
+    },
+    {
+      "text": "【第63页】\nmacOS\nXNU内核\n– 基于Mach-2.5打造BSD代码提供文件系统、网络、POSIX接口等\nmacOS与iOS\n【/第63页】\n\n【第63页·图片】(565554783e9cb21f3704a6ab2bc8d0348c68d7d3c83b579fbe5591ba443b7e38.jpg)\n该图展示了macOS与iOS操作系统的分层架构。最底层为硬件（Hardware），其上是内核（Kernel \"xnu\"），由Mach和BSD组成，包含文件系统、网络、POSIX接口、I/O Kit和驱动程序。再上层是核心操作系统（Core OS \"Darwin\"），包括系统工具和核心服务（如Core...\n【/图片】\n",
+      "page_number": 63,
+      "section": ""
+    },
+    {
+      "text": "【第64页】\n3、 外核架构 （Exokernel）\nExokernel 不提供硬件抽象\n– \"只要内核提供抽象，就不能实现性能最大化\"– 只有应用才知道最适合的抽象（end-to-end原则）\nExokernel 不管理资源，只管理应用\n– 负责将计算资源与应用的绑定，以及资源的回收– 保证多个应用之间的隔离\n内核态：Exokernel\n回顾：操作系统 = 服务应用 + 管理应用\n【/第64页】",
+      "page_number": 64,
+      "section": ""
+    },
+    {
+      "text": "【第65页】\nExokernel + LibOS\n库OS（LibOS）\n– 策略与机制分离：将对硬件的抽象以库的形式提供– 高度定制化：不同应用可使用不同的LibOS，或完全自定义– 更高性能：LibOS与应用其他代码之间通过函数调用直接交互\n【/第65页】\n\n【第65页·图片】(77ceeaa78d4da4db3a366fb1dd656ff5152aa689718b3244f3e951bbf847a64c.jpg)\n该图展示了虚拟化环境下LibOS（库操作系统）的架构。图中包含两个应用：左侧为“Player”，依赖POSIX、IPC和虚拟内存（VM）；右侧为“Web Server”，依赖POSIX和网络功能。两者通过“Resource binding”（资源绑定）层与底层硬件交互，该层管理TLB、内存、存储和网...\n【/图片】\n",
+      "page_number": 65,
+      "section": ""
+    },
+    {
+      "text": "【第66页】\nUnikernel （单内核）\n虚拟化环境下的LibOS\n– 每个虚拟机只使用内核态– 内核态中只运行一个应用+LibOS– 通过虚拟化层实现不同实例间的隔离\n适合容器等新的应用场景\n– 每个容器就是一个虚拟机– 每个容器运行定制的LibOS以提高性能\n【/第66页】",
+      "page_number": 66,
+      "section": ""
+    },
+    {
+      "text": "【第67页】\nExokernel架构的优缺点分析\n优点\n– OS无抽象，能在理论上提供最优性能– 应用对计算有更精确的实时等控制– LibOS在用户态更易调试，调试周期更短\n缺点\n– 对计算资源的利用效率主要由应用决定– 定制化过多，导致维护难度增加\n【/第67页】",
+      "page_number": 67,
+      "section": ""
+    },
+    {
+      "text": "【第68页】\n4、 多内核/复内核 （Multikernel）\n背景：多核与异构\n– OS内部维护很多共享状态\n• Cache一致性的保证越来越难• 可扩展性非常差，核数增多，性能不升反降– GPU等设备越来越多\n• 设备本身越来越智能——设备有自己的CPU• 通过PCIe连接，主CPU与设备CPU之间通信非常慢• 通过系统总线连接，异构SoC（System on Chip）\n【/第68页】\n\n【第68页·图片】(4b62c2d48ec15ce6a74206400c528507430d832e1be922b0184b36b18483d06f.jpg)\n该图展示了一个异构系统级芯片（System on Chip, SoC）的架构。SoC内部包含两个CPU核心（红色方块）、一个GPU（蓝色方块）和一个NPU（黄色方块），它们通过内部总线互联。SoC通过PCIe接口连接外部独立的GPU（蓝色方块），表明外部GPU与片上计算单元之间存在通信延迟。此图用于...\n【/图片】\n",
+      "page_number": 68,
+      "section": ""
+    },
+    {
+      "text": "【第69页】\nMultikernel的设计\nMultikernel的思路\n– 默认的状态是划分而不是共享  \n– 维持多份状态的copy而不是共享一份状态  \n– 显式的核间通信机制\nMultikernel的设计\n– 在每个core上运行一个小内核• 包括CPU、GPU等– OS整体是一个分布式系统应用程序依然运行在OS之上\n【/第69页】\n\n【第69页·图片】(ade08669456ff52122a0296a471613d4b9f4cca161a83a6f250d2a9b4706ca46.jpg)\n该图展示了Barrelfish多内核操作系统的架构。系统由多个独立的OS节点（OS node）组成，每个节点运行在不同的处理单元（如CPU、GPU、PE-n）之上，通过互连（Interconnect）进行通信。各OS节点之间通过异步消息（Async msg）交换数据，整体构成一个分布式系统。应用程序（App）运行在各OS节点之上，OS本身作为分布式应用运行在硬件之上。\n【/图片】\n",
+      "page_number": 69,
+      "section": ""
+    },
+    {
+      "text": "【第70页】\nBarrelfish Multikernel\nBarrelfish操作系统\n– 来自ETH Zurich和微软研究院  \n– 支持异构CPU  \n– 在CPU核与节点之间提供通用异构消息抽象  \n– 大约10,000行C，500行汇编代码\n【/第70页】",
+      "page_number": 70,
+      "section": ""
+    },
+    {
+      "text": "【第71页】\n不同操作系统架构的对比\n【/第71页】\n\n【第71页·图片】(039e7716fe3ac5a04db807292dba1b19fb54e8eb9548a7b069dafbe52f09287c.jpg)\n该图对比了五种不同操作系统架构的结构：简单内核（如DOS）、宏内核（如Linux）、微内核（如ChCore）、外核（如Unikernel）和多内核（如BarrelFish）。图中以水平线分隔用户态与内核态，蓝色方块代表逻辑组件。简单内核将大部分功能置于内核态；宏内核在内核态集成大量服务；微内核仅保留...\n【/图片】\n",
+      "page_number": 71,
+      "section": ""
+    },
+    {
+      "text": "【第72页】\n课程信息\n【/第72页】",
+      "page_number": 72,
+      "section": ""
+    },
+    {
+      "text": "【第73页】\n从应用的视角看操作系统\n注意：常见的误解\n– 应用只是逻辑上运行在操作系统上层– 但并不是“由操作系统来运行应用” ×– 实际上，应用的每一行代码都运行在CPU上– 操作系统的每一行代码，也都运行在CPU上\n应用操作系统硬件\n• 让一个硬件支持多个应用的三种形式\n– 直通：将硬件接口直接暴露给应用– 虚拟化：向应用提供的接口与硬件原有接口一样，但允许多个应用使用– 抽象：提供的接口与硬件接口不一样，操作系统负责转化\n【/第73页】",
+      "page_number": 73,
+      "section": ""
+    },
+    {
+      "text": "【第75页】\n欢迎进入操作系统的世界\n【/第75页】",
+      "page_number": 75,
+      "section": ""
+    }
+  ],
+  "images": [
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/d7e10ab3eeae332eb2f4676b41afbfb5e0360aae73529e30cae2f0cfe7a955a0.jpg",
+      "image_name": "d7e10ab3eeae332eb2f4676b41afbfb5e0360aae73529e30cae2f0cfe7a955a0.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 6,
+      "context_before": "blefullscreenmode.Thismethod was reportedbythe userof the social network Xunder the nickname Vivi.",
+      "context_after": "![](images/fdb0619aa5879f8477fb9bdf63614902926be2e266a74173b69725cdd6e2f296.jpg)  \nYou can Hack in",
+      "context": "serof the social network Xunder the nickname Vivi. [图片] ![](images/fdb0619aa5879f8477fb9bdf63614902926be2e",
+      "section": "File Explorer in Windows 11 can be speeded up drastically-you need to toggle full screen mode on and off",
+      "alt_text": "",
+      "description": "该图片展示了一个Windows 11操作系统的桌面截图，主要焦点为一个处于全屏模式的文件资源管理器窗口，显示本地磁盘E:中的文件夹列表，包括“AppData”、“Program Files”等系统目录。背景中可见一个视频编辑软件（如OBS Studio）的界面，包含预览窗口和控制面板。屏幕底部任务栏..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/fdb0619aa5879f8477fb9bdf63614902926be2e266a74173b69725cdd6e2f296.jpg",
+      "image_name": "fdb0619aa5879f8477fb9bdf63614902926be2e266a74173b69725cdd6e2f296.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 6,
+      "context_before": "e nickname Vivi.\n\n![](images/d7e10ab3eeae332eb2f4676b41afbfb5e0360aae73529e30cae2f0cfe7a955a0.jpg)",
+      "context_after": "You can Hack into a Linux Computer just by pressing 'Backspace'28 times\n\n# Windows双击F11加速？\n\n![](i",
+      "context": "4676b41afbfb5e0360aae73529e30cae2f0cfe7a955a0.jpg) [图片] You can Hack into a Linux Computer just by pressin",
+      "section": "File Explorer in Windows 11 can be speeded up drastically-you need to toggle full screen mode on and off",
+      "alt_text": "",
+      "description": "该图片为网站“The Hacker News”的网页截图，顶部为深蓝色导航栏，左侧显示网站名称“The Hacker News”，右侧有“Get the Free Newsletter”黄色按钮。导航栏下方包含“Home”“Data Breaches”“Cyber Attacks”“Vulnerab..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/c870c67185c02768a9ee408bc741e4bfe5920f0fff3001c4ec029d5b525ed87a.jpg",
+      "image_name": "c870c67185c02768a9ee408bc741e4bfe5920f0fff3001c4ec029d5b525ed87a.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 6,
+      "context_before": ".jpg)  \nYou can Hack into a Linux Computer just by pressing 'Backspace'28 times\n\n# Windows双击F11加速？",
+      "context_after": "Linux 28击退格键直接登录？\n\n# 1. 有助于更好地理解底层发生了什么\n\n# Docker vs. Virtual Environment: A Comparison and User",
+      "context": "by pressing 'Backspace'28 times\n\n# Windows双击F11加速？ [图片] Linux 28击退格键直接登录？\n\n# 1. 有助于更好地理解底层发生了什么\n\n# Docker ",
+      "section": "Windows双击F11加速？",
+      "alt_text": "",
+      "description": "图片展示了一只手正按压笔记本电脑键盘上的“Backspace”键，键盘区域清晰可见F10至F12功能键、Insert、Delete、PgUp、PgDn等按键。图片下方叠加白色文字：“Press 'BackSpace' 28 Times to Hack LINUX”，意为“按28次退格键来黑掉Linu..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/2fd4962aab7250a3dfa418abe52de5fc7e5ae99beeff72c7acff3e76bcbc5a0e.jpg",
+      "image_name": "2fd4962aab7250a3dfa418abe52de5fc7e5ae99beeff72c7acff3e76bcbc5a0e.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 7,
+      "context_before": "了什么\n\n# Docker vs. Virtual Environment: A Comparison and User Manual\n\nGiovanni Solano Porras·Follow",
+      "context_after": "![](images/726c56f7ea08d8ad5d0eea75049ffdae4d6ca8f69ccb7e686a0a276188e4bd69.jpg)\n\nWhen it comes to",
+      "context": "son and User Manual\n\nGiovanni Solano Porras·Follow [图片] ![](images/726c56f7ea08d8ad5d0eea75049ffdae4d6ca8f",
+      "section": "Docker vs. Virtual Environment: A Comparison and User Manual",
+      "alt_text": "",
+      "description": "该图片为一个简化的线描图标，描绘了一只手掌向上、手指微微弯曲的手势，掌心上方有三颗小圆点，形似闪光或火花，整体风格简洁、线条流畅，常用于表示“点赞”“鼓掌”或“庆祝”等积极互动行为。图标为黑白单色，无填充，具有典型的社交媒体或用户界面中“赞”或“支持”按钮的视觉特征。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/726c56f7ea08d8ad5d0eea75049ffdae4d6ca8f69ccb7e686a0a276188e4bd69.jpg",
+      "image_name": "726c56f7ea08d8ad5d0eea75049ffdae4d6ca8f69ccb7e686a0a276188e4bd69.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 7,
+      "context_before": "no Porras·Follow\n\n![](images/2fd4962aab7250a3dfa418abe52de5fc7e5ae99beeff72c7acff3e76bcbc5a0e.jpg)",
+      "context_after": "When it comes to software development and deployment, managing dependencies and isolating environm",
+      "context": "418abe52de5fc7e5ae99beeff72c7acff3e76bcbc5a0e.jpg) [图片] When it comes to software development and deployme",
+      "section": "Docker vs. Virtual Environment: A Comparison and User Manual",
+      "alt_text": "",
+      "description": "该图片为Docker的官方标志。画面主体是一只蓝色的鲸鱼，其背部承载着多层堆叠的集装箱，象征容器化技术。鲸鱼下方是深灰色的“docker”字样，字体简洁现代。整体设计风格扁平化，色彩以蓝色为主，传达出技术、稳定与可扩展的视觉印象。该标志广泛用于表示Docker容器平台，常出现在软件开发、部署和DevOps相关文档中。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/02ada9d8ed7bdbf06930047924224c25f06526ee326e6e81196931b1acf7d57f.jpg",
+      "image_name": "02ada9d8ed7bdbf06930047924224c25f06526ee326e6e81196931b1acf7d57f.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 7,
+      "context_before": "anual for using both,empowering developers to make informed choices based on their specific needs.",
+      "context_after": "# 为什么Docker可以隔离不同的Python环境？什么是Namespace？是否也可以支持性能隔离？\n\n# 1. 有助于更好地理解底层发生了什么\n\n![](images/bc026e8ce4d",
+      "context": "ke informed choices based on their specific needs. [图片] # 为什么Docker可以隔离不同的Python环境？什么是Namespace？是否也可以支持性能隔",
+      "section": "Docker vs. Virtual Environment: A Comparison and User Manual",
+      "alt_text": "",
+      "description": "该图片为一个简洁的层级结构图，顶部显示“Virtualenv”字样，下方通过一条水平线连接三个并列元素：“python”、“Python徽标”（蓝黄相间的蛇形图标）和“Package”。整体结构表明 Virtualenv 是一个用于管理 Python 解释器和包的工具，能够隔离不同 Python 环境中的 Python 解释器与依赖包，常用于解决项目间依赖冲突问题。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/bc026e8ce4d860cbc3ee13ead1f220438444c7cf7f10486b58b84f4ca19c2ce6.jpg",
+      "image_name": "bc026e8ce4d860cbc3ee13ead1f220438444c7cf7f10486b58b84f4ca19c2ce6.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 8,
+      "context_before": "1196931b1acf7d57f.jpg)\n\n# 为什么Docker可以隔离不同的Python环境？什么是Namespace？是否也可以支持性能隔离？\n\n# 1. 有助于更好地理解底层发生了什么",
+      "context_after": "# 什么是Segmentation fault？为什么会发生？\n\n# 2. 有助于更好地驾驭硬件\n\n![](images/0ac6bda6563c07868867f1371db46f81af618",
+      "context": "环境？什么是Namespace？是否也可以支持性能隔离？\n\n# 1. 有助于更好地理解底层发生了什么 [图片] # 什么是Segmentation fault？为什么会发生？\n\n# 2. 有助于更好地驾驭硬件\n\n",
+      "section": "1. 有助于更好地理解底层发生了什么",
+      "alt_text": "",
+      "description": "该图片展示了一个Linux终端的命令行界面，其中运行了MMOCR（一个基于PyTorch的OCR工具包）的文本识别脚本。用户首先尝试通过命令行执行`python mmocr/utils/ocr.py demo/demo_text_ocr.jpg --print-result`，随后在交互式Pytho..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/0ac6bda6563c07868867f1371db46f81af618136ae3447507273b8377c446896.jpg",
+      "image_name": "0ac6bda6563c07868867f1371db46f81af618136ae3447507273b8377c446896.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 9,
+      "context_before": "3ead1f220438444c7cf7f10486b58b84f4ca19c2ce6.jpg)\n\n# 什么是Segmentation fault？为什么会发生？\n\n# 2. 有助于更好地驾驭硬件",
+      "context_after": "# LLaMA NUMA could be better #1437\n\nzrmopened this issue on May 14.19 comments zrm commented on Ma",
+      "context": "\n\n# 什么是Segmentation fault？为什么会发生？\n\n# 2. 有助于更好地驾驭硬件 [图片] # LLaMA NUMA could be better #1437\n\nzrmopened this",
+      "section": "2. 有助于更好地驾驭硬件",
+      "alt_text": "",
+      "description": "该图片为一张Reddit帖子截图，来自r/programming板块，由用户alexeyr发布于5个月前。图片主体为一个卡通风格的羊驼头像（LLaMA的标志性形象），背景为蓝绿色网格和电路板图案，象征技术与计算。图片下方叠加白色文字，内容为：“We modified llama.cpp to loa..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/b0a8638d04569b21dd2888f1c6c06d56a075ceeb0178a7ef0b6fbb1762c5e057.jpg",
+      "image_name": "b0a8638d04569b21dd2888f1c6c06d56a075ceeb0178a7ef0b6fbb1762c5e057.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 10,
+      "context_before": "= 48623.21\n\n125% faster is alright.\n\nI can submit a pull request that does the st\n\n# 2. 有助于更好地驾驭硬件",
+      "context_after": "Python矩阵乘法加速\n\n# 90xspeedup\n\n#58(comment) presents the following code:\n\nfornin range(n_samples)： s",
+      "context": "t a pull request that does the st\n\n# 2. 有助于更好地驾驭硬件 [图片] Python矩阵乘法加速\n\n# 90xspeedup\n\n#58(comment) presents ",
+      "section": "2. 有助于更好地驾驭硬件",
+      "alt_text": "",
+      "description": "该图为对数坐标系折线图，标题为“Matrix-Multiply Speedup vs. Pure Python”，展示矩阵乘法相对于纯Python实现的加速比。横轴表示不同优化技术：Python（基线）、C、parallel loops（并行循环）、memory optimization（内存优化）..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/70e466fc10ffb385e16d6a9a075c65dd5f958281cf5329373137a85270fdeafd.jpg",
+      "image_name": "70e466fc10ffb385e16d6a9a075c65dd5f958281cf5329373137a85270fdeafd.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 11,
+      "context_before": "探索从未止步，HarmonyOS NEXTDeveloper Preview 版本将搭载我们最新的底座技术和开放能力、开发套件..我们希望它能搭建起和开发者连接的桥梁，携手共建一个繁荣的鸿蒙生态。",
+      "context_after": "# 鸿蒙Next有什么不同？为何不再兼容Android？有哪些意义？\n\n# 共同推进开源鸿蒙OpenHarmony生态\n\n# 技术指导委员会主席\n\n# 技术指导委员会成员\n\n# 技术支撑组成员",
+      "context": "的底座技术和开放能力、开发套件..我们希望它能搭建起和开发者连接的桥梁，携手共建一个繁荣的鸿蒙生态。 [图片] # 鸿蒙Next有什么不同？为何不再兼容Android？有哪些意义？\n\n# 共同推进开源鸿蒙Open",
+      "section": "HarmonyOS NEXT Developer Preview 版本发布公告",
+      "alt_text": "",
+      "description": "图片展示了一场发布会现场，舞台中央大屏幕上显示“HarmonyOS NEXT 开发者预览版”字样，下方配有“一起干大事”的标语。背景为深邃星空，左侧有两名宇航员剪影，象征探索与创新。舞台灯光以蓝色为主调，营造科技感与未来感。一位演讲者站在舞台中央，面向观众，整体氛围庄重而充满愿景，体现鸿蒙系统迈向独立生态的决心与开放合作的号召。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/70fd85a5e8554fc09af1481da48c2ee902794a4580c3ec993bdd9762b93bca16.jpg",
+      "image_name": "70fd85a5e8554fc09af1481da48c2ee902794a4580c3ec993bdd9762b93bca16.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 12,
+      "context_before": "# 鸿蒙Next有什么不同？为何不再兼容Android？有哪些意义？\n\n# 共同推进开源鸿蒙OpenHarmony生态\n\n# 技术指导委员会主席\n\n# 技术指导委员会成员\n\n# 技术支撑组成员",
+      "context_after": "陈海波\n\nOpenHarmony项目群TSC主席\n\n![](images/543f0dcb385203f712420df3946d1bdc7bdc0b0ed6637e90d9bedfeda1541",
+      "context": "OpenHarmony生态\n\n# 技术指导委员会主席\n\n# 技术指导委员会成员\n\n# 技术支撑组成员 [图片] 陈海波\n\nOpenHarmony项目群TSC主席\n\n![](images/543f0dcb38520",
+      "section": "技术支撑组成员",
+      "alt_text": "",
+      "description": "这是一张人物肖像照，位于“OpenHarmony生态”相关介绍页面中，对应“技术支撑组成员”一栏。照片为圆形头像，背景为纯黑色，主体为一位戴眼镜的中年男性，身着深色西装、白色衬衫并系有领带，表情严肃，正视镜头。根据上下文文字，该人物为陈海波，现任OpenHarmony项目群TSC主席。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/543f0dcb385203f712420df3946d1bdc7bdc0b0ed6637e90d9bedfeda15417bb.jpg",
+      "image_name": "543f0dcb385203f712420df3946d1bdc7bdc0b0ed6637e90d9bedfeda15417bb.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 12,
+      "context_before": "es/70fd85a5e8554fc09af1481da48c2ee902794a4580c3ec993bdd9762b93bca16.jpg)\n\n陈海波\n\nOpenHarmony项目群TSC主席",
+      "context_after": "臧斌宇OpenHarmony项目群TSC成员\n\n![](images/62bce87b2f6e68c7708acbc8a40a2c5d86d4912f05f3926c99395bee604ae0f",
+      "context": "c993bdd9762b93bca16.jpg)\n\n陈海波\n\nOpenHarmony项目群TSC主席 [图片] 臧斌宇OpenHarmony项目群TSC成员\n\n![](images/62bce87b2f6e68c",
+      "section": "技术支撑组成员",
+      "alt_text": "",
+      "description": "这是一张人物头像照片，显示一位中年男性，戴眼镜，短发，穿着深色西装外套和浅色衬衫，系有领带。照片为圆形裁剪，背景为纯白色，整体风格正式、简洁，符合专业介绍或会议资料中的标准肖像照。该图片位于“陈海波 OpenHarmony项目群TSC主席”文字下方，应为其个人照片。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/62bce87b2f6e68c7708acbc8a40a2c5d86d4912f05f3926c99395bee604ae0f3.jpg",
+      "image_name": "62bce87b2f6e68c7708acbc8a40a2c5d86d4912f05f3926c99395bee604ae0f3.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 12,
+      "context_before": "ages/543f0dcb385203f712420df3946d1bdc7bdc0b0ed6637e90d9bedfeda15417bb.jpg)\n\n臧斌宇OpenHarmony项目群TSC成员",
+      "context_after": "![](images/bb0bee7b7b667e21c2cd2dca0de4cfda85e393489464077aa13c95c6f8fe921c.jpg)  \n全国首个OpenHarmony",
+      "context": "37e90d9bedfeda15417bb.jpg)\n\n臧斌宇OpenHarmony项目群TSC成员 [图片] ![](images/bb0bee7b7b667e21c2cd2dca0de4cfda85e3934",
+      "section": "技术支撑组成员",
+      "alt_text": "",
+      "description": "该图片展示的是“开放原子开源基金会OpenHarmony技术峰会”上“终端操作系统十大技术挑战方向特别贡献者”的颁奖合影。背景为蓝色星空主题，上方标有活动名称及奖项名称。画面中八位获奖者并排站立，每人手持花束。左侧以圆形头像突出显示上海交通大学的古金宇，并以黄色线条指向其在合影中的位置。其他获奖者分别来自编程语言TSG、北京理工大学、安全与机密计算TSG、兰州大学等机构，姓名与单位标注于上方。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/bb0bee7b7b667e21c2cd2dca0de4cfda85e393489464077aa13c95c6f8fe921c.jpg",
+      "image_name": "bb0bee7b7b667e21c2cd2dca0de4cfda85e393489464077aa13c95c6f8fe921c.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 12,
+      "context_before": "nHarmony项目群TSC成员\n\n![](images/62bce87b2f6e68c7708acbc8a40a2c5d86d4912f05f3926c99395bee604ae0f3.jpg)",
+      "context_after": "全国首个OpenHarmony高校技术俱乐部\n\n![](images/ec3c1ceafc0cbe9f8af7c3f6dd2108817c0f310aedc209211ef69dd074e8f7",
+      "context": "acbc8a40a2c5d86d4912f05f3926c99395bee604ae0f3.jpg) [图片] 全国首个OpenHarmony高校技术俱乐部\n\n![](images/ec3c1ceafc0cbe9",
+      "section": "技术支撑组成员",
+      "alt_text": "",
+      "description": "这张图片展示了一群人于室内合影，背景悬挂蓝色横幅，上书“上海交通大学OpenHarmony技术俱乐部”。前排人员坐于椅子上，后排站立，多数着装为商务休闲或T恤，整体氛围正式而轻松。场景应为该技术俱乐部成立或活动的纪念合影，体现高校与OpenHarmony技术生态的结合。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/ec3c1ceafc0cbe9f8af7c3f6dd2108817c0f310aedc209211ef69dd074e8f77b.jpg",
+      "image_name": "ec3c1ceafc0cbe9f8af7c3f6dd2108817c0f310aedc209211ef69dd074e8f77b.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 12,
+      "context_before": "ges/bb0bee7b7b667e21c2cd2dca0de4cfda85e393489464077aa13c95c6f8fe921c.jpg)  \n全国首个OpenHarmony高校技术俱乐部",
+      "context_after": "夏虞斌OpenHarmony技术指导委员会安全及机密计算TSG成员\n\n![](images/60d83076fac9ca4009e64e0b633777286528eff8b0d6d629525d",
+      "context": "077aa13c95c6f8fe921c.jpg)  \n全国首个OpenHarmony高校技术俱乐部 [图片] 夏虞斌OpenHarmony技术指导委员会安全及机密计算TSG成员\n\n![](images/60d8",
+      "section": "技术支撑组成员",
+      "alt_text": "",
+      "description": "这是一张人物半身肖像照，照片中为一位戴眼镜的男性，身穿深色西装外套、浅蓝色衬衫，并系着一条粉紫色条纹领带。背景为纯白色，人物图像被置于一个圆形边框内，整体风格正式、专业，符合技术专家或学术人士的证件照或宣传照特征。根据上下文，该人物为夏虞斌，OpenHarmony技术指导委员会安全及机密计算TSG成员。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/60d83076fac9ca4009e64e0b633777286528eff8b0d6d629525d24f008b7a810.jpg",
+      "image_name": "60d83076fac9ca4009e64e0b633777286528eff8b0d6d629525d24f008b7a810.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 12,
+      "context_before": "eafc0cbe9f8af7c3f6dd2108817c0f310aedc209211ef69dd074e8f77b.jpg)\n\n夏虞斌OpenHarmony技术指导委员会安全及机密计算TSG成员",
+      "context_after": "# 图灵奖与操作系统\n\n![](images/4ded82dc9befc78cef0d467fe50b93dd8b52cffc55963df28db562e9039e6dd2.jpg)\n\n# 计算",
+      "context": "d074e8f77b.jpg)\n\n夏虞斌OpenHarmony技术指导委员会安全及机密计算TSG成员 [图片] # 图灵奖与操作系统\n\n![](images/4ded82dc9befc78cef0d467fe50",
+      "section": "技术支撑组成员",
+      "alt_text": "",
+      "description": "这张图片展示了四位年轻男性在一座欧式风格建筑前合影。背景建筑为米黄色石材外墙，有多扇拱形窗户和中央拱门，前方有水池倒影。四人站在一组色彩鲜艳的圆形艺术装置前，装置由粉、蓝、橙、紫、黄等色块组成，呈半圆排列。四人均佩戴证件挂绳，穿着休闲，面带微笑，其中两人比出“V”字手势。右下角有“知乎 @上交OH技术俱乐部”水印。整体氛围轻松，应为技术活动或会议期间的合影。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/4ded82dc9befc78cef0d467fe50b93dd8b52cffc55963df28db562e9039e6dd2.jpg",
+      "image_name": "4ded82dc9befc78cef0d467fe50b93dd8b52cffc55963df28db562e9039e6dd2.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 13,
+      "context_before": "SG成员\n\n![](images/60d83076fac9ca4009e64e0b633777286528eff8b0d6d629525d24f008b7a810.jpg)\n\n# 图灵奖与操作系统",
+      "context_after": "# 计算机硬件在新应用需求下迅猛发展\n\n计算: 从通用计算走向领域计算，各种xPU不断繁荣– GPU、TPU、NPU、IPU等支撑人工智能算力需求\n\n存储：智能存储，存算一体，非易失内存（SCM）",
+      "context": "86528eff8b0d6d629525d24f008b7a810.jpg)\n\n# 图灵奖与操作系统 [图片] # 计算机硬件在新应用需求下迅猛发展\n\n计算: 从通用计算走向领域计算，各种xPU不断繁荣– GPU",
+      "section": "图灵奖与操作系统",
+      "alt_text": "",
+      "description": "该图片为一张关于操作系统发展史的时间轴图，展示了从1949年到2019年关键操作系统里程碑及其相关图灵奖得主。时间轴上依次标注了：1949年Maurice Wilkes与EDSAC（第一台存储程序式电子计算机）；1964年Frederick Brooks与IBM System/360；1969年Fe..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/415b61dcd2aa09985a47630c02fb7ce4f40131001a965c14a067eaea5269ada1.jpg",
+      "image_name": "415b61dcd2aa09985a47630c02fb7ce4f40131001a965c14a067eaea5269ada1.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 14,
+      "context_before": "储：智能存储，存算一体，非易失内存（SCM），内存与持久存储走向融合\n\n数据中心网络：Infiniband等网络走向纳秒级时延\n\n广域网络：5G大连接、低时延、高可靠使能新型高吞吐、低时延广域计算",
+      "context_after": "# 操作系统的简单历史\n\n# 计算机诞生时的操作员\n\n1946年2月14日，世界上第一台通用计算机ENIAC在美国宾夕法尼亚大学诞生，请在这个特殊的节日多陪陪你的电脑\n\n![](images/ea",
+      "context": "iband等网络走向纳秒级时延\n\n广域网络：5G大连接、低时延、高可靠使能新型高吞吐、低时延广域计算 [图片] # 操作系统的简单历史\n\n# 计算机诞生时的操作员\n\n1946年2月14日，世界上第一台通用计算机E",
+      "section": "计算机硬件在新应用需求下迅猛发展",
+      "alt_text": "",
+      "description": "该图展示了Hadoop存储栈的架构及其在执行一次操作时所经历的60层调用栈，从应用层到硬件设备层。图中左侧为分层结构，自上而下包括Hadoop应用层、DFS Client、DataNode、系统调用接口、虚拟文件系统、Page Cache、Ext4、通用块层、I/O调度层、MMC驱动及eMMC/UF..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/eaeb9b157c59c7cdfece5b327ecdd998910bc543b7cd75ca119fce49e89b1cda.jpg",
+      "image_name": "eaeb9b157c59c7cdfece5b327ecdd998910bc543b7cd75ca119fce49e89b1cda.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 16,
+      "context_before": "5269ada1.jpg)\n\n# 操作系统的简单历史\n\n# 计算机诞生时的操作员\n\n1946年2月14日，世界上第一台通用计算机ENIAC在美国宾夕法尼亚大学诞生，请在这个特殊的节日多陪陪你的电脑",
+      "context_after": "![](images/ba3d64cffda75292db7597b181d374659b9fbff522dc2365fd2aa5b88fdededf.jpg)\n\n# 批处理操作系统： GM-NA",
+      "context": "月14日，世界上第一台通用计算机ENIAC在美国宾夕法尼亚大学诞生，请在这个特殊的节日多陪陪你的电脑 [图片] ![](images/ba3d64cffda75292db7597b181d374659b9fbff",
+      "section": "计算机诞生时的操作员",
+      "alt_text": "",
+      "description": "图片展示的是世界上第一台通用电子计算机ENIAC的复原展品，陈列于玻璃展柜中。该设备由多个大型黑色机柜组成，布满密集的电线、开关和指示灯，正面标有“ENIAC”字样及英文说明：“THE WORLD'S FIRST ELECTRONIC LARGE SCALE GENERAL-PURPOSE DIGI..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/ba3d64cffda75292db7597b181d374659b9fbff522dc2365fd2aa5b88fdededf.jpg",
+      "image_name": "ba3d64cffda75292db7597b181d374659b9fbff522dc2365fd2aa5b88fdededf.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 16,
+      "context_before": "请在这个特殊的节日多陪陪你的电脑\n\n![](images/eaeb9b157c59c7cdfece5b327ecdd998910bc543b7cd75ca119fce49e89b1cda.jpg)",
+      "context_after": "# 批处理操作系统： GM-NAA I/O\n\n![](images/5960135c33de0bccf1d8bfb11d71987e5b51fa1041fe223f05201bd5e71b1031",
+      "context": "e5b327ecdd998910bc543b7cd75ca119fce49e89b1cda.jpg) [图片] # 批处理操作系统： GM-NAA I/O\n\n![](images/5960135c33de0bcc",
+      "section": "计算机诞生时的操作员",
+      "alt_text": "",
+      "description": "这是一张由两张黑白历史照片组成的拼合图，展示了早期计算机系统（如ENIAC）的操作场景。上图中，两名女性操作员正在大型电子设备前工作，其中一人站立操作控制面板，另一人蹲坐调整密集的电缆与开关。下图中，两名女性在另一台大型机器前协作，一人站立手持工具，另一人蹲坐操作面板。整体画面呈现了20世纪40年代早期计算机的复杂布线与人工操作模式，反映了当时计算机操作员的重要角色。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/5960135c33de0bccf1d8bfb11d71987e5b51fa1041fe223f05201bd5e71b1031.jpg",
+      "image_name": "5960135c33de0bccf1d8bfb11d71987e5b51fa1041fe223f05201bd5e71b1031.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 17,
+      "context_before": "mages/ba3d64cffda75292db7597b181d374659b9fbff522dc2365fd2aa5b88fdededf.jpg)\n\n# 批处理操作系统： GM-NAA I/O",
+      "context_after": "Robert L. Patrick和OwenMock于1956年建设\n\n– 运行在IBM 704上– 主要功能：批处理运行任务\n\n# 通用操作系统： OS/360\n\n![](images/276c",
+      "context": "dc2365fd2aa5b88fdededf.jpg)\n\n# 批处理操作系统： GM-NAA I/O [图片] Robert L. Patrick和OwenMock于1956年建设\n\n– 运行在IBM 704上–",
+      "section": "批处理操作系统： GM-NAA I/O",
+      "alt_text": "",
+      "description": "这是一张黑白历史照片，展示了一台大型早期计算机系统的机柜，该系统为GM-NAA I/O批处理操作系统，运行于IBM 704计算机上，由Robert L. Patrick和Owen Mock于1956年开发。机柜呈长方形，内部装有多个垂直排列的电子模块，布满密集的电路板和电子元件，部分模块带有标签和指..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/276ccba512b5bfef31a35ff3a31ad1751a89fba1767ff77ef16dfb5cffa439ee.jpg",
+      "image_name": "276ccba512b5bfef31a35ff3a31ad1751a89fba1767ff77ef16dfb5cffa439ee.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 18,
+      "context_before": "d5e71b1031.jpg)\n\nRobert L. Patrick和OwenMock于1956年建设\n\n– 运行在IBM 704上– 主要功能：批处理运行任务\n\n# 通用操作系统： OS/360",
+      "context_after": "# IBM System/360 OS，1964\n\n– 首个通用操作系统，首次将操作系统与计算机分离  \n– ISA：指令集架构  \n– 架构师：Gene Amdahl(Amdahl’s Law)",
+      "context": "年建设\n\n– 运行在IBM 704上– 主要功能：批处理运行任务\n\n# 通用操作系统： OS/360 [图片] # IBM System/360 OS，1964\n\n– 首个通用操作系统，首次将操作系统与计算机分离",
+      "section": "通用操作系统： OS/360",
+      "alt_text": "",
+      "description": "这是一台IBM System/360计算机的实物展示，拍摄于博物馆或展览环境中。设备由多个垂直机柜组成，上部为控制面板，设有大量指示灯、开关和按钮，用于系统监控与操作；下部为密集的电路板和电子模块，布满黄色和黑色的连接线缆。整体结构庞大、复杂，体现了20世纪60年代大型计算机的典型硬件设计风格。该系统于1964年推出，是首个通用操作系统OS/360的运行平台，标志着操作系统与硬件分离的重要里程碑。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/490cad98390989f0159fa84ccc2833eb4754705708ff372122d6c04eca1b2e25.jpg",
+      "image_name": "490cad98390989f0159fa84ccc2833eb4754705708ff372122d6c04eca1b2e25.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 19,
+      "context_before": "构师：Gene Amdahl(Amdahl’s Law)  \n– 项目经理：Fred Brooks (《人月神话》，1999年图灵奖得主)\n\n# 分时与多任务：Multics/Unix/Linux",
+      "context_after": "Unix: Cat Command\n\nMultics: Fernando Corbató(1990年图灵奖) MIT/GE, 1964分时，文件系统，动态链接等\n\n![](images/06780",
+      "context": "s (《人月神话》，1999年图灵奖得主)\n\n# 分时与多任务：Multics/Unix/Linux [图片] Unix: Cat Command\n\nMultics: Fernando Corbató(1990年",
+      "section": "分时与多任务：Multics/Unix/Linux",
+      "alt_text": "",
+      "description": "该图片并列展示了两个标志性图像：左侧为红色同心圆环构成的“Multics”系统标志，背景为黑色，中心标有“Multics”字样，象征早期分时操作系统；右侧为Linux的官方吉祥物Tux——一只黑白相间、黄色喙和脚的卡通企鹅，代表现代开源操作系统。二者共同体现从Multics到Unix再到Linux的分时与多任务操作系统发展脉络。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/067801a1827f4526103ccb893cf5c16faa31690a2c854c4f581122cdd8a6ae02.jpg",
+      "image_name": "067801a1827f4526103ccb893cf5c16faa31690a2c854c4f581122cdd8a6ae02.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 19,
+      "context_before": "04eca1b2e25.jpg)\n\nUnix: Cat Command\n\nMultics: Fernando Corbató(1990年图灵奖) MIT/GE, 1964分时，文件系统，动态链接等",
+      "context_after": "Unix: Ken Thompson, DennisRitchie (1983年图灵奖), 1969Shell，层次化文件系统\n\n![](images/edd036b333fc6bb2d876e3",
+      "context": "rnando Corbató(1990年图灵奖) MIT/GE, 1964分时，文件系统，动态链接等 [图片] Unix: Ken Thompson, DennisRitchie (1983年图灵奖), 1969",
+      "section": "分时与多任务：Multics/Unix/Linux",
+      "alt_text": "",
+      "description": "该图片为一个红色向下箭头图标，背景为白色，箭头轮廓清晰，呈标准等腰三角形，顶部与上下边框相接，底部尖端朝下。此图标位于文本“Fernando Corbató(1990年图灵奖) MIT/GE, 1964分时，文件系统，动态链接等”与“Unix: Ken Thompson, Dennis Ritchi..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/edd036b333fc6bb2d876e36c173895d641681c9df4df3eb37bc5bbbf8ed855fc.jpg",
+      "image_name": "edd036b333fc6bb2d876e36c173895d641681c9df4df3eb37bc5bbbf8ed855fc.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 19,
+      "context_before": "690a2c854c4f581122cdd8a6ae02.jpg)\n\nUnix: Ken Thompson, DennisRitchie (1983年图灵奖), 1969Shell，层次化文件系统",
+      "context_after": "Linux: Linus Torvalds, 1991最流行的开源操作系统\n\n# 图形界面： Xerox Alto/MacOS/Windows\n\n![](images/dbaef09637b565",
+      "context": "mpson, DennisRitchie (1983年图灵奖), 1969Shell，层次化文件系统 [图片] Linux: Linus Torvalds, 1991最流行的开源操作系统\n\n# 图形界面： Xer",
+      "section": "分时与多任务：Multics/Unix/Linux",
+      "alt_text": "",
+      "description": "该图片为一个红色向下箭头图标，背景为白色，箭头轮廓清晰，呈标准几何形状，位于矩形框内。此图标通常用于表示“下载”或“向下移动”操作，在上下文“图形界面：Xer”中可能象征图形界面技术的演进方向或数据流，结合前文提及的UNIX、Linux等操作系统发展史，暗示技术发展的延续性或资源获取路径。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/dbaef09637b565dfa9a82fe1fb086c8d4d6e6f5d3d44af68f75f37a0c1659052.jpg",
+      "image_name": "dbaef09637b565dfa9a82fe1fb086c8d4d6e6f5d3d44af68f75f37a0c1659052.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 20,
+      "context_before": "3eb37bc5bbbf8ed855fc.jpg)\n\nLinux: Linus Torvalds, 1991最流行的开源操作系统\n\n# 图形界面： Xerox Alto/MacOS/Windows",
+      "context_after": "Xerox Alto （1973）: 第一个图形化操作系统，首次使用鼠标 （ ChuckThacker，2009年图灵奖）\n\n![](images/cd54fa9a2c2df29129849784",
+      "context": ", 1991最流行的开源操作系统\n\n# 图形界面： Xerox Alto/MacOS/Windows [图片] Xerox Alto （1973）: 第一个图形化操作系统，首次使用鼠标 （ ChuckThacke",
+      "section": "图形界面： Xerox Alto/MacOS/Windows",
+      "alt_text": "",
+      "description": "该图片由左右两部分组成：左侧为Xerox Alto计算机的实物照片，展示其复古的主机结构、键盘、显示器及下方的磁盘驱动器，整体呈米白色，置于展柜中；右侧为Xerox Alto的用户界面截图，显示“UserView workspace”窗口，包含类浏览器、字体选择、文本编辑功能及像素化图标，底部有卡通风格的蘑菇与人物图案，体现早期图形化操作系统的界面设计。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/cd54fa9a2c2df29129849784f3f6b345d52d4fb27f5e3b218eb882bbce3ae6a7.jpg",
+      "image_name": "cd54fa9a2c2df29129849784f3f6b345d52d4fb27f5e3b218eb882bbce3ae6a7.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 20,
+      "context_before": "6e6f5d3d44af68f75f37a0c1659052.jpg)\n\nXerox Alto （1973）: 第一个图形化操作系统，首次使用鼠标 （ ChuckThacker，2009年图灵奖）",
+      "context_after": "Mac OS (Apple LISA, 1983):1979年乔布斯访问Xerox PARC，意识到GUI的重要性，买下了GUI进行研究\n\n![](images/b2031560242a33951",
+      "context": "（1973）: 第一个图形化操作系统，首次使用鼠标 （ ChuckThacker，2009年图灵奖） [图片] Mac OS (Apple LISA, 1983):1979年乔布斯访问Xerox PARC，意识到",
+      "section": "图形界面： Xerox Alto/MacOS/Windows",
+      "alt_text": "",
+      "description": "图片显示一个红色的向下箭头，位于白色背景上，箭头顶部有一条黑色横线。该箭头为简洁的几何图形，呈对称三角形，尖端朝下，两侧有垂直的白色边框。根据上下文，此箭头用于表示技术演进或概念传递的方向，可能象征1979年乔布斯访问Xerox PARC后将图形化界面和鼠标技术引入苹果公司，进而影响Mac OS（Apple LISA, 1983）的发展。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/b2031560242a33951501b0cd138f1f4962a1b336059579141d266136cdc63350.jpg",
+      "image_name": "b2031560242a33951501b0cd138f1f4962a1b336059579141d266136cdc63350.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 20,
+      "context_before": "f5e3b218eb882bbce3ae6a7.jpg)\n\nMac OS (Apple LISA, 1983):1979年乔布斯访问Xerox PARC，意识到GUI的重要性，买下了GUI进行研究",
+      "context_after": "Windows 1.0 （1985）: 基于图形界面的操作系统\n\n# 现代操作系统\n\n![](images/0ca32859a47e5c48c5c2e01e91cc44e2f5d0f2df68a0",
+      "context": ", 1983):1979年乔布斯访问Xerox PARC，意识到GUI的重要性，买下了GUI进行研究 [图片] Windows 1.0 （1985）: 基于图形界面的操作系统\n\n# 现代操作系统\n\n![](ima",
+      "section": "图形界面： Xerox Alto/MacOS/Windows",
+      "alt_text": "",
+      "description": "该图片为一个红色的向下箭头图标，背景为白色，箭头轮廓清晰，呈标准的等腰三角形形状，尖端朝下，位于矩形框内。此图标通常用于表示“向下”、“下载”或“继续”等操作，在此处作为视觉引导，连接上下文中的历史事件（乔布斯访问Xerox PARC）与后续成果（Windows 1.0的发布），象征技术发展的演进方向。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/0ca32859a47e5c48c5c2e01e91cc44e2f5d0f2df68a0cac3ab277d0c7b8eb010.jpg",
+      "image_name": "0ca32859a47e5c48c5c2e01e91cc44e2f5d0f2df68a0cac3ab277d0c7b8eb010.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 21,
+      "context_before": "951501b0cd138f1f4962a1b336059579141d266136cdc63350.jpg)\n\nWindows 1.0 （1985）: 基于图形界面的操作系统\n\n# 现代操作系统",
+      "context_after": "![](images/6cae32bc3c1b1e7dc73faefb94c14d3aee93f457c5520f0c3f2909f79f0fae45.jpg)\n\n![](images/8bb51",
+      "context": "50.jpg)\n\nWindows 1.0 （1985）: 基于图形界面的操作系统\n\n# 现代操作系统 [图片] ![](images/6cae32bc3c1b1e7dc73faefb94c14d3aee93f45",
+      "section": "现代操作系统",
+      "alt_text": "",
+      "description": "这是一张智能手表的屏幕截图，显示时间为10:09。屏幕顶部显示“Oak St”和温度“77°”，并配有天气图标（太阳与云）、定位图标和地球图标。中间区域有两个交互式卡片，分别显示“Good morning”（带太阳图标）和“Good night”（带月亮图标），暗示这是基于时间或场景的个性化通知或快捷操作界面。整体界面简洁，采用深色背景与白色文字，符合现代智能穿戴设备的UI设计风格。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/6cae32bc3c1b1e7dc73faefb94c14d3aee93f457c5520f0c3f2909f79f0fae45.jpg",
+      "image_name": "6cae32bc3c1b1e7dc73faefb94c14d3aee93f457c5520f0c3f2909f79f0fae45.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 21,
+      "context_before": "面的操作系统\n\n# 现代操作系统\n\n![](images/0ca32859a47e5c48c5c2e01e91cc44e2f5d0f2df68a0cac3ab277d0c7b8eb010.jpg)",
+      "context_after": "![](images/8bb51c8773843515c9ff2952989b01e76f17d8d13411cfb3c718fe50157c835b.jpg)\n\n![](images/a116e",
+      "context": "2e01e91cc44e2f5d0f2df68a0cac3ab277d0c7b8eb010.jpg) [图片] ![](images/8bb51c8773843515c9ff2952989b01e76f17d8d",
+      "section": "现代操作系统",
+      "alt_text": "",
+      "description": "这是一张iPhone主屏幕的截图，显示时间为09:41，状态栏有Wi-Fi和电池图标。屏幕背景为深红色渐变动态壁纸。主屏幕包含多行应用图标，包括FaceTime、日历（显示4号）、照片、相机、邮件、时钟、地图、天气、提醒事项、备忘录、股市、新闻、图书、App Store、播客、TV、健康、家庭、钱包..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/8bb51c8773843515c9ff2952989b01e76f17d8d13411cfb3c718fe50157c835b.jpg",
+      "image_name": "8bb51c8773843515c9ff2952989b01e76f17d8d13411cfb3c718fe50157c835b.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 21,
+      "context_before": "d0c7b8eb010.jpg)\n\n![](images/6cae32bc3c1b1e7dc73faefb94c14d3aee93f457c5520f0c3f2909f79f0fae45.jpg)",
+      "context_after": "![](images/a116efb795bfe6a4484e89d4fd3a48b5e9834e59d95ce339481cbab073bc53d7.jpg)\n\n![](images/7da22",
+      "context": "faefb94c14d3aee93f457c5520f0c3f2909f79f0fae45.jpg) [图片] ![](images/a116efb795bfe6a4484e89d4fd3a48b5e9834e5",
+      "section": "现代操作系统",
+      "alt_text": "",
+      "description": "该图片展示了一台平板电脑（疑似iPad）的主屏幕界面。屏幕顶部显示时间为9:41，日期为6月22日星期一。左侧有小组件区域，包含日历、天气（61°F）、新闻（如“Top Stories”）和“Discoveries”推荐内容。主屏幕排列着多个应用程序图标，如邮件、时钟、照片、相机、App Store..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/a116efb795bfe6a4484e89d4fd3a48b5e9834e59d95ce339481cbab073bc53d7.jpg",
+      "image_name": "a116efb795bfe6a4484e89d4fd3a48b5e9834e59d95ce339481cbab073bc53d7.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 21,
+      "context_before": "9f79f0fae45.jpg)\n\n![](images/8bb51c8773843515c9ff2952989b01e76f17d8d13411cfb3c718fe50157c835b.jpg)",
+      "context_after": "![](images/7da22c870cb749456e64666c3948bce82b2e051a871bd4b1a509613df4d57d9a.jpg)\n\n![](images/54bb0",
+      "context": "f2952989b01e76f17d8d13411cfb3c718fe50157c835b.jpg) [图片] ![](images/7da22c870cb749456e64666c3948bce82b2e051",
+      "section": "现代操作系统",
+      "alt_text": "",
+      "description": "该图片展示了一部智能手机的主屏幕界面。屏幕顶部显示天气信息：当前温度8°C，夜间模式，空气质量良好，体感温度20°C/6°C。背景为蓝绿色渐变抽象图案。屏幕上有多个应用图标，包括QQ、微信、支付宝、抖音、淘宝、美团、百度地图、天气、时钟、设置、小红书、网易云音乐等。图标排列整齐，部分应用图标带有通知角标。整体界面设计简洁，符合主流安卓系统风格。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/7da22c870cb749456e64666c3948bce82b2e051a871bd4b1a509613df4d57d9a.jpg",
+      "image_name": "7da22c870cb749456e64666c3948bce82b2e051a871bd4b1a509613df4d57d9a.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 21,
+      "context_before": "e50157c835b.jpg)\n\n![](images/a116efb795bfe6a4484e89d4fd3a48b5e9834e59d95ce339481cbab073bc53d7.jpg)",
+      "context_after": "![](images/54bb0e2030ab7abaefc1643304b150774d10aa27c8b43e1fcba54263379999d2.jpg)\n\n![](images/76805",
+      "context": "e89d4fd3a48b5e9834e59d95ce339481cbab073bc53d7.jpg) [图片] ![](images/54bb0e2030ab7abaefc1643304b150774d10aa2",
+      "section": "现代操作系统",
+      "alt_text": "",
+      "description": "该图片展示了一部智能手机的快速设置面板界面，时间为周二，5月28日，12:00。屏幕顶部显示Wi-Fi（连接至“Google Guest”）、蓝牙、手电筒（关闭）、深色主题、我的主页（连接至“Devices”）、OPay（电池电量显示）、飞行模式（关闭）和勿扰模式（关闭）等快捷开关。底部为正在播放的..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/54bb0e2030ab7abaefc1643304b150774d10aa27c8b43e1fcba54263379999d2.jpg",
+      "image_name": "54bb0e2030ab7abaefc1643304b150774d10aa27c8b43e1fcba54263379999d2.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 21,
+      "context_before": "ab073bc53d7.jpg)\n\n![](images/7da22c870cb749456e64666c3948bce82b2e051a871bd4b1a509613df4d57d9a.jpg)",
+      "context_after": "![](images/7680514ff23e584e5db66a424872174567223f43fd80aea6b8c7df01ec9aa50a.jpg)\n\n![](images/523a5",
+      "context": "4666c3948bce82b2e051a871bd4b1a509613df4d57d9a.jpg) [图片] ![](images/7680514ff23e584e5db66a424872174567223f4",
+      "section": "现代操作系统",
+      "alt_text": "",
+      "description": "这是一张展示MacBook Pro笔记本电脑屏幕的图片，屏幕上显示了macOS操作系统的多任务界面。背景为渐变色桌面壁纸，前景中叠加了多个应用程序窗口，包括信息（Messages）、地图（Maps）、Safari浏览器、FaceTime、系统设置等。屏幕底部是Dock栏，排列着常用应用图标。整体画面突出macOS的多窗口管理与界面设计，体现其流畅的用户体验和视觉美感。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/7680514ff23e584e5db66a424872174567223f43fd80aea6b8c7df01ec9aa50a.jpg",
+      "image_name": "7680514ff23e584e5db66a424872174567223f43fd80aea6b8c7df01ec9aa50a.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 21,
+      "context_before": "13df4d57d9a.jpg)\n\n![](images/54bb0e2030ab7abaefc1643304b150774d10aa27c8b43e1fcba54263379999d2.jpg)",
+      "context_after": "![](images/523a5c3aa703fd359d6a39f424d9ae0d9ba3fce4f5bd07007c408de6121d406a.jpg)\n\n# 今天， 操作系统空前繁荣",
+      "context": "1643304b150774d10aa27c8b43e1fcba54263379999d2.jpg) [图片] ![](images/523a5c3aa703fd359d6a39f424d9ae0d9ba3fce",
+      "section": "现代操作系统",
+      "alt_text": "",
+      "description": "该图片展示了操作系统设置界面的两个窗口。左侧为浅色主题的设置面板，包含用户、云服务、个性化、设备、应用、账户等图标化选项；右侧为深色主题的“个性化”设置窗口，显示主题选择（浅色、深色、自定义）、Accent Color（强调色）选择器及透明度调节滑块。背景为渐变蓝紫色桌面，底部任务栏显示多个应用图标，整体呈现现代操作系统的视觉风格。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/523a5c3aa703fd359d6a39f424d9ae0d9ba3fce4f5bd07007c408de6121d406a.jpg",
+      "image_name": "523a5c3aa703fd359d6a39f424d9ae0d9ba3fce4f5bd07007c408de6121d406a.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 21,
+      "context_before": "263379999d2.jpg)\n\n![](images/7680514ff23e584e5db66a424872174567223f43fd80aea6b8c7df01ec9aa50a.jpg)",
+      "context_after": "# 今天， 操作系统空前繁荣\n\n![](images/29d0a3addbb06e5323b46a5ec046c8a993c22adba4a4c9f16ad8680425f79958.jpg)",
+      "context": "66a424872174567223f43fd80aea6b8c7df01ec9aa50a.jpg) [图片] # 今天， 操作系统空前繁荣\n\n![](images/29d0a3addbb06e5323b46a5",
+      "section": "现代操作系统",
+      "alt_text": "",
+      "description": "该图片展示了一个Windows操作系统的桌面界面，背景为蓝色抽象波浪形图案，具有立体感和流动感，是Windows 11的默认壁纸。桌面左侧有两个图标：一个是“此电脑”（This PC），另一个是“Microsoft Edge”浏览器。任务栏位于屏幕底部，显示了开始菜单按钮、搜索、任务视图、文件资源管..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/29d0a3addbb06e5323b46a5ec046c8a993c22adba4a4c9f16ad8680425f79958.jpg",
+      "image_name": "29d0a3addbb06e5323b46a5ec046c8a993c22adba4a4c9f16ad8680425f79958.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 22,
+      "context_before": "![](images/523a5c3aa703fd359d6a39f424d9ae0d9ba3fce4f5bd07007c408de6121d406a.jpg)\n\n# 今天， 操作系统空前繁荣",
+      "context_after": "这些设备中， 都有操作系统么？\n\n# 操作系统的定义\n\n# 什么是操作系统？\n\n你觉得以下哪些属于操作系统？\n\nA. Windows 10所包含的所有软件  \nB. Linux内核以及所有设备的驱",
+      "context": "3fce4f5bd07007c408de6121d406a.jpg)\n\n# 今天， 操作系统空前繁荣 [图片] 这些设备中， 都有操作系统么？\n\n# 操作系统的定义\n\n# 什么是操作系统？\n\n你觉得以下哪些属于操",
+      "section": "今天， 操作系统空前繁荣",
+      "alt_text": "",
+      "description": "该图片由八张子图组成，展示了多种现代科技设备与硬件，用于探讨“操作系统”的应用范围。上排从左至右依次为：一架涂有“CS19”标识的客机、一架多旋翼无人机、一架战斗机、一辆绿色特斯拉风格的电动跑车；下排从左至右依次为：火星探测器、工业机械臂、一颗标有“HYGON 中科海光”的CPU芯片、一块红色外壳的..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/296f69649f66285ec1a125d4398ac1c9be8903135f9d7fc75d1d855e1a95ea84.jpg",
+      "image_name": "296f69649f66285ec1a125d4398ac1c9be8903135f9d7fc75d1d855e1a95ea84.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 25,
+      "context_before": "有的软件  \nF. 火星车上运行的软件\n\n你觉得应当如何定义操作系统？\n\n# 操作系统：在硬件和应用之间的软件层\n\n# 操作系统和应用的关系\n\n• 服务应用：如提供硬件操作管理应用：如加载、调度等",
+      "context_after": "# 操作系统和硬件的关系\n\n管理硬件：操作硬件以完成功能• 抽象硬件：应用不关心硬件差异\n\n“操作系统是管理硬件资源、控制程序运行、改善人机界面和为应用软件提供支持的一种系统软件。” 《计算机百科",
+      "context": "应用之间的软件层\n\n# 操作系统和应用的关系\n\n• 服务应用：如提供硬件操作管理应用：如加载、调度等 [图片] # 操作系统和硬件的关系\n\n管理硬件：操作硬件以完成功能• 抽象硬件：应用不关心硬件差异\n\n“操作系",
+      "section": "操作系统和应用的关系",
+      "alt_text": "",
+      "description": "该图片展示了一个三层软件架构示意图，自上而下依次为：浅黄色矩形框标注“应用”，红色矩形框标注“操作系统”，深蓝色矩形框标注“硬件”。三者呈垂直堆叠结构，直观表现了应用运行于操作系统之上，操作系统管理并抽象硬件资源的层级关系，体现了操作系统作为应用与硬件之间的中间层作用。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/71be1a419ddd01485357ba0ad6305b721957ab21cb9110db9bad4bb659290a25.jpg",
+      "image_name": "71be1a419ddd01485357ba0ad6305b721957ab21cb9110db9bad4bb659290a25.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 26,
+      "context_before": "用软件提供支持的一种系统软件。” 《计算机百科全书(第2版)》\n\n“操作系统将有限的、离散的资源，高效地抽象为无限的、连续的资源。《操作系统：原理与实现》\n\n# 操作系统的职责\n\n# 各种应用程序",
+      "context_after": "服务应用\n\n管理硬件\n\nCPU, Memory, GPU…\n\n![](images/7ceb239275c42a5cfe379bc6f849680976a0b65460349690e08b439e",
+      "context": "，高效地抽象为无限的、连续的资源。《操作系统：原理与实现》\n\n# 操作系统的职责\n\n# 各种应用程序 [图片] 服务应用\n\n管理硬件\n\nCPU, Memory, GPU…\n\n![](images/7ceb2392",
+      "section": "各种应用程序",
+      "alt_text": "",
+      "description": "该图片为一张结构化示意图，展示操作系统在硬件与应用程序之间的桥梁作用。图中分为三行四列：第一行显示各类应用程序图标，左侧为Windows平台常用软件（如Word、LOL、IE浏览器），右侧为Android平台应用（如微信、淘宝、王者荣耀）；第二行展示操作系统，左侧为Windows系统（含蓝色窗口标志..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/7ceb239275c42a5cfe379bc6f849680976a0b65460349690e08b439ea8f00c7e.jpg",
+      "image_name": "7ceb239275c42a5cfe379bc6f849680976a0b65460349690e08b439ea8f00c7e.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 27,
+      "context_before": "be1a419ddd01485357ba0ad6305b721957ab21cb9110db9bad4bb659290a25.jpg)\n\n服务应用\n\n管理硬件\n\nCPU, Memory, GPU…",
+      "context_after": "![](images/1efd766f6539194258ba880b86668d77539843ca74d8d2a44f1644e2abe35a76.jpg)\n\n# 操作系统通过抽象履行职责",
+      "context": "ad4bb659290a25.jpg)\n\n服务应用\n\n管理硬件\n\nCPU, Memory, GPU… [图片] ![](images/1efd766f6539194258ba880b86668d77539843c",
+      "section": "各种应用程序",
+      "alt_text": "",
+      "description": "该图展示了一个移动设备上图形渲染的简化流程。顶部为“应用”模块，图标为《王者荣耀》游戏，其向操作系统（OS）请求显示一帧画面；中间为“OS”模块，带有Android机器人图标，负责接收请求并向GPU发送渲染指令以更新屏幕内容；底部为实际手机游戏画面，显示用户双手握持手机进行游戏的场景。整个流程通过箭头连接，清晰呈现了从应用到OS再到硬件显示的层级交互过程。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/1efd766f6539194258ba880b86668d77539843ca74d8d2a44f1644e2abe35a76.jpg",
+      "image_name": "1efd766f6539194258ba880b86668d77539843ca74d8d2a44f1644e2abe35a76.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 28,
+      "context_before": "PU, Memory, GPU…\n\n![](images/7ceb239275c42a5cfe379bc6f849680976a0b65460349690e08b439ea8f00c7e.jpg)",
+      "context_after": "# 操作系统通过抽象履行职责\n\n![](images/76f1c08f00478875e7c6f04f74b102efc8aac91f3a332b53819baa5a690b386a.jpg)",
+      "context": "79bc6f849680976a0b65460349690e08b439ea8f00c7e.jpg) [图片] # 操作系统通过抽象履行职责\n\n![](images/76f1c08f00478875e7c6f04",
+      "section": "各种应用程序",
+      "alt_text": "",
+      "description": "该图展示了操作系统（OS）在移动设备中的核心作用。图中包含两个应用：一个为游戏应用（图标为“5v5”），另一个为即时通讯应用（微信图标）。用户通过微信发送消息“下局一起开黑”，应用请求OS发送消息。OS（以Android机器人图标表示）接收请求后，将消息封装成网络包并发送出去。同时，OS负责调度多个..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/76f1c08f00478875e7c6f04f74b102efc8aac91f3a332b53819baa5a690b386a.jpg",
+      "image_name": "76f1c08f00478875e7c6f04f74b102efc8aac91f3a332b53819baa5a690b386a.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 29,
+      "context_before": "![](images/1efd766f6539194258ba880b86668d77539843ca74d8d2a44f1644e2abe35a76.jpg)\n\n# 操作系统通过抽象履行职责",
+      "context_after": "# 如果没有操作系统\n\n![](images/0b78eb4cdc6c7bf82b0bdaea1e838ea6cde773cb65a756a55006492690abddb3.jpg)\n\n面向操作",
+      "context": "843ca74d8d2a44f1644e2abe35a76.jpg)\n\n# 操作系统通过抽象履行职责 [图片] # 如果没有操作系统\n\n![](images/0b78eb4cdc6c7bf82b0bdaea1e8",
+      "section": "操作系统通过抽象履行职责",
+      "alt_text": "",
+      "description": "该图展示了操作系统在移动设备中的抽象与管理作用。顶部为两个应用图标（游戏与微信），它们通过“网络抽象”和“屏幕抽象”与中间的“操作系统”（含Android标志）交互。操作系统向下管理不同硬件，底部展示了华为、小米、OPPO三种手机品牌，体现其对多样化硬件的统一管理能力。整体结构说明操作系统通过抽象层屏蔽硬件差异，为上层应用提供统一接口。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/0b78eb4cdc6c7bf82b0bdaea1e838ea6cde773cb65a756a55006492690abddb3.jpg",
+      "image_name": "0b78eb4cdc6c7bf82b0bdaea1e838ea6cde773cb65a756a55006492690abddb3.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 30,
+      "context_before": "履行职责\n\n![](images/76f1c08f00478875e7c6f04f74b102efc8aac91f3a332b53819baa5a690b386a.jpg)\n\n# 如果没有操作系统",
+      "context_after": "面向操作系统开发应用\n\n面向各款手机开发应用\n\nRedmi Xiaomi 11 Civi Xiaomi 12\n\n# 如果没有操作系统\n\n![](images/8bcffd205b077827a97",
+      "context": "fc8aac91f3a332b53819baa5a690b386a.jpg)\n\n# 如果没有操作系统 [图片] 面向操作系统开发应用\n\n面向各款手机开发应用\n\nRedmi Xiaomi 11 Civi Xiaom",
+      "section": "如果没有操作系统",
+      "alt_text": "",
+      "description": "该图展示了一个应用开发与操作系统及手机品牌关系的示意图。上半部分显示一款游戏应用图标（标有“5v5”）可面向Android和Apple两大操作系统开发。下半部分展示同一游戏应用可适配华为、小米、OPPO等不同手机品牌设备，其中小米手机通过连接线与上方Android系统关联，表明其基于Android系统。整体结构说明应用开发需考虑操作系统兼容性，并可覆盖多个手机品牌。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/8bcffd205b077827a97a358e9e1ea3bfa1f15d76133cf21c0ca64693e60089ca.jpg",
+      "image_name": "8bcffd205b077827a97a358e9e1ea3bfa1f15d76133cf21c0ca64693e60089ca.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 31,
+      "context_before": "b65a756a55006492690abddb3.jpg)\n\n面向操作系统开发应用\n\n面向各款手机开发应用\n\nRedmi Xiaomi 11 Civi Xiaomi 12\n\n# 如果没有操作系统",
+      "context_after": "# 究竟什么是操作系统？\n\n# “操作系统”并没有严格的唯一定义\n\n– 是一个相对概念：相对“应用”而言– 操作系统也可包含运行在用户态的框架（framework）\n\n• 例如：SSL库、Dalv",
+      "context": "手机开发应用\n\nRedmi Xiaomi 11 Civi Xiaomi 12\n\n# 如果没有操作系统 [图片] # 究竟什么是操作系统？\n\n# “操作系统”并没有严格的唯一定义\n\n– 是一个相对概念：相对“应用”",
+      "section": "如果没有操作系统",
+      "alt_text": "",
+      "description": "该图通过对比说明“操作系统”的概念。上半部分展示Android和Apple两大操作系统，以及典型应用（如游戏、微信）请求“显示我！”。下半部分以华为、小米、OPPO等品牌手机为例，说明不同手机品牌（如Redmi、Xiaomi 11、Civi、Xiaomi 12）均运行在各自的操作系统之上。右侧示意图..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/23d217649cacd5d684655f7a0b447996738d73870dbc1c2bfcf11a821d2db5a6.jpg",
+      "image_name": "23d217649cacd5d684655f7a0b447996738d73870dbc1c2bfcf11a821d2db5a6.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 42,
+      "context_before": "• 方案：必须要有不同的权限级——至少两种权限\n\n– 低权限：不允许改变全局系统状态，用来运行应用– 高权限：集中运行能改变全局系统状态的操作，形成了操作系统\n\n# 特权操作\n\n# 操作系统的分化",
+      "context_after": "# 对硬件 （CPU） 的要求\n\n# CPU对软件提供的接口称为ISA\n\n– ISA: Instruction Set Architecture– 包含指令、寄存器等软件可见、可操作的接口\n\n#",
+      "context": "用– 高权限：集中运行能改变全局系统状态的操作，形成了操作系统\n\n# 特权操作\n\n# 操作系统的分化 [图片] # 对硬件 （CPU） 的要求\n\n# CPU对软件提供的接口称为ISA\n\n– ISA: Instru",
+      "section": "操作系统的分化",
+      "alt_text": "",
+      "description": "该图展示了软件与硬件交互的演化过程及操作系统的形成机制。初始阶段，软件直接运行于硬件之上。随后，软件被划分为“硬件无关部分”和“硬件抽象部分”，实现对硬件的抽象。进一步演化中，硬件抽象部分与“特权操作部分”结合，形成操作系统核心，运行于支持特权的硬件上。此时，软件被划分为“应用程序”（包含服务应用和..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/68225a7b592191b5e69244b69c1947537c2e1258ac90fa07c51ccfc895a4f116.jpg",
+      "image_name": "68225a7b592191b5e69244b69c1947537c2e1258ac90fa07c51ccfc895a4f116.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 50,
+      "context_before": "标\n\n– 方便使用– 容易学习– 功能齐全– 安全  \n– 流畅\n\n# 系统目标\n\n– 容易设计、实现  \n– 容易维护  \n– 灵活性  \n– 可靠性  \n– 高效性\n\n# 操作系统的架构及演进",
+      "context_after": "# 1 宏内核 （Monolithic Kernel）\n\n# 整个系统分为内核与应用两层\n\n– 内核：运行在特权级，集中控制所有计算资源– 应用：运行在非特权级，受内核管理，使用内核服务\n\n![]",
+      "context": "、实现  \n– 容易维护  \n– 灵活性  \n– 可靠性  \n– 高效性\n\n# 操作系统的架构及演进 [图片] # 1 宏内核 （Monolithic Kernel）\n\n# 整个系统分为内核与应用两层\n\n– 内核",
+      "section": "操作系统的架构及演进",
+      "alt_text": "",
+      "description": "该图展示了操作系统内核架构的演进历程，从1960年代的宏内核（Monolithic Kernel）到2010年代的多内核（Multikernel）。图中以时间轴形式呈现四种主要架构：宏内核（绿色）、微内核（橙色）、外核（黄色）和多内核（蓝色），并分别标注其核心特征。下方以树状结构展示各架构的代表性系..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/807772c33ed6d9c7ea2936688cbd2a68f56208d7e15470217ee3c121d8af7ab5.jpg",
+      "image_name": "807772c33ed6d9c7ea2936688cbd2a68f56208d7e15470217ee3c121d8af7ab5.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 51,
+      "context_before": "pg)\n\n# 1 宏内核 （Monolithic Kernel）\n\n# 整个系统分为内核与应用两层\n\n– 内核：运行在特权级，集中控制所有计算资源– 应用：运行在非特权级，受内核管理，使用内核服务",
+      "context_after": "# 宏内核的优缺点分析\n\n# 宏内核拥有丰富的沉淀和积累\n\n– 拥有巨大的统一的社区和生态– 针对不同场景优化了30年\n\n# 宏内核的结构性缺陷\n\n– 安全性与可靠性问题：模块之间没有很强的隔离机",
+      "context": "层\n\n– 内核：运行在特权级，集中控制所有计算资源– 应用：运行在非特权级，受内核管理，使用内核服务 [图片] # 宏内核的优缺点分析\n\n# 宏内核拥有丰富的沉淀和积累\n\n– 拥有巨大的统一的社区和生态– 针对不",
+      "section": "整个系统分为内核与应用两层",
+      "alt_text": "",
+      "description": "该图展示了宏内核（Monolithic Kernel）架构的典型结构。图中上方为两个“用户进程”，通过“系统调用”与下方的“内核”进行交互。内核以红色矩形框表示，内部注明其整合了文件系统、内存管理、设备驱动、进程调度、同步原语、IPC等核心功能模块。整体结构清晰地体现了宏内核将操作系统核心功能集中于单一内核空间的特点，用户进程通过系统调用接口访问内核服务。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/30d56bcf46d8f8793a8ed6822765ba76625aa7fc3c536c2bedb0fd08c0b1d0e7.jpg",
+      "image_name": "30d56bcf46d8f8793a8ed6822765ba76625aa7fc3c536c2bedb0fd08c0b1d0e7.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 54,
+      "context_before": "前依然不确定是否能支持确定性时延\n\n# 2、 微内核的系统架构\n\n# 设计原则：最小化内核功能\n\n– 将操作系统功能移到用户态，称为\"服务\"（Server）– 在用户模块之间，使用消息传递机制通信",
+      "context_after": "# 例：文件的创建\n\n![](images/c41a6a9520e0a7ffd75474e9c525c53e549fc556fdc85c9b3ff63f262149fd30.jpg)\n\n![](i",
+      "context": "\n– 将操作系统功能移到用户态，称为\"服务\"（Server）– 在用户模块之间，使用消息传递机制通信 [图片] # 例：文件的创建\n\n![](images/c41a6a9520e0a7ffd75474e9c525",
+      "section": "设计原则：最小化内核功能",
+      "alt_text": "",
+      "description": "该图展示了一种微内核（μkernel）架构下的操作系统设计。图中包含三个主要组件：位于顶层的“Process”（进程）、被红色虚线框标示为“隔离”的“FS”（文件系统服务），以及底层的“μkernel”（微内核）。进程通过“Slow IPC”（慢速进程间通信）与文件系统服务交互，体现了将操作系统功能（如文件系统）移至用户态作为独立服务，并通过消息传递机制进行通信的设计思想。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/c41a6a9520e0a7ffd75474e9c525c53e549fc556fdc85c9b3ff63f262149fd30.jpg",
+      "image_name": "c41a6a9520e0a7ffd75474e9c525c53e549fc556fdc85c9b3ff63f262149fd30.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 55,
+      "context_before": "递机制通信\n\n![](images/30d56bcf46d8f8793a8ed6822765ba76625aa7fc3c536c2bedb0fd08c0b1d0e7.jpg)\n\n# 例：文件的创建",
+      "context_after": "![](images/f759dd88972f92586a6322a8cc7a3bb8a2d4a021973d0b30b3789e633d88b672.jpg)\n\n# 微内核的优缺点分析\n\n# 优",
+      "context": "76625aa7fc3c536c2bedb0fd08c0b1d0e7.jpg)\n\n# 例：文件的创建 [图片] ![](images/f759dd88972f92586a6322a8cc7a3bb8a2d4a02",
+      "section": "例：文件的创建",
+      "alt_text": "",
+      "description": "该图展示了一个文件系统层次结构的简化模型。最上层为绿色的“Application”（应用程序），通过黑色箭头向下调用中间层的“File System”（文件系统），文件系统再通过黑色箭头调用“Disk Driver”（磁盘驱动器），最终由磁盘驱动器通过黑色箭头与底层灰色的“Disk”（磁盘）交互。所..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/f759dd88972f92586a6322a8cc7a3bb8a2d4a021973d0b30b3789e633d88b672.jpg",
+      "image_name": "f759dd88972f92586a6322a8cc7a3bb8a2d4a021973d0b30b3789e633d88b672.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 55,
+      "context_before": ".jpg)\n\n# 例：文件的创建\n\n![](images/c41a6a9520e0a7ffd75474e9c525c53e549fc556fdc85c9b3ff63f262149fd30.jpg)",
+      "context_after": "# 微内核的优缺点分析\n\n# 优点\n\n– 易于扩展：直接添加一个用户进程即可为操作系统增加服务– 易于移植：大部分模块与底层硬件无关– 更加可靠：在内核模式运行的代码量大大减少– 更加安全：即使存",
+      "context": "474e9c525c53e549fc556fdc85c9b3ff63f262149fd30.jpg) [图片] # 微内核的优缺点分析\n\n# 优点\n\n– 易于扩展：直接添加一个用户进程即可为操作系统增加服务– 易",
+      "section": "例：文件的创建",
+      "alt_text": "",
+      "description": "该图展示了微内核（Microkernel）操作系统的架构。图中，微内核作为核心层（粉色矩形），位于应用程序（App）、文件系统（File System）和磁盘驱动（Disk Driver）等用户态服务之下。这些服务通过蓝色双向箭头与微内核通信，表明它们通过消息传递机制与内核交互。磁盘驱动通过黑色和灰..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/22e6c4d3d17ffd8889eee27d66b6efe43ad078d2289627064a3d76d753c81d64.jpg",
+      "image_name": "22e6c4d3d17ffd8889eee27d66b6efe43ad078d2289627064a3d76d753c81d64.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 57,
+      "context_before": "的优缺点分析\n\n# 缺点\n\n– 性能较差：内核中的模块交互由函数调用变成了进程间通信– 生态欠缺：尚未形成像Linux一样具有广泛开发者的社区– 重用问题：重用宏内核操作系统提供兼容性，带来新问题",
+      "context_after": "![](images/dadcdddb7d75bad02ca88a06283e6bae1a7b54904c99fafa2b06702985e6c087.jpg)\n\n# seL4： 被形式化证明的微",
+      "context": "：尚未形成像Linux一样具有广泛开发者的社区– 重用问题：重用宏内核操作系统提供兼容性，带来新问题 [图片] ![](images/dadcdddb7d75bad02ca88a06283e6bae1a7b549",
+      "section": "缺点",
+      "alt_text": "",
+      "description": "该图对比了宏内核与微内核架构下两种调用机制的性能开销。左侧“函数调用”示意图显示，在宏内核中，函数调用耗时约30个时钟周期；右侧“同步进程间调用”示意图显示，在微内核架构中，服务-A与服务-B之间的同步进程间调用耗时约4500个时钟周期。图中通过红色箭头连接两个节点表示调用路径，直观呈现了微内核因进程隔离导致的显著性能开销，呼应了上下文关于宏内核重用优势与微内核兼容性代价的讨论。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/dadcdddb7d75bad02ca88a06283e6bae1a7b54904c99fafa2b06702985e6c087.jpg",
+      "image_name": "dadcdddb7d75bad02ca88a06283e6bae1a7b54904c99fafa2b06702985e6c087.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 57,
+      "context_before": "核操作系统提供兼容性，带来新问题\n\n![](images/22e6c4d3d17ffd8889eee27d66b6efe43ad078d2289627064a3d76d753c81d64.jpg)",
+      "context_after": "# seL4： 被形式化证明的微内核\n\n# 对C的限制，以方便验证\n\n– 栈变量不得取引用必要时用全局变量– 不使用函数指针– 不适用union\n\n# 用Haskell构造原型\n\n– 用于验证 –",
+      "context": "ee27d66b6efe43ad078d2289627064a3d76d753c81d64.jpg) [图片] # seL4： 被形式化证明的微内核\n\n# 对C的限制，以方便验证\n\n– 栈变量不得取引用必要时用全",
+      "section": "缺点",
+      "alt_text": "",
+      "description": "该图包含两个部分：左侧为“同步进程间调用”示意图，展示服务-A通过微内核向服务-B发起调用，耗时约4500个周期；右侧为饼图，显示在SQLite中通信开销占总开销的30%。整体用于说明seL4微内核在进程间通信效率及系统开销方面的性能特征。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/94876d6d2bb5ebd49b90372f45293a3e7fc26020255cf8a5a3ceed0501640465.jpg",
+      "image_name": "94876d6d2bb5ebd49b90372f45293a3e7fc26020255cf8a5a3ceed0501640465.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 58,
+      "context_before": "被形式化证明的微内核\n\n# 对C的限制，以方便验证\n\n– 栈变量不得取引用必要时用全局变量– 不使用函数指针– 不适用union\n\n# 用Haskell构造原型\n\n– 用于验证 – 再手动转换为C",
+      "context_after": "教学用的微内核– 阿姆斯特丹自由大学，Andrew Tanenbaum教授\n\n![](images/5dd351e7c59a095dadd4009ccfbed514b053527ad0886058",
+      "context": "使用函数指针– 不适用union\n\n# 用Haskell构造原型\n\n– 用于验证 – 再手动转换为C [图片] 教学用的微内核– 阿姆斯特丹自由大学，Andrew Tanenbaum教授\n\n![](images/",
+      "section": "用Haskell构造原型",
+      "alt_text": "",
+      "description": "该图展示了一个两阶段的系统开发流程，用于构建和验证微内核原型。Stage 1 从“Requirements”出发，通过手动实现生成“Haskell Prototype”，并将其与“Abstract Specification”通过“Iterate”循环迭代优化，同时通过“Automatic Tran..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/5dd351e7c59a095dadd4009ccfbed514b053527ad0886058b26a1901d418bf17.jpg",
+      "image_name": "5dd351e7c59a095dadd4009ccfbed514b053527ad0886058b26a1901d418bf17.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 59,
+      "context_before": "b5ebd49b90372f45293a3e7fc26020255cf8a5a3ceed0501640465.jpg)\n\n教学用的微内核– 阿姆斯特丹自由大学，Andrew Tanenbaum教授",
+      "context_after": "Andrew Tanenbaum\n\n被用于Intel的ME（管理引擎）模块– 也许是世界上用的最多的操作系统...\n\n![](images/49c7ee27ad2acf5991f02636d04",
+      "context": "640465.jpg)\n\n教学用的微内核– 阿姆斯特丹自由大学，Andrew Tanenbaum教授 [图片] Andrew Tanenbaum\n\n被用于Intel的ME（管理引擎）模块– 也许是世界上用的最多的",
+      "section": "用Haskell构造原型",
+      "alt_text": "",
+      "description": "这是一张圆形头像照片，展示了一位中年男性，戴着眼镜，面带微笑，穿着浅色衬衫。背景为深绿色黑板，上面隐约可见粉笔字迹。根据上下文，该人物为阿姆斯特丹自由大学的Andrew Tanenbaum教授，以其在操作系统领域的教学和研究著称，特别是其开发的微内核系统，被用于Intel的管理引擎（ME）模块。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/49c7ee27ad2acf5991f02636d047ec37f2aa4f00a8f20c06f9f8ffc7ddc98f4a.jpg",
+      "image_name": "49c7ee27ad2acf5991f02636d047ec37f2aa4f00a8f20c06f9f8ffc7ddc98f4a.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 59,
+      "context_before": "4b053527ad0886058b26a1901d418bf17.jpg)  \nAndrew Tanenbaum\n\n被用于Intel的ME（管理引擎）模块– 也许是世界上用的最多的操作系统...",
+      "context_after": "# MINIX: Intel's hidden in-chip operating system\n\nBuried deep inside your computer's Intel chip is",
+      "context": "Tanenbaum\n\n被用于Intel的ME（管理引擎）模块– 也许是世界上用的最多的操作系统... [图片] # MINIX: Intel's hidden in-chip operating system\n\n",
+      "section": "用Haskell构造原型",
+      "alt_text": "",
+      "description": "该图片为ZDNet网站的网页顶部导航栏截图。左侧显示ZDNet的红色标志，旁边为搜索图标。导航栏背景为黑色，包含多个白色文字链接，如“VIDEOS”、“EXECUTIVE GUIDES”、“SECURITY”、“CLOUD”、“INNOVATION”、“CXO”、“HARDWARE”、“MORE”、..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/6e5fc814bf66b85355edb83b6976f1e50a287e794e439c185dd45d0a534a7e01.jpg",
+      "image_name": "6e5fc814bf66b85355edb83b6976f1e50a287e794e439c185dd45d0a534a7e01.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 60,
+      "context_before": "web server. It's slow, hard to get at,and insecure as insecure can be.\n\n# 微内核操作系统ChCore（课程实验裁剪于此）",
+      "context_after": "# 自主微内核ChCore\n\n• 初步形成微内核 $^ +$ 系统服务 $^ +$ 系统框架三层架构，可配置性与扩展性良好应用兼容：支持C、 $\\mathsf { C } { + + }$ 、Py",
+      "context": "ure as insecure can be.\n\n# 微内核操作系统ChCore（课程实验裁剪于此） [图片] # 自主微内核ChCore\n\n• 初步形成微内核 $^ +$ 系统服务 $^ +$ 系统框架三层架构",
+      "section": "微内核操作系统ChCore（课程实验裁剪于此）",
+      "alt_text": "",
+      "description": "该图片展示了一个自主微内核操作系统ChCore的架构与应用生态。左侧列出了支持的技术栈，包括TensorFlow、Python、ROS、SQLite、Redis、Lighttpd和LVGL等。中间为开发环境实拍图，显示嵌入式设备与开发电脑的调试场景。右侧以蓝色梯形图示呈现“领域框架赋能应用”，涵盖5..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/e90e2fe9b3203304aaf9ef268b736d9bdebb184373955167ff362fd3b0c9474b.jpg",
+      "image_name": "e90e2fe9b3203304aaf9ef268b736d9bdebb184373955167ff362fd3b0c9474b.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 60,
+      "context_before": "口体系结构：支持32/64位，支持ARMv8、x86-64、RISC-V、SPARC-V8学术成果：提出10倍性能提升的IPC设计和微内核高可靠机制 (ATC20, ICDCS21, ATC22)",
+      "context_after": "![](images/be051556aee9a13837334c5976e3ba647c0170bb6a784c099bd15ee5ada9f4fb.jpg)\n\n# 2.5、 混合内核架构\n\n#",
+      "context": "果：提出10倍性能提升的IPC设计和微内核高可靠机制 (ATC20, ICDCS21, ATC22) [图片] ![](images/be051556aee9a13837334c5976e3ba647c0170b",
+      "section": "自主微内核ChCore",
+      "alt_text": "",
+      "description": "该图展示了ChCore微内核操作系统的分层架构。自下而上包括：硬件平台层（含XPU、CPU、DSP、FPGA、RISC-V、ARM、SPARC等异构处理器）；微内核层（轻量化微内核与可配置系统服务，支持确定时延与隔离可靠）；微内核操作系统服务层（含进程、图形、驱动、文件系统、网络等服务）；顶层为领域..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/be051556aee9a13837334c5976e3ba647c0170bb6a784c099bd15ee5ada9f4fb.jpg",
+      "image_name": "be051556aee9a13837334c5976e3ba647c0170bb6a784c099bd15ee5ada9f4fb.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 60,
+      "context_before": "ICDCS21, ATC22)\n\n![](images/e90e2fe9b3203304aaf9ef268b736d9bdebb184373955167ff362fd3b0c9474b.jpg)",
+      "context_after": "# 2.5、 混合内核架构\n\n# 宏内核与微内核的结合\n\n– 将需要性能的模块重新放回内核态– macOS / iOS：Mach微内核 $+ \\mathsf { B S D } 4 . 3 +$",
+      "context": "9ef268b736d9bdebb184373955167ff362fd3b0c9474b.jpg) [图片] # 2.5、 混合内核架构\n\n# 宏内核与微内核的结合\n\n– 将需要性能的模块重新放回内核态– ma",
+      "section": "自主微内核ChCore",
+      "alt_text": "",
+      "description": "该图片展示了四种不同类型的嵌入式或计算硬件平台，从左至右依次为：红色外壳的树莓派（Raspberry Pi）开发板，配备多个USB接口和网络端口；一块绿色PCB板，带有散热风扇和多个扩展插槽；一块黑色主板，集成有散热片、LED指示灯和多种接口；以及一台服务器内部结构，包含多块硬盘、电源模块和连接线缆。这些设备用于展示混合内核架构在不同硬件平台上的应用，体现了从嵌入式系统到服务器环境的广泛适用性。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/1f11bbd3c349c346e7e0a2cd9268ca33202db57522f13ca0ef03ccd32f13afe7.jpg",
+      "image_name": "1f11bbd3c349c346e7e0a2cd9268ca33202db57522f13ca0ef03ccd32f13afe7.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 61,
+      "context_before": "– macOS / iOS：Mach微内核 $+ \\mathsf { B S D } 4 . 3 +$ 系统框架– Windows NT：微内核 $^ +$ 内核态的系统服务 $^ +$ 系统框架",
+      "context_after": "https://zh.wikipedia.org/wiki/微内核\n\n# Windows NT\n\n# Integral子系统（用户态）\n\n负责处理I/O、对象管理、安全、进程等\n\n环境子系统（用",
+      "context": " +$ 系统框架– Windows NT：微内核 $^ +$ 内核态的系统服务 $^ +$ 系统框架 [图片] https://zh.wikipedia.org/wiki/微内核\n\n# Windows NT\n\n#",
+      "section": "宏内核与微内核的结合",
+      "alt_text": "",
+      "description": "该图对比了三种操作系统内核架构：单内核（Monolithic Kernel）、微内核（Microkernel）和混合内核（Hybrid kernel）。左侧单内核系统中，所有核心服务（如文件系统、调度、设备驱动）均运行在内核态；中间微内核系统仅保留基本功能（如IPC、虚拟内存、调度）在内核态，其余服..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/e22c526eb8dd807c650663cc0807098ba4b285154f1f4f544e5689bbbbdcd8ed.jpg",
+      "image_name": "e22c526eb8dd807c650663cc0807098ba4b285154f1f4f544e5689bbbbdcd8ed.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 62,
+      "context_before": "h.wikipedia.org/wiki/微内核\n\n# Windows NT\n\n# Integral子系统（用户态）\n\n负责处理I/O、对象管理、安全、进程等\n\n环境子系统（用户态）– POSIX",
+      "context_after": "Executive（内核态）– 为用户态子系统提供服务\n\nMicrokernel– 提供进程间同步等功能\n\n# macOS\n\nXNU内核\n\n– 基于Mach-2.5打造BSD代码提供文件系统、网络",
+      "context": "al子系统（用户态）\n\n负责处理I/O、对象管理、安全、进程等\n\n环境子系统（用户态）– POSIX [图片] Executive（内核态）– 为用户态子系统提供服务\n\nMicrokernel– 提供进程间同步等",
+      "section": "Integral子系统（用户态）",
+      "alt_text": "",
+      "description": "该图展示了Windows NT操作系统架构的分层结构。顶层为用户态（User mode），包含集成子系统（如工作站服务、服务器服务、安全）和环境子系统（Win32、POSIX、OS/2），分别支持对应的应用程序。用户态通过Executive Services与内核态通信。内核态（Kernel mod..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/565554783e9cb21f3704a6ab2bc8d0348c68d7d3c83b579fbe5591ba443b7e38.jpg",
+      "image_name": "565554783e9cb21f3704a6ab2bc8d0348c68d7d3c83b579fbe5591ba443b7e38.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 63,
+      "context_before": "子系统提供服务\n\nMicrokernel– 提供进程间同步等功能\n\n# macOS\n\nXNU内核\n\n– 基于Mach-2.5打造BSD代码提供文件系统、网络、POSIX接口等\n\nmacOS与iOS",
+      "context_after": "# 3、 外核架构 （Exokernel）\n\n# Exokernel 不提供硬件抽象\n\n– \"只要内核提供抽象，就不能实现性能最大化\"– 只有应用才知道最适合的抽象（end-to-end原则）",
+      "context": "\n\n– 基于Mach-2.5打造BSD代码提供文件系统、网络、POSIX接口等\n\nmacOS与iOS [图片] # 3、 外核架构 （Exokernel）\n\n# Exokernel 不提供硬件抽象\n\n– \"只要内",
+      "section": "macOS",
+      "alt_text": "",
+      "description": "该图展示了macOS与iOS操作系统的分层架构。最底层为硬件（Hardware），其上是内核（Kernel \"xnu\"），由Mach和BSD组成，包含文件系统、网络、POSIX接口、I/O Kit和驱动程序。再上层是核心操作系统（Core OS \"Darwin\"），包括系统工具和核心服务（如Core..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/77ceeaa78d4da4db3a366fb1dd656ff5152aa689718b3244f3e951bbf847a64c.jpg",
+      "image_name": "77ceeaa78d4da4db3a366fb1dd656ff5152aa689718b3244f3e951bbf847a64c.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 65,
+      "context_before": "库OS（LibOS）\n\n– 策略与机制分离：将对硬件的抽象以库的形式提供– 高度定制化：不同应用可使用不同的LibOS，或完全自定义– 更高性能：LibOS与应用其他代码之间通过函数调用直接交互",
+      "context_after": "# Unikernel （单内核）\n\n# 虚拟化环境下的LibOS\n\n– 每个虚拟机只使用内核态– 内核态中只运行一个应用+LibOS– 通过虚拟化层实现不同实例间的隔离\n\n# 适合容器等新的应用",
+      "context": "用可使用不同的LibOS，或完全自定义– 更高性能：LibOS与应用其他代码之间通过函数调用直接交互 [图片] # Unikernel （单内核）\n\n# 虚拟化环境下的LibOS\n\n– 每个虚拟机只使用内核态– ",
+      "section": "库OS（LibOS）",
+      "alt_text": "",
+      "description": "该图展示了虚拟化环境下LibOS（库操作系统）的架构。图中包含两个应用：左侧为“Player”，依赖POSIX、IPC和虚拟内存（VM）；右侧为“Web Server”，依赖POSIX和网络功能。两者通过“Resource binding”（资源绑定）层与底层硬件交互，该层管理TLB、内存、存储和网..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/4b62c2d48ec15ce6a74206400c528507430d832e1be922b0184b36b18483d06f.jpg",
+      "image_name": "4b62c2d48ec15ce6a74206400c528507430d832e1be922b0184b36b18483d06f.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 68,
+      "context_before": "反降– GPU等设备越来越多\n\n• 设备本身越来越智能——设备有自己的CPU• 通过PCIe连接，主CPU与设备CPU之间通信非常慢• 通过系统总线连接，异构SoC（System on Chip）",
+      "context_after": "# Multikernel的设计\n\n# Multikernel的思路\n\n– 默认的状态是划分而不是共享  \n– 维持多份状态的copy而不是共享一份状态  \n– 显式的核间通信机制\n\n# Mult",
+      "context": "，主CPU与设备CPU之间通信非常慢• 通过系统总线连接，异构SoC（System on Chip） [图片] # Multikernel的设计\n\n# Multikernel的思路\n\n– 默认的状态是划分而不是共",
+      "section": "背景：多核与异构",
+      "alt_text": "",
+      "description": "该图展示了一个异构系统级芯片（System on Chip, SoC）的架构。SoC内部包含两个CPU核心（红色方块）、一个GPU（蓝色方块）和一个NPU（黄色方块），它们通过内部总线互联。SoC通过PCIe接口连接外部独立的GPU（蓝色方块），表明外部GPU与片上计算单元之间存在通信延迟。此图用于..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/ade08669456ff52122a0296a471613d4b9f4cca161a83a6f250d2a9b4706ca46.jpg",
+      "image_name": "ade08669456ff52122a0296a471613d4b9f4cca161a83a6f250d2a9b4706ca46.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 69,
+      "context_before": "不是共享一份状态  \n– 显式的核间通信机制\n\n# Multikernel的设计\n\n– 在每个core上运行一个小内核• 包括CPU、GPU等– OS整体是一个分布式系统应用程序依然运行在OS之上",
+      "context_after": "# Barrelfish Multikernel\n\n# Barrelfish操作系统\n\n– 来自ETH Zurich和微软研究院  \n– 支持异构CPU  \n– 在CPU核与节点之间提供通用异构消",
+      "context": "ore上运行一个小内核• 包括CPU、GPU等– OS整体是一个分布式系统应用程序依然运行在OS之上 [图片] # Barrelfish Multikernel\n\n# Barrelfish操作系统\n\n– 来自ET",
+      "section": "Multikernel的设计",
+      "alt_text": "",
+      "description": "该图展示了Barrelfish多内核操作系统的架构。系统由多个独立的OS节点（OS node）组成，每个节点运行在不同的处理单元（如CPU、GPU、PE-n）之上，通过互连（Interconnect）进行通信。各OS节点之间通过异步消息（Async msg）交换数据，整体构成一个分布式系统。应用程序（App）运行在各OS节点之上，OS本身作为分布式应用运行在硬件之上。"
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/039e7716fe3ac5a04db807292dba1b19fb54e8eb9548a7b069dafbe52f09287c.jpg",
+      "image_name": "039e7716fe3ac5a04db807292dba1b19fb54e8eb9548a7b069dafbe52f09287c.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 71,
+      "context_before": "– 来自ETH Zurich和微软研究院  \n– 支持异构CPU  \n– 在CPU核与节点之间提供通用异构消息抽象  \n– 大约10,000行C，500行汇编代码\n\n# 不同操作系统架构的对比",
+      "context_after": "# 课程信息\n\n# 从应用的视角看操作系统\n\n# 注意：常见的误解\n\n– 应用只是逻辑上运行在操作系统上层– 但并不是“由操作系统来运行应用” ×– 实际上，应用的每一行代码都运行在CPU上– 操",
+      "context": "间提供通用异构消息抽象  \n– 大约10,000行C，500行汇编代码\n\n# 不同操作系统架构的对比 [图片] # 课程信息\n\n# 从应用的视角看操作系统\n\n# 注意：常见的误解\n\n– 应用只是逻辑上运行在操作系",
+      "section": "不同操作系统架构的对比",
+      "alt_text": "",
+      "description": "该图对比了五种不同操作系统架构的结构：简单内核（如DOS）、宏内核（如Linux）、微内核（如ChCore）、外核（如Unikernel）和多内核（如BarrelFish）。图中以水平线分隔用户态与内核态，蓝色方块代表逻辑组件。简单内核将大部分功能置于内核态；宏内核在内核态集成大量服务；微内核仅保留..."
+    },
+    {
+      "image_path": ".mineru_output/OS-01 intro/OS-01 intro/auto/images/decc31f81a9687a8724fa5a0b4dc443b90fe16d77d3c5928612c204cf218d0f3.jpg",
+      "image_name": "decc31f81a9687a8724fa5a0b4dc443b90fe16d77d3c5928612c204cf218d0f3.jpg",
+      "filename": "OS-01 intro.pdf",
+      "page_number": 74,
+      "context_before": "• 让一个硬件支持多个应用的三种形式\n\n– 直通：将硬件接口直接暴露给应用– 虚拟化：向应用提供的接口与硬件原有接口一样，但允许多个应用使用– 抽象：提供的接口与硬件接口不一样，操作系统负责转化",
+      "context_after": "欢迎进入操作系统的世界",
+      "context": "供的接口与硬件原有接口一样，但允许多个应用使用– 抽象：提供的接口与硬件接口不一样，操作系统负责转化 [图片] 欢迎进入操作系统的世界",
+      "section": "• 让一个硬件支持多个应用的三种形式",
+      "alt_text": "",
+      "description": "该图展示了操作系统如何通过三种方式（直通、抽象、虚拟化）为应用程序提供硬件资源接口。图中分为三部分：使用CPU资源、内存资源和设备资源。应用程序通过系统调用（如fork()、mmap()、open()）与操作系统交互，操作系统通过抽象层（如进程/线程、地址映射、文件）将应用请求转化为硬件操作。硬件层..."
+    }
+  ]
+}

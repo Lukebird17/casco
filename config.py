@@ -5,6 +5,7 @@ TEXT_MODEL_NAME = "Qwen/Qwen2.5-72B-Instruct"  # 纯文本模型（用于纯文�
 MULTIMODAL_MODEL_NAME = "Qwen/Qwen3-VL-32B-Instruct"  # 多模态模型（用于图片/文件输入）
 MODEL_NAME = "Qwen/Qwen3-VL-32B-Instruct"  # 默认对话模型（向后兼容）
 OPENAI_EMBEDDING_MODEL = "Pro/BAAI/bge-m3"  # Embedding模型
+RERANK_MODEL_NAME = "Pro/BAAI/bge-reranker-v2-m3"  # Rerank模型（用于重排序检索结果）
 
 # 数据目录配置
 import os

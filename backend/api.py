@@ -4,12 +4,16 @@ FastAPI 后端 API
 """
 
 from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Tuple
 from contextlib import asynccontextmanager
 import sys
 import os
+import json
+import asyncio
 
 # 添加父目录到路径
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -20,6 +24,14 @@ from confidence_calculator import ConfidenceCalculator
 from quiz_generator import QuizGenerator
 from flashcard_system import FlashcardSystem
 from knowledge_graph import KnowledgeGraph
+# 尝试导入 LlamaIndex 版本
+try:
+    from knowledge_graph_llamaindex import LlamaIndexKnowledgeGraph
+    USE_LLAMAINDEX_KG = True
+    print("✅ LlamaIndex 知识图谱可用")
+except ImportError:
+    USE_LLAMAINDEX_KG = False
+    print("⚠️  LlamaIndex 知识图谱不可用，使用标准版本")
 from config import *
 
 # ============================================================
@@ -70,7 +82,13 @@ async def lifespan(app: FastAPI):
         confidence_calculator = ConfidenceCalculator()
         quiz_generator = QuizGenerator()
         flashcard_system = FlashcardSystem()
-        knowledge_graph = KnowledgeGraph()
+        # 根据可用性选择知识图谱实现
+        if USE_LLAMAINDEX_KG:
+            knowledge_graph = LlamaIndexKnowledgeGraph()
+            print("✅ 使用 LlamaIndex 知识图谱")
+        else:
+            knowledge_graph = KnowledgeGraph()
+            print("✅ 使用标准知识图谱")
         
         # 如果没有会话，创建一个默认会话
         if not session_manager.sessions:
@@ -97,6 +115,14 @@ app = FastAPI(
     version="2.0.0",
     lifespan=lifespan
 )
+
+# 挂载静态文件服务（用于文档图片）
+static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
+if not os.path.exists(static_dir):
+    os.makedirs(static_dir, exist_ok=True)
+    doc_images_dir = os.path.join(static_dir, "doc_images")
+    os.makedirs(doc_images_dir, exist_ok=True)
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 # CORS 配置
 app.add_middleware(
@@ -144,6 +170,124 @@ class MessageResponse(BaseModel):
 # ============================================================
 # API 端点
 # ============================================================
+
+# ============ 辅助函数 ============
+
+def extract_headings_from_pdf(doc):
+    """
+    基于字体和格式的启发式PDF标题提取
+    
+    逻辑：
+    1. 分析每页的文本块
+    2. 根据字体大小、加粗属性、行间距判断标题
+    3. 最大字体的加粗行视为一级标题
+    """
+    import fitz
+    
+    headings = []
+    font_sizes = []
+    
+    # 第一遍扫描：收集字体大小信息
+    for page_num in range(min(50, doc.page_count)):  # 只扫描前50页
+        page = doc[page_num]
+        blocks = page.get_text("dict")["blocks"]
+        
+        for block in blocks:
+            if block.get("type") == 0:  # 文本块
+                for line in block.get("lines", []):
+                    for span in line.get("spans", []):
+                        font_size = span.get("size", 0)
+                        if font_size > 0:
+                            font_sizes.append(font_size)
+    
+    if not font_sizes:
+        return []
+    
+    # 计算字体大小阈值
+    font_sizes.sort(reverse=True)
+    avg_font_size = sum(font_sizes) / len(font_sizes)
+    max_font_size = font_sizes[0]
+    
+    # 标题阈值：大于平均字体的1.2倍
+    title_threshold = avg_font_size * 1.2
+    
+    print(f"📊 字体分析: 平均={avg_font_size:.1f}, 最大={max_font_size:.1f}, 阈值={title_threshold:.1f}")
+    
+    # 第二遍扫描：提取标题
+    heading_id = 0
+    for page_num in range(doc.page_count):
+        page = doc[page_num]
+        blocks = page.get_text("dict")["blocks"]
+        
+        for block in blocks:
+            if block.get("type") == 0:  # 文本块
+                for line in block.get("lines", []):
+                    # 获取该行的最大字体
+                    line_fonts = []
+                    line_text = ""
+                    is_bold = False
+                    
+                    for span in line.get("spans", []):
+                        font_size = span.get("size", 0)
+                        text = span.get("text", "").strip()
+                        font_flags = span.get("flags", 0)
+                        
+                        line_fonts.append(font_size)
+                        line_text += text
+                        
+                        # 检查是否加粗 (flags & 16 表示加粗)
+                        if font_flags & 16:
+                            is_bold = True
+                    
+                    if not line_text or not line_fonts:
+                        continue
+                    
+                    max_line_font = max(line_fonts)
+                    line_text = line_text.strip()
+                    
+                    # 判断是否为标题
+                    # 条件：1. 字体大于阈值 2. 文本长度合适 3. 不以标点结尾
+                    if (max_line_font >= title_threshold and 
+                        3 < len(line_text) < 100 and
+                        not line_text.endswith(('。', '.', '，', ',', '：', ':', '；', ';'))):
+                        
+                        # 确定标题级别（基于字体大小）
+                        if max_line_font >= max_font_size * 0.95:
+                            level = 1  # 一级标题
+                        elif max_line_font >= max_font_size * 0.85:
+                            level = 2  # 二级标题
+                        else:
+                            level = 3  # 三级标题
+                        
+                        # 加粗的文本更可能是标题，提升优先级
+                        if is_bold and level > 1:
+                            level -= 1
+                        
+                        headings.append({
+                            "id": f"heading-{heading_id}",
+                            "title": line_text,
+                            "level": level,
+                            "page": page_num + 1,
+                            "font_size": round(max_line_font, 1),
+                            "is_bold": is_bold,
+                            "subsections": []
+                        })
+                        heading_id += 1
+                        
+                        # 限制提取数量
+                        if heading_id >= 100:
+                            break
+                
+                if heading_id >= 100:
+                    break
+        
+        if heading_id >= 100:
+            break
+    
+    print(f"✅ 智能提取了 {len(headings)} 个标题")
+    return headings
+
+# ============ API路由 ============
 
 @app.post("/api/init")
 async def initialize():
@@ -273,23 +417,44 @@ async def chat(request: ChatRequest):
             max_tokens=request.max_tokens or 2000
         )
         
-        # 提取引用（在添加消息之前）
+        # 提取引用（在添加消息之前）并去重
         # Context已经在rag_agent中打印，这里只收集用于前端展示
         citations = []
+        seen_cite_ids = {}  # 用于去重
         if hasattr(rag_agent, 'last_context_docs') and rag_agent.last_context_docs:
-            for i, doc in enumerate(rag_agent.last_context_docs[:5], 1):  # 最多5个引用
+            for doc in rag_agent.last_context_docs[:10]:  # 扩展到10个，去重后取前5
                 filename = doc.get("filename", "未知")
-                page_num = doc.get("page_num", doc.get("page_number", 0))
+                # 优先使用page_number（vector_store的标准字段）
+                page_num = doc.get("page_number", doc.get("page_num", 0))
                 section = doc.get("section", "")
                 content_snippet = doc.get("content", "")[:200]
                 
-                # 添加到引用列表（用于前端展示）
-                citations.append({
-                    "filename": filename,
-                    "page": page_num,
-                    "section": section,
-                    "snippet": content_snippet
-                })
+                # 【重要】从metadata中获取image_url
+                metadata = doc.get("metadata", {})
+                image_url = doc.get("image_url") or metadata.get("image_url")
+                
+                # 补全完整的 URL (如果前端和后端不同端口，需要加上后端域名)
+                if image_url and not image_url.startswith("http"):
+                    image_url = f"http://localhost:8000{image_url}"
+                
+                # 生成cite_id用于去重
+                cite_id = f"{filename}_p{page_num}".replace(' ', '_').replace('.pdf', '').replace('.docx', '')
+                score = doc.get("score", doc.get("rerank_score", 0))
+                
+                # 去重：保留分数更高的
+                if cite_id not in seen_cite_ids or score > seen_cite_ids[cite_id]["score"]:
+                    seen_cite_ids[cite_id] = {
+                        "id": cite_id,
+                        "filename": filename,
+                        "page": page_num,
+                        "section": section,
+                        "snippet": content_snippet,
+                        "image_url": image_url,
+                        "score": score
+                    }
+            
+            # 转换为列表，按分数排序，取前5个
+            citations = sorted(seen_cite_ids.values(), key=lambda x: x["score"], reverse=True)[:5]
         
         # 计算置信度
         confidence = None
@@ -331,6 +496,197 @@ async def chat(request: ChatRequest):
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/chat/stream")
+async def chat_stream(request: ChatRequest):
+    """
+    流式处理聊天消息 - 先返回检索结果，再返回答案
+    """
+    async def generate():
+        try:
+            if rag_agent is None:
+                yield f"data: {json.dumps({'type': 'error', 'data': 'RAG Agent 未初始化'})}\n\n"
+                return
+            
+            # 获取或创建会话
+            session = session_manager.get_session(request.session_id)
+            if not session:
+                session = session_manager.create_session("新对话")
+                request.session_id = session.session_id
+            
+            chat_history = session.messages
+            
+            # 打印日志
+            print(f"\n{'='*80}")
+            print(f"📝 用户问题: {request.message}")
+            print(f"🧠 思考模式: {request.thinking_mode.upper()}")
+            print(f"📚 知识库: {request.knowledge_base_id}")
+            print(f"{'='*80}\n")
+            
+            # 切换知识库（如果需要）
+            if request.knowledge_base_id:
+                try:
+                    from config import get_kb_vector_dir, get_kb_data_dir, COLLECTION_NAME
+                    from vector_store import VectorStore
+                    from image_vector_store import ImageVectorStore
+                    
+                    kb_vector_path = get_kb_vector_dir(request.knowledge_base_id)
+                    kb_data_path = get_kb_data_dir(request.knowledge_base_id)
+                    
+                    if os.path.exists(kb_vector_path):
+                        new_vector_store = VectorStore(
+                            db_path=kb_vector_path,
+                            collection_name=COLLECTION_NAME
+                        )
+                        rag_agent.vector_store = new_vector_store
+                        
+                        if hasattr(rag_agent, 'hybrid_retriever') and rag_agent.hybrid_retriever:
+                            rag_agent.hybrid_retriever.text_store = new_vector_store
+                            rag_agent.hybrid_retriever.vector_store = new_vector_store
+                except Exception as e:
+                    print(f"⚠️  切换知识库失败: {e}")
+            
+            # === 第1步：发送"分析问题"状态 ===
+            yield f"data: {json.dumps({'type': 'status', 'data': '正在分析问题类型...'}, ensure_ascii=False)}\n\n"
+            
+            # === 第2步：发送"检索中"状态 ===
+            yield f"data: {json.dumps({'type': 'status', 'data': '正在检索知识库...'}, ensure_ascii=False)}\n\n"
+            
+            # === 第3步：先执行检索（在线程池中执行以避免阻塞） ===
+            import concurrent.futures
+            executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+            
+            # 分析query类型
+            query_type = await asyncio.get_event_loop().run_in_executor(
+                executor, 
+                rag_agent.analyze_query_type, 
+                request.message
+            )
+            
+            # 执行SOTA检索
+            def do_retrieval():
+                context, retrieved_docs = rag_agent.retrieve_context_sota(
+                    request.message, 
+                    top_k=request.retrieval_k or 10
+                )
+                # 保存检索结果（供后续使用）
+                rag_agent.last_context_docs = retrieved_docs
+                rag_agent.last_retrieval_results = retrieved_docs
+                return context, retrieved_docs
+            
+            context, retrieved_docs = await asyncio.get_event_loop().run_in_executor(
+                executor,
+                do_retrieval
+            )
+            
+            # === 第4步：提取检索结果（包含图片URL）并去重 ===
+            citations = []
+            seen_cite_ids = {}  # 用于去重
+            for doc in retrieved_docs:
+                metadata = doc.get("metadata", {})
+                image_url = doc.get("image_url") or metadata.get("image_url")
+                
+                if image_url and not image_url.startswith("http"):
+                    image_url = f"http://localhost:8000{image_url}"
+                
+                # 生成cite_id（与后端格式化context时一致）
+                filename = doc.get("filename", "未知")
+                # 优先使用page_number（vector_store的标准字段）
+                page_num = doc.get("page_number", doc.get("page_num", 0))
+                cite_id = f"{filename}_p{page_num}".replace(' ', '_').replace('.pdf', '').replace('.docx', '')
+                
+                # 去重：如果已存在相同cite_id，保留分数更高的
+                score = doc.get("score", doc.get("rerank_score", 0))
+                if cite_id in seen_cite_ids:
+                    if score > seen_cite_ids[cite_id]["score"]:
+                        # 替换为分数更高的
+                        seen_cite_ids[cite_id] = {
+                            "id": cite_id,
+                            "filename": filename,
+                            "page": page_num,
+                            "snippet": doc.get("content", "")[:200],
+                            "image_url": image_url,
+                            "score": score
+                        }
+                else:
+                    # 首次出现，直接添加
+                    seen_cite_ids[cite_id] = {
+                        "id": cite_id,
+                        "filename": filename,
+                        "page": page_num,
+                        "snippet": doc.get("content", "")[:200],
+                        "image_url": image_url,
+                        "score": score
+                    }
+            
+            # 转换为列表，按分数排序
+            citations = sorted(seen_cite_ids.values(), key=lambda x: x["score"], reverse=True)
+            
+            # === 第5步：发送检索结果（让用户看到找到的文档） ===
+            yield f"data: {json.dumps({'type': 'citations', 'data': citations}, ensure_ascii=False)}\n\n"
+            
+            # === 第6步：发送"生成中"状态 ===
+            yield f"data: {json.dumps({'type': 'status', 'data': '正在整合信息并生成回答...'}, ensure_ascii=False)}\n\n"
+            
+            # === 第7步：生成答案（在线程池中执行） ===
+            def do_generation():
+                return rag_agent.generate_response(
+                    request.message,
+                    context,
+                    chat_history,
+                    query_type,
+                    image=request.image_base64 if request.image_base64 else None,
+                    file_content=request.file_content if request.file_content else None,
+                    use_multimodal_model=bool(request.image_base64 or request.file_content),
+                    enable_socratic=request.enable_socratic,
+                    thinking_mode=request.thinking_mode,
+                    temperature=request.temperature or 0.7,
+                    max_tokens=request.max_tokens or 2000
+                )
+            
+            response_text = await asyncio.get_event_loop().run_in_executor(
+                executor,
+                do_generation
+            )
+            
+            # === 第8步：发送答案 ===
+            yield f"data: {json.dumps({'type': 'answer', 'data': response_text}, ensure_ascii=False)}\n\n"
+            
+            # === 第9步：计算置信度 ===
+            confidence = None
+            if hasattr(rag_agent, 'last_retrieval_results') and rag_agent.last_retrieval_results:
+                confidence = confidence_calculator.calculate(
+                    request.message,
+                    response_text,
+                    rag_agent.last_retrieval_results
+                )
+            
+            # 发送置信度
+            yield f"data: {json.dumps({'type': 'confidence', 'data': confidence}, ensure_ascii=False)}\n\n"
+            
+            # === 第10步：保存会话 ===
+            session.add_message("user", request.message)
+            session.add_message("assistant", response_text)
+            
+            is_first_message = len(session.messages) == 2
+            if is_first_message:
+                auto_title = request.message[:20]
+                if len(request.message) > 20:
+                    auto_title += "..."
+                session_manager.update_session_title(session.session_id, auto_title)
+            
+            session_manager._save_session(session)
+            
+            # 发送完成信号
+            yield f"data: {json.dumps({'type': 'done'})}\n\n"
+            
+        except Exception as e:
+            print(f"❌ 流式聊天错误: {e}")
+            import traceback
+            traceback.print_exc()
+            yield f"data: {json.dumps({'type': 'error', 'data': str(e)}, ensure_ascii=False)}\n\n"
+    
+    return StreamingResponse(generate(), media_type="text/event-stream")
 
 @app.get("/api/sessions")
 async def get_sessions():
@@ -1145,15 +1501,15 @@ async def preview_pptx(filename: str, page: int = 1):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/documents/{filename}/search")
-async def search_in_document(filename: str, query: str):
+async def search_in_document(filename: str, query: str, kb_id: str = 'default'):
     """
-    在文档中搜索概念/关键词
+    在文档中搜索概念/关键词（支持知识库）
     """
     try:
-        from config import DATA_DIR
-        import PyPDF2
+        from config import get_kb_data_dir
         
-        filepath = os.path.join(DATA_DIR, filename)
+        data_dir = get_kb_data_dir(kb_id)
+        filepath = os.path.join(data_dir, filename)
         
         if not os.path.exists(filepath):
             raise HTTPException(status_code=404, detail="文件不存在")
@@ -1162,28 +1518,29 @@ async def search_in_document(filename: str, query: str):
         results = []
         
         if file_ext == '.pdf':
-            # PDF文件搜索
-            with open(filepath, 'rb') as f:
-                pdf_reader = PyPDF2.PdfReader(f)
+            # PDF文件搜索（使用pymupdf）
+            import fitz
+            doc = fitz.open(filepath)
+            
+            for page_num in range(len(doc)):
+                page = doc[page_num]
+                text = page.get_text()
                 
-                for page_num, page in enumerate(pdf_reader.pages, 1):
-                    text = page.extract_text()
+                # 查找所有匹配项
+                if query.lower() in text.lower():
+                    # 提取匹配位置的上下文
+                    idx = text.lower().find(query.lower())
+                    start = max(0, idx - 50)
+                    end = min(len(text), idx + len(query) + 50)
+                    context = text[start:end].replace('\n', ' ')
                     
-                    # 查找所有匹配项
-                    lines = text.split('\n')
-                    for line_num, line in enumerate(lines):
-                        if query.lower() in line.lower():
-                            # 找到匹配项的上下文
-                            start = max(0, line.find(query.lower()) - 50)
-                            end = min(len(line), line.find(query.lower()) + len(query) + 50)
-                            context = line[start:end]
-                            
-                            results.append({
-                                "page": page_num,
-                                "line": line_num,
-                                "context": context,
-                                "match": query
-                            })
+                    results.append({
+                        "page": page_num + 1,
+                        "context": context,
+                        "match": query
+                    })
+            
+            doc.close()
         else:
             # 文本文件搜索
             with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
@@ -1217,6 +1574,359 @@ async def search_in_document(filename: str, query: str):
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
+
+async def _llm_filter_concepts(candidates: List[Tuple[str, int]], client, target_count: int = 30) -> List[Tuple[str, int]]:
+    """
+    使用LLM智能筛选概念
+    
+    参数:
+        candidates: 候选概念列表 [(word, count), ...]
+        client: OpenAI客户端
+        target_count: 目标返回数量
+    
+    返回:
+        筛选后的概念列表
+    """
+    try:
+        # 准备候选列表
+        candidate_list = [f"{word} ({count}次)" for word, count in candidates[:50]]  # 只取前50个给LLM
+        candidate_str = "\n".join([f"{i+1}. {c}" for i, c in enumerate(candidate_list)])
+        
+        prompt = f"""请从以下候选概念中，筛选出最有价值、最有意义的专业术语和概念。
+
+候选概念列表：
+{candidate_str}
+
+✅ 必须保留：
+- 专业学术术语（如"隐马尔可夫模型"、"卷积神经网络"）
+- 核心技术概念（如"深度学习"、"Transformer"）
+- 重要算法名称（如"梯度下降"、"反向传播"）
+- 专有名词（如"BERT"、"GPT"、"ResNet"）
+
+❌ 必须排除：
+- 通用词汇（如"方法"、"系统"、"问题"、"研究"）
+- 单字词（如"学"、"习"、"数"、"据"）
+- 不完整的词（如"马尔"、"可夫"而不是"隐马尔可夫模型"）
+- HTML/LaTeX标记
+- 文件格式名
+- 纯数字或代码片段
+
+请返回最有价值的 {target_count} 个概念，用JSON格式：
+{{
+  "selected": ["隐马尔可夫模型", "卷积神经网络", "深度学习", ...]
+}}
+
+要求：
+- 只返回JSON，不要其他说明
+- 概念名称要与候选列表中的完全一致（不包括次数）
+- 优先选择完整的、长的专业术语
+- 按重要性和专业度排序
+"""
+        
+        response = client.chat.completions.create(
+            model=MODEL_NAME,
+            messages=[
+                {"role": "system", "content": "你是一位知识管理专家，擅长识别有价值的专业概念。"},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.3,
+            max_tokens=1000
+        )
+        
+        result_text = response.choices[0].message.content.strip()
+        
+        # 提取JSON
+        if '```json' in result_text:
+            result_text = result_text.split('```json')[1].split('```')[0].strip()
+        elif '```' in result_text:
+            result_text = result_text.split('```')[1].split('```')[0].strip()
+        
+        import json
+        data = json.loads(result_text)
+        selected_names = data.get('selected', [])
+        
+        print(f"✅ LLM筛选: {len(candidates)} → {len(selected_names)} 个概念")
+        
+        # 根据LLM选择的概念，从原始列表中提取（保留count信息）
+        candidates_dict = {word: count for word, count in candidates}
+        filtered = []
+        for name in selected_names:
+            if name in candidates_dict:
+                filtered.append((name, candidates_dict[name]))
+        
+        # 如果LLM返回的太少，补充一些高频词
+        if len(filtered) < target_count // 2:
+            print(f"⚠️  LLM返回数量不足，补充高频词")
+            for word, count in candidates:
+                if word not in [w for w, _ in filtered]:
+                    filtered.append((word, count))
+                    if len(filtered) >= target_count:
+                        break
+        
+        return filtered
+        
+    except Exception as e:
+        print(f"⚠️  LLM筛选失败: {e}，返回原始列表")
+        import traceback
+        traceback.print_exc()
+        return candidates  # 失败时返回原始列表
+
+@app.get("/api/concepts/hot")
+async def get_hot_concepts(kb_id: str = 'default', limit: int = 10):
+    """
+    获取热门概念（基于向量库中的高频词）
+    """
+    try:
+        # 从向量库中提取高频概念
+        if rag_agent and hasattr(rag_agent, 'vector_store'):
+            collection = rag_agent.vector_store.collection
+            
+            # 获取所有文档的内容
+            results = collection.get(limit=1000, include=['documents'])
+            
+            if not results or not results.get('documents'):
+                return {
+                    "success": True,
+                    "concepts": []
+                }
+            
+            # 简单的关键词提取：统计高频词
+            from collections import Counter
+            import re
+            
+            all_text = ' '.join(results['documents'])
+            # 提取中文词（2-8个字，允许更长的专业术语如"隐马尔可夫模型"）和英文词（3+字母）
+            chinese_words = re.findall(r'[\u4e00-\u9fa5]{2,8}', all_text)
+            english_words = re.findall(r'\b[A-Za-z]{3,}\b', all_text)
+            
+            # 统计词频
+            word_counts = Counter(chinese_words + english_words)
+            
+            # 扩展的停用词列表（包括文档处理相关词）
+            stopwords = {
+                # 中文停用词
+                '这个', '那个', '可以', '已经', '没有', '什么', '怎么', '现在', '因为', '所以', 
+                '但是', '如果', '虽然', '然而', '一个', '不是', '就是', '还是', '或者', '而且',
+                '因此', '所以', '于是', '其中', '之间', '通过', '根据', '关于', '我们', '他们',
+                '进行', '实现', '主要', '重要', '不同', '各种', '许多', '一些', '这些', '那些',
+                '具有', '包括', '使用', '需要', '应该', '能够', '可能', '以及', '或者', '还有',
+                
+                # 英文停用词
+                'the', 'and', 'for', 'that', 'with', 'from', 'this', 'are', 'was', 'were',
+                'been', 'have', 'has', 'had', 'will', 'would', 'can', 'could', 'may', 'might',
+                'should', 'must', 'shall', 'there', 'their', 'they', 'them', 'these', 'those',
+                'what', 'which', 'who', 'when', 'where', 'why', 'how', 'all', 'each', 'every',
+                'some', 'any', 'many', 'much', 'more', 'most', 'other', 'such', 'than', 'then',
+                'very', 'only', 'just', 'about', 'into', 'over', 'after', 'before', 'during',
+                
+                # 文档处理相关词（关键！）
+                'table', 'figure', 'page', 'section', 'chapter', 'content', 'image', 'text',
+                'document', 'file', 'data', 'information', 'result', 'results', 'example',
+                'examples', 'note', 'notes', 'reference', 'references', 'appendix', 'index',
+                'list', 'item', 'items', 'number', 'numbers', 'value', 'values', 'type', 'types',
+                'name', 'names', 'description', 'descriptions', 'summary', 'conclusion',
+                'introduction', 'abstract', 'title', 'author', 'date', 'source', 'link',
+                
+                # HTML/CSS/编程相关词
+                'span', 'div', 'class', 'style', 'font', 'color', 'width', 'height', 'size',
+                'html', 'body', 'head', 'meta', 'script', 'code', 'function', 'return',
+                'var', 'const', 'let', 'array', 'object', 'string', 'boolean', 'null',
+                'undefined', 'none', 'true', 'false', 'void', 'break', 'continue', 'else',
+                
+                # HTML表格属性
+                'colspan', 'rowspan', 'cellpadding', 'cellspacing', 'thead', 'tbody', 'tfoot',
+                'colgroup', 'valign', 'halign', 'nowrap',
+                
+                # 图片和媒体格式
+                'jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp', 'ico', 'tiff',
+                'mp3', 'mp4', 'avi', 'mov', 'wmv', 'flv', 'wav', 'pdf', 'doc', 'docx',
+                'images', 'image', 'img', 'pic', 'picture', 'photo', 'media', 'video', 'audio',
+                
+                # LaTeX数学命令
+                'mathbb', 'mathbf', 'mathit', 'mathrm', 'mathcal', 'mathfrak', 'mathsf',
+                'mathtt', 'frac', 'sqrt', 'sum', 'int', 'prod', 'lim', 'infty', 'partial',
+                'alpha', 'beta', 'gamma', 'delta', 'epsilon', 'theta', 'lambda', 'sigma',
+                'begin', 'end', 'left', 'right', 'cdot', 'times', 'equiv', 'approx',
+                
+                # 词性标注词（来自NLP处理）
+                'noun', 'verb', 'adj', 'adv', 'prep', 'conj', 'pron', 'det', 'num',
+                'NN', 'VB', 'JJ', 'RB', 'IN', 'DT', 'PRP', 'CC', 'CD',
+                
+                # 格式标记词
+                'bold', 'italic', 'underline', 'normal', 'left', 'right', 'center',
+                'align', 'margin', 'padding', 'border', 'background', 'line', 'space',
+                
+                # 中文文档处理词
+                '图表', '表格', '图片', '页面', '章节', '内容', '文档', '文件', '数据', '信息',
+                '结果', '示例', '注释', '参考', '附录', '索引', '列表', '项目', '数字', '数值',
+                '类型', '名称', '描述', '摘要', '结论', '引言', '标题', '作者', '日期', '来源',
+                
+                # 中文常见无意义词
+                '东西', '方面', '情况', '问题', '时候', '地方', '方法', '系统', '部分', '过程',
+                '方式', '状态', '位置', '作用', '功能', '特点', '性质', '关系', '形式', '意义'
+            }
+            
+            # 过滤：1.停用词 2.纯数字 3.太短的词 4.出现次数太少
+            filtered_words = []
+            for word, count in word_counts.most_common(200):
+                # 转换为小写进行判断
+                word_lower = word.lower()
+                
+                # 跳过条件
+                if (word_lower in stopwords or  # 停用词
+                    word.isdigit() or  # 纯数字
+                    len(word) < 2 or  # 太短
+                    count < 3 or  # 出现次数太少
+                    word.startswith('http') or  # URL
+                    word.startswith('www')):  # 网址
+                    continue
+                
+                filtered_words.append((word, count))
+                
+                if len(filtered_words) >= 100:
+                    break
+            
+            # 使用LLM进行智能筛选（可选，提升质量）
+            use_llm_filter = True  # 可配置开关
+            if use_llm_filter and filtered_words and rag_agent:
+                print(f"🤖 使用LLM智能筛选概念（候选：{len(filtered_words)}个）...")
+                filtered_words = await _llm_filter_concepts(filtered_words, rag_agent.client, limit * 3)
+            
+            # 转换为概念格式
+            concepts = []
+            for word, count in filtered_words[:limit]:
+                concepts.append({
+                    "name": word,
+                    "count": count,
+                    "relevance": min(1.0, count / max(filtered_words[0][1], 1))
+                })
+            
+            return {
+                "success": True,
+                "concepts": concepts
+            }
+        
+        return {
+            "success": True,
+            "concepts": []
+        }
+        
+    except Exception as e:
+        print(f"❌ 获取热门概念错误: {e}")
+        import traceback
+        traceback.print_exc()
+        return {
+            "success": False,
+            "concepts": []
+        }
+
+@app.get("/api/concepts/search")
+async def search_concepts(q: str, kb_id: str = 'default', limit: int = 20):
+    """
+    搜索概念（在所有文档中搜索关键词）
+    """
+    try:
+        from config import get_kb_data_dir
+        
+        if not q or len(q.strip()) == 0:
+            return {
+                "success": False,
+                "results": [],
+                "message": "搜索词为空"
+            }
+        
+        data_dir = get_kb_data_dir(kb_id)
+        
+        if not os.path.exists(data_dir):
+            return {
+                "success": False,
+                "results": [],
+                "message": "知识库不存在"
+            }
+        
+        # 遍历知识库中的所有文档
+        all_results = []
+        
+        for filename in os.listdir(data_dir):
+            filepath = os.path.join(data_dir, filename)
+            
+            if not os.path.isfile(filepath):
+                continue
+            
+            file_ext = os.path.splitext(filename)[1].lower()
+            
+            try:
+                if file_ext == '.pdf':
+                    # PDF文件搜索
+                    import fitz
+                    doc = fitz.open(filepath)
+                    
+                    for page_num in range(len(doc)):
+                        page = doc[page_num]
+                        text = page.get_text()
+                        
+                        # 查找匹配
+                        if q.lower() in text.lower():
+                            # 提取上下文
+                            idx = text.lower().find(q.lower())
+                            start = max(0, idx - 50)
+                            end = min(len(text), idx + len(q) + 50)
+                            context = text[start:end].replace('\n', ' ')
+                            
+                            all_results.append({
+                                "filename": filename,
+                                "page": page_num + 1,
+                                "context": context,
+                                "relevance": 0.8,
+                                "isPDF": True
+                            })
+                            
+                            if len(all_results) >= limit:
+                                break
+                    
+                    doc.close()
+                    
+                elif file_ext in ['.txt', '.md']:
+                    # 文本文件搜索
+                    with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
+                        lines = f.readlines()
+                    
+                    for line_num, line in enumerate(lines, 1):
+                        if q.lower() in line.lower():
+                            all_results.append({
+                                "filename": filename,
+                                "line": line_num,
+                                "context": line.strip(),
+                                "relevance": 0.8,
+                                "isPDF": False
+                            })
+                            
+                            if len(all_results) >= limit:
+                                break
+                
+                if len(all_results) >= limit:
+                    break
+                    
+            except Exception as file_error:
+                print(f"搜索文件 {filename} 时出错: {file_error}")
+                continue
+        
+        return {
+            "success": True,
+            "query": q,
+            "results": all_results[:limit],
+            "total": len(all_results)
+        }
+        
+    except Exception as e:
+        print(f"❌ 概念搜索错误: {e}")
+        import traceback
+        traceback.print_exc()
+        return {
+            "success": False,
+            "results": [],
+            "message": str(e)
+        }
 
 @app.get("/api/documents/{filename}/outline")
 async def get_document_outline(filename: str):
@@ -1631,61 +2341,53 @@ async def get_kb_document_outline(kb_id: str, filename: str):
                 }
             }
         
-        # PDF文件，提取实际大纲
-        with open(filepath, 'rb') as f:
-            pdf_reader = PyPDF2.PdfReader(f)
-            num_pages = len(pdf_reader.pages)
+        # PDF文件，使用pymupdf提取大纲（更强大）
+        import fitz  # pymupdf
+        doc = fitz.open(filepath)
+        num_pages = doc.page_count
+        
+        # 获取PDF目录
+        toc = doc.get_toc()  # 返回 [level, title, page]
+        outlines = []
+        
+        if toc:
+            for i, (level, title, page) in enumerate(toc):
+                outlines.append({
+                    "id": f"outline-{i}",
+                    "title": title,
+                    "level": level,
+                    "page": page,
+                    "subsections": []
+                })
+        
+        # 如果没有目录，使用基于字体和格式的智能提取
+        if not toc:
+            print(f"📖 PDF无内置目录，使用智能提取...")
+            outlines = extract_headings_from_pdf(doc)
             
-            # 尝试获取PDF目录
-            outlines = []
-            if hasattr(pdf_reader, 'outline') and pdf_reader.outline:
-                def extract_outlines(items, level=1):
-                    result = []
-                    for item in items:
-                        if isinstance(item, list):
-                            result.extend(extract_outlines(item, level + 1))
-                        else:
-                            try:
-                                title = item.get('/Title', 'Untitled')
-                                # 获取页码
-                                if hasattr(item, 'page'):
-                                    page_num = pdf_reader.pages.index(item.page) + 1
-                                else:
-                                    page_num = 1
-                                
-                                result.append({
-                                    "id": f"outline-{len(result)}",
-                                    "title": title,
-                                    "level": level,
-                                    "page": page_num,
-                                    "subsections": []
-                                })
-                            except:
-                                pass
-                    return result
-                
-                outlines = extract_outlines(pdf_reader.outline)
-            
-            # 如果没有目录，创建基于页数的简单大纲
-            if not outlines:
-                for i in range(1, num_pages + 1):
-                    if i == 1 or i % 10 == 0:  # 每10页一个章节
-                        outlines.append({
-                            "id": f"page-{i}",
-                            "title": f"第 {i} 页",
-                            "level": 1,
-                            "page": i,
-                            "subsections": []
-                        })
-            
-            return {
-                "success": True,
-                "outline": {
-                    "document": filename,
-                    "total_pages": num_pages,
-                    "sections": outlines
-                }
+        doc.close()
+        
+        # 如果智能提取也失败，使用简单的页码大纲
+        if not outlines:
+            print(f"📖 智能提取失败，使用页码大纲...")
+            for i in range(1, num_pages + 1):
+                if i == 1 or i % 10 == 0:  # 每10页一个章节
+                    outlines.append({
+                        "id": f"page-{i}",
+                        "title": f"第 {i} 页",
+                        "level": 1,
+                        "page": i,
+                        "subsections": []
+                    })
+        
+        return {
+            "success": True,
+            "outline": {
+                "document": filename,
+                "total_pages": num_pages,
+                "sections": outlines
             }
+        }
             
     except HTTPException:
         raise

@@ -2,6 +2,7 @@ from typing import List, Dict, Optional, Tuple
 import re
 import base64
 import io
+import os
 from PIL import Image
 
 from openai import OpenAI
@@ -16,6 +17,7 @@ from config import (
 )
 from vector_store import VectorStore
 from hybrid_retriever import HybridRetriever
+from reranker import Reranker  # 使用API Reranker
 from token_tracker import TokenTracker
 from reasoning_chain import ReasoningChain
 from auto_cot_prompting import AutoCotPromptBuilder
@@ -68,6 +70,14 @@ class RAGAgent:
                 self.hybrid_retriever = None
         else:
             self.hybrid_retriever = None
+        
+        # 初始化 API Reranker (使用bge-reranker-v2-m3)
+        try:
+            self.reranker = Reranker()
+            print("✅ API Reranker 已初始化")
+        except Exception as e:
+            print(f"⚠️  Reranker 初始化失败: {e}")
+            self.reranker = None
 
         # 不同难度的温度设置
         self.temp_map = {
@@ -166,17 +176,16 @@ class RAGAgent:
         print(f"  🎯 识别为【基础题】")
         return 'basic'
     
-    # ==================== Casco核心功能：查询增强 ====================
+    # ==================== 查询增强（LLM增强版） ====================
     
     def enhance_query(self, query: str) -> List[str]:
         """
-        查询增强：生成多个检索查询（移植自Casco）
+        使用 LLM 进行查询扩展（替代旧的正则规则）
         
         策略：
-        1. 原始查询
-        2. 提取的年份
-        3. 提取的专业术语
-        4. 提取的标准号
+        1. 使用LLM提取核心专业概念
+        2. 如果涉及概念辨析，分别提出
+        3. 保留部分正则提取作为兜底
         
         参数:
             query: 原始查询
@@ -184,32 +193,45 @@ class RAGAgent:
         返回:
             增强后的查询列表
         """
-        queries = [query]
-        
-        # 提取年份
-        years = re.findall(r'\b(19|20)\d{2}\b', query)
-        queries.extend(years)
-        
-        # 提取专业术语（大写缩写，如NLP, BERT, CRF等）
-        abbreviations = re.findall(r'\b[A-Z]{2,}[\w\-\.]*\b', query)
-        queries.extend(abbreviations)
-        
-        # 提取标准号模式（如GB/T 12345-2023）
-        standard_patterns = re.findall(r'[A-Z]{2,}[\/\s]*[A-Z]*\s*\d+[\.\-]\d+[\-\d]*', query)
-        queries.extend(standard_patterns)
-        
-        # 去重并保持顺序
-        seen = set()
-        unique_queries = []
-        for q in queries:
-            if q not in seen:
-                seen.add(q)
-                unique_queries.append(q)
-        
-        if len(unique_queries) > 1:
-            print(f"  🔍 查询增强: {len(unique_queries)} 个查询 - {unique_queries[:3]}...")
-        
-        return unique_queries
+        prompt = f"""作为一个搜索专家，请将用户的查询转换为 3 个更精准的搜索子问题。
+策略：
+1. 提取核心专业概念。
+2. 如果涉及概念辨析，分别提出。
+3. 仅返回逗号分隔的关键词列表，不要解释。
+
+示例1:
+用户查询: "Viterbi算法、前向算法和后向算法都有什么异同？"
+转换结果: "Viterbi算法, 前向算法, 后向算法"
+
+示例2:
+用户查询: "下图是一个英语词频统计的示例图，如图所示，出现长尾现象，即许多单词的词频很低，部分单词词频很高。基于此思考如果直接用英文单词分词，会带来什么影响？"
+转换结果: "英语词频统计, 长尾现象, 英文分词影响"
+
+用户查询: "{query}"
+"""
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.5
+            )
+            content = response.choices[0].message.content
+            # 清洗结果
+            keywords = [k.strip() for k in content.split(',') if k.strip()]
+            queries = [query] + keywords  # 原始查询 + 扩展词
+            
+            # 保留部分正则提取作为兜底
+            years = re.findall(r'\b(19|20)\d{2}\b', query)
+            abbrs = re.findall(r'\b[A-Z]{2,}[\w\-\.]*\b', query)
+            queries.extend(years + abbrs)
+            
+            # 去重
+            unique = list(dict.fromkeys(queries))
+            print(f"  🔍 查询增强: {unique[:4]}")
+            return unique[:4]
+        except Exception as e:
+            print(f"  ⚠️  查询增强失败: {e}")
+            return [query]
     
     def extract_technical_terms(self, query: str) -> List[str]:
         """
@@ -232,6 +254,130 @@ class RAGAgent:
         terms.extend(standard_patterns)
         
         return terms
+    
+    # ==================== RRF融合 + SOTA检索架构 ====================
+    
+    def _rrf_fusion(self, vector_results: List[Dict], bm25_results: List[Dict], k: int = 60) -> List[Dict]:
+        """Reciprocal Rank Fusion 倒数排名融合
+        
+        Args:
+            vector_results: 向量检索结果
+            bm25_results: BM25检索结果
+            k: RRF参数（默认60）
+            
+        Returns:
+            融合后的结果列表
+        """
+        fused_scores = {}
+        doc_map = {}
+
+        def get_doc_id(doc):
+            # 尝试构建唯一ID，支持文本和图片文档
+            filename = doc.get('filename', '_')
+            page_num = doc.get('page_number', doc.get('page', '_'))
+            
+            # 文本文档使用content，图片文档使用description或image_path
+            if 'content' in doc and doc['content']:
+                content_snippet = doc['content'][:50]
+            elif 'description' in doc:
+                content_snippet = doc.get('description', '')[:50]
+            elif 'image_path' in doc:
+                content_snippet = doc.get('image_path', '')[:50]
+            else:
+                content_snippet = str(hash(str(doc)))[:10]  # 兜底方案
+            
+            return f"{filename}_{page_num}_{content_snippet}"
+
+        # 处理向量结果
+        for rank, doc in enumerate(vector_results):
+            did = get_doc_id(doc)
+            if did not in fused_scores:
+                fused_scores[did] = 0
+                doc_map[did] = doc
+            fused_scores[did] += 1 / (rank + k)
+
+        # 处理 BM25 结果
+        for rank, doc in enumerate(bm25_results):
+            did = get_doc_id(doc)
+            if did not in fused_scores:
+                fused_scores[did] = 0
+                doc_map[did] = doc
+            fused_scores[did] += 1 / (rank + k)
+
+        # 排序
+        sorted_ids = sorted(fused_scores.keys(), key=lambda x: fused_scores[x], reverse=True)
+        return [doc_map[did] for did in sorted_ids]
+    
+    def retrieve_context_sota(self, query: str, top_k: int = TOP_K) -> Tuple[str, List[Dict]]:
+        """
+        SOTA 统一检索入口: Expand -> Parallel Search -> RRF -> FlashRank
+        
+        这是从yzy版本移植的统一检索架构，相比原有的分层检索更现代化。
+        
+        Args:
+            query: 用户问题
+            top_k: 检索数量
+            
+        Returns:
+            (上下文字符串, 检索结果列表)
+        """
+        print(f"\n{'='*40}\n🔎 开始增强检索 (SOTA)\n{'='*40}")
+        
+        # 1. Expand
+        queries = self.enhance_query(query)
+        
+        raw_vec, raw_bm25 = [], []
+        
+        # 2. Parallel Search
+        for i, q in enumerate(queries):
+            limit = top_k if i == 0 else 3  # 主查询查多点，副查询查少点
+            # 向量检索
+            if self.use_multimodal and self.hybrid_retriever:
+                search_results = self.hybrid_retriever.search(
+                    query=q,
+                    top_k=limit,
+                    include_images=True
+                )
+                raw_vec.extend(search_results['combined'])
+            else:
+                raw_vec.extend(self.vector_store.search(q, top_k=limit))
+            
+            # BM25 检索
+            if hasattr(self.vector_store, 'search_bm25'):
+                raw_bm25.extend(self.vector_store.search_bm25(q, top_k=limit))
+            
+        print(f"  📥 粗排召回: Vector={len(raw_vec)}, BM25={len(raw_bm25)}")
+
+        # 3. Fusion
+        fused = self._rrf_fusion(raw_vec, raw_bm25)
+        print(f"  🔗 RRF融合: {len(fused)} 条文档")
+        
+        # 4. Rerank (API Reranker)
+        candidates = fused[:30]  # 截取前30个给精排模型
+        final_results = candidates
+        
+        if self.reranker and candidates:
+            print(f"  ⚡ API Rerank 精排中...")
+            # 使用API Reranker进行重排序
+            final_results = self.reranker.rerank(
+                query=query,
+                documents=candidates,
+                top_k=top_k
+            )
+            
+            # 如果rerank失败，使用原始候选结果
+            if not final_results:
+                final_results = candidates
+
+        final_top_k = final_results[:top_k]
+        
+        # 格式化并缓存
+        context_str = self._format_context(final_top_k)
+        self.last_context_docs = final_top_k
+        self.last_retrieval_results = final_top_k 
+        
+        print(f"  ✅ 最终选取 {len(final_top_k)} 个高质量片段")
+        return context_str, final_top_k
     
     # ==================== Casco核心功能：重排序 ====================
     
@@ -459,18 +605,18 @@ class RAGAgent:
                 content = doc.get('content', 'N/A')
             
             match_ratio = doc.get('match_ratio', 0)
+            score = doc.get('score', doc.get('rerank_score', 0))
             
-            # 格式化每个文档片段
-            context_parts.append(f"\n[材料 {idx}] (相关度: {match_ratio:.1%})")
+            # 生成唯一引用ID（格式：filename_page）
+            cite_id = f"{filename}_p{page_num}".replace(' ', '_').replace('.pdf', '').replace('.docx', '')
             
-            # 添加来源信息
-            if page_num > 0:
-                context_parts.append(f"来源：《{filename}》第 {page_num} 页")
-            else:
-                context_parts.append(f"来源：《{filename}》")
+            # 优化格式：去掉"材料1"标记，使用cite_id
+            context_parts.append(f"\n【来源：《{filename}》第{page_num}页】[ID:{cite_id}]")
+            if score > 0:
+                context_parts.append(f"(相关度: {score:.2f})")
             
             # 添加内容
-            context_parts.append(f"内容：\n{content}\n")
+            context_parts.append(f"\n{content}\n")
             context_parts.append("-" * 50)
         
         return "\n".join(context_parts)
@@ -619,6 +765,35 @@ class RAGAgent:
         
         return context, results
 
+    def _check_image_in_context(self, retrieved_docs: List[Dict]) -> bool:
+        """
+        检查检索到的context中是否包含图片
+        
+        Args:
+            retrieved_docs: 检索到的文档列表
+            
+        Returns:
+            True if有图片，False otherwise
+        """
+        if not retrieved_docs:
+            return False
+        
+        for doc in retrieved_docs:
+            # 检查是否是图片类型的文档
+            if doc.get('type') == 'image':
+                return True
+            
+            # 检查文本内容中是否有【图片描述】标记
+            content = doc.get('content', '')
+            if '【图片描述】' in content:
+                return True
+            
+            # 检查是否有image_path字段
+            if 'image_path' in doc:
+                return True
+        
+        return False
+    
     def generate_response(
         self,
         query: str,
@@ -661,7 +836,39 @@ class RAGAgent:
         messages = [{"role": "system", "content": self.system_prompt}]
 
         if chat_history:
-            messages.extend(chat_history)
+            # 【重要】验证并修复chat_history格式
+            print(f"  🔍 Chat history格式验证:")
+            validated_history = []
+            for i, msg in enumerate(chat_history):
+                role = msg.get('role', '')
+                content = msg.get('content', '')
+                
+                # 检查role是否有效
+                valid_roles = ['user', 'assistant', 'system', 'tool']
+                if role not in valid_roles:
+                    print(f"     ⚠️ 消息{i+1}格式错误: role='{role[:20]}...' (应为{valid_roles}之一)")
+                    print(f"        尝试修复...")
+                    # 尝试修复：如果role看起来像是内容，content像是role
+                    if role and content in valid_roles:
+                        # 参数颠倒了，交换它们
+                        role, content = content, role
+                        print(f"        ✅ 已修复：交换role和content")
+                    else:
+                        # 无法修复，跳过这条消息
+                        print(f"        ❌ 无法修复，跳过此消息")
+                        continue
+                
+                # 添加验证通过的消息
+                validated_history.append({
+                    "role": role,
+                    "content": content,
+                    "timestamp": msg.get("timestamp", "")
+                })
+            
+            if len(validated_history) < len(chat_history):
+                print(f"     ℹ️ 已过滤 {len(chat_history) - len(validated_history)} 条无效消息")
+            
+            messages.extend(validated_history)
 
         # 【新增】根据问题类型和模式选择prompt
         if enable_socratic:
@@ -704,13 +911,25 @@ class RAGAgent:
             
             print(f"  🧠 启用Thinking模式 (Auto-CoT推理)")
         else:
-            # 使用标准提示词
+            # 使用标准提示词（优化引用格式）
             user_text = f"""{context}
 
 【学生问题】
 {query}
 
-请根据上述课程材料回答学生的问题。如果材料中有相关内容，请优先使用并标注来源；如果材料不足以完整回答，请诚实说明。"""
+请根据上述课程材料回答学生的问题。回答时请遵循以下要求：
+
+1. **引用格式**：当引用材料时，请使用格式：`<cite id="文件名_p页码">引用内容</cite>`
+   - 例如：根据<cite id="操作系统_p23">虚拟内存是一种内存管理技术</cite>...
+   - cite id必须与材料中的[ID:xxx]完全一致
+
+2. **不要使用"材料1"、"材料2"**：直接引用内容，用cite标签标注来源即可
+
+3. **准确性**：如果材料中有相关内容，请优先使用并标注来源；如果材料不足以完整回答，请诚实说明
+
+4. **清晰度**：回答要清晰、有条理，必要时使用分点说明
+
+现在请回答问题："""
 
         # 【新增】构建多模态消息（如果有图片或文件）
         if image or file_content:
@@ -769,13 +988,27 @@ class RAGAgent:
             )
 
         try:
-            # 【新增】根据输入类型选择模型
-            if use_multimodal_model or image or file_content:
+            # 【智能模型选择】根据输入类型和context内容选择模型
+            has_image_input = bool(image or file_content)
+            has_image_in_context = self._check_image_in_context(self.last_context_docs) if hasattr(self, 'last_context_docs') and self.last_context_docs else False
+            
+            if has_image_input or has_image_in_context:
                 selected_model = self.multimodal_model
                 model_type = "多模态模型"
+                if has_image_in_context:
+                    print(f"  🖼️  检测到context中有图片引用，使用多模态模型")
+                    # 【重要】如果context中有图片，需要将原图传给多模态模型
+                    if not image:
+                        # 从retrieved_docs中提取图片路径
+                        for doc in self.last_context_docs:
+                            if doc.get('type') == 'image' and 'image_path' in doc:
+                                image = doc['image_path']
+                                print(f"  📎 自动附加图片: {os.path.basename(image)}")
+                                break
             else:
                 selected_model = self.text_model
                 model_type = "文本模型"
+                print(f"  📝 纯文本context，使用文本模型")
             
             # 显示上下文信息
             if self.token_tracker:
@@ -904,7 +1137,8 @@ class RAGAgent:
             
             # 2.2 用增强的query检索（包含图片描述）
             query_type = self.analyze_query_type(enhanced_query)
-            context, retrieved_docs = self.retrieve_context(enhanced_query, top_k=top_k)
+            # 使用SOTA检索：BM25+向量+RRF+API Reranker
+            context, retrieved_docs = self.retrieve_context_sota(enhanced_query, top_k=top_k)
             
             # 【立即打印检索结果】
             self._print_retrieved_context(retrieved_docs)
@@ -927,7 +1161,8 @@ class RAGAgent:
             
             # 3.1 用原始query检索
             query_type = self.analyze_query_type(query)
-            context, retrieved_docs = self.retrieve_context(query, top_k=top_k)
+            # 使用SOTA检索：BM25+向量+RRF+API Reranker
+            context, retrieved_docs = self.retrieve_context_sota(query, top_k=top_k)
             
             # 【立即打印检索结果】
             self._print_retrieved_context(retrieved_docs)
@@ -952,7 +1187,8 @@ class RAGAgent:
             query_type = self.analyze_query_type(query)
             
             # 1.2 在文字和图片库都检索
-            context, retrieved_docs = self.retrieve_context(query, top_k=top_k)
+            # 使用SOTA检索：BM25+向量+RRF+API Reranker
+            context, retrieved_docs = self.retrieve_context_sota(query, top_k=top_k)
             
             # 【立即打印检索结果】
             self._print_retrieved_context(retrieved_docs)

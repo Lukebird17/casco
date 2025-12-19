@@ -8,13 +8,15 @@ import { X, FileText, ChevronRight, ChevronDown, Loader2, Hash, BookOpen } from 
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 
-const DocumentOutlinePanel = ({ open, onClose, onJumpToSection, currentKBId = 'default' }) => {
+const DocumentOutlinePanel = ({ open, onClose, onJumpToSection, currentKBId = 'default', embedded = false }) => {
   const [documents, setDocuments] = useState([]);
   const [knowledgeBases, setKnowledgeBases] = useState([]);
   const [selectedKB, setSelectedKB] = useState(currentKBId);
   const [selectedDoc, setSelectedDoc] = useState(null);
   const [outline, setOutline] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('');
+  const [loadingProgress, setLoadingProgress] = useState(0);
   const [expandedSections, setExpandedSections] = useState({});
 
   // 获取知识库和文档列表
@@ -62,14 +64,33 @@ const DocumentOutlinePanel = ({ open, onClose, onJumpToSection, currentKBId = 'd
 
   const loadDocumentOutline = async (filename) => {
     setLoading(true);
+    setLoadingMessage('正在分析文档...');
+    setLoadingProgress(0);
+    
     try {
+      // 模拟进度更新
+      const progressInterval = setInterval(() => {
+        setLoadingProgress(prev => {
+          if (prev >= 90) return prev;
+          return prev + 10;
+        });
+      }, 200);
+      
+      setLoadingMessage('正在提取大纲结构...');
       const response = await fetch(`http://localhost:8000/api/knowledge-bases/${selectedKB}/documents/${encodeURIComponent(filename)}/outline`);
+      
+      clearInterval(progressInterval);
+      setLoadingProgress(100);
       
       if (response.ok) {
         const data = await response.json();
         if (data.success) {
-          setOutline(data.outline);
-          setSelectedDoc(filename);
+          setLoadingMessage('提取完成！');
+          setTimeout(() => {
+            setOutline(data.outline);
+            setSelectedDoc(filename);
+            toast.success(`提取了 ${data.outline.sections?.length || 0} 个章节`);
+          }, 300);
         }
       } else {
         toast.error('无法加载文档大纲');
@@ -78,7 +99,11 @@ const DocumentOutlinePanel = ({ open, onClose, onJumpToSection, currentKBId = 'd
       console.error('加载大纲失败:', error);
       toast.error('加载文档大纲失败');
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+        setLoadingProgress(0);
+        setLoadingMessage('');
+      }, 500);
     }
   };
 
@@ -139,30 +164,31 @@ const DocumentOutlinePanel = ({ open, onClose, onJumpToSection, currentKBId = 'd
     toast.success(`跳转到: ${section.title}${section.page ? ` (第${section.page}页)` : ''}`);
   };
 
+  // 如果是嵌入模式，直接渲染内容
+  if (embedded) {
+    return (
+      <div className="h-full flex flex-col bg-white">
+        <div className="flex-1 overflow-y-auto p-4">{renderPanelContent()}</div>
+      </div>
+    );
+  }
+
+  // 独立面板模式
   return (
     <AnimatePresence>
       {open && (
         <>
-          {/* 背景遮罩 */}
+          {/* 面板主体 - 紧贴Sidebar，无遮罩 */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 bg-black/30 z-40"
-          />
-
-          {/* 面板主体 */}
-          <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25 }}
-            className="fixed right-0 top-0 bottom-0 w-[400px] bg-white shadow-2xl z-50 
-                     overflow-y-auto"
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: 350, opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+            className="fixed left-[280px] top-0 bottom-0 bg-white shadow-lg z-20
+                     border-r border-google-gray-200 flex flex-col"
           >
             {/* 头部 */}
-            <div className="sticky top-0 bg-white border-b border-google-gray-200 p-6 flex items-center justify-between z-10">
+            <div className="flex-shrink-0 bg-white border-b border-google-gray-200 p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <BookOpen size={24} className="text-google-blue-600" />
                 <h2 className="text-xl font-semibold text-google-gray-900">文档大纲</h2>
@@ -175,7 +201,8 @@ const DocumentOutlinePanel = ({ open, onClose, onJumpToSection, currentKBId = 'd
               </button>
             </div>
 
-            <div className="p-6">
+            {/* 内容区 - 可滚动 */}
+            <div className="flex-1 overflow-y-auto p-6">
               {/* 知识库选择 */}
               {knowledgeBases.length > 0 && (
                 <div className="mb-4">
@@ -238,8 +265,21 @@ const DocumentOutlinePanel = ({ open, onClose, onJumpToSection, currentKBId = 'd
                   </div>
                 </div>
               ) : loading ? (
-                <div className="flex items-center justify-center py-12">
-                  <Loader2 className="animate-spin text-google-blue-600" size={32} />
+                <div className="flex flex-col items-center justify-center py-12 px-6">
+                  <Loader2 className="animate-spin text-google-blue-600 mb-4" size={40} />
+                  <p className="text-sm font-medium text-google-gray-700 mb-2">
+                    {loadingMessage || '加载中...'}
+                  </p>
+                  {/* 进度条 */}
+                  <div className="w-full max-w-xs bg-google-gray-200 rounded-full h-2 mb-2">
+                    <div 
+                      className="bg-google-blue-600 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${loadingProgress}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-google-gray-500">
+                    {loadingProgress}%
+                  </p>
                 </div>
               ) : outline ? (
                 <div>

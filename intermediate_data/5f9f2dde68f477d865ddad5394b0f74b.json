@@ -1,0 +1,434 @@
+{
+  "pages": [
+    {
+      "text": "【第1页】\n操作系统的硬件运行环境\n【/第1页】",
+      "page_number": 1,
+      "section": ""
+    },
+    {
+      "text": "【第2页】\n版权声明\n• 本内容版权归上海交通大学并行与分布式系统研究所所有\n使用者可以将全部或部分本内容免费用于非商业用途\n• 使用者在使用全部或部分本内容时请注明来源– 内容来自：上海交通大学并行与分布式系统研究所+材料名字\n• 对于不遵守此声明或者其他违法使用本内容者，将依法保留追究权\n本内容的发布采用 Creative Commons Attribution 4.0 License– 完整文本：https://creativecommons.org/licenses/by/4.0/legalcode\n【/第2页】",
+      "page_number": 2,
+      "section": ""
+    },
+    {
+      "text": "【第3页】\n回顾： 用户ISA\n【/第3页】\n\n【第3页·图片】(0f724569adb0c181380d431e68014024d78448988850048f14cca31ba050ef74.jpg)\n该图展示了CPU与内存之间的基本架构及其在函数调用过程中的交互机制。左侧为CPU内部结构，包含31个通用寄存器（X0-X30）、程序计数器（PC）、栈顶地址寄存器（SP）和程序状态寄存器（PSTATE），其中PSTATE包含条件码（N、Z、C、V）。右侧为内存布局，包括程序运行时使用的栈（含函数A、...\n【/图片】\n",
+      "page_number": 3,
+      "section": ""
+    },
+    {
+      "text": "【第4页】\n回顾： 函数调用\n调用被调用者：bl指令\n返回到调用者： ret指令\n传递数据： 寄存器与栈\n寄存器使用约定：调用者保存、被调用者保存\n局部变量：存在函数栈桢中\n【/第4页】",
+      "page_number": 4,
+      "section": ""
+    },
+    {
+      "text": "【第5页】\n回顾： 保存寄存器\ncube作为被调用者（比如main函数调用cube），在使用x19前需要在栈上保存它\n问：若使用调用者保存的寄存器（如x9），是否能够避免保存？\n【/第5页】",
+      "page_number": 5,
+      "section": ""
+    },
+    {
+      "text": "【第6页】\n小思考\n当操作系统运行时，代码和数据存放在哪里？– 操作系统用栈吗？\n$\\mathbf { \\equiv } =$ $^ { + }$   \nstruct alien_cache \\*alc $=$ NULL;   \nalc = kmalloc_node(memsize，gfp，node); $\\mathbf { \\equiv }$ $( \\textbf { i } ) =$ $\\Bumpeq$\n【/第6页】",
+      "page_number": 6,
+      "section": ""
+    },
+    {
+      "text": "【第7页】\n小思考\n当操作系统运行时，代码和数据存放在哪里？– 操作系统用栈吗？\n• 操作系统会使用应用运行时使用的通用寄存器吗？– 条件码呢？\n操作系统运行和应用运行时有什么区别吗？\n【/第7页】",
+      "page_number": 7,
+      "section": ""
+    },
+    {
+      "text": "【第8页】\n软件视角\n【/第8页】\n\n【第8页·图片】(0c4880a119871a47640b6e5066a71490d0d35e5a0abaa71c21a0279fb38bc2bb.jpg)\n该图展示了ARMv8.4架构下CPU的软件视角与特权级别（Exception Level）的映射关系。左侧为CPU内部结构，包含31个通用寄存器（X0-X30）、程序计数器（PC）、程序状态寄存器（PSTATE），其中PSTATE包含条件码（N、Z、C、V）及特权级等执行状态信息，并设有两个栈指针S...\n【/图片】\n",
+      "page_number": 8,
+      "section": ""
+    },
+    {
+      "text": "【第9页】\n特权级别\n【/第9页】",
+      "page_number": 9,
+      "section": ""
+    },
+    {
+      "text": "【第10页】\nARMv8.4特权级 (Exception Level)\n【/第10页】\n\n【第10页·图片】(8e5dddc5fb81ffd3feda9f0de4c47563b2ee33f817b491387bbd20a30a6bb548.jpg)\n该图展示了ARMv8.4架构下的特权级别（Exception Level, EL）与安全世界（Secure World）和普通世界（Normal World）的划分。图中垂直方向分为四个特权级别：EL0、EL1、EL2、EL3。水平方向分为“普通世界”和“安全世界”两个区域。EL0运行应用程序1和2...\n【/图片】\n",
+      "page_number": 10,
+      "section": ""
+    },
+    {
+      "text": "【第11页】\n系统状态寄存器： PSTATE\n抽象进程状态信息 （PSTATE）\n– 条件码 (Condition flags) • NZCV   \n– 执行状态 (Execution state controls) • CurrentEL：CPU当前特权级别   \n– 异常掩码 (Exception mask bits) • DAIF   \n– 访问控制 (Access control bits) • 例如PAN（Privileged Access Never)\n【/第11页】",
+      "page_number": 11,
+      "section": ""
+    },
+    {
+      "text": "【第12页】\n用户ISA与系统ISA\n用户ISA\n– 通用寄存器（用户）栈寄存器  \n– 条件码寄存器  \n– 运算指令等\n系统ISA\n– 系统寄存器– 系统指令\n【/第12页】\n\n【第12页·图片】(2eca44dfa450fe52c767fecc1bd3a0f1f2a98344b2d1bbdec27d4d20b98576bd.jpg)\n该图展示了操作系统中用户态（EL0）与内核态（EL1）的资源访问架构，分为使用CPU、内存和设备资源三个部分。应用通过系统调用（如fork()、mmap()、open()）和CPU指令与操作系统交互，操作系统通过抽象（如进程/线程、地址映射、文件）和硬件机制（如MMU、中断）提供接口。CPU提供系统...\n【/图片】\n",
+      "page_number": 12,
+      "section": ""
+    },
+    {
+      "text": "【第13页】\n用户态 （EL0） 与内核态 （EL1）\n用户态 （User-mode）– 只能使用用户 ISA\n内核态 （Kernel-mode）– 可以同时使用系统 ISA 和用户ISA\n• 操作系统往往同时包含内核态与用户态的代码– 如：Unix包含内核态的kernel 与 用户态的 shell\n【/第13页】",
+      "page_number": 13,
+      "section": ""
+    },
+    {
+      "text": "【第14页】\nAArch64 中常见寄存器在不同特权级的可见情况\n【/第14页】",
+      "page_number": 14,
+      "section": ""
+    },
+    {
+      "text": "【第15页】\nEL0与EL1 特权级切换\n【/第15页】",
+      "page_number": 15,
+      "section": ""
+    },
+    {
+      "text": "【第16页】\n用户态和内核态之间的控制流跳转\n• 当CPU处于用户态（EL0）执行应用程序时，如何改变CPU控制流从用户态进入内核态？\n– 已知的两种改变控制流的方式：\n• 跳转指令，如 b• 过程调用与返回指令，如 bl 和 ret– 这两种方式只能在同一种模式之间跳转\n– 需要新的指令 （在控制流跳转的同时进行特权级切换）\n• svc/eret\n【/第16页】",
+      "page_number": 16,
+      "section": ""
+    },
+    {
+      "text": "【第17页】\n特权级切换的必要性\n操作系统的职责之一：– 服务应用、管理应用特权级切换的必要性：\n– 将CPU控制权移交给内核– 服务：应用程序向操作系统请求服务– 管理：操作系统能够切换不同应用程序执行• 否则，错误/恶意程序死循环怎么办\n【/第17页】",
+      "page_number": 17,
+      "section": ""
+    },
+    {
+      "text": "【第18页】\n何时发生特权级切换：发生异常\n问：OS处理完异常后一定返回到被打断执行的用户程序吗？\n同步异常\n– 执行当前指令触发异常\n• 第一类：用户程序主动发起：svc指令（OS利用eret指令返回）• 第二类：非主动，例如用户程序意外访问空指针：普通ldr指令（OS“杀死”出错程序）\n异步异常\n– CPU收到中断信号\n• 从外设发来的中断，例如屏幕点击、鼠标、收到网络包• CPU时钟中断，例如定时器超时\n【/第18页】\n\n【第18页·图片】(5b1db9b956bf6ecff6f63eaa63cd98361e5391e3ea9f0d84f6937999de573494.jpg)\n该图展示了同步异常处理过程中用户程序与操作系统（OS）之间的控制流切换。当用户程序执行当前指令 I_curr 时触发异常，控制权转移至 OS 的异常处理函数。处理完成后，通过“异常返回指令（eret）”将控制权返回至用户程序的下一条指令 I_next，实现异常处理后的程序继续执行。图中清晰标示了异常触发、处理及返回的流程，体现了同步异常的典型行为：异常由当前指令引发，处理后恢复至后续指令执行。\n【/图片】\n",
+      "page_number": 18,
+      "section": ""
+    },
+    {
+      "text": "【第19页】\n异常处理函数\n属于操作系统的一部分– 运行在内核态的代码\n• 异常处理函数完成异常处理后，将通过下述操作之一转移控制权：\n– 回到发生异常时正在执行的指令– 回到发生异常时的下一条指令– 不返回/切换到其它进程执行\n思考：什么情况返回到当前指令？什么情况返回到下一条指令？\n【/第19页】",
+      "page_number": 19,
+      "section": ""
+    },
+    {
+      "text": "【第20页】\n异常向量表：CPU找到异常处理函数\n• 操作系统内核预先在一张表中设置不同异常的处理函数\n– 基地址存储在VBAR_EL1寄存器中– 系统寄存器\nCPU在异常发生时自动跳转到相应处理函数\n– 同步异常：主动下陷svc、指令执行出错– 异步异常：中断（IRQ、FIQ）、SError\n【/第20页】",
+      "page_number": 20,
+      "section": ""
+    },
+    {
+      "text": "【第21页】\n小结： CPU的执行逻辑\nCPU的执行逻辑很简单\n1. 以PC的值为地址从内存中获取一条指令并执行  \n2. $\\mathsf { P C } + = 4$ ，goto 1（简化，未表示跳转/函数调用）\n执行过程中可能发生两种情况\n1. 指令执行出现异常，比如svc、缺页/segmentation fault（同步异常）  \n2. 外部设备触发中断（异步异常）\n这两种情况在ARM平台均称为「异常」\n– 均会导致CPU陷入内核态，并根据异常向量表找到对应的处理函数执行– 处理函数执行完后，执行流需要恢复到之前被打断的地方继续运行\n【/第21页】",
+      "page_number": 21,
+      "section": ""
+    },
+    {
+      "text": "【第22页】\n为异常处理， 操作系统需要做\n一、 实现对异常向量表的设置\n– 系统初始化的重要工作之一：在开启中断和启动第一个应用之前msr vbar_el1, x0 (内核态才能使用的指令和访问的寄存器）\n二、实现对不同异常（中断）的处理函数\n– 处理应用程序出错的情况：如访问空指针• Q：内核如果自己运行出错怎么办？  \n– 一类特殊的同步异常：系统调用，由应用主动触发• Q：如何识别出是系统调用？ mrs x1, esr_el1  \n– 处理来自外部设备的中断：如收取网络包、获取键盘\n【/第22页】",
+      "page_number": 22,
+      "section": ""
+    },
+    {
+      "text": "【第23页】\n操作系统异常处理示意图\n【/第23页】\n\n【第23页·图片】(9f37e03d3a0d59f5dc2f66aea81d4a8e0a3388f3fff614af1a7f93f2ef16bd7e.jpg)\n该图展示了操作系统异常处理机制的架构示意图，分为三个层级：顶部为“Application (CPU)”，中间为“OS Services”，底部为“I/O Device”。异常或系统调用（Exception/syscalls）由应用层触发，中断（Interrupt）由I/O设备触发，两者均指向右侧的“...\n【/图片】\n",
+      "page_number": 23,
+      "section": ""
+    },
+    {
+      "text": "【第24页】\n内核态与用户态的切换\n【/第24页】",
+      "page_number": 24,
+      "section": ""
+    },
+    {
+      "text": "【第26页】\n处理器 （硬件） 在切换过程中的任务\n1. 将发生异常事件的指令地址保存在ELR_EL1中\n2. 将异常事件的原因保存在ESR_EL1\n– 例如，是执行svc指令导致的，还是访问地址出错导致的\n3. 将处理器的当前状态（即PSTATE）保存在SPSR_EL1\n4. 栈寄存器不再使用SP_EL0（用户态栈寄存器），开始使用SP_EL1– 内核态栈寄存器，需要由操作系统提前设置\n5. 修改PSTATE寄存器中的特权级标志位，设置为内核态\n找到异常处理函数的入口地址，并将该地址写入PC，开始运行操作系统\n– 根据VBAR_EL1寄存器保存的异常向量表基地址，以及发生异常事件的类型确定\n【/第26页】",
+      "page_number": 26,
+      "section": ""
+    },
+    {
+      "text": "【第27页】\n思考题\n• 为什么操作系统不能直接使用应用程序在用户态的栈呢？\n【/第27页】",
+      "page_number": 27,
+      "section": ""
+    },
+    {
+      "text": "【第28页】\n处理器的这些操作都是必要的吗？\n• PC寄存器的值必须由处理器保存– 否则当操作系统开始执行时，PC将被覆盖• 栈的切换是否也必须由硬件完成？– 不一定！– 原则：避免操作系统使用用户态应用程序的栈– 软件实现：在异常处理函数的第一行指令就换栈\n【/第28页】",
+      "page_number": 28,
+      "section": ""
+    },
+    {
+      "text": "【第29页】\neret： 从内核态返回到用户态\n1. 将SPSR_EL1中的处理器状态写入PSTATE中– 处理器状态也从 EL1 切换到 EL0\n2. 栈寄存器不再使用SP_EL1，开始使用SP_EL0\n– 注意：SP_EL1的值并没有改变– 下一次下陷时，操作系统依然会使用这个内核栈\n3. 将ELR_EL1中的地址写入PC，并执行应用程序代码\n【/第29页】",
+      "page_number": 29,
+      "section": ""
+    },
+    {
+      "text": "【第30页】\n操作系统 （软件） 在切换过程中的任务\n• 主要任务：将属于应用程序的 CPU 状态保存到内存中– 用于之后恢复应用程序继续运行\n应用程序需要保存的运行状态称为处理器上下文\n– 处理器上下文（Processor Context）：应用程序在完成切换后恢复执行所需的最小处理器状态集合\n– 处理器上下文中的寄存器具体包括：\n• 通用寄存器 X0-X30• 特殊寄存器，主要包括PC、SP和PSTATE• 系统寄存器，包括页表基地址寄存器等\n【/第30页】",
+      "page_number": 30,
+      "section": ""
+    },
+    {
+      "text": "【第31页】\n系统调用\n【/第31页】",
+      "page_number": 31,
+      "section": ""
+    },
+    {
+      "text": "【第32页】\n系统调用\n• 硬件提供了一对指令svc/eret指令来在用户态、内核态之间切换\n系统调用\n– 用户与操作系统之间，类似于过程调用的接口\n– 通过受限的方式访问内核提供的服务\n【/第32页】\n\n【第32页·图片】(ab3dd5c35268200571ce25b5d14f6d0ce6dae288527201dad65b830efc474143.jpg)\n该图展示了系统调用的执行流程，分为用户态和内核态两个阶段。在用户态，通过SVC（Supervisor Call）指令触发系统调用，控制权转移至内核态，执行系统调用代码；完成后，通过eret（Exception Return）指令返回至用户态，继续执行下一条指令I_next。图中箭头表示控制流方向，清晰体现了用户程序与操作系统内核之间的切换机制。\n【/图片】\n",
+      "page_number": 32,
+      "section": ""
+    },
+    {
+      "text": "【第33页】\n系统调用例子\n# hello world   \n1 int main()   \n2 {   \n3 write(1, \"hello, world\\n\", 13);   \n4 _exit(0);   \n5 }\n【/第33页】",
+      "page_number": 33,
+      "section": ""
+    },
+    {
+      "text": "【第34页】\nAArch64下常见的Linux的系统调用\n【/第34页】",
+      "page_number": 34,
+      "section": ""
+    },
+    {
+      "text": "【第35页】\n系统调用例子\n1 .section .rodata   \n2 .LC0:   \n3 .string \"hello, world\\n\"   \n4 .text   \n5 .align 2   \n6 .global main   \n7 .type main, %function   \n8 main:\n【/第35页】",
+      "page_number": 35,
+      "section": ""
+    },
+    {
+      "text": "【第36页】\n系统调用例子\nFirst, call write(1, \"hello, world\\n\", 13)\n9 movq x8, #0x40  \n10 movq x0, #0x1  \n11 adrp x3, .LC0  \n12 add x1,x3,:lo12:.LC0  \n12 movq x2, #0xd  \n13 svc\nNext, call exit(0)\nArg2:Hello world string Arg3:string length Make the system call\n14 movq x8, #0x5d exit is system call 93   \n15 movq x0, #0x0 Arg1:exit status is 0   \n16 svc Make the system call\n【/第36页】",
+      "page_number": 36,
+      "section": ""
+    },
+    {
+      "text": "【第37页】\n系统调用的参数传递和返回值 （软件约定）\n最多允许8个参数  \n– x0-x7寄存器  \n– x8用于存放系统调用编号\n返回值存放于x0寄存器中\n【/第37页】\n\n【第37页·图片】(202786f03a97fa5c3a17733880da9d8d45f1cc22fced753637ff4dedf31ba129.jpg)\n该图为系统调用的执行流程示意图，展示了用户态与内核态之间的切换过程。图中左侧为“用户态”，包含SVC（Supervisor Call）指令和I_next（下一条指令地址）；右侧为“内核态”，包含“系统调用代码”和eret（Exception Return）指令。箭头表示控制流：SVC指令触发从用户态...\n【/图片】\n",
+      "page_number": 37,
+      "section": ""
+    },
+    {
+      "text": "【第38页】\n系统调用返回值与errno\n库函数API\n– 出错时返回-1，并设置全局变量errno为具体的错误值\n系统调用ABI：通过寄存器向应用传递返回值\n– 出错时设置为 -errno  \n– 库对系统调用的 wrapper code 会将系统调用的返回值转换为库函数形式的返回值\n【/第38页】",
+      "page_number": 38,
+      "section": ""
+    },
+    {
+      "text": "【第39页】\nQ: 如果寄存器放不下参数怎么办？\n寄存器放不下，只能通过内存传参– 将参数放在内存中，将指针放在寄存器中传给内核– 内核通过指针访问相关参数\n【/第39页】",
+      "page_number": 39,
+      "section": ""
+    },
+    {
+      "text": "【第40页】\n如何跟踪系统调用？\nint main() { write(1, \"Hello world!\\n\", 13);   \n}\n\\$ strace -o hello.out ./hello\nexecve(“./hello2”, [“./hello2”], [/\\* 59 vars \\*/]) = 0   \n…   \nbrk(0) $=$ 0xca9000   \nbrk(0xcaa1c0) $=$ 0xcaa1c0   \narch_prctl(ARCH_SET_FS, 0xca9880) = 0   \nbrk(0xccb1c0) $=$ 0xccb1c0   \nbrk(0xccc000) $=$ 0xccc000   \nwrite(1, \"Hello world!\\n\", 13) = 13   \nexit_group $( 1 3 ) = ?$\n【/第40页】",
+      "page_number": 40,
+      "section": ""
+    },
+    {
+      "text": "【第41页】\n程序员角度看系统调用\n【/第41页】\n\n【第41页·图片】(9e67355106213b70d652c1180419cec6ff3396e5d4044cb113b8768f59fa78f3.jpg)\n该图展示了应用程序通过不同方式调用系统调用的两种路径。图中分为三层：应用、库、内核。路径1表示通过C语言库（如glibc）调用系统调用，例如`open()`函数，经过库层间接进入内核；路径2表示直接使用汇编指令（如\"svc\"）发起系统调用，绕过库层直接进入内核。图中用红色箭头表示调用流程，虚线标注了...\n【/图片】\n",
+      "page_number": 41,
+      "section": ""
+    },
+    {
+      "text": "【第42页】\nVirtual Dynamic Shared Object VDSO\n【/第42页】",
+      "page_number": 42,
+      "section": ""
+    },
+    {
+      "text": "【第43页】\n动机\n• 系统调用的时延不可忽略– 尤其是调用非常频繁的情况– 系统调用实际执行逻辑很简单\n• 如何降低系统调用的时延？– 特权级切换造成的时间开销– 如果没有特权级切换，那么就不需要保存恢复状态\n【/第43页】",
+      "page_number": 43,
+      "section": ""
+    },
+    {
+      "text": "【第44页】\ngettimeofday\n内核定义– 在编译时作为内核的一部分\n用户态运行\n– 将gettimeofday的代码加载到一块与应用共享的内存页  \n– 这个页称为：vDSO• Virtual Dynamic Shared Object  \n– Time 的值同样映射到用户态空间（只读）• 只有在内核态才能更新这个值\n• Q：和以前的gettimeofday相比有什么区别？\n【/第44页】",
+      "page_number": 44,
+      "section": ""
+    },
+    {
+      "text": "【第45页】\nvDSO的共享页在哪儿？\n\\$ ldd \\`which bash\\`\nlinux-vdso.so. $\\begin{array} { r l } { \\mathbf { 1 } } & { { } = \\mathbf { > } } \\end{array}$ (0x00007fff667ff000)\nlibtinfo.so.5 => /lib/x86_64-linux-gnu/libtinfo.so.5 (0x00007f623df7d libdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x00007f623dd79000) libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f623d9ba000) /lib64/ld-linux-x86-64.so.2 (0x00007f623e1ae000)\n【/第45页】",
+      "page_number": 45,
+      "section": ""
+    },
+    {
+      "text": "【第46页】\nFlexible System Call Scheduling with Exception-Less System Calls, OSDI’10\nFLEX-SC\n【/第46页】",
+      "page_number": 46,
+      "section": ""
+    },
+    {
+      "text": "【第47页】\n动机\n• 如何进一步降低系统调用的时延？– 不仅仅是 gettimeofday()\n\"时间都去哪儿了？\"  \n– 大部分是用来做状态的切换• 保存和恢复状态 $^ +$ 权限的切换  \n– Cache pollution\n• 是否有可能在不切换状态的情况下实现系统调用？\n【/第47页】",
+      "page_number": 47,
+      "section": ""
+    },
+    {
+      "text": "【第48页】\nFlexible System Call\n一种新的syscall机制– 引入 system call page ，由 user & kernel 共享– 应用程序可以将系统调用的请求 push 到 system call page– 内核会从system call page poll system call 请求\nException-less syscall\n– 将系统调用的调用和执行解耦，可分布到不同的CPU核\n【/第48页】",
+      "page_number": 48,
+      "section": ""
+    },
+    {
+      "text": "【第49页】\nSystem Call的另一种方法\n【/第49页】\n\n【第49页·图片】(971546ada778bd0678cdf453ef5b9660f66d346fcd26cb3a573d8177f331ff92.jpg)\n该图展示了“无异常系统调用”（Exception-less System Call）的架构设计。用户空间的应用程序通过“系统调用接口”（Exception-less system call interface）发起系统调用，该接口位于用户态与内核态边界，由多个“sys call page”组成。调用...\n【/图片】\n",
+      "page_number": 49,
+      "section": ""
+    },
+    {
+      "text": "【第50页】\nException-less System Call\nwrite(fd, buf, 4096);\n【/第50页】\n\n【第50页·图片】(0735ae3dac502b4dd59b3e864dfb11d8556048efbe40a4a389398de6a1d2e1f0.jpg)\n该图片展示了一种无异常系统调用（Exception-less System Call）的实现机制。左侧为伪代码，演示了如何通过 `free_syscall_entry()` 获取一个系统调用条目，并设置 `write` 系统调用（syscall=1）的参数（fd、buf、4096）及状态为 `SUB...\n【/图片】\n",
+      "page_number": 50,
+      "section": ""
+    },
+    {
+      "text": "【第51页】\nKernel填充syscall的返回值\n【/第51页】\n\n【第51页·图片】(f6a2734817c4daa166ae9cc4b21d98d801566e75fc8f76e1ebdad49776897103.jpg)\n该图展示了FlexSC系统调用机制中内核填充系统调用返回值的过程。左侧为C语言伪代码，表示用户调用`write(fd, buf, 4096)`后，系统分配一个系统调用条目，设置其系统调用号为1（write）、参数个数为3、参数分别为fd、buf、4096，并将状态设为SUBMIT。随后通过轮询等待状...\n【/图片】\n",
+      "page_number": 51,
+      "section": ""
+    },
+    {
+      "text": "【第52页】\nFlexSC示例\n【/第52页】\n\n【第52页·图片】(15e5fd9b12e132e6df4fb98927081ceb32434eb1e4ca426c5d5b36afb7b78776.jpg)\n该图展示了FlexSC（灵活系统调用调度）机制的工作原理。图中左侧为用户线程（user thread）与内核线程（kernel thread）之间的切换过程，通过“switch”箭头表示上下文切换。用户线程通过“Push system call”将系统调用请求推入系统调用页（system call ...\n【/图片】\n",
+      "page_number": 52,
+      "section": ""
+    },
+    {
+      "text": "【第53页】\n小结\n特权级EL0、EL1 特权级切换\n– 同步异常与异步异常（中断）  \n– 异常处理• 异常处理函数表• 系统寄存器：vbar_el1、esr_el1、elr_el1• 栈切换：sp_el1和sp_el0\n系统调用（system call）\n– 一种特殊的同步异常– svc + eret\n【/第53页】",
+      "page_number": 53,
+      "section": ""
+    }
+  ],
+  "images": [
+    {
+      "image_path": ".mineru_output/OS-03 system-isa/OS-03 system-isa/auto/images/0f724569adb0c181380d431e68014024d78448988850048f14cca31ba050ef74.jpg",
+      "image_name": "0f724569adb0c181380d431e68014024d78448988850048f14cca31ba050ef74.jpg",
+      "filename": "OS-03 system-isa.pdf",
+      "page_number": 3,
+      "context_before": "s Attribution 4.0 License– 完整文本：https://creativecommons.org/licenses/by/4.0/legalcode\n\n# 回顾： 用户ISA",
+      "context_after": "# 回顾： 函数调用\n\n调用被调用者：bl指令\n\n返回到调用者： ret指令\n\n传递数据： 寄存器与栈\n\n寄存器使用约定：调用者保存、被调用者保存\n\n局部变量：存在函数栈桢中\n\n# 回顾： 保存寄",
+      "context": "commons.org/licenses/by/4.0/legalcode\n\n# 回顾： 用户ISA [图片] # 回顾： 函数调用\n\n调用被调用者：bl指令\n\n返回到调用者： ret指令\n\n传递数据： 寄存器与",
+      "section": "回顾： 用户ISA",
+      "alt_text": "",
+      "description": "该图展示了CPU与内存之间的基本架构及其在函数调用过程中的交互机制。左侧为CPU内部结构，包含31个通用寄存器（X0-X30）、程序计数器（PC）、栈顶地址寄存器（SP）和程序状态寄存器（PSTATE），其中PSTATE包含条件码（N、Z、C、V）。右侧为内存布局，包括程序运行时使用的栈（含函数A、..."
+    },
+    {
+      "image_path": ".mineru_output/OS-03 system-isa/OS-03 system-isa/auto/images/0c4880a119871a47640b6e5066a71490d0d35e5a0abaa71c21a0279fb38bc2bb.jpg",
+      "image_name": "0c4880a119871a47640b6e5066a71490d0d35e5a0abaa71c21a0279fb38bc2bb.jpg",
+      "filename": "OS-03 system-isa.pdf",
+      "page_number": 8,
+      "context_before": "小思考\n\n当操作系统运行时，代码和数据存放在哪里？– 操作系统用栈吗？\n\n• 操作系统会使用应用运行时使用的通用寄存器吗？– 条件码呢？\n\n操作系统运行和应用运行时有什么区别吗？\n\n# 软件视角",
+      "context_after": "# 特权级别\n\n# ARMv8.4特权级 (Exception Level)\n\n![](images/8e5dddc5fb81ffd3feda9f0de4c47563b2ee33f817b4913",
+      "context": "用运行时使用的通用寄存器吗？– 条件码呢？\n\n操作系统运行和应用运行时有什么区别吗？\n\n# 软件视角 [图片] # 特权级别\n\n# ARMv8.4特权级 (Exception Level)\n\n![](images",
+      "section": "软件视角",
+      "alt_text": "",
+      "description": "该图展示了ARMv8.4架构下CPU的软件视角与特权级别（Exception Level）的映射关系。左侧为CPU内部结构，包含31个通用寄存器（X0-X30）、程序计数器（PC）、程序状态寄存器（PSTATE），其中PSTATE包含条件码（N、Z、C、V）及特权级等执行状态信息，并设有两个栈指针S..."
+    },
+    {
+      "image_path": ".mineru_output/OS-03 system-isa/OS-03 system-isa/auto/images/8e5dddc5fb81ffd3feda9f0de4c47563b2ee33f817b491387bbd20a30a6bb548.jpg",
+      "image_name": "8e5dddc5fb81ffd3feda9f0de4c47563b2ee33f817b491387bbd20a30a6bb548.jpg",
+      "filename": "OS-03 system-isa.pdf",
+      "page_number": 10,
+      "context_before": "71a47640b6e5066a71490d0d35e5a0abaa71c21a0279fb38bc2bb.jpg)\n\n# 特权级别\n\n# ARMv8.4特权级 (Exception Level)",
+      "context_after": "# 系统状态寄存器： PSTATE\n\n# 抽象进程状态信息 （PSTATE）\n\n– 条件码 (Condition flags) • NZCV   \n– 执行状态 (Execution state",
+      "context": "bc2bb.jpg)\n\n# 特权级别\n\n# ARMv8.4特权级 (Exception Level) [图片] # 系统状态寄存器： PSTATE\n\n# 抽象进程状态信息 （PSTATE）\n\n– 条件码 (Con",
+      "section": "ARMv8.4特权级 (Exception Level)",
+      "alt_text": "",
+      "description": "该图展示了ARMv8.4架构下的特权级别（Exception Level, EL）与安全世界（Secure World）和普通世界（Normal World）的划分。图中垂直方向分为四个特权级别：EL0、EL1、EL2、EL3。水平方向分为“普通世界”和“安全世界”两个区域。EL0运行应用程序1和2..."
+    },
+    {
+      "image_path": ".mineru_output/OS-03 system-isa/OS-03 system-isa/auto/images/2eca44dfa450fe52c767fecc1bd3a0f1f2a98344b2d1bbdec27d4d20b98576bd.jpg",
+      "image_name": "2eca44dfa450fe52c767fecc1bd3a0f1f2a98344b2d1bbdec27d4d20b98576bd.jpg",
+      "filename": "OS-03 system-isa.pdf",
+      "page_number": 12,
+      "context_before": "/tr></table>\n\n# 用户ISA与系统ISA\n\n# 用户ISA\n\n– 通用寄存器（用户）栈寄存器  \n– 条件码寄存器  \n– 运算指令等\n\n# 系统ISA\n\n– 系统寄存器– 系统指令",
+      "context_after": "# 用户态 （EL0） 与内核态 （EL1）\n\n用户态 （User-mode）– 只能使用用户 ISA\n\n内核态 （Kernel-mode）– 可以同时使用系统 ISA 和用户ISA\n\n• 操作系",
+      "context": "）栈寄存器  \n– 条件码寄存器  \n– 运算指令等\n\n# 系统ISA\n\n– 系统寄存器– 系统指令 [图片] # 用户态 （EL0） 与内核态 （EL1）\n\n用户态 （User-mode）– 只能使用用户 IS",
+      "section": "系统ISA",
+      "alt_text": "",
+      "description": "该图展示了操作系统中用户态（EL0）与内核态（EL1）的资源访问架构，分为使用CPU、内存和设备资源三个部分。应用通过系统调用（如fork()、mmap()、open()）和CPU指令与操作系统交互，操作系统通过抽象（如进程/线程、地址映射、文件）和硬件机制（如MMU、中断）提供接口。CPU提供系统..."
+    },
+    {
+      "image_path": ".mineru_output/OS-03 system-isa/OS-03 system-isa/auto/images/5b1db9b956bf6ecff6f63eaa63cd98361e5391e3ea9f0d84f6937999de573494.jpg",
+      "image_name": "5b1db9b956bf6ecff6f63eaa63cd98361e5391e3ea9f0d84f6937999de573494.jpg",
+      "filename": "OS-03 system-isa.pdf",
+      "page_number": 18,
+      "context_before": "切换的必要性：\n\n– 将CPU控制权移交给内核– 服务：应用程序向操作系统请求服务– 管理：操作系统能够切换不同应用程序执行• 否则，错误/恶意程序死循环怎么办\n\n# 何时发生特权级切换：发生异常",
+      "context_after": "问：OS处理完异常后一定返回到被打断执行的用户程序吗？\n\n# 同步异常\n\n– 执行当前指令触发异常\n\n• 第一类：用户程序主动发起：svc指令（OS利用eret指令返回）• 第二类：非主动，例如用",
+      "context": "系统能够切换不同应用程序执行• 否则，错误/恶意程序死循环怎么办\n\n# 何时发生特权级切换：发生异常 [图片] 问：OS处理完异常后一定返回到被打断执行的用户程序吗？\n\n# 同步异常\n\n– 执行当前指令触发异常\n",
+      "section": "何时发生特权级切换：发生异常",
+      "alt_text": "",
+      "description": "该图展示了同步异常处理过程中用户程序与操作系统（OS）之间的控制流切换。当用户程序执行当前指令 I_curr 时触发异常，控制权转移至 OS 的异常处理函数。处理完成后，通过“异常返回指令（eret）”将控制权返回至用户程序的下一条指令 I_next，实现异常处理后的程序继续执行。图中清晰标示了异常触发、处理及返回的流程，体现了同步异常的典型行为：异常由当前指令引发，处理后恢复至后续指令执行。"
+    },
+    {
+      "image_path": ".mineru_output/OS-03 system-isa/OS-03 system-isa/auto/images/9f37e03d3a0d59f5dc2f66aea81d4a8e0a3388f3fff614af1a7f93f2ef16bd7e.jpg",
+      "image_name": "9f37e03d3a0d59f5dc2f66aea81d4a8e0a3388f3fff614af1a7f93f2ef16bd7e.jpg",
+      "filename": "OS-03 system-isa.pdf",
+      "page_number": 23,
+      "context_before": "– 一类特殊的同步异常：系统调用，由应用主动触发• Q：如何识别出是系统调用？ mrs x1, esr_el1  \n– 处理来自外部设备的中断：如收取网络包、获取键盘\n\n# 操作系统异常处理示意图",
+      "context_after": "# 内核态与用户态的切换\n\n![](images/ceff6af49f5ec0c40576fe684c35c7dc139a1f09ae3273b66e4425afa6b79f81.jpg)  \n用",
+      "context": "esr_el1  \n– 处理来自外部设备的中断：如收取网络包、获取键盘\n\n# 操作系统异常处理示意图 [图片] # 内核态与用户态的切换\n\n![](images/ceff6af49f5ec0c40576fe684",
+      "section": "操作系统异常处理示意图",
+      "alt_text": "",
+      "description": "该图展示了操作系统异常处理机制的架构示意图，分为三个层级：顶部为“Application (CPU)”，中间为“OS Services”，底部为“I/O Device”。异常或系统调用（Exception/syscalls）由应用层触发，中断（Interrupt）由I/O设备触发，两者均指向右侧的“..."
+    },
+    {
+      "image_path": ".mineru_output/OS-03 system-isa/OS-03 system-isa/auto/images/ceff6af49f5ec0c40576fe684c35c7dc139a1f09ae3273b66e4425afa6b79f81.jpg",
+      "image_name": "ceff6af49f5ec0c40576fe684c35c7dc139a1f09ae3273b66e4425afa6b79f81.jpg",
+      "filename": "OS-03 system-isa.pdf",
+      "page_number": 25,
+      "context_before": "意图\n\n![](images/9f37e03d3a0d59f5dc2f66aea81d4a8e0a3388f3fff614af1a7f93f2ef16bd7e.jpg)\n\n# 内核态与用户态的切换",
+      "context_after": "用户态/内核态切换时的处理器状态变化  \nQ：操作系统的运行状态（寄存器）需要保存吗？\n\n# 处理器 （硬件） 在切换过程中的任务\n\n1. 将发生异常事件的指令地址保存在ELR_EL1中\n\n2.",
+      "context": "a3388f3fff614af1a7f93f2ef16bd7e.jpg)\n\n# 内核态与用户态的切换 [图片] 用户态/内核态切换时的处理器状态变化  \nQ：操作系统的运行状态（寄存器）需要保存吗？\n\n# 处理器",
+      "section": "内核态与用户态的切换",
+      "alt_text": "",
+      "description": "该图展示了处理器在用户态与内核态切换过程中寄存器上下文的保存与恢复机制。左侧列出了系统寄存器（如SPSR_EL1、ELR_EL1）、特殊寄存器（如PSTATE、PC、SP_EL1、SP_ELO）和通用寄存器（X0-X30）。图中通过四个阶段（硬件保存、软件保存、软件恢复、硬件恢复）描述了上下文切换过..."
+    },
+    {
+      "image_path": ".mineru_output/OS-03 system-isa/OS-03 system-isa/auto/images/ab3dd5c35268200571ce25b5d14f6d0ce6dae288527201dad65b830efc474143.jpg",
+      "image_name": "ab3dd5c35268200571ce25b5d14f6d0ce6dae288527201dad65b830efc474143.jpg",
+      "filename": "OS-03 system-isa.pdf",
+      "page_number": 32,
+      "context_before": "系统调用\n\n# 系统调用\n\n• 硬件提供了一对指令svc/eret指令来在用户态、内核态之间切换\n\n系统调用\n\n– 用户与操作系统之间，类似于过程调用的接口\n\n– 通过受限的方式访问内核提供的服务",
+      "context_after": "# 系统调用例子\n\n# hello world   \n1 int main()   \n2 {   \n3 write(1, \"hello, world\\n\", 13);   \n4 _exit(0);",
+      "context": "\n\n系统调用\n\n– 用户与操作系统之间，类似于过程调用的接口\n\n– 通过受限的方式访问内核提供的服务 [图片] # 系统调用例子\n\n# hello world   \n1 int main()   \n2 {   \n",
+      "section": "系统调用",
+      "alt_text": "",
+      "description": "该图展示了系统调用的执行流程，分为用户态和内核态两个阶段。在用户态，通过SVC（Supervisor Call）指令触发系统调用，控制权转移至内核态，执行系统调用代码；完成后，通过eret（Exception Return）指令返回至用户态，继续执行下一条指令I_next。图中箭头表示控制流方向，清晰体现了用户程序与操作系统内核之间的切换机制。"
+    },
+    {
+      "image_path": ".mineru_output/OS-03 system-isa/OS-03 system-isa/auto/images/202786f03a97fa5c3a17733880da9d8d45f1cc22fced753637ff4dedf31ba129.jpg",
+      "image_name": "202786f03a97fa5c3a17733880da9d8d45f1cc22fced753637ff4dedf31ba129.jpg",
+      "filename": "OS-03 system-isa.pdf",
+      "page_number": 37,
+      "context_before": "Make the system call\n\n# 系统调用的参数传递和返回值 （软件约定）\n\n最多允许8个参数  \n– x0-x7寄存器  \n– x8用于存放系统调用编号\n\n返回值存放于x0寄存器中",
+      "context_after": "# 系统调用返回值与errno\n\n# 库函数API\n\n– 出错时返回-1，并设置全局变量errno为具体的错误值\n\n系统调用ABI：通过寄存器向应用传递返回值\n\n– 出错时设置为 -errno",
+      "context": "允许8个参数  \n– x0-x7寄存器  \n– x8用于存放系统调用编号\n\n返回值存放于x0寄存器中 [图片] # 系统调用返回值与errno\n\n# 库函数API\n\n– 出错时返回-1，并设置全局变量errno为",
+      "section": "系统调用的参数传递和返回值 （软件约定）",
+      "alt_text": "",
+      "description": "该图为系统调用的执行流程示意图，展示了用户态与内核态之间的切换过程。图中左侧为“用户态”，包含SVC（Supervisor Call）指令和I_next（下一条指令地址）；右侧为“内核态”，包含“系统调用代码”和eret（Exception Return）指令。箭头表示控制流：SVC指令触发从用户态..."
+    },
+    {
+      "image_path": ".mineru_output/OS-03 system-isa/OS-03 system-isa/auto/images/9e67355106213b70d652c1180419cec6ff3396e5d4044cb113b8768f59fa78f3.jpg",
+      "image_name": "9e67355106213b70d652c1180419cec6ff3396e5d4044cb113b8768f59fa78f3.jpg",
+      "filename": "OS-03 system-isa.pdf",
+      "page_number": 41,
+      "context_before": "000) $=$ 0xccc000   \nwrite(1, \"Hello world!\\n\", 13) = 13   \nexit_group $( 1 3 ) = ?$\n\n# 程序员角度看系统调用",
+      "context_after": "Virtual Dynamic Shared Object VDSO\n\n# 动机\n\n• 系统调用的时延不可忽略– 尤其是调用非常频繁的情况– 系统调用实际执行逻辑很简单\n\n• 如何降低系统调用的时",
+      "context": "13) = 13   \nexit_group $( 1 3 ) = ?$\n\n# 程序员角度看系统调用 [图片] Virtual Dynamic Shared Object VDSO\n\n# 动机\n\n• 系统调用的时",
+      "section": "程序员角度看系统调用",
+      "alt_text": "",
+      "description": "该图展示了应用程序通过不同方式调用系统调用的两种路径。图中分为三层：应用、库、内核。路径1表示通过C语言库（如glibc）调用系统调用，例如`open()`函数，经过库层间接进入内核；路径2表示直接使用汇编指令（如\"svc\"）发起系统调用，绕过库层直接进入内核。图中用红色箭头表示调用流程，虚线标注了..."
+    },
+    {
+      "image_path": ".mineru_output/OS-03 system-isa/OS-03 system-isa/auto/images/971546ada778bd0678cdf453ef5b9660f66d346fcd26cb3a573d8177f331ff92.jpg",
+      "image_name": "971546ada778bd0678cdf453ef5b9660f66d346fcd26cb3a573d8177f331ff92.jpg",
+      "filename": "OS-03 system-isa.pdf",
+      "page_number": 49,
+      "context_before": "ge poll system call 请求\n\n# Exception-less syscall\n\n– 将系统调用的调用和执行解耦，可分布到不同的CPU核\n\n# System Call的另一种方法",
+      "context_after": "# Exception-less System Call\n\nwrite(fd, buf, 4096);\n\n![](images/0735ae3dac502b4dd59b3e864dfb11d855",
+      "context": "\n\n– 将系统调用的调用和执行解耦，可分布到不同的CPU核\n\n# System Call的另一种方法 [图片] # Exception-less System Call\n\nwrite(fd, buf, 4096)",
+      "section": "System Call的另一种方法",
+      "alt_text": "",
+      "description": "该图展示了“无异常系统调用”（Exception-less System Call）的架构设计。用户空间的应用程序通过“系统调用接口”（Exception-less system call interface）发起系统调用，该接口位于用户态与内核态边界，由多个“sys call page”组成。调用..."
+    },
+    {
+      "image_path": ".mineru_output/OS-03 system-isa/OS-03 system-isa/auto/images/0735ae3dac502b4dd59b3e864dfb11d8556048efbe40a4a389398de6a1d2e1f0.jpg",
+      "image_name": "0735ae3dac502b4dd59b3e864dfb11d8556048efbe40a4a389398de6a1d2e1f0.jpg",
+      "filename": "OS-03 system-isa.pdf",
+      "page_number": 50,
+      "context_before": "ef5b9660f66d346fcd26cb3a573d8177f331ff92.jpg)\n\n# Exception-less System Call\n\nwrite(fd, buf, 4096);",
+      "context_after": "# Kernel填充syscall的返回值\n\n![](images/f6a2734817c4daa166ae9cc4b21d98d801566e75fc8f76e1ebdad49776897103",
+      "context": " Exception-less System Call\n\nwrite(fd, buf, 4096); [图片] # Kernel填充syscall的返回值\n\n![](images/f6a2734817c4daa1",
+      "section": "Exception-less System Call",
+      "alt_text": "",
+      "description": "该图片展示了一种无异常系统调用（Exception-less System Call）的实现机制。左侧为伪代码，演示了如何通过 `free_syscall_entry()` 获取一个系统调用条目，并设置 `write` 系统调用（syscall=1）的参数（fd、buf、4096）及状态为 `SUB..."
+    },
+    {
+      "image_path": ".mineru_output/OS-03 system-isa/OS-03 system-isa/auto/images/f6a2734817c4daa166ae9cc4b21d98d801566e75fc8f76e1ebdad49776897103.jpg",
+      "image_name": "f6a2734817c4daa166ae9cc4b21d98d801566e75fc8f76e1ebdad49776897103.jpg",
+      "filename": "OS-03 system-isa.pdf",
+      "page_number": 51,
+      "context_before": "mages/0735ae3dac502b4dd59b3e864dfb11d8556048efbe40a4a389398de6a1d2e1f0.jpg)\n\n# Kernel填充syscall的返回值",
+      "context_after": "# FlexSC示例\n\n![](images/15e5fd9b12e132e6df4fb98927081ceb32434eb1e4ca426c5d5b36afb7b78776.jpg)  \nFle",
+      "context": "40a4a389398de6a1d2e1f0.jpg)\n\n# Kernel填充syscall的返回值 [图片] # FlexSC示例\n\n![](images/15e5fd9b12e132e6df4fb989270",
+      "section": "Kernel填充syscall的返回值",
+      "alt_text": "",
+      "description": "该图展示了FlexSC系统调用机制中内核填充系统调用返回值的过程。左侧为C语言伪代码，表示用户调用`write(fd, buf, 4096)`后，系统分配一个系统调用条目，设置其系统调用号为1（write）、参数个数为3、参数分别为fd、buf、4096，并将状态设为SUBMIT。随后通过轮询等待状..."
+    },
+    {
+      "image_path": ".mineru_output/OS-03 system-isa/OS-03 system-isa/auto/images/15e5fd9b12e132e6df4fb98927081ceb32434eb1e4ca426c5d5b36afb7b78776.jpg",
+      "image_name": "15e5fd9b12e132e6df4fb98927081ceb32434eb1e4ca426c5d5b36afb7b78776.jpg",
+      "filename": "OS-03 system-isa.pdf",
+      "page_number": 52,
+      "context_before": "的返回值\n\n![](images/f6a2734817c4daa166ae9cc4b21d98d801566e75fc8f76e1ebdad49776897103.jpg)\n\n# FlexSC示例",
+      "context_after": "FlexSC: Flexible System Call Scheduling with Exception-Less System Calls\n\n# 小结\n\n特权级EL0、EL1 特权级切换",
+      "context": "801566e75fc8f76e1ebdad49776897103.jpg)\n\n# FlexSC示例 [图片] FlexSC: Flexible System Call Scheduling with Excep",
+      "section": "FlexSC示例",
+      "alt_text": "",
+      "description": "该图展示了FlexSC（灵活系统调用调度）机制的工作原理。图中左侧为用户线程（user thread）与内核线程（kernel thread）之间的切换过程，通过“switch”箭头表示上下文切换。用户线程通过“Push system call”将系统调用请求推入系统调用页（system call ..."
+    }
+  ]
+}

@@ -323,9 +323,10 @@
     "版权声明": {
       "type": "关键词",
       "description": "出现1次",
-      "frequency": 1,
+      "frequency": 3,
       "sources": [
-        "OS-02.1 asm-arm-user.pdf"
+        "OS-02.1 asm-arm-user.pdf",
+        "OS-04 OS-abstractions.pdf"
       ]
     },
     "本内容版": {
@@ -390,6 +391,335 @@
       "frequency": 1,
       "sources": [
         "OS-02.1 asm-arm-user.pdf"
+      ]
+    },
+    "机器翻译": {
+      "type": "关键词",
+      "description": "出现3次",
+      "frequency": 3,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "模型": {
+      "type": "关键词",
+      "description": "出现2次",
+      "frequency": 5,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "图片": {
+      "type": "关键词",
+      "description": "出现2次",
+      "frequency": 9,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "目录": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 4,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "从一个简": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 4,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "单的统计": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 4,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "语言模型": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 7,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "开始": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 4,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "了解自然": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 4,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "语言处理": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 4,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "的基本模": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 3,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "数据预处": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 1,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "大规模语": {
+      "type": "关键词",
+      "description": "出现3次",
+      "frequency": 3,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "料库": {
+      "type": "关键词",
+      "description": "出现2次",
+      "frequency": 2,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "数据": {
+      "type": "关键词",
+      "description": "出现2次",
+      "frequency": 2,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "统计方法": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 1,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "的成功使": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 1,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "用推动了": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 1,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "语料库语": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 1,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "言学的发": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 1,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "料库的出": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 1,
+      "sources": [
+        "2_1_统计语言模型2025_秋.pdf"
+      ]
+    },
+    "本内容版权归上海": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 2,
+      "sources": [
+        "OS-02.1 asm-arm-user.pdf",
+        "OS-04 OS-abstractions.pdf"
+      ]
+    },
+    "交通大学并行与分": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 2,
+      "sources": [
+        "OS-02.1 asm-arm-user.pdf",
+        "OS-04 OS-abstractions.pdf"
+      ]
+    },
+    "布式系统研究所所": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 2,
+      "sources": [
+        "OS-02.1 asm-arm-user.pdf",
+        "OS-04 OS-abstractions.pdf"
+      ]
+    },
+    "使用者可以将全部": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 2,
+      "sources": [
+        "OS-02.1 asm-arm-user.pdf",
+        "OS-04 OS-abstractions.pdf"
+      ]
+    },
+    "或部分本内容免费": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 2,
+      "sources": [
+        "OS-02.1 asm-arm-user.pdf",
+        "OS-04 OS-abstractions.pdf"
+      ]
+    },
+    "用于非商业用途": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 2,
+      "sources": [
+        "OS-02.1 asm-arm-user.pdf",
+        "OS-04 OS-abstractions.pdf"
+      ]
+    },
+    "使用者在使用全部": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 2,
+      "sources": [
+        "OS-02.1 asm-arm-user.pdf",
+        "OS-04 OS-abstractions.pdf"
+      ]
+    },
+    "或部分本内容时请": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 2,
+      "sources": [
+        "OS-02.1 asm-arm-user.pdf",
+        "OS-04 OS-abstractions.pdf"
+      ]
+    },
+    "注明来源": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 2,
+      "sources": [
+        "OS-02.1 asm-arm-user.pdf",
+        "OS-04 OS-abstractions.pdf"
+      ]
+    },
+    "特权级": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 1,
+      "sources": [
+        "OS-04 OS-abstractions.pdf"
+      ]
+    },
+    "特权级切换": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 1,
+      "sources": [
+        "OS-04 OS-abstractions.pdf"
+      ]
+    },
+    "同步异常与异步异": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 1,
+      "sources": [
+        "OS-04 OS-abstractions.pdf"
+      ]
+    },
+    "中断": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 1,
+      "sources": [
+        "OS-04 OS-abstractions.pdf"
+      ]
+    },
+    "异常处理": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 1,
+      "sources": [
+        "OS-04 OS-abstractions.pdf"
+      ]
+    },
+    "异常处理函数表系": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 1,
+      "sources": [
+        "OS-04 OS-abstractions.pdf"
+      ]
+    },
+    "统寄存器": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 1,
+      "sources": [
+        "OS-04 OS-abstractions.pdf"
+      ]
+    },
+    "栈切换": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 1,
+      "sources": [
+        "OS-04 OS-abstractions.pdf"
+      ]
+    },
+    "切换过程": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 1,
+      "sources": [
+        "OS-04 OS-abstractions.pdf"
+      ]
+    },
+    "硬件": {
+      "type": "关键词",
+      "description": "出现1次",
+      "frequency": 1,
+      "sources": [
+        "OS-04 OS-abstractions.pdf"
       ]
     }
   },
@@ -558,6 +888,139 @@
     {
       "source": "权归上海",
       "target": "交通大学",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "机器翻译",
+      "target": "模型",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "机器翻译",
+      "target": "图片",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "模型",
+      "target": "从一个简",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "从一个简",
+      "target": "单的统计",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "从一个简",
+      "target": "模型",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "单的统计",
+      "target": "模型",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "语言模型",
+      "target": "从一个简",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "语言模型",
+      "target": "单的统计",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "语言模型",
+      "target": "模型",
+      "relation": "相关",
+      "description": "共同出现4次",
+      "weight": 4
+    },
+    {
+      "source": "大规模语",
+      "target": "料库",
+      "relation": "相关",
+      "description": "共同出现3次",
+      "weight": 3
+    },
+    {
+      "source": "大规模语",
+      "target": "统计方法",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "料库",
+      "target": "统计方法",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "本内容版权归上海",
+      "target": "交通大学并行与分",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "本内容版权归上海",
+      "target": "布式系统研究所所",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "交通大学并行与分",
+      "target": "布式系统研究所所",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "特权级",
+      "target": "特权级切换",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "同步异常与异步异",
+      "target": "中断",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "同步异常与异步异",
+      "target": "异常处理",
+      "relation": "相关",
+      "description": "共同出现1次",
+      "weight": 1
+    },
+    {
+      "source": "中断",
+      "target": "异常处理",
       "relation": "相关",
       "description": "共同出现1次",
       "weight": 1

@@ -11,6 +11,7 @@ from pathlib import Path
 from vector_store import VectorStore
 from image_vector_store import ImageVectorStore
 from config import TOP_K
+from reranker import Reranker
 
 
 class HybridRetriever:
@@ -25,6 +26,7 @@ class HybridRetriever:
         image_store: Optional[ImageVectorStore] = None,
         text_weight: float = 0.6,
         image_weight: float = 0.4,
+        enable_rerank: bool = True,
     ):
         """
         初始化混合检索器
@@ -34,11 +36,13 @@ class HybridRetriever:
             image_store: 图片向量存储
             text_weight: 文本检索权重（0-1）
             image_weight: 图片检索权重（0-1）
+            enable_rerank: 是否启用Rerank
         """
         self.text_store = text_store or VectorStore()
         self.image_store = image_store or ImageVectorStore()
         self.text_weight = text_weight
         self.image_weight = image_weight
+        self.enable_rerank = enable_rerank
         
         # 验证权重
         if abs(text_weight + image_weight - 1.0) > 0.01:
@@ -46,26 +50,43 @@ class HybridRetriever:
             total = text_weight + image_weight
             self.text_weight = text_weight / total
             self.image_weight = image_weight / total
+        
+        # 初始化Reranker
+        if self.enable_rerank:
+            try:
+                self.reranker = Reranker()
+            except Exception as e:
+                print(f"⚠️  Reranker初始化失败: {e}，将禁用rerank")
+                self.enable_rerank = False
+                self.reranker = None
     
     def search(
         self, 
         query: Union[str, Dict],
-        top_k: int = TOP_K,
+        top_k: int = 10,  # 最终返回数量
         text_k: Optional[int] = None,
         image_k: Optional[int] = None,
         include_images: bool = True,
+        use_dynamic_balance: bool = True,  # 是否使用动态平衡
     ) -> Dict:
         """
-        混合检索（文本 + 图片）
+        混合检索（文本 + 图片）- 支持动态TopK平衡
+        
+        策略：
+        - 文本库初始检索20-100个候选
+        - 图片库初始检索5-20个候选  
+        - 使用rerank模型重排序
+        - 返回top_k个最佳结果
         
         Args:
             query: 查询内容
                 - str: 纯文本查询
                 - Dict: 多模态查询 {"text": "...", "image": "path/to/image"}
-            top_k: 总共返回的结果数
-            text_k: 文本检索数量（默认为 top_k * text_weight）
-            image_k: 图片检索数量（默认为 top_k * image_weight）
+            top_k: 最终返回的结果数
+            text_k: 文本检索数量（如果指定则覆盖动态计算）
+            image_k: 图片检索数量（如果指定则覆盖动态计算）
             include_images: 是否包含图片结果
+            use_dynamic_balance: 是否使用动态平衡
             
         Returns:
             {
@@ -84,11 +105,30 @@ class HybridRetriever:
             text_query = query.get("text")
             image_query = query.get("image")
         
-        # 确定检索数量
-        if text_k is None:
-            text_k = max(1, int(top_k * self.text_weight))
-        if image_k is None:
-            image_k = max(1, int(top_k * self.image_weight))
+        # 【动态TopK平衡】确定检索数量
+        if use_dynamic_balance and (text_k is None or image_k is None):
+            # 动态策略：文本库检索更多候选，图片库适量检索
+            # 根据最终需求top_k动态调整
+            if top_k <= 5:
+                # 简单问题：文本20，图片5
+                text_k = text_k or 20
+                image_k = image_k or 5
+            elif top_k <= 10:
+                # 中等问题：文本50，图片10
+                text_k = text_k or 50
+                image_k = image_k or 10
+            else:
+                # 复杂问题：文本100，图片20
+                text_k = text_k or 100
+                image_k = image_k or 20
+            
+            print(f"  📊 动态TopK: 文本={text_k}, 图片={image_k} (最终返回{top_k}个)")
+        else:
+            # 使用传统权重计算
+            if text_k is None:
+                text_k = max(1, int(top_k * self.text_weight))
+            if image_k is None:
+                image_k = max(1, int(top_k * self.image_weight))
         
         results = {
             "text_results": [],
@@ -130,13 +170,21 @@ class HybridRetriever:
         
         # 3. 合并结果
         print(f"  🔀 HybridRetriever: 合并结果, 文本={len(results['text_results'])}, 图片={len(results['image_results'])}")
-        results["combined"] = self._merge_results(
+        combined = self._merge_results(
             results["text_results"],
             results["image_results"],
-            top_k
+            top_k * 3  # 先取3倍数量，等rerank后再筛选
         )
-        print(f"  ✅ HybridRetriever: 合并后共 {len(results['combined'])} 个结果")
+        print(f"  ✅ HybridRetriever: 合并后共 {len(combined)} 个结果")
         
+        # 4. 【Rerank重排序】
+        if self.enable_rerank and self.reranker and combined and text_query:
+            print(f"  🎯 开始Rerank重排序...")
+            combined = self.reranker.rerank(text_query, combined, top_k=top_k)
+        else:
+            combined = combined[:top_k]
+        
+        results["combined"] = combined
         return results
     
     def _merge_results(

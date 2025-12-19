@@ -55,26 +55,17 @@ const ConfidencePanel = ({ open, onClose, confidence }) => {
     <AnimatePresence>
       {open && (
         <>
-          {/* 背景遮罩 */}
+          {/* 面板主体 - 紧贴Sidebar，无遮罩 */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 bg-black/30 z-40"
-          />
-
-          {/* 面板主体 */}
-          <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25 }}
-            className="fixed right-0 top-0 bottom-0 w-[420px] bg-white shadow-2xl z-50 
-                     overflow-y-auto"
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: 350, opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+            className="fixed left-[280px] top-0 bottom-0 bg-white shadow-lg z-20
+                     border-r border-google-gray-200 flex flex-col"
           >
             {/* 头部 */}
-            <div className="sticky top-0 bg-white border-b border-google-gray-200 p-6 flex items-center justify-between z-10">
+            <div className="flex-shrink-0 bg-white border-b border-google-gray-200 p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <TrendingUp size={24} className="text-google-blue-600" />
                 <h2 className="text-xl font-semibold text-google-gray-900">答案置信度</h2>
@@ -87,7 +78,8 @@ const ConfidencePanel = ({ open, onClose, confidence }) => {
               </button>
             </div>
 
-            <div className="p-6 space-y-6">
+            {/* 内容区 - 可滚动 */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6">
               {/* 总体置信度 */}
               <div className={`rounded-2xl p-6 border-2 ${getScoreBackground(confidence.score)} ${getScoreBorder(confidence.score)}`}>
                 <div className="flex items-center justify-between mb-4">

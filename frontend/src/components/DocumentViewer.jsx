@@ -16,7 +16,8 @@ const DocumentViewer = ({
   onClose, 
   filename = null,
   highlightText = null,
-  page = null  // PDF页码
+  page = null,  // PDF页码
+  embedded = false  // 是否为内嵌模式（两栏布局中）
 }) => {
   const [documents, setDocuments] = useState([]);
   const [selectedDoc, setSelectedDoc] = useState(filename);
@@ -355,29 +356,11 @@ const DocumentViewer = ({
     }
   };
 
-  return (
-    <AnimatePresence>
-      {open && (
-        <>
-          {/* 背景遮罩 */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 bg-black/50 z-40"
-          />
-
-          {/* 查看器主体 */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="fixed inset-4 md:inset-8 lg:inset-16 bg-white rounded-2xl shadow-2xl z-50 
-                     overflow-hidden flex"
-          >
-            {/* 左侧文档列表 */}
-            <div className="w-64 border-r border-google-gray-200 flex flex-col bg-google-gray-50">
+  // 文档列表和查看器的共享内容
+  const viewerContent = (
+    <>
+      {/* 左侧文档列表 */}
+      <div className="w-64 border-r border-google-gray-200 flex flex-col bg-google-gray-50">
               <div className="p-4 border-b border-google-gray-200">
                 <h3 className="font-semibold text-google-gray-900 flex items-center gap-2">
                   <Database size={16} />
@@ -488,6 +471,42 @@ const DocumentViewer = ({
                 {renderViewer()}
               </div>
             </div>
+    </>
+  );
+
+  // 内嵌模式：直接渲染，不需要背景遮罩和动画
+  if (embedded) {
+    return open ? (
+      <div className="h-full flex bg-white overflow-hidden">
+        {viewerContent}
+      </div>
+    ) : null;
+  }
+
+  // 覆盖模式：带背景遮罩和动画
+  return (
+    <AnimatePresence>
+      {open && (
+        <>
+          {/* 背景遮罩 - 半透明 */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-black/30 z-40"
+          />
+
+          {/* 查看器主体 - 右侧面板 */}
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed right-0 top-0 bottom-0 w-[90%] md:w-[75%] lg:w-[65%] bg-white shadow-2xl z-50 
+                     overflow-hidden flex"
+          >
+            {viewerContent}
           </motion.div>
         </>
       )}

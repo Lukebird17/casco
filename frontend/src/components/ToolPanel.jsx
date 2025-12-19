@@ -60,7 +60,7 @@ const CitationsList = ({ citations, onJump }) => {
                      hover:border-google-blue-300 hover:bg-google-blue-50 
                      transition-colors group"
           >
-            <div className="flex items-start gap-2">
+            <div className="flex items-start gap-2 mb-2">
               <span className="text-xs font-medium text-google-gray-500 mt-0.5">
                 [{index + 1}]
               </span>
@@ -73,13 +73,36 @@ const CitationsList = ({ citations, onJump }) => {
                     第 {citation.page} 页
                   </div>
                 )}
-                {citation.snippet && (
-                  <div className="text-xs text-google-gray-600 mt-2 line-clamp-2">
-                    {citation.snippet}
-                  </div>
-                )}
               </div>
             </div>
+            
+            {/* 图片预览 */}
+            {citation.image_url && (
+              <div className="mb-2 rounded overflow-hidden border border-google-gray-200 group-hover:border-google-blue-200 transition-colors">
+                <img 
+                  src={citation.image_url} 
+                  alt={`${citation.filename} 第${citation.page}页`}
+                  className="w-full h-auto object-cover max-h-48"
+                  loading="lazy"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                  }}
+                />
+                {/* 悬浮提示 */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                  <span className="bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
+                    点击查看详情
+                  </span>
+                </div>
+              </div>
+            )}
+            
+            {/* 文本摘要 */}
+            {citation.snippet && (
+              <div className="text-xs text-google-gray-600 line-clamp-2">
+                {citation.snippet}
+              </div>
+            )}
           </button>
         ))}
       </div>
@@ -98,15 +121,15 @@ const ToolPanel = ({
     <AnimatePresence>
       {open && (
         <motion.div
-          initial={{ x: '100%' }}
-          animate={{ x: 0 }}
-          exit={{ x: '100%' }}
-          transition={{ type: 'spring', damping: 25 }}
-          className="fixed right-0 top-0 bottom-0 w-96 bg-google-gray-50 border-l 
-                   border-google-gray-200 shadow-lg z-50 overflow-y-auto"
+          initial={{ width: 0, opacity: 0 }}
+          animate={{ width: 384, opacity: 1 }}
+          exit={{ width: 0, opacity: 0 }}
+          transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+          className="fixed left-[280px] top-0 bottom-0 bg-google-gray-50 border-r 
+                   border-google-gray-200 shadow-lg z-20 flex flex-col"
         >
           {/* 头部 */}
-          <div className="sticky top-0 bg-white border-b border-google-gray-200 p-4 flex items-center justify-between">
+          <div className="flex-shrink-0 bg-white border-b border-google-gray-200 p-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Info size={20} className="text-google-blue-600" />
               <h2 className="font-semibold text-google-gray-900">详细信息</h2>
@@ -119,8 +142,8 @@ const ToolPanel = ({
             </button>
           </div>
 
-          {/* 内容 */}
-          <div className="p-4 space-y-4">
+          {/* 内容 - 可滚动 */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
             <ConfidenceDisplay confidence={confidence} />
             <CitationsList citations={citations} onJump={onJumpToCitation} />
           </div>

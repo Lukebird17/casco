@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import toast from 'react-hot-toast';
+import { motion, AnimatePresence } from 'framer-motion';
 import Sidebar from './components/Sidebar';
 import ChatInterface from './components/ChatInterface';
 import ToolPanel from './components/ToolPanel';
@@ -24,7 +25,7 @@ import { useChat } from './hooks/useChat';
 import { useSessions } from './hooks/useSessions';
 import { initializeSystem } from './api/client';
 import { initSettings, getSettings } from './utils/settings';
-import { Info, Loader2 } from 'lucide-react';
+import { Info, Loader2, X } from 'lucide-react';
 
 function App() {
   const [initializing, setInitializing] = useState(true);
@@ -65,6 +66,8 @@ function App() {
     loading: chatLoading,
     citations,
     confidence,
+    retrievalCitations,
+    showRetrievalResults,
     sendChatMessage,
     clearMessages,
     setInitialMessages,
@@ -171,19 +174,51 @@ function App() {
 
   // 处理打开工具
   const handleOpenTool = (toolId) => {
+    // 检查是否点击了已打开的工具，如果是则关闭它
+    const isAlreadyOpen = (
+      (toolId === 'snippets' && snippetsPanelOpen) ||
+      (toolId === 'heatmap' && heatmapPanelOpen) ||
+      (toolId === 'quiz' && quizPanelOpen) ||
+      (toolId === 'flashcards' && flashcardPanelOpen) ||
+      (toolId === 'knowledge-graph' && knowledgeGraphPanelOpen) ||
+      (toolId === 'database' && knowledgeBasePanelOpen) ||
+      (toolId === 'confidence' && confidencePanelOpen) ||
+      (toolId === 'outline' && outlinePanelOpen) ||
+      (toolId === 'concept-search' && conceptSearchPanelOpen) ||
+      (toolId === 'settings' && settingsPanelOpen)
+    );
+
+    if (isAlreadyOpen) {
+      // 如果已经打开，就关闭它
+      switch(toolId) {
+        case 'snippets': setSnippetsPanelOpen(false); break;
+        case 'heatmap': setHeatmapPanelOpen(false); break;
+        case 'quiz': setQuizPanelOpen(false); break;
+        case 'flashcards': setFlashcardPanelOpen(false); break;
+        case 'knowledge-graph': setKnowledgeGraphPanelOpen(false); break;
+        case 'database': setKnowledgeBasePanelOpen(false); break;
+        case 'confidence': setConfidencePanelOpen(false); break;
+        case 'outline': setOutlinePanelOpen(false); break;
+        case 'concept-search': setConceptSearchPanelOpen(false); break;
+        case 'settings': setSettingsPanelOpen(false); break;
+      }
+      setActiveTool(null);
+      return;
+    }
+
     setActiveTool(toolId);
     
-    // 关闭所有面板
+    // 关闭所有工具面板（但不关闭文档查看器，因为它在右侧）
     setToolPanelOpen(false);
     setSnippetsPanelOpen(false);
     setHeatmapPanelOpen(false);
     setQuizPanelOpen(false);
     setFlashcardPanelOpen(false);
     setKnowledgeGraphPanelOpen(false);
-    setDocumentViewerOpen(false);
     setConfidencePanelOpen(false);
     setOutlinePanelOpen(false);
     setConceptSearchPanelOpen(false);
+    setKnowledgeBasePanelOpen(false);
     setSettingsPanelOpen(false);
     
     // 打开对应工具
@@ -232,14 +267,16 @@ function App() {
   const handleJumpToCitation = (citation) => {
     console.log('跳转到引用:', citation);
     
-    // 设置文档和高亮文本
+    // 设置文档、页码和高亮文本
     setViewerDocument(citation.filename);
+    setViewerPage(citation.page || null); // 新增：设置页码
     setViewerHighlight(citation.snippet || '');
     
     // 打开文档查看器
     setDocumentViewerOpen(true);
     
-    toast.success(`正在打开: ${citation.filename}`, { icon: '📄' });
+    const pageInfo = citation.page ? ` 第${citation.page}页` : '';
+    toast.success(`正在打开: ${citation.filename}${pageInfo}`, { icon: '📄' });
   };
 
   // 加载界面
@@ -287,7 +324,7 @@ function App() {
         onOpenSettings={() => handleOpenTool('settings')}
       />
 
-      {/* 主内容区 */}
+      {/* 主内容区 - 支持两栏布局 */}
       <div className="flex-1 flex flex-col">
         {/* 顶部工具栏 */}
         <div className="bg-white border-b border-google-gray-200 px-6 py-3 flex items-center justify-between">
@@ -318,28 +355,62 @@ function App() {
           </div>
 
           {/* 右侧按钮 */}
-          <button
-            onClick={() => setToolPanelOpen(!toolPanelOpen)}
-            className={`btn-icon p-2 rounded-lg ${
-              toolPanelOpen ? 'bg-google-blue-50 text-google-blue-600' : 'hover:bg-google-gray-100'
-            }`}
-            title="详细信息"
-          >
-            <Info size={20} />
-          </button>
+          <div className="flex items-center gap-2">
+            {/* 文档查看器开关按钮 */}
+            {documentViewerOpen && (
+              <button
+                onClick={() => setDocumentViewerOpen(false)}
+                className="btn-icon p-2 rounded-lg hover:bg-google-gray-100 text-google-gray-700"
+                title="关闭文档查看器"
+              >
+                <X size={20} />
+              </button>
+            )}
+            <button
+              onClick={() => setToolPanelOpen(!toolPanelOpen)}
+              className={`btn-icon p-2 rounded-lg ${
+                toolPanelOpen ? 'bg-google-blue-50 text-google-blue-600' : 'hover:bg-google-gray-100'
+              }`}
+              title="详细信息"
+            >
+              <Info size={20} />
+            </button>
+          </div>
         </div>
 
-        {/* 聊天界面 */}
-        <div className="flex-1 overflow-hidden">
-          <ChatInterface
-            messages={messages}
-            loading={chatLoading}
-            onSendMessage={handleSendMessage}
-            enableSocratic={enableSocratic}
-            currentSessionId={currentSessionId}
-            selectedKnowledgeBase={selectedKnowledgeBase}
-            onKnowledgeBaseChange={setSelectedKnowledgeBase}
-          />
+        {/* 两栏布局：聊天界面 + 文档查看器 */}
+        <div className="flex-1 flex overflow-hidden">
+          {/* 聊天界面 */}
+          <div className={`flex-1 overflow-hidden transition-all duration-300 ${
+            documentViewerOpen ? 'border-r border-google-gray-200' : ''
+          }`}>
+            <ChatInterface
+              messages={messages}
+              loading={chatLoading}
+              onSendMessage={handleSendMessage}
+              enableSocratic={enableSocratic}
+              currentSessionId={currentSessionId}
+              selectedKnowledgeBase={selectedKnowledgeBase}
+              onKnowledgeBaseChange={setSelectedKnowledgeBase}
+              retrievalCitations={retrievalCitations}
+              showRetrievalResults={showRetrievalResults}
+              onCitationClick={handleJumpToCitation}
+            />
+          </div>
+
+          {/* 文档查看器（内嵌版本） */}
+          {documentViewerOpen && (
+            <div className="w-[45%] flex flex-col bg-white">
+              <DocumentViewer
+                open={true}
+                onClose={() => setDocumentViewerOpen(false)}
+                filename={viewerDocument}
+                highlightText={viewerHighlight}
+                page={viewerPage}
+                embedded={true}
+              />
+            </div>
+          )}
         </div>
       </div>
 
@@ -383,23 +454,15 @@ function App() {
         onClose={() => setKnowledgeGraphPanelOpen(false)}
       />
 
-      {/* 文档查看器 */}
-      <DocumentViewer
-        open={documentViewerOpen}
-        onClose={() => setDocumentViewerOpen(false)}
-        filename={viewerDocument}
-        highlightText={viewerHighlight}
-        page={viewerPage}
-      />
+      {/* 文档查看器已移至主内容区两栏布局中 */}
 
-      {/* 置信度详情面板 */}
+      {/* 独立面板 - 从左侧显示，避免遮挡右侧文档查看器 */}
       <ConfidencePanel
         open={confidencePanelOpen}
         onClose={() => setConfidencePanelOpen(false)}
         confidence={confidence}
       />
 
-      {/* 文档大纲面板 */}
       <DocumentOutlinePanel
         open={outlinePanelOpen}
         onClose={() => setOutlinePanelOpen(false)}
@@ -409,9 +472,9 @@ function App() {
           setViewerPage(section.page || null);
           setDocumentViewerOpen(true);
         }}
+        currentKBId={selectedKnowledgeBase}
       />
 
-      {/* 概念快速定位面板 */}
       <ConceptSearchPanel
         open={conceptSearchPanelOpen}
         onClose={() => setConceptSearchPanelOpen(false)}
@@ -421,15 +484,15 @@ function App() {
           setViewerPage(location.page || null);
           setDocumentViewerOpen(true);
         }}
+        currentKBId={selectedKnowledgeBase}
       />
 
-      {/* 知识库管理面板 */}
       <KnowledgeBasePanel
         open={knowledgeBasePanelOpen}
         onClose={() => setKnowledgeBasePanelOpen(false)}
         onSwitch={(kbId) => {
           toast.success(`已切换到知识库: ${kbId}`);
-          // 可以在这里触发重新加载数据
+          setSelectedKnowledgeBase(kbId);
         }}
       />
 

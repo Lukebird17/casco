@@ -9,7 +9,7 @@ const API_BASE = 'http://localhost:8000';
 
 const client = axios.create({
   baseURL: API_BASE,
-  timeout: 180000, // 180 秒超时（3分钟），因为检索+Rerank可能较慢
+  timeout: 600000, // 600 秒超时（10分钟），因为图片描述+MinerU+检索+Rerank可能较慢
   headers: {
     'Content-Type': 'application/json',
   },
@@ -32,6 +32,18 @@ client.interceptors.response.use(
   },
   (error) => {
     console.error('API Error:', error);
+    
+    // 更详细的错误信息
+    if (error.code === 'ECONNABORTED') {
+      console.error('❌ 请求超时！处理时间过长。');
+    } else if (error.response) {
+      console.error('❌ 服务器错误:', error.response.status, error.response.data);
+    } else if (error.request) {
+      console.error('❌ 无响应，检查后端是否运行');
+    } else {
+      console.error('❌ 请求配置错误:', error.message);
+    }
+    
     return Promise.reject(error);
   }
 );

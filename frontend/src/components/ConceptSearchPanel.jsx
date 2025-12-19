@@ -8,24 +8,46 @@ import { X, Search, Zap, BookOpen, Hash, AlertCircle, Loader2 } from 'lucide-rea
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 
-const ConceptSearchPanel = ({ open, onClose, onJumpTo }) => {
+const ConceptSearchPanel = ({ open, onClose, onJumpTo, currentKBId = 'default' }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searching, setSearching] = useState(false);
   const [results, setResults] = useState([]);
   const [recentSearches, setRecentSearches] = useState([]);
   const [hotConcepts, setHotConcepts] = useState([]);
+  const [knowledgeBases, setKnowledgeBases] = useState([]);
+  const [selectedKB, setSelectedKB] = useState(currentKBId);
 
-  // 加载热门概念
+  // 加载知识库列表
   useEffect(() => {
     if (open) {
-      loadHotConcepts();
-      loadRecentSearches();
+      loadKnowledgeBases();
     }
   }, [open]);
 
+  // 当知识库变化时，重新加载热门概念
+  useEffect(() => {
+    if (open && selectedKB) {
+      loadHotConcepts();
+      loadRecentSearches();
+    }
+  }, [open, selectedKB]);
+
+  const loadKnowledgeBases = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/knowledge-bases');
+      const data = await response.json();
+      
+      if (data.success) {
+        setKnowledgeBases(data.knowledge_bases);
+      }
+    } catch (error) {
+      console.error('加载知识库列表失败:', error);
+    }
+  };
+
   const loadHotConcepts = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/concepts/hot');
+      const response = await fetch(`http://localhost:8000/api/concepts/hot?kb_id=${selectedKB}&limit=10`);
       if (response.ok) {
         const data = await response.json();
         if (data.success) {
@@ -68,7 +90,7 @@ const ConceptSearchPanel = ({ open, onClose, onJumpTo }) => {
     saveToRecentSearches(term);
 
     try {
-      const response = await fetch(`http://localhost:8000/api/concepts/search?q=${encodeURIComponent(term)}`);
+      const response = await fetch(`http://localhost:8000/api/concepts/search?q=${encodeURIComponent(term)}&kb_id=${selectedKB}&limit=20`);
       
       if (response.ok) {
         const data = await response.json();
@@ -76,11 +98,12 @@ const ConceptSearchPanel = ({ open, onClose, onJumpTo }) => {
           setResults(data.results);
           if (data.results.length === 0) {
             toast('未找到相关概念', { icon: '🔍' });
+          } else {
+            toast.success(`找到 ${data.results.length} 个结果`);
           }
         }
       } else {
-        // 如果后端未实现，使用简单的文档搜索
-        await searchInDocuments(term);
+        toast.error('搜索失败');
       }
     } catch (error) {
       console.error('搜索失败:', error);
@@ -90,50 +113,6 @@ const ConceptSearchPanel = ({ open, onClose, onJumpTo }) => {
     }
   };
 
-  // 简单的文档搜索实现
-  const searchInDocuments = async (term) => {
-    try {
-      const docsResponse = await fetch('http://localhost:8000/api/documents');
-      const docsData = await docsResponse.json();
-      
-      if (!docsData.success) {
-        setResults([]);
-        return;
-      }
-
-      const allResults = [];
-      
-      for (const doc of docsData.documents) {
-        try {
-          // 使用新的搜索API
-          const searchResponse = await fetch(
-            `http://localhost:8000/api/documents/${encodeURIComponent(doc.filename)}/search?query=${encodeURIComponent(term)}`
-          );
-          const searchData = await searchResponse.json();
-          
-          if (searchData.success && searchData.results) {
-            searchData.results.forEach(result => {
-              allResults.push({
-                filename: doc.filename,
-                line: result.line,
-                page: result.page,  // PDF页码
-                context: result.context,
-                relevance: 0.8,
-                isPDF: doc.filename.toLowerCase().endsWith('.pdf')
-              });
-            });
-          }
-        } catch (err) {
-          console.error(`搜索文档 ${doc.filename} 失败:`, err);
-        }
-      }
-
-      setResults(allResults.slice(0, 20));
-    } catch (error) {
-      console.error('文档搜索失败:', error);
-      setResults([]);
-    }
-  };
 
   const handleResultClick = (result) => {
     if (onJumpTo) {
@@ -159,26 +138,17 @@ const ConceptSearchPanel = ({ open, onClose, onJumpTo }) => {
     <AnimatePresence>
       {open && (
         <>
-          {/* 背景遮罩 */}
+          {/* 面板主体 - 紧贴Sidebar，无遮罩 */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 bg-black/30 z-40"
-          />
-
-          {/* 面板主体 */}
-          <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25 }}
-            className="fixed right-0 top-0 bottom-0 w-[450px] bg-white shadow-2xl z-50 
-                     overflow-y-auto"
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: 380, opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+            className="fixed left-[280px] top-0 bottom-0 bg-white shadow-lg z-20
+                     border-r border-google-gray-200 flex flex-col"
           >
             {/* 头部 */}
-            <div className="sticky top-0 bg-white border-b border-google-gray-200 p-6 z-10">
+            <div className="flex-shrink-0 bg-white border-b border-google-gray-200 p-4">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <Zap size={24} className="text-google-blue-600" />
@@ -191,6 +161,24 @@ const ConceptSearchPanel = ({ open, onClose, onJumpTo }) => {
                   <X size={20} />
                 </button>
               </div>
+
+              {/* 知识库选择 */}
+              {knowledgeBases.length > 1 && (
+                <div className="mb-3">
+                  <select
+                    value={selectedKB}
+                    onChange={(e) => setSelectedKB(e.target.value)}
+                    className="w-full px-3 py-2 text-sm border border-google-gray-300 rounded-lg 
+                             focus:outline-none focus:ring-2 focus:ring-google-blue-500 bg-white"
+                  >
+                    {knowledgeBases.map((kb) => (
+                      <option key={kb.id} value={kb.id}>
+                        📚 {kb.name} ({kb.document_count} 文档)
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
               {/* 搜索框 */}
               <div className="relative">
@@ -217,7 +205,8 @@ const ConceptSearchPanel = ({ open, onClose, onJumpTo }) => {
               </div>
             </div>
 
-            <div className="p-6 space-y-6">
+            {/* 内容区 - 可滚动 */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6">
               {/* 搜索结果 */}
               {results.length > 0 && (
                 <div>

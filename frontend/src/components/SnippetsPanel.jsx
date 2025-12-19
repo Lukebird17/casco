@@ -55,15 +55,15 @@ const SnippetsPanel = ({ open, onClose, currentSessionId }) => {
     <AnimatePresence>
       {open && (
         <motion.div
-          initial={{ x: '100%' }}
-          animate={{ x: 0 }}
-          exit={{ x: '100%' }}
-          transition={{ type: 'spring', damping: 25 }}
-          className="fixed right-0 top-0 bottom-0 w-96 bg-white border-l 
-                   border-google-gray-200 shadow-lg z-50 flex flex-col"
+          initial={{ width: 0, opacity: 0 }}
+          animate={{ width: 384, opacity: 1 }}
+          exit={{ width: 0, opacity: 0 }}
+          transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+          className="fixed left-[280px] top-0 bottom-0 bg-white border-r 
+                   border-google-gray-200 shadow-lg z-20 flex flex-col"
         >
           {/* 头部 */}
-          <div className="sticky top-0 bg-white border-b border-google-gray-200 p-4">
+          <div className="flex-shrink-0 bg-white border-b border-google-gray-200 p-4">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Bookmark size={20} className="text-google-blue-600" />

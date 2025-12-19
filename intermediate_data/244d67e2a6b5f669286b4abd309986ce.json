@@ -1,0 +1,682 @@
+{
+  "pages": [
+    {
+      "text": "【第1页】\n从应用视角看操作系统抽象\n【/第1页】",
+      "page_number": 1,
+      "section": ""
+    },
+    {
+      "text": "【第2页】\n版权声明\n• 本内容版权归上海交通大学并行与分布式系统研究所所有\n使用者可以将全部或部分本内容免费用于非商业用途\n• 使用者在使用全部或部分本内容时请注明来源– 内容来自：上海交通大学并行与分布式系统研究所+材料名字\n• 对于不遵守此声明或者其他违法使用本内容者，将依法保留追究权\n本内容的发布采用 Creative Commons Attribution 4.0 License– 完整文本：https://creativecommons.org/licenses/by/4.0/legalcode\n【/第2页】",
+      "page_number": 2,
+      "section": ""
+    },
+    {
+      "text": "【第3页】\n特权级EL0、EL1\n特权级切换\n– 同步异常与异步异常（中断）异常处理\n• 异常处理函数表系统寄存器：vbar_el1、esr_el1、elr_el1  \n• 栈切换：sp_el1和sp_el0\n– 切换过程：硬件（CPU）和软件（操作系统）的分工\n系统调用（system call）\n– 一种特殊的同步异常– svc + eret\n【/第3页】",
+      "page_number": 3,
+      "section": ""
+    },
+    {
+      "text": "【第5页】\n进程\n【/第5页】",
+      "page_number": 5,
+      "section": ""
+    },
+    {
+      "text": "【第6页】\n分时复用有限的CPU资源\n. CPU核心数量少于应用程序数量，如何运行？\n硬件概览：\n单个CPU核心如何运行多个应用程序？\n类比运动场地（分时复用）\n• 气膜的羽毛球场地数量有限（CPU核心数量）\n• 全校的师生都想去打羽毛球（需要运行的应用程序很多）\n• 由气膜管理系统安排师生在不同时间段使用场地：大家都能打上球\n【/第6页】",
+      "page_number": 6,
+      "section": ""
+    },
+    {
+      "text": "【第7页】\n分时复用有限的CPU资源\n分时复用CPU\n– 让多个应用程序轮流使用处理器核心  \n– 何时切换：操作系统决定• 运行时间片（例如100ms）  \n– 高频切换：看起来是多个应用“同时”执行\n【/第7页】\n\n【第7页·图片】(f16b1c75a14a4b7777d16059b7080a98c1bc6cd4f42c75b5f1559600fbc68ad5.jpg)\n该图展示了多核处理器上多个应用并发执行的示意图。图中包含四个处理器核心（Core-0 至 Core-3），每个核心上方堆叠着两个标有“应用”的矩形框，表示每个核心同时运行两个应用程序。灰色方块代表核心本身，黑色边框的“应用”框表示正在执行的应用程序。该图用于说明操作系统通过时间片轮转等调度机制，在多核架构上实现多个应用的并发执行，从而在用户视角上形成“同时运行”的效果。\n【/图片】\n",
+      "page_number": 7,
+      "section": ""
+    },
+    {
+      "text": "【第8页】\n进程：操作系统对于应用程序的表示\n通常一个应用程序对应一个进程– 在shell中输入可执行文件的名称\n• shell创建新进程，可执行文件在新进程中执行– 在图形界面双击应用图标\n多进程程序：应用程序亦可自行创建新进程\n– 创建新进程，再在新进程中运行其他应用程序或与自己一样的程序\n【/第8页】",
+      "page_number": 8,
+      "section": ""
+    },
+    {
+      "text": "【第9页】\n进程在操作系统中的实现\n操作系统提供进程的抽象用于管理  \n– 进程标识号（Process ID， PID）  \n– 运行状态• 处理器上下文（CPU Context）  \n– 地址空间  \n– 打开的文件\n【/第9页】",
+      "page_number": 9,
+      "section": ""
+    },
+    {
+      "text": "【第10页】\n程序员视角看进程\n进程抽象为应用程序提供了“独占CPU”的假象\n– 程序开发不用考虑如何与其他程序共享CPU– 简化编程\n进程相关的系统调用\n– 创建进程  \n– 让进程执行指定的程序  \n– 退出进程  \n– 进程间通信\n【/第10页】",
+      "page_number": 10,
+      "section": ""
+    },
+    {
+      "text": "【第11页】\n进程切换\n【/第11页】",
+      "page_number": 11,
+      "section": ""
+    },
+    {
+      "text": "【第12页】\n处理器上下文(CPU Context)\n操作系统为每个进程维护处理器上下文\n– 包含恢复进程执行所需要的状态\n– 思考：进程A执行到任意一条指令（El0），切换到进程B执行，一段时间后，再切回到进程A执行\n• 为完成此过程，有哪些状态需要保存？\n– 具体包括：\n. PC寄存器值，栈寄存器值，通用寄存器值，状态寄存器值\n【/第12页】",
+      "page_number": 12,
+      "section": ""
+    },
+    {
+      "text": "【第13页】\n回顾：用户态/内核态切换时的处理器状态变化\n【/第13页】\n\n【第13页·图片】(bfdaa7ff56d0b2bf5c7573c9b9beb824f6ee434776f6531feee7ea56b29dd0e0.jpg)\n该图展示了在ARM架构下用户态与内核态切换过程中处理器寄存器上下文的保存与恢复流程。左侧列出了系统寄存器（如SPSR_EL1、ELR_EL1）、特殊寄存器（如PSTATE、PC、SP_EL1/EL0）和通用寄存器（X0–X30）的分类。图中通过四个阶段（硬件保存、软件保存、软件恢复、硬件恢复）说明了...\n【/图片】\n",
+      "page_number": 13,
+      "section": ""
+    },
+    {
+      "text": "【第14页】\n进程切换的时机\n异常导致的上下文切换\n– Timer中断（如基于时间片的多任务调度）\n• 用户执行系统调用并进入内核\n– 如：read/sleep等会导致进程阻塞的系统调用– 即使系统调用不阻塞执行，内核也可以决定执行上下文切换，而不是将控制权返回给调用进程\n【/第14页】",
+      "page_number": 14,
+      "section": ""
+    },
+    {
+      "text": "【第15页】\n进程切换示例一\nQ：Timer中断可能在进程运行过程的任意时刻抵达，应用进程都能切换吗？Q：如果（异步）异常发生在OS运行过程中/保存上下文的过程中，会怎么样？\n【/第15页】\n\n【第15页·图片】(965e186df6a1627302801def33e7929461f942ba89d2c93b016406b4455b9386.jpg)\n该图展示了进程切换的时序示意图，横轴为时间，纵轴为进程A和进程B的执行状态。图中通过Timer中断触发上下文切换：当Timer中断发生时，当前运行的进程（如进程A）被暂停，操作系统（OS执行）保存其上下文，恢复另一进程（如进程B）的上下文并开始执行。随后再次由Timer中断触发，进程B被暂停，恢复进...\n【/图片】\n",
+      "page_number": 15,
+      "section": ""
+    },
+    {
+      "text": "【第16页】\n进程切换示例二\n时间\n【/第16页】\n\n【第16页·图片】(847686dade3da7fbc724be5df8169219b2d78a86b5e407ac20745c050b0fba54.jpg)\n该图是一个进程切换的时间序列图，展示了进程A和进程B之间的上下文切换过程。初始时进程A执行read系统调用，随后操作系统（OS）介入，保存进程A的上下文并恢复进程B的上下文，切换至进程B执行。当磁盘中断发生时，OS再次介入，保存进程B的上下文并恢复进程A的上下文，使进程A继续执行。图中用实线箭头表示...\n【/图片】\n",
+      "page_number": 16,
+      "section": ""
+    },
+    {
+      "text": "【第17页】\n常见的进程相关的接口\n【/第17页】",
+      "page_number": 17,
+      "section": ""
+    },
+    {
+      "text": "【第18页】\n获取进程 ID\n• 进程 ID– 每个进程都有唯一的正数PIDgetpid()– 返回调用进程的PIDgetppid()– 返回调用进程父进程的PID– 父进程：创建该进程的进程#include <unistd.h>#include <sys/types.h>pid_t getpid(void);pid_t getppid(void);\n【/第18页】",
+      "page_number": 18,
+      "section": ""
+    },
+    {
+      "text": "【第19页】\n返回值：调用进程或父进程的PID• getpid和getppid函数返回pid_t类型的int值• pid_t– Linux系统中，在types.h文件中定义为int\n【/第19页】",
+      "page_number": 19,
+      "section": ""
+    },
+    {
+      "text": "【第20页】\nExit 函数\n• exit函数终止进程并带上一个status状态\n【/第20页】\n\n【第20页·图片】(ef8623ce525d45e7fe09c8f50347921f5fb98c9ff386e9a0ffd189250c00d61d.jpg)\n该图片展示了一个C语言函数声明的代码框，内容为：`#include <stdlib.h>` 和 `void exit(int status);`，表示在标准库中定义的 `exit` 函数，用于终止进程并传递一个整型状态值。图片右下角用红色文字标注“这个函数没有返回值”，强调其返回类型为 `void`...\n【/图片】\n",
+      "page_number": 20,
+      "section": ""
+    },
+    {
+      "text": "【第21页】\nFork 函数\n• 父进程调用fork函数创建新的子进程\n#include <unistd.h> #include <sys/types.h> pid_t fork(void);\n返回值：子进程为 0，父进程为子进程 PID，出错为 -1\n【/第21页】",
+      "page_number": 21,
+      "section": ""
+    },
+    {
+      "text": "【第22页】\nFork 函数\n调用一次– 在父进程中\n• 返回两次– 在父进程中，返回子进程的PID– 在子进程中，返回0\n• 返回值提供了唯一明确地区分父进程和子进程执行的方法\n【/第22页】",
+      "page_number": 22,
+      "section": ""
+    },
+    {
+      "text": "【第23页】\nFork 函数\n1. #include \"csapp.h\"   \n2. int main()   \n3. {   \n4. pid_t pid;   \n5. int $\\mathrm { ~ \\bf ~ { ~ x ~ } ~ } = \\mathrm { ~ \\bf ~ { ~ 1 ~ } ~ } .$ ;   \n6. pid $=$ fork();   \n7. if (pid == 0) { /\\* child \\*/   \n8. printf(\"child : $v = \\% d \\lambda n ^ { \\prime \\prime }$ , ++x);   \n9. exit(0);   \n10. }   \n11. /\\* parent \\*/   \n12. printf(\"parent: x=%d\\n\", --x);   \n13. exit(0);   \n14. }\n【/第23页】",
+      "page_number": 23,
+      "section": ""
+    },
+    {
+      "text": "【第24页】\n小思考：打印几行输出？\n1. #include \"csapp.h\"  \n2. int main()  \n3. {  \n4. fork();  \n5. printf(\"hello!\\n\");  \n6. exit(0);  \n7. }  \n(a) 调用一次 fork\n【/第24页】",
+      "page_number": 24,
+      "section": ""
+    },
+    {
+      "text": "【第25页】\n小思考：打印几行输出？\n1. #include \"csapp.h\"   \n2. int main()   \n3. { hello   \n4. fork(); hello   \n5. printf(\"hello!\\n\"); fork   \n6. exit(0);   \n7. }\n(a) 调用一次 fork(b) 打印两行输出\n【/第25页】",
+      "page_number": 25,
+      "section": ""
+    },
+    {
+      "text": "【第26页】\n小思考：打印几行输出？\n1. #include \"csapp.h\"   \n2. int main()   \n3. {   \n4. fork();   \n5. fork();   \n6. printf(\"hello!\\n\");   \n7. exit(0);   \n8. }\n(a) 调用二次 fork\n【/第26页】",
+      "page_number": 26,
+      "section": ""
+    },
+    {
+      "text": "【第27页】\n小思考：打印几行输出？\n1. #include \"csapp.h\"   \n2. int main()   \n3. {   \n4. fork();   \n5. fork();   \n6. printf(\"hello!\\n\");   \n7. exit(0);   \n8. }\n(a) 调用二次 fork(b) 打印四行输出\n【/第27页】\n\n【第27页·图片】(b99272b028fa9f1fe29c5fbe3cd341b7fd12526d9e7269dbb77df9ad47a8d87e.jpg)\n该图展示了两次 `fork` 调用后进程树的执行流程。初始进程在第一次 `fork` 后产生一个子进程，两者均继续执行；随后每个进程再次执行 `fork`，共产生四个进程。每个进程最终执行 `printf(\"hello!\\n\")`，因此共输出四行“hello”。图中用箭头表示执行路径，红色“fork”标注两次分叉点，黑色“hello”表示输出，直观呈现了多进程并发执行的结构。\n【/图片】\n",
+      "page_number": 27,
+      "section": ""
+    },
+    {
+      "text": "【第28页】\nExecve函数\n#include <unistd.h>   \nint execve(const char \\*filename, const char \\*argv[], const char \\*envp[]);\n返回值：成功(不返回），失败(-1)\n加载和运行\n– filename:可执行文件名;argv:参数列表，envp:环境变量列表\n• execve 只调用一次，且永远不会返回\n– 仅仅在运行报错的时候，返回调用程序– 例：找不到filename标识的文件\n【/第28页】",
+      "page_number": 28,
+      "section": ""
+    },
+    {
+      "text": "【第29页】\nLinux下的僵尸进程\n进程终止后，内核不会立刻销毁该进程– 不再运行，但仍然占用内存资源\n进程以终止态存在，等待父进程回收\n当父进程回收终止的子进程– 内核把子进程的exit状态传递给父进程– 内核移除子进程，此时子进程才被真正回收\n• 终止状态下还未被回收的进程就是僵尸进程\n【/第29页】",
+      "page_number": 29,
+      "section": ""
+    },
+    {
+      "text": "【第30页】\nLinux下的僵尸进程\n如果父进程\n– 在自己终止前没有回收僵尸子进程– 内核会安排init进程回收这些子进程\ninit进程  \n– PID为1  \n– 在系统初始化时由内核创建\n【/第30页】",
+      "page_number": 30,
+      "section": ""
+    },
+    {
+      "text": "【第31页】\nwaitpid函数\n#include <sys/types.h>   \n#include <sys/wait.h>   \npid_t waitpid(pid_t pid, int \\*status, int options);\n返回值：成功返回子进程 PID，出错返回 -1\n【/第31页】",
+      "page_number": 31,
+      "section": ""
+    },
+    {
+      "text": "【第32页】\nwaitpid函数\npid_t waitpid(pid_t pid, int \\*status, int options);\n• pid>0：等待集合中只有pid子进程\npid=-1：等待集合包括所有子进程\n如果没有子进程：返回-1，errno = ECHILD\n• 如果等待被中断：返回-1，errno = EINTR\n【/第32页】",
+      "page_number": 32,
+      "section": ""
+    },
+    {
+      "text": "【第33页】\nwaitpid函数\npid_t waitpid(pid_t pid, int \\*status, int options);\noptions=0\n– 挂起调用进程，等待集合中任意子进程终止  \n– 如果等待集合中有子进程在函数调用前已经终止，立刻返回  \n– 返回值是导致函数返回的终止子进程pid  \n– 该终止子进程被内核回收\n【/第33页】",
+      "page_number": 33,
+      "section": ""
+    },
+    {
+      "text": "【第34页】\nwaitpid函数\npid_t waitpid(pid_t pid, int \\*status, int options);\n• 带回被回收子线程的exit状态– status指针不为NULL– status包含导致子进程进入终止状态的信息– wait.h文件包含了若干宏定义，用于解释status\n【/第34页】",
+      "page_number": 34,
+      "section": ""
+    },
+    {
+      "text": "【第35页】\nwaitpid函数\n1 #include \"csapp.h\"   \n2 #define N 2   \n3   \n4 int main()   \n5 {   \n6 int status, i;   \n7 pid_t pid;   \n8   \n9 /\\* Parent creates N children \\*/   \n10 for ( $| \\dot { \\textbf { 1 } } = \\textbf { 0 } ;$ ; i < N; i++)   \n11 if ((pid $=$ fork()) == 0) /\\* child \\*/   \n12 exit(100+i);   \n13\n【/第35页】",
+      "page_number": 35,
+      "section": ""
+    },
+    {
+      "text": "【第36页】\nwaitpid函数\n14 /\\* Parent reaps N chds. in no particular order \\*/   \n15 while ((pid $=$ waitpid(-1, &status, 0)) > 0) {   \n16 if (WIFEXITED(status))   \n17 printf(\"child %d terminated normally with exit   \n18 status=%d\\n\", pid, WEXITSTATUS(status));   \n19 else   \n20 printf(\"child %d terminated abnormally\\n\", pid);   \n21 }   \n22 /\\* The only normal term. is if there no more chds. \\*/   \n23 if (errno ! $=$ ECHILD)   \n24 unix_error(\"waitpid error\");   \n25 exit(0);   \n26 }\n【/第36页】",
+      "page_number": 36,
+      "section": ""
+    },
+    {
+      "text": "【第37页】\n思考： 输出结果是什么？\nunix>./waitpid1\nchild 22966 terminated normally with exit status=100\nchild 22967 terminated normally with exit status=101\nunix>./waitpid1\nchild 22967 terminated normally with exit status=101\nchild 22966 terminated normally with exit status=100\n子进程回收顺序不确定，都有可能\n【/第37页】",
+      "page_number": 37,
+      "section": ""
+    },
+    {
+      "text": "【第38页】\n应用程序使用CPU资源 （直通+抽象）\n【/第38页】\n\n【第38页·图片】(b9596f32cb80da4e164eb3f0388715465740133aae3de113e1473cc7cb99da7a.jpg)\n该图展示了应用程序如何通过操作系统和硬件接口使用CPU、内存和设备资源的分层架构。左侧“使用CPU资源”部分分为直通（用户ISA直接执行CPU指令）和抽象（通过OS系统调用如fork、signal等管理进程/线程）。中间“使用内存资源”部分展示通过mmap等系统调用实现地址映射，由MMU进行虚拟化管...\n【/图片】\n",
+      "page_number": 38,
+      "section": ""
+    },
+    {
+      "text": "【第39页】\n内存\n【/第39页】",
+      "page_number": 39,
+      "section": ""
+    },
+    {
+      "text": "【第40页】\n回顾： 内存布局\n内存\n【/第40页】\n\n【第40页·图片】(0b2c169448d09116e3c22956e93b4014b89972d8fba18ccb3e5cfb94cb240974.jpg)\n该图展示了CPU与内存之间的交互架构及进程内存布局。左侧为CPU内部结构，包含31个通用寄存器（X0-X30）、程序计数器（PC）、栈顶地址寄存器（SP）和程序状态寄存器（PSTATE），其中PSTATE包含条件码（N、Z、C、V）及掩码、特权级等状态位。右侧为内存布局，自上而下依次为函数A、B、C...\n【/图片】\n",
+      "page_number": 40,
+      "section": ""
+    },
+    {
+      "text": "【第41页】\n进程内存布局\n【/第41页】\n\n【第41页·图片】(b821fe353ff9fccced2882346c488a36aef312af72432ebb117431bbb86702d0.jpg)\n该图展示了CPU与内存之间的交互架构及进程内存布局。左侧为CPU部分，包含31个通用寄存器（X0-X30）、程序计数器（PC）、栈顶地址寄存器（SP）和程序状态寄存器（PSTATE），其中PSTATE包含条件码（N、Z、C、V）及执行状态等信息。右侧为内存区域，自上而下依次为栈、动态链接库、堆、数据...\n【/图片】\n",
+      "page_number": 41,
+      "section": ""
+    },
+    {
+      "text": "【第42页】\n思考：多个进程如何使用内存资源\n【/第42页】\n\n【第42页·图片】(a792cb0d32531e3a1a8de9baddfbb9e20c881bd892f0e12a24ac6f88bdd0c0ae.jpg)\n该图展示了多核处理器中多个进程共享内存资源的架构。图中包含四个核心（Core-0 至 Core-3），每个核心上运行两个“应用”进程，进程以带圆角的矩形表示。每个核心下方对应一个灰色方块，可能代表缓存或本地资源。所有核心共享底部的“内存”资源，以一个长条形矩形表示。整体结构体现了多核并行计算中应用进程的分布与内存共享机制。\n【/图片】\n",
+      "page_number": 42,
+      "section": ""
+    },
+    {
+      "text": "【第43页】\n多个进程如何使用内存资源\n思路1：协商划分，类比校园土地划分\n交大5000亩土地（8G内存）  \n• 若干学院（若干应用进程）  \n根据学院规模占用校园土地（根据应用规模各占一部分内存）\n【/第43页】\n\n【第43页·图片】(436604c4782a6cf8853f1ee0c862ba61937e538bef41d8be56d7a335d1623dec.jpg)\n该图展示了一个多进程共享内存资源的简化模型。图中包含四个核心（Core-0 至 Core-3），每个核心上运行多个“应用”进程，每个应用下方对应一个灰色方块，表示其内存分配。所有核心共享下方的一个统一“内存”资源池。图右侧有一个红色箭头，指向右侧空白区域，暗示后续将展示内存划分或分配策略。整体结构类比于多个学院共享校园土地资源，用于说明进程间内存资源的协商划分思路。\n【/图片】\n\n\n【第43页·图片】(1aa2e0a824f13ebabf9a776651663770b8b117cabc8f1efb0c3ce482ef72da55.jpg)\n该图展示了内存的逻辑布局，以垂直堆叠的矩形框表示不同程序和操作系统的内存区域。从上至下依次为：程序1栈、程序2栈、操作系统栈、程序1代码和数据、程序2代码和数据、操作系统代码和数据。各区域独立划分，体现了多进程环境下内存空间的静态分配结构，用于说明多个应用进程与操作系统在内存中的共存与资源划分问题。\n【/图片】\n",
+      "page_number": 43,
+      "section": ""
+    },
+    {
+      "text": "【第44页】\n协商划分方案的问题\n硬件概览：\n思考：存在问题：\n1. 内存大小无法满足所有应用进程的内存需求总量\n2. 不同应用进程之间缺乏隔离（安全性低、容错性差）\n3. 程序编写编译的难度\n【/第44页】\n\n【第44页·图片】(f34074a18f22dcb5c3feb176bec4f11db8cfd1b321287b22b5984c181da1ba2b.jpg)\n该图片展示了一个 macOS 操作系统的桌面应用程序图标界面，背景为模糊的深色渐变。桌面上排列着多款常用软件图标，包括开发工具（如 Visual Studio Code、XMind、Docker、VMware Fusion）、办公软件（如 Microsoft Word、Excel、Google Ch...\n【/图片】\n\n\n【第44页·图片】(0c3e7642ae8801c8a494fabf938b2c09fe52f32884f3c51b1938719e92818d5a.jpg)\n该图片展示了一个风格化的卡通羊驼头像，背景为深色并带有蓝色网格和电路板图案，整体呈现科技感。羊驼以黄色为主色调，眼睛大而有神，耳朵竖立，颈部有红色条纹装饰。图像外框为蓝绿色圆角矩形，边缘带有科技感的装饰线条。该图标常用于代表Llama系列大语言模型，尤其与Llama.cpp项目相关。图片上方文字说明...\n【/图片】\n",
+      "page_number": 44,
+      "section": ""
+    },
+    {
+      "text": "【第45页】\n思考：程序中的地址是哪里来的？\n// main.c中的C代码void multstore(long, long, long\\*);\nint main() { long d; multstore(2, 3, &d); printf(“2 \\* 3 --> %d\\n”, d); return 0;   \n}\n这些地址，在C代码中并没有，是从哪里来的？ 编译器生成\n【/第45页】\n\n【第45页·图片】(69124c0f2006a2451b58c8524c65f17e98e720faa60f53206c4a4ef8e11e38ab.jpg)\n该图展示了Linux进程的虚拟内存布局，自下而上依次为：只读段（.init, .text, .rodata）、读写段（.data, .bss）、运行时堆（通过malloc分配）、共享库的内存映射区域、用户栈，以及顶部的内核使用区域。图中蓝色区域表示动态增长的内存段（堆和栈），箭头指示其增长方向。该结构体现了进程虚拟地址空间的典型分段组织，用于支持多进程共享内存资源。\n【/图片】\n",
+      "page_number": 45,
+      "section": ""
+    },
+    {
+      "text": "【第46页】\n再次思考：多个进程如何使用内存资源\n【/第46页】\n\n【第46页·图片】(719b40703df2c8a456def8f2e972c906ceebe1d4e5f311f536c38a9c9b07e9bf.jpg)\n该图展示了多核处理器中多个进程共享内存资源的架构。图中包含四个核心（Core-0 至 Core-3），每个核心上方堆叠着多个“应用”方框，表示多个进程在各自核心上运行。每个核心下方对应一个灰色方框，可能代表核心的本地缓存或资源。所有核心共享底部的一个大型“内存”模块，体现了多进程并发执行时对共享内存的访问机制。该图直观呈现了多核系统中应用分布与内存共享的关系。\n【/图片】\n",
+      "page_number": 46,
+      "section": ""
+    },
+    {
+      "text": "【第47页】\n再次思考：多个进程如何使用内存资源\n思路2：分时复用，参考对于CPU资源的使用\n每个CPU核心访问固定地址范围的内存\n任意时刻，一个CPU核心仅有一个应用进程执行，它能够使用该CPU核心对应的全部内存\n进程切换时，将全部内存保存到磁盘上，并且从磁盘上恢复下一个执行进程的内存\n【/第47页】\n\n【第47页·图片】(f1828d2af2587589faa2e5badf1918425e2db3c3ce738b20c6d13efce0c9e107.jpg)\n该图展示了多个进程通过分时复用方式共享内存资源的架构演变。左侧为初始状态：四个CPU核心（Core-0至Core-3）各自运行多个应用，共享同一块物理内存。右侧为优化后状态：每个核心被分配独立的内存模块，实现内存资源的分时复用。图中红色箭头表示从共享内存到独立内存的转变，体现了类似CPU资源调度的内存管理思路，旨在提升并发性能与资源隔离性。\n【/图片】\n",
+      "page_number": 47,
+      "section": ""
+    },
+    {
+      "text": "【第48页】\n分时复用方案的问题\n问题1. 磁盘写入和读取会造成严重的性能损失\n问题2. 依然存在物理内存容量限制的问题\n思路2：分时复用，参考对于CPU资源的使用\n每个CPU核心访问固定地址范围的内存\n任意时刻，一个CPU核心仅有一个应用进程执行，它能够使用该CPU核心对应的全部内存\n• 进程切换时，将全部内存保存到磁盘上，并且从磁盘上恢复下一个执行进程的内存 49\n【/第48页】\n\n【第48页·图片】(5b1ed6c2763286bc167c60841085cf2b1e55bfdaa59d5ec189a205dbd0d6b8bb.jpg)\n该图展示了针对“物理内存容量限制”问题的解决思路——**分时复用内存资源**，类比CPU资源的分时调度。左侧为原始架构：四个CPU核心（Core-0至Core-3）共享同一块物理内存，每个核心运行多个应用，存在内存容量瓶颈。右侧为优化方案：每个核心被分配独立的内存模块，实现内存资源的分时复用与隔离，...\n【/图片】\n",
+      "page_number": 48,
+      "section": ""
+    },
+    {
+      "text": "【第49页】\n对内存资源使用的目标\n• 不同进程的内存地址空间具有独立性（彼此隔离）– 进程不能直接使用物理地址访问内存（缺乏管控）\n• 不同进程的内存地址空间具有统一性（易于开发）– 每个进程看见的地址空间都是连续的、统一的\n• 不同进程能够使用的内存总量可以超过物理内存总量– 同时要保证性能开销较小\n【/第49页】",
+      "page_number": 49,
+      "section": ""
+    },
+    {
+      "text": "【第50页】\n虚拟内存\n虚拟地址空间\n– 应用进程使用虚拟地址访问内存– 所有应用进程的虚拟地址空间都是统一的（方便开发）\n地址翻译\n– CPU按照OS配置的规则把虚拟地址翻译成物理地址– 翻译对于应用进程时不可见的（无需关心）\n【/第50页】",
+      "page_number": 50,
+      "section": ""
+    },
+    {
+      "text": "【第51页】\n虚拟内存与物理内存\n虚拟内存\n【/第51页】\n\n【第51页·图片】(b0153666c8b90cb8d29686377473a4f2430996ea4e0b237eca112825bcaeb476.jpg)\n该图展示了虚拟内存与物理内存之间的映射关系。左侧和右侧分别代表两个进程（如进程A）的虚拟内存地址空间，中间为物理内存地址空间。图中蓝色和橙色块表示已映射的虚拟内存区域，通过箭头指向物理内存中对应的物理页，灰色区域为未映射区域。不同进程的虚拟地址空间可映射到物理内存的相同或不同位置，体现了虚拟内存“独立而统一”的优势，即每个进程拥有独立的地址空间，但共享物理内存资源，且映射对应用程序透明。\n【/图片】\n",
+      "page_number": 51,
+      "section": ""
+    },
+    {
+      "text": "【第52页】\n虚拟内存的优势：独立而统一的地址空间\n【/第52页】\n\n【第52页·图片】(2e55b123e8d03b80a85c6134573b76f3c1f025371fe687c6e8a2ec1a53904cbf.jpg)\n该图片展示了一个演示虚拟内存特性的终端实验场景。左侧显示了两个C语言源文件`vm1.c`和`vm2.c`的代码，分别定义了全局变量`val1=1`和`val2=2`，并在主函数中打印其内存地址和值。右侧终端输出显示，当两个程序并行运行（`./vm1 & ./vm2`）时，尽管变量名不同，但它们在各自...\n【/图片】\n",
+      "page_number": 52,
+      "section": ""
+    },
+    {
+      "text": "【第53页】\n虚拟内存的优势：突破物理内存容量限制\n提高内存资源利用率\n– 操作系统按需把进程虚拟地址映射到物理地址\n突破物理内存的容量限制\n– 操作系统可以将部分虚拟内存区域数据暂存到磁盘上\nRobert_CrovellaModerator\nApascalorltaetseesbibedatsetntilaafmosed hostanddevicedertoaeadaageftistememousoaditmangdloathudald\n【/第53页】\n\n【第53页·图片】(e56a3f652d60a19703b4afe9ff211d21682b3becbd23accc4c415b6fc65aa2f5.jpg)\n该图展示了操作系统通过虚拟内存机制突破物理内存容量限制的原理。左侧和右侧分别表示进程A和进程B的虚拟内存地址空间，其中蓝色和橙色区域为已映射区域，灰色区域为未映射区域。中间为物理内存地址空间，包含与虚拟内存对应映射的蓝色和橙色块。箭头表示虚拟地址空间中的部分区域被映射到物理内存，其余部分暂未映射，体现了按需映射和内存分页管理机制。\n【/图片】\n",
+      "page_number": 53,
+      "section": ""
+    },
+    {
+      "text": "【第54页】\nLinux中进程的虚拟内存布局\ncat /proc/\\$PID/maps\n【/第54页】\n\n【第54页·图片】(7434fe04b407e8055436655b7ebec9331d971b26cc82af753a82646ee90c1a12.jpg)\n该图展示了Linux系统中进程的虚拟内存布局。内存空间从低地址（0x0）到高地址依次排列，主要包括：代码段、数据段（二者从可执行文件载入）、用户堆（向上增长）、代码库、用户栈（向下增长），以及内核栈和内核代码及数据区域。用户栈与内核栈之间以粗黑线分隔，表示内核空间与用户空间的边界。图中箭头标明了用户堆和用户栈的增长方向。\n【/图片】\n",
+      "page_number": 54,
+      "section": ""
+    },
+    {
+      "text": "【第55页】\n应用程序存储格式： 目标文件\n• ELF：目标文件的标准二进制格式– 可执行目标文件– 可重定位目标文件（.o）– 共享目标文件（.so）• 支持动态链接：加载时或运行时\n【/第55页】",
+      "page_number": 55,
+      "section": ""
+    },
+    {
+      "text": "【第56页】\nELF格式： 可执行目标文件\n【/第56页】",
+      "page_number": 56,
+      "section": ""
+    },
+    {
+      "text": "【第57页】\n回顾：常见的进程虚拟内存布局\ncat /proc/\\$PID/maps\n【/第57页】\n\n【第57页·图片】(8b11d9a1d0dce0c2294c3c55a6a9d7a0b30ed48c1dd093b585b61621a629466e.jpg)\n该图展示了典型的进程虚拟内存布局，自下而上依次为：代码段、数据段、用户堆、代码库、用户栈，以及内核栈和内核代码及数据。其中，代码和数据段从可执行文件载入，代码库从共享目标文件载入。用户堆向上增长，用户栈向下增长，两者在内存中相邻。底部标记为0x0，表示虚拟地址空间的起始位置。\n【/图片】\n",
+      "page_number": 57,
+      "section": ""
+    },
+    {
+      "text": "【第58页】\n进程使用内存资源 （虚拟化+抽象）\n【/第58页】\n\n【第58页·图片】(51f8dc326974e1fb9463541e567d40508d754cadf0eea88d21945404f9a8ce87.jpg)\n该图展示了操作系统中资源使用的三层抽象架构，重点聚焦于“使用内存资源”部分。图中分为三列：使用CPU资源、使用内存资源、使用设备资源。中间部分（红色边框）详细说明了内存资源的使用：应用程序通过系统调用（如mmap()、mprotect()）和CPU指令（load/store）与操作系统交互；OS通过...\n【/图片】\n",
+      "page_number": 58,
+      "section": ""
+    },
+    {
+      "text": "【第59页】\n文件\n【/第59页】",
+      "page_number": 59,
+      "section": ""
+    },
+    {
+      "text": "【第60页】\nUnix 文件\nUnix文件是一串字节序列– B0,B1,..., Bk,...,Bm\n• 所有IO设备都被抽象成文件– 如,网络设备、硬盘、终端等– Unix提供一个基于文件的底层应用接口，即 Unix IO\n• 所有输入/输出都是通过读/写文件完成– 让所有输入输出都有统一的表现方式\n【/第60页】",
+      "page_number": 60,
+      "section": ""
+    },
+    {
+      "text": "【第61页】\n文件类型1\n• 普通文件(regular file)：包含任意数据– 从应用程序的角度来看有两种\n• 文本文件• 二进制文件– 从内核的角度来看，没有区别\n【/第61页】",
+      "page_number": 61,
+      "section": ""
+    },
+    {
+      "text": "【第62页】\n文件类型2\n目录(directory)也是一个文件– 由一组“文件名到文件的映射”构成\n• Linux内核使用层次化目录来组织所有文件– /：代表根目录\n【/第62页】\n\n【第62页·图片】(df5527c0ad7e0d07384bc033041e1cb8c65a8b871e6a7286a38eee1401f79512.jpg)\n该图为Linux文件系统层次结构的简化树状图，根目录`/`下包含`bin/`、`dev/`、`home/`和`usr/`四个主要子目录。`bin/`下有可执行文件`ls`；`dev/`下包含设备文件`tty1`和`sda1`；`home/`下有用户目录`os/`；`usr/`下包含`include/...\n【/图片】\n",
+      "page_number": 62,
+      "section": ""
+    },
+    {
+      "text": "【第63页】\n文件类型3\n• 套接字(Socket)也是文件，常用于跨网络交互\n其他文件类型包括:\n– 命名管道(named pipes)   \n– 符号连接(symbolic links)   \n– 字符/块设备(character/block devices)\n【/第63页】",
+      "page_number": 63,
+      "section": ""
+    },
+    {
+      "text": "【第64页】\n打开/关闭文件\n#include <sys/types.h> #include <sys/stat.h> #include <fcntl.h>\nint open(char \\*filename, int flags, mode_t mode);\n返回值：成功(新文件标识符)，出错(-1)\n#include <unistd.h> int close(int fd) ;\n返回值：成功(0);失败(-1)\n文件标识符(file descriptor, fd)\n【/第64页】",
+      "page_number": 64,
+      "section": ""
+    },
+    {
+      "text": "【第65页】\n读写文件\n#include <unistd.h>  \nssize_t read(int fd, void \\*buf, size_t count);返回值：成功(读到字节数)，遇到EOF(0)，失败(-1)  \nssize_t write(int fd, const void \\*buf, size_t count);返回值：成功(写入字节数)，失败(-1)\n文件标识符(file descriptor, fd)\n【/第65页】",
+      "page_number": 65,
+      "section": ""
+    },
+    {
+      "text": "【第66页】\n读写文件示例\n1 #include <fcntl.h>  \n4  \n5 int main(){  \n8 int fd = open(\"hello.txt\"，O_RDONLY);char result[14];read(fd，result，13);write( $\\beth$ ，result，13);close(fd);}\n【/第66页】",
+      "page_number": 66,
+      "section": ""
+    },
+    {
+      "text": "【第67页】\n文件： 对所有设备的抽象\n存储设备– File网络设备– Socket其他设备– 同样是fd\n【/第67页】\n\n【第67页·图片】(4feb52cb814f7ec023e9c021411fb2a98285c8575c03a202da18cef4bc611955.jpg)\n该图展示了一个类Unix文件系统的目录树结构，根目录 `/` 下包含 `bin/`、`dev/`、`home/` 和 `usr/` 等子目录。其中 `dev/` 目录被红色框突出显示，其下包含 `tty1` 和 `sda1` 两个设备节点，代表终端和磁盘设备。图下方标注 `/dev/xxx`，强调设...\n【/图片】\n",
+      "page_number": 67,
+      "section": ""
+    },
+    {
+      "text": "【第68页】\n操作设备的示例\n// file:hello-tty.c   \n4 int main() {   \n7 int fd = open(\"/dev/pts/18\",0_WRoNLY);   \n8   \n9 write(fd，\"Hello World!\\n\"，13);   \n10 close(fd); }\nTerminal 1\n[user@osbook \\~] \\$ tty /dev/pts/18 [user@osbook \\~] \\$ Hello World!\nTerminal 2\n[user@osbook \\~] $\\$ 1$ vim hello-tty.c [user@osbook \\~] $\\$ 5$ gcc hello-tty.c -o hello-tty [user@osbook \\~] $\\$ 5$ ./hello-tty\n【/第68页】",
+      "page_number": 68,
+      "section": ""
+    },
+    {
+      "text": "【第69页】\n总结：OS对CPU、内存、设备的三大抽象\n【/第69页】\n\n【第69页·图片】(b19045b742fdbdf3c2f30c049840842e33d0167fb6e9705325a134201ddde8cb.jpg)\n该图展示了操作系统对CPU、内存和设备资源的三大抽象机制。左侧为“使用CPU资源”，应用程序通过系统调用（如fork、signal）或直接执行CPU指令（如add、mov）与OS交互，OS提供“进程/线程”抽象，底层通过系统ISA和用户ISA与CPU通信。中间为“使用内存资源”，应用程序通过mmap...\n【/图片】\n",
+      "page_number": 69,
+      "section": ""
+    }
+  ],
+  "images": [
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/6ce9eb34ce2e51c9d21d88fdd4654b7662d10d452fbc2e2ba522f298efac4c25.jpg",
+      "image_name": "6ce9eb34ce2e51c9d21d88fdd4654b7662d10d452fbc2e2ba522f298efac4c25.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 4,
+      "context_before": "l1  \n• 栈切换：sp_el1和sp_el0\n\n– 切换过程：硬件（CPU）和软件（操作系统）的分工\n\n# 系统调用（system call）\n\n– 一种特殊的同步异常– svc + eret",
+      "context_after": "进程\n\n# 分时复用有限的CPU资源\n\n. CPU核心数量少于应用程序数量，如何运行？\n\n# 硬件概览：\n\n单个CPU核心如何运行多个应用程序？\n\n<table><tr><td>型号名称：</td",
+      "context": "）的分工\n\n# 系统调用（system call）\n\n– 一种特殊的同步异常– svc + eret [图片] 进程\n\n# 分时复用有限的CPU资源\n\n. CPU核心数量少于应用程序数量，如何运行？\n\n# 硬件概",
+      "section": "系统调用（system call）",
+      "alt_text": "",
+      "description": "该图展示了操作系统如何通过三种方式（直通、抽象、虚拟化）为应用程序提供对CPU、内存和设备资源的访问接口。图中分为三大部分：使用CPU资源（进程/线程、用户ISA）、使用内存资源（地址映射、MMU虚拟化）、使用设备资源（文件、中断处理）。应用程序通过系统调用（如fork()、mmap()、open(..."
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/f16b1c75a14a4b7777d16059b7080a98c1bc6cd4f42c75b5f1559600fbc68ad5.jpg",
+      "image_name": "f16b1c75a14a4b7777d16059b7080a98c1bc6cd4f42c75b5f1559600fbc68ad5.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 7,
+      "context_before": "时复用有限的CPU资源\n\n# 分时复用CPU\n\n– 让多个应用程序轮流使用处理器核心  \n– 何时切换：操作系统决定• 运行时间片（例如100ms）  \n– 高频切换：看起来是多个应用“同时”执行",
+      "context_after": "# 进程：操作系统对于应用程序的表示\n\n通常一个应用程序对应一个进程– 在shell中输入可执行文件的名称\n\n• shell创建新进程，可执行文件在新进程中执行– 在图形界面双击应用图标\n\n# 多",
+      "context": "时切换：操作系统决定• 运行时间片（例如100ms）  \n– 高频切换：看起来是多个应用“同时”执行 [图片] # 进程：操作系统对于应用程序的表示\n\n通常一个应用程序对应一个进程– 在shell中输入可执行文件",
+      "section": "分时复用CPU",
+      "alt_text": "",
+      "description": "该图展示了多核处理器上多个应用并发执行的示意图。图中包含四个处理器核心（Core-0 至 Core-3），每个核心上方堆叠着两个标有“应用”的矩形框，表示每个核心同时运行两个应用程序。灰色方块代表核心本身，黑色边框的“应用”框表示正在执行的应用程序。该图用于说明操作系统通过时间片轮转等调度机制，在多核架构上实现多个应用的并发执行，从而在用户视角上形成“同时运行”的效果。"
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/bfdaa7ff56d0b2bf5c7573c9b9beb824f6ee434776f6531feee7ea56b29dd0e0.jpg",
+      "image_name": "bfdaa7ff56d0b2bf5c7573c9b9beb824f6ee434776f6531feee7ea56b29dd0e0.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 13,
+      "context_before": "时间后，再切回到进程A执行\n\n• 为完成此过程，有哪些状态需要保存？\n\n– 具体包括：\n\n. PC寄存器值，栈寄存器值，通用寄存器值，状态寄存器值\n\n# 回顾：用户态/内核态切换时的处理器状态变化",
+      "context_after": "# 进程切换的时机\n\n# 异常导致的上下文切换\n\n– Timer中断（如基于时间片的多任务调度）\n\n# • 用户执行系统调用并进入内核\n\n– 如：read/sleep等会导致进程阻塞的系统调用–",
+      "context": "C寄存器值，栈寄存器值，通用寄存器值，状态寄存器值\n\n# 回顾：用户态/内核态切换时的处理器状态变化 [图片] # 进程切换的时机\n\n# 异常导致的上下文切换\n\n– Timer中断（如基于时间片的多任务调度）\n\n",
+      "section": "回顾：用户态/内核态切换时的处理器状态变化",
+      "alt_text": "",
+      "description": "该图展示了在ARM架构下用户态与内核态切换过程中处理器寄存器上下文的保存与恢复流程。左侧列出了系统寄存器（如SPSR_EL1、ELR_EL1）、特殊寄存器（如PSTATE、PC、SP_EL1/EL0）和通用寄存器（X0–X30）的分类。图中通过四个阶段（硬件保存、软件保存、软件恢复、硬件恢复）说明了..."
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/965e186df6a1627302801def33e7929461f942ba89d2c93b016406b4455b9386.jpg",
+      "image_name": "965e186df6a1627302801def33e7929461f942ba89d2c93b016406b4455b9386.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 15,
+      "context_before": "• 用户执行系统调用并进入内核\n\n– 如：read/sleep等会导致进程阻塞的系统调用– 即使系统调用不阻塞执行，内核也可以决定执行上下文切换，而不是将控制权返回给调用进程\n\n# 进程切换示例一",
+      "context_after": "Q：Timer中断可能在进程运行过程的任意时刻抵达，应用进程都能切换吗？Q：如果（异步）异常发生在OS运行过程中/保存上下文的过程中，会怎么样？\n\n# 进程切换示例二\n\n时间\n\n![](image",
+      "context": "系统调用不阻塞执行，内核也可以决定执行上下文切换，而不是将控制权返回给调用进程\n\n# 进程切换示例一 [图片] Q：Timer中断可能在进程运行过程的任意时刻抵达，应用进程都能切换吗？Q：如果（异步）异常发生在O",
+      "section": "进程切换示例一",
+      "alt_text": "",
+      "description": "该图展示了进程切换的时序示意图，横轴为时间，纵轴为进程A和进程B的执行状态。图中通过Timer中断触发上下文切换：当Timer中断发生时，当前运行的进程（如进程A）被暂停，操作系统（OS执行）保存其上下文，恢复另一进程（如进程B）的上下文并开始执行。随后再次由Timer中断触发，进程B被暂停，恢复进..."
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/847686dade3da7fbc724be5df8169219b2d78a86b5e407ac20745c050b0fba54.jpg",
+      "image_name": "847686dade3da7fbc724be5df8169219b2d78a86b5e407ac20745c050b0fba54.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 16,
+      "context_before": "9386.jpg)\n\nQ：Timer中断可能在进程运行过程的任意时刻抵达，应用进程都能切换吗？Q：如果（异步）异常发生在OS运行过程中/保存上下文的过程中，会怎么样？\n\n# 进程切换示例二\n\n时间",
+      "context_after": "# 常见的进程相关的接口\n\n# 获取进程 ID\n\n• 进程 ID– 每个进程都有唯一的正数PIDgetpid()– 返回调用进程的PIDgetppid()– 返回调用进程父进程的PID– 父进程：",
+      "context": "：如果（异步）异常发生在OS运行过程中/保存上下文的过程中，会怎么样？\n\n# 进程切换示例二\n\n时间 [图片] # 常见的进程相关的接口\n\n# 获取进程 ID\n\n• 进程 ID– 每个进程都有唯一的正数PIDge",
+      "section": "进程切换示例二",
+      "alt_text": "",
+      "description": "该图是一个进程切换的时间序列图，展示了进程A和进程B之间的上下文切换过程。初始时进程A执行read系统调用，随后操作系统（OS）介入，保存进程A的上下文并恢复进程B的上下文，切换至进程B执行。当磁盘中断发生时，OS再次介入，保存进程B的上下文并恢复进程A的上下文，使进程A继续执行。图中用实线箭头表示..."
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/ef8623ce525d45e7fe09c8f50347921f5fb98c9ff386e9a0ffd189250c00d61d.jpg",
+      "image_name": "ef8623ce525d45e7fe09c8f50347921f5fb98c9ff386e9a0ffd189250c00d61d.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 20,
+      "context_before": ");\n\n返回值：调用进程或父进程的PID• getpid和getppid函数返回pid_t类型的int值• pid_t– Linux系统中，在types.h文件中定义为int\n\n# Exit 函数",
+      "context_after": "• exit函数终止进程并带上一个status状态\n\n# Fork 函数\n\n• 父进程调用fork函数创建新的子进程\n\n#include <unistd.h> #include <sys/type",
+      "context": "int值• pid_t– Linux系统中，在types.h文件中定义为int\n\n# Exit 函数 [图片] • exit函数终止进程并带上一个status状态\n\n# Fork 函数\n\n• 父进程调用fork函",
+      "section": "Exit 函数",
+      "alt_text": "",
+      "description": "该图片展示了一个C语言函数声明的代码框，内容为：`#include <stdlib.h>` 和 `void exit(int status);`，表示在标准库中定义的 `exit` 函数，用于终止进程并传递一个整型状态值。图片右下角用红色文字标注“这个函数没有返回值”，强调其返回类型为 `void`..."
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/b99272b028fa9f1fe29c5fbe3cd341b7fd12526d9e7269dbb77df9ad47a8d87e.jpg",
+      "image_name": "b99272b028fa9f1fe29c5fbe3cd341b7fd12526d9e7269dbb77df9ad47a8d87e.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 27,
+      "context_before": "2. int main()   \n3. {   \n4. fork();   \n5. fork();   \n6. printf(\"hello!\\n\");   \n7. exit(0);   \n8. }",
+      "context_after": "(a) 调用二次 fork(b) 打印四行输出\n\n# Execve函数\n\n#include <unistd.h>   \nint execve(const char \\*filename, cons",
+      "context": ";   \n6. printf(\"hello!\\n\");   \n7. exit(0);   \n8. } [图片] (a) 调用二次 fork(b) 打印四行输出\n\n# Execve函数\n\n#include <uni",
+      "section": "小思考：打印几行输出？",
+      "alt_text": "",
+      "description": "该图展示了两次 `fork` 调用后进程树的执行流程。初始进程在第一次 `fork` 后产生一个子进程，两者均继续执行；随后每个进程再次执行 `fork`，共产生四个进程。每个进程最终执行 `printf(\"hello!\\n\")`，因此共输出四行“hello”。图中用箭头表示执行路径，红色“fork”标注两次分叉点，黑色“hello”表示输出，直观呈现了多进程并发执行的结构。"
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/b9596f32cb80da4e164eb3f0388715465740133aae3de113e1473cc7cb99da7a.jpg",
+      "image_name": "b9596f32cb80da4e164eb3f0388715465740133aae3de113e1473cc7cb99da7a.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 38,
+      "context_before": "=101\n\nchild 22966 terminated normally with exit status=100\n\n子进程回收顺序不确定，都有可能\n\n# 应用程序使用CPU资源 （直通+抽象）",
+      "context_after": "内存\n\n# 回顾： 内存布局\n\n内存\n\n![](images/0b2c169448d09116e3c22956e93b4014b89972d8fba18ccb3e5cfb94cb240974.jp",
+      "context": "status=100\n\n子进程回收顺序不确定，都有可能\n\n# 应用程序使用CPU资源 （直通+抽象） [图片] 内存\n\n# 回顾： 内存布局\n\n内存\n\n![](images/0b2c169448d09116e3c",
+      "section": "应用程序使用CPU资源 （直通+抽象）",
+      "alt_text": "",
+      "description": "该图展示了应用程序如何通过操作系统和硬件接口使用CPU、内存和设备资源的分层架构。左侧“使用CPU资源”部分分为直通（用户ISA直接执行CPU指令）和抽象（通过OS系统调用如fork、signal等管理进程/线程）。中间“使用内存资源”部分展示通过mmap等系统调用实现地址映射，由MMU进行虚拟化管..."
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/0b2c169448d09116e3c22956e93b4014b89972d8fba18ccb3e5cfb94cb240974.jpg",
+      "image_name": "0b2c169448d09116e3c22956e93b4014b89972d8fba18ccb3e5cfb94cb240974.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 40,
+      "context_before": "](images/b9596f32cb80da4e164eb3f0388715465740133aae3de113e1473cc7cb99da7a.jpg)\n\n内存\n\n# 回顾： 内存布局\n\n内存",
+      "context_after": "# 进程内存布局\n\n![](images/b821fe353ff9fccced2882346c488a36aef312af72432ebb117431bbb86702d0.jpg)\n\n# 思考：多",
+      "context": "aae3de113e1473cc7cb99da7a.jpg)\n\n内存\n\n# 回顾： 内存布局\n\n内存 [图片] # 进程内存布局\n\n![](images/b821fe353ff9fccced2882346c488",
+      "section": "回顾： 内存布局",
+      "alt_text": "",
+      "description": "该图展示了CPU与内存之间的交互架构及进程内存布局。左侧为CPU内部结构，包含31个通用寄存器（X0-X30）、程序计数器（PC）、栈顶地址寄存器（SP）和程序状态寄存器（PSTATE），其中PSTATE包含条件码（N、Z、C、V）及掩码、特权级等状态位。右侧为内存布局，自上而下依次为函数A、B、C..."
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/b821fe353ff9fccced2882346c488a36aef312af72432ebb117431bbb86702d0.jpg",
+      "image_name": "b821fe353ff9fccced2882346c488a36aef312af72432ebb117431bbb86702d0.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 41,
+      "context_before": "布局\n\n内存\n\n![](images/0b2c169448d09116e3c22956e93b4014b89972d8fba18ccb3e5cfb94cb240974.jpg)\n\n# 进程内存布局",
+      "context_after": "# 思考：多个进程如何使用内存资源\n\n![](images/a792cb0d32531e3a1a8de9baddfbb9e20c881bd892f0e12a24ac6f88bdd0c0ae.jpg",
+      "context": "014b89972d8fba18ccb3e5cfb94cb240974.jpg)\n\n# 进程内存布局 [图片] # 思考：多个进程如何使用内存资源\n\n![](images/a792cb0d32531e3a1a8d",
+      "section": "进程内存布局",
+      "alt_text": "",
+      "description": "该图展示了CPU与内存之间的交互架构及进程内存布局。左侧为CPU部分，包含31个通用寄存器（X0-X30）、程序计数器（PC）、栈顶地址寄存器（SP）和程序状态寄存器（PSTATE），其中PSTATE包含条件码（N、Z、C、V）及执行状态等信息。右侧为内存区域，自上而下依次为栈、动态链接库、堆、数据..."
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/a792cb0d32531e3a1a8de9baddfbb9e20c881bd892f0e12a24ac6f88bdd0c0ae.jpg",
+      "image_name": "a792cb0d32531e3a1a8de9baddfbb9e20c881bd892f0e12a24ac6f88bdd0c0ae.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 42,
+      "context_before": "[](images/b821fe353ff9fccced2882346c488a36aef312af72432ebb117431bbb86702d0.jpg)\n\n# 思考：多个进程如何使用内存资源",
+      "context_after": "# 多个进程如何使用内存资源\n\n![](images/436604c4782a6cf8853f1ee0c862ba61937e538bef41d8be56d7a335d1623dec.jpg)",
+      "context": "af72432ebb117431bbb86702d0.jpg)\n\n# 思考：多个进程如何使用内存资源 [图片] # 多个进程如何使用内存资源\n\n![](images/436604c4782a6cf8853f1ee",
+      "section": "思考：多个进程如何使用内存资源",
+      "alt_text": "",
+      "description": "该图展示了多核处理器中多个进程共享内存资源的架构。图中包含四个核心（Core-0 至 Core-3），每个核心上运行两个“应用”进程，进程以带圆角的矩形表示。每个核心下方对应一个灰色方块，可能代表缓存或本地资源。所有核心共享底部的“内存”资源，以一个长条形矩形表示。整体结构体现了多核并行计算中应用进程的分布与内存共享机制。"
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/436604c4782a6cf8853f1ee0c862ba61937e538bef41d8be56d7a335d1623dec.jpg",
+      "image_name": "436604c4782a6cf8853f1ee0c862ba61937e538bef41d8be56d7a335d1623dec.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 43,
+      "context_before": "![](images/a792cb0d32531e3a1a8de9baddfbb9e20c881bd892f0e12a24ac6f88bdd0c0ae.jpg)\n\n# 多个进程如何使用内存资源",
+      "context_after": "# 思路1：协商划分，类比校园土地划分\n\n交大5000亩土地（8G内存）  \n• 若干学院（若干应用进程）  \n根据学院规模占用校园土地（根据应用规模各占一部分内存）\n\n![](images/1a",
+      "context": "81bd892f0e12a24ac6f88bdd0c0ae.jpg)\n\n# 多个进程如何使用内存资源 [图片] # 思路1：协商划分，类比校园土地划分\n\n交大5000亩土地（8G内存）  \n• 若干学院（若干应用",
+      "section": "多个进程如何使用内存资源",
+      "alt_text": "",
+      "description": "该图展示了一个多进程共享内存资源的简化模型。图中包含四个核心（Core-0 至 Core-3），每个核心上运行多个“应用”进程，每个应用下方对应一个灰色方块，表示其内存分配。所有核心共享下方的一个统一“内存”资源池。图右侧有一个红色箭头，指向右侧空白区域，暗示后续将展示内存划分或分配策略。整体结构类比于多个学院共享校园土地资源，用于说明进程间内存资源的协商划分思路。"
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/1aa2e0a824f13ebabf9a776651663770b8b117cabc8f1efb0c3ce482ef72da55.jpg",
+      "image_name": "1aa2e0a824f13ebabf9a776651663770b8b117cabc8f1efb0c3ce482ef72da55.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 43,
+      "context_before": "d1623dec.jpg)\n\n# 思路1：协商划分，类比校园土地划分\n\n交大5000亩土地（8G内存）  \n• 若干学院（若干应用进程）  \n根据学院规模占用校园土地（根据应用规模各占一部分内存）",
+      "context_after": "# 协商划分方案的问题\n\n# 硬件概览：\n\n<table><tr><td>型号名称： 型号标识符： 芯片： 核总数：</td><td>MacBook Air Mac14,2 Apple M2 8(",
+      "context": "内存）  \n• 若干学院（若干应用进程）  \n根据学院规模占用校园土地（根据应用规模各占一部分内存） [图片] # 协商划分方案的问题\n\n# 硬件概览：\n\n<table><tr><td>型号名称： 型号标识符： ",
+      "section": "思路1：协商划分，类比校园土地划分",
+      "alt_text": "",
+      "description": "该图展示了内存的逻辑布局，以垂直堆叠的矩形框表示不同程序和操作系统的内存区域。从上至下依次为：程序1栈、程序2栈、操作系统栈、程序1代码和数据、程序2代码和数据、操作系统代码和数据。各区域独立划分，体现了多进程环境下内存空间的静态分配结构，用于说明多个应用进程与操作系统在内存中的共存与资源划分问题。"
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/f34074a18f22dcb5c3feb176bec4f11db8cfd1b321287b22b5984c181da1ba2b.jpg",
+      "image_name": "f34074a18f22dcb5c3feb176bec4f11db8cfd1b321287b22b5984c181da1ba2b.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 44,
+      "context_before": "</td></tr></table>\n\n# 思考：存在问题：\n\n1. 内存大小无法满足所有应用进程的内存需求总量\n\n2. 不同应用进程之间缺乏隔离（安全性低、容错性差）\n\n3. 程序编写编译的难度",
+      "context_after": "![](images/0c3e7642ae8801c8a494fabf938b2c09fe52f32884f3c51b1938719e92818d5a.jpg)\n\n# 思考：程序中的地址是哪里来的",
+      "context": "程的内存需求总量\n\n2. 不同应用进程之间缺乏隔离（安全性低、容错性差）\n\n3. 程序编写编译的难度 [图片] ![](images/0c3e7642ae8801c8a494fabf938b2c09fe52f32",
+      "section": "思考：存在问题：",
+      "alt_text": "",
+      "description": "该图片展示了一个 macOS 操作系统的桌面应用程序图标界面，背景为模糊的深色渐变。桌面上排列着多款常用软件图标，包括开发工具（如 Visual Studio Code、XMind、Docker、VMware Fusion）、办公软件（如 Microsoft Word、Excel、Google Ch..."
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/0c3e7642ae8801c8a494fabf938b2c09fe52f32884f3c51b1938719e92818d5a.jpg",
+      "image_name": "0c3e7642ae8801c8a494fabf938b2c09fe52f32884f3c51b1938719e92818d5a.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 44,
+      "context_before": "差）\n\n3. 程序编写编译的难度\n\n![](images/f34074a18f22dcb5c3feb176bec4f11db8cfd1b321287b22b5984c181da1ba2b.jpg)",
+      "context_after": "# 思考：程序中的地址是哪里来的？\n\n// main.c中的C代码void multstore(long, long, long\\*);\n\nint main() { long d; multsto",
+      "context": "eb176bec4f11db8cfd1b321287b22b5984c181da1ba2b.jpg) [图片] # 思考：程序中的地址是哪里来的？\n\n// main.c中的C代码void multstore(lo",
+      "section": "思考：存在问题：",
+      "alt_text": "",
+      "description": "该图片展示了一个风格化的卡通羊驼头像，背景为深色并带有蓝色网格和电路板图案，整体呈现科技感。羊驼以黄色为主色调，眼睛大而有神，耳朵竖立，颈部有红色条纹装饰。图像外框为蓝绿色圆角矩形，边缘带有科技感的装饰线条。该图标常用于代表Llama系列大语言模型，尤其与Llama.cpp项目相关。图片上方文字说明..."
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/69124c0f2006a2451b58c8524c65f17e98e720faa60f53206c4a4ef8e11e38ab.jpg",
+      "image_name": "69124c0f2006a2451b58c8524c65f17e98e720faa60f53206c4a4ef8e11e38ab.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 45,
+      "context_before": "400bf3</td><td></td><td></td><td></td><td></td><td></td></tr></table>\n\n这些地址，在C代码中并没有，是从哪里来的？ 编译器生成",
+      "context_after": "# 再次思考：多个进程如何使用内存资源\n\n![](images/719b40703df2c8a456def8f2e972c906ceebe1d4e5f311f536c38a9c9b07e9bf.j",
+      "context": "td></td></tr></table>\n\n这些地址，在C代码中并没有，是从哪里来的？ 编译器生成 [图片] # 再次思考：多个进程如何使用内存资源\n\n![](images/719b40703df2c8a456",
+      "section": "思考：程序中的地址是哪里来的？",
+      "alt_text": "",
+      "description": "该图展示了Linux进程的虚拟内存布局，自下而上依次为：只读段（.init, .text, .rodata）、读写段（.data, .bss）、运行时堆（通过malloc分配）、共享库的内存映射区域、用户栈，以及顶部的内核使用区域。图中蓝色区域表示动态增长的内存段（堆和栈），箭头指示其增长方向。该结构体现了进程虚拟地址空间的典型分段组织，用于支持多进程共享内存资源。"
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/719b40703df2c8a456def8f2e972c906ceebe1d4e5f311f536c38a9c9b07e9bf.jpg",
+      "image_name": "719b40703df2c8a456def8f2e972c906ceebe1d4e5f311f536c38a9c9b07e9bf.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 46,
+      "context_before": "(images/69124c0f2006a2451b58c8524c65f17e98e720faa60f53206c4a4ef8e11e38ab.jpg)\n\n# 再次思考：多个进程如何使用内存资源",
+      "context_after": "# 再次思考：多个进程如何使用内存资源\n\n![](images/f1828d2af2587589faa2e5badf1918425e2db3c3ce738b20c6d13efce0c9e107.j",
+      "context": "a60f53206c4a4ef8e11e38ab.jpg)\n\n# 再次思考：多个进程如何使用内存资源 [图片] # 再次思考：多个进程如何使用内存资源\n\n![](images/f1828d2af2587589fa",
+      "section": "再次思考：多个进程如何使用内存资源",
+      "alt_text": "",
+      "description": "该图展示了多核处理器中多个进程共享内存资源的架构。图中包含四个核心（Core-0 至 Core-3），每个核心上方堆叠着多个“应用”方框，表示多个进程在各自核心上运行。每个核心下方对应一个灰色方框，可能代表核心的本地缓存或资源。所有核心共享底部的一个大型“内存”模块，体现了多进程并发执行时对共享内存的访问机制。该图直观呈现了多核系统中应用分布与内存共享的关系。"
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/f1828d2af2587589faa2e5badf1918425e2db3c3ce738b20c6d13efce0c9e107.jpg",
+      "image_name": "f1828d2af2587589faa2e5badf1918425e2db3c3ce738b20c6d13efce0c9e107.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 47,
+      "context_before": "(images/719b40703df2c8a456def8f2e972c906ceebe1d4e5f311f536c38a9c9b07e9bf.jpg)\n\n# 再次思考：多个进程如何使用内存资源",
+      "context_after": "# 思路2：分时复用，参考对于CPU资源的使用\n\n每个CPU核心访问固定地址范围的内存\n\n任意时刻，一个CPU核心仅有一个应用进程执行，它能够使用该CPU核心对应的全部内存\n\n进程切换时，将全部内",
+      "context": "e5f311f536c38a9c9b07e9bf.jpg)\n\n# 再次思考：多个进程如何使用内存资源 [图片] # 思路2：分时复用，参考对于CPU资源的使用\n\n每个CPU核心访问固定地址范围的内存\n\n任意时刻，",
+      "section": "再次思考：多个进程如何使用内存资源",
+      "alt_text": "",
+      "description": "该图展示了多个进程通过分时复用方式共享内存资源的架构演变。左侧为初始状态：四个CPU核心（Core-0至Core-3）各自运行多个应用，共享同一块物理内存。右侧为优化后状态：每个核心被分配独立的内存模块，实现内存资源的分时复用。图中红色箭头表示从共享内存到独立内存的转变，体现了类似CPU资源调度的内存管理思路，旨在提升并发性能与资源隔离性。"
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/5b1ed6c2763286bc167c60841085cf2b1e55bfdaa59d5ec189a205dbd0d6b8bb.jpg",
+      "image_name": "5b1ed6c2763286bc167c60841085cf2b1e55bfdaa59d5ec189a205dbd0d6b8bb.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 48,
+      "context_before": "存\n\n进程切换时，将全部内存保存到磁盘上，并且从磁盘上恢复下一个执行进程的内存\n\n# 分时复用方案的问题\n\n问题1. 磁盘写入和读取会造成严重的性能损失\n\n问题2. 依然存在物理内存容量限制的问题",
+      "context_after": "# 思路2：分时复用，参考对于CPU资源的使用\n\n每个CPU核心访问固定地址范围的内存\n\n任意时刻，一个CPU核心仅有一个应用进程执行，它能够使用该CPU核心对应的全部内存\n\n• 进程切换时，将全",
+      "context": "案的问题\n\n问题1. 磁盘写入和读取会造成严重的性能损失\n\n问题2. 依然存在物理内存容量限制的问题 [图片] # 思路2：分时复用，参考对于CPU资源的使用\n\n每个CPU核心访问固定地址范围的内存\n\n任意时刻，",
+      "section": "分时复用方案的问题",
+      "alt_text": "",
+      "description": "该图展示了针对“物理内存容量限制”问题的解决思路——**分时复用内存资源**，类比CPU资源的分时调度。左侧为原始架构：四个CPU核心（Core-0至Core-3）共享同一块物理内存，每个核心运行多个应用，存在内存容量瓶颈。右侧为优化方案：每个核心被分配独立的内存模块，实现内存资源的分时复用与隔离，..."
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/b0153666c8b90cb8d29686377473a4f2430996ea4e0b237eca112825bcaeb476.jpg",
+      "image_name": "b0153666c8b90cb8d29686377473a4f2430996ea4e0b237eca112825bcaeb476.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 51,
+      "context_before": "访问内存– 所有应用进程的虚拟地址空间都是统一的（方便开发）\n\n地址翻译\n\n– CPU按照OS配置的规则把虚拟地址翻译成物理地址– 翻译对于应用进程时不可见的（无需关心）\n\n# 虚拟内存与物理内存",
+      "context_after": "进程A的虚拟内存地址空间\n\n# 虚拟内存\n\n# 虚拟内存的优势：独立而统一的地址空间\n\n![](images/2e55b123e8d03b80a85c6134573b76f3c1f025371f",
+      "context": "置的规则把虚拟地址翻译成物理地址– 翻译对于应用进程时不可见的（无需关心）\n\n# 虚拟内存与物理内存 [图片] 进程A的虚拟内存地址空间\n\n# 虚拟内存\n\n# 虚拟内存的优势：独立而统一的地址空间\n\n![](im",
+      "section": "虚拟内存与物理内存",
+      "alt_text": "",
+      "description": "该图展示了虚拟内存与物理内存之间的映射关系。左侧和右侧分别代表两个进程（如进程A）的虚拟内存地址空间，中间为物理内存地址空间。图中蓝色和橙色块表示已映射的虚拟内存区域，通过箭头指向物理内存中对应的物理页，灰色区域为未映射区域。不同进程的虚拟地址空间可映射到物理内存的相同或不同位置，体现了虚拟内存“独立而统一”的优势，即每个进程拥有独立的地址空间，但共享物理内存资源，且映射对应用程序透明。"
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/2e55b123e8d03b80a85c6134573b76f3c1f025371fe687c6e8a2ec1a53904cbf.jpg",
+      "image_name": "2e55b123e8d03b80a85c6134573b76f3c1f025371fe687c6e8a2ec1a53904cbf.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 52,
+      "context_before": "d29686377473a4f2430996ea4e0b237eca112825bcaeb476.jpg)  \n进程A的虚拟内存地址空间\n\n# 虚拟内存\n\n# 虚拟内存的优势：独立而统一的地址空间",
+      "context_after": "# 虚拟内存的优势：突破物理内存容量限制\n\n# 提高内存资源利用率\n\n– 操作系统按需把进程虚拟地址映射到物理地址\n\n# 突破物理内存的容量限制\n\n![](images/e56a3f652d60a",
+      "context": ".jpg)  \n进程A的虚拟内存地址空间\n\n# 虚拟内存\n\n# 虚拟内存的优势：独立而统一的地址空间 [图片] # 虚拟内存的优势：突破物理内存容量限制\n\n# 提高内存资源利用率\n\n– 操作系统按需把进程虚拟地址",
+      "section": "虚拟内存的优势：独立而统一的地址空间",
+      "alt_text": "",
+      "description": "该图片展示了一个演示虚拟内存特性的终端实验场景。左侧显示了两个C语言源文件`vm1.c`和`vm2.c`的代码，分别定义了全局变量`val1=1`和`val2=2`，并在主函数中打印其内存地址和值。右侧终端输出显示，当两个程序并行运行（`./vm1 & ./vm2`）时，尽管变量名不同，但它们在各自..."
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/e56a3f652d60a19703b4afe9ff211d21682b3becbd23accc4c415b6fc65aa2f5.jpg",
+      "image_name": "e56a3f652d60a19703b4afe9ff211d21682b3becbd23accc4c415b6fc65aa2f5.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 53,
+      "context_before": "7c6e8a2ec1a53904cbf.jpg)\n\n# 虚拟内存的优势：突破物理内存容量限制\n\n# 提高内存资源利用率\n\n– 操作系统按需把进程虚拟地址映射到物理地址\n\n# 突破物理内存的容量限制",
+      "context_after": "进程A的虚拟内存地址空间  \n进程B的虚拟内存地址空间\n\n– 操作系统可以将部分虚拟内存区域数据暂存到磁盘上\n\nRobert_CrovellaModerator\n\nApascalorltaets",
+      "context": "# 提高内存资源利用率\n\n– 操作系统按需把进程虚拟地址映射到物理地址\n\n# 突破物理内存的容量限制 [图片] 进程A的虚拟内存地址空间  \n进程B的虚拟内存地址空间\n\n– 操作系统可以将部分虚拟内存区域数据暂存",
+      "section": "突破物理内存的容量限制",
+      "alt_text": "",
+      "description": "该图展示了操作系统通过虚拟内存机制突破物理内存容量限制的原理。左侧和右侧分别表示进程A和进程B的虚拟内存地址空间，其中蓝色和橙色区域为已映射区域，灰色区域为未映射区域。中间为物理内存地址空间，包含与虚拟内存对应映射的蓝色和橙色块。箭头表示虚拟地址空间中的部分区域被映射到物理内存，其余部分暂未映射，体现了按需映射和内存分页管理机制。"
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/7434fe04b407e8055436655b7ebec9331d971b26cc82af753a82646ee90c1a12.jpg",
+      "image_name": "7434fe04b407e8055436655b7ebec9331d971b26cc82af753a82646ee90c1a12.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 54,
+      "context_before": "bedatsetntilaafmosed hostanddevicedertoaeadaageftistememousoaditmangdloathudald\n\n# Linux中进程的虚拟内存布局",
+      "context_after": "# cat /proc/\\$PID/maps\n\n<table><tr><td>ffffc2122000-ffffc2143000</td><td>[stack]</td></tr><tr><td>",
+      "context": "tistememousoaditmangdloathudald\n\n# Linux中进程的虚拟内存布局 [图片] # cat /proc/\\$PID/maps\n\n<table><tr><td>ffffc212200",
+      "section": "Linux中进程的虚拟内存布局",
+      "alt_text": "",
+      "description": "该图展示了Linux系统中进程的虚拟内存布局。内存空间从低地址（0x0）到高地址依次排列，主要包括：代码段、数据段（二者从可执行文件载入）、用户堆（向上增长）、代码库、用户栈（向下增长），以及内核栈和内核代码及数据区域。用户栈与内核栈之间以粗黑线分隔，表示内核空间与用户空间的边界。图中箭头标明了用户堆和用户栈的增长方向。"
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/8b11d9a1d0dce0c2294c3c55a6a9d7a0b30ed48c1dd093b585b61621a629466e.jpg",
+      "image_name": "8b11d9a1d0dce0c2294c3c55a6a9d7a0b30ed48c1dd093b585b61621a629466e.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 57,
+      "context_before": "><tr><td>.strtab</td></tr><tr><td>节头部表</td></tr></table>\n\n# 回顾：常见的进程虚拟内存布局\n\n# cat /proc/\\$PID/maps",
+      "context_after": "<table><tr><td>ffffc2122000-ffffc2143000</td><td>[stack]</td></tr><tr><td>ffffae6a8o00-ffffae6ab00",
+      "context": "</table>\n\n# 回顾：常见的进程虚拟内存布局\n\n# cat /proc/\\$PID/maps [图片] <table><tr><td>ffffc2122000-ffffc2143000</td><td>[",
+      "section": "cat /proc/\\$PID/maps",
+      "alt_text": "",
+      "description": "该图展示了典型的进程虚拟内存布局，自下而上依次为：代码段、数据段、用户堆、代码库、用户栈，以及内核栈和内核代码及数据。其中，代码和数据段从可执行文件载入，代码库从共享目标文件载入。用户堆向上增长，用户栈向下增长，两者在内存中相邻。底部标记为0x0，表示虚拟地址空间的起始位置。"
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/51f8dc326974e1fb9463541e567d40508d754cadf0eea88d21945404f9a8ce87.jpg",
+      "image_name": "51f8dc326974e1fb9463541e567d40508d754cadf0eea88d21945404f9a8ce87.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 58,
+      "context_before": "b25f7000-aaaab25f8000</td><td>[/home/xiaoming/hello] (code)</td></tr></table>\n\n# 进程使用内存资源 （虚拟化+抽象）",
+      "context_after": "文件\n\n# Unix 文件\n\nUnix文件是一串字节序列– B0,B1,..., Bk,...,Bm\n\n• 所有IO设备都被抽象成文件– 如,网络设备、硬盘、终端等– Unix提供一个基于文件的底",
+      "context": "llo] (code)</td></tr></table>\n\n# 进程使用内存资源 （虚拟化+抽象） [图片] 文件\n\n# Unix 文件\n\nUnix文件是一串字节序列– B0,B1,..., Bk,...,Bm",
+      "section": "进程使用内存资源 （虚拟化+抽象）",
+      "alt_text": "",
+      "description": "该图展示了操作系统中资源使用的三层抽象架构，重点聚焦于“使用内存资源”部分。图中分为三列：使用CPU资源、使用内存资源、使用设备资源。中间部分（红色边框）详细说明了内存资源的使用：应用程序通过系统调用（如mmap()、mprotect()）和CPU指令（load/store）与操作系统交互；OS通过..."
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/df5527c0ad7e0d07384bc033041e1cb8c65a8b871e6a7286a38eee1401f79512.jpg",
+      "image_name": "df5527c0ad7e0d07384bc033041e1cb8c65a8b871e6a7286a38eee1401f79512.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 62,
+      "context_before": "件– 从内核的角度来看，没有区别\n\n# 文件类型2\n\n目录(directory)也是一个文件– 由一组“文件名到文件的映射”构成\n\n• Linux内核使用层次化目录来组织所有文件– /：代表根目录",
+      "context_after": "# 文件类型3\n\n• 套接字(Socket)也是文件，常用于跨网络交互\n\n其他文件类型包括:\n\n– 命名管道(named pipes)   \n– 符号连接(symbolic links)   \n–",
+      "context": "由一组“文件名到文件的映射”构成\n\n• Linux内核使用层次化目录来组织所有文件– /：代表根目录 [图片] # 文件类型3\n\n• 套接字(Socket)也是文件，常用于跨网络交互\n\n其他文件类型包括:\n\n– ",
+      "section": "文件类型2",
+      "alt_text": "",
+      "description": "该图为Linux文件系统层次结构的简化树状图，根目录`/`下包含`bin/`、`dev/`、`home/`和`usr/`四个主要子目录。`bin/`下有可执行文件`ls`；`dev/`下包含设备文件`tty1`和`sda1`；`home/`下有用户目录`os/`；`usr/`下包含`include/..."
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/4feb52cb814f7ec023e9c021411fb2a98285c8575c03a202da18cef4bc611955.jpg",
+      "image_name": "4feb52cb814f7ec023e9c021411fb2a98285c8575c03a202da18cef4bc611955.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 67,
+      "context_before": "sult，13);write( $\\beth$ ，result，13);close(fd);}\n\n# 文件： 对所有设备的抽象\n\n存储设备– File网络设备– Socket其他设备– 同样是fd",
+      "context_after": "# 操作设备的示例\n\n// file:hello-tty.c   \n4 int main() {   \n7 int fd = open(\"/dev/pts/18\",0_WRoNLY);   \n8",
+      "context": "\n# 文件： 对所有设备的抽象\n\n存储设备– File网络设备– Socket其他设备– 同样是fd [图片] # 操作设备的示例\n\n// file:hello-tty.c   \n4 int main() {  ",
+      "section": "文件： 对所有设备的抽象",
+      "alt_text": "",
+      "description": "该图展示了一个类Unix文件系统的目录树结构，根目录 `/` 下包含 `bin/`、`dev/`、`home/` 和 `usr/` 等子目录。其中 `dev/` 目录被红色框突出显示，其下包含 `tty1` 和 `sda1` 两个设备节点，代表终端和磁盘设备。图下方标注 `/dev/xxx`，强调设..."
+    },
+    {
+      "image_path": ".mineru_output/OS-04 OS-abstractions/OS-04 OS-abstractions/auto/images/b19045b742fdbdf3c2f30c049840842e33d0167fb6e9705325a134201ddde8cb.jpg",
+      "image_name": "b19045b742fdbdf3c2f30c049840842e33d0167fb6e9705325a134201ddde8cb.jpg",
+      "filename": "OS-04 OS-abstractions.pdf",
+      "page_number": 69,
+      "context_before": "~] $\\$ 5$ gcc hello-tty.c -o hello-tty [user@osbook \\~] $\\$ 5$ ./hello-tty\n\n# 总结：OS对CPU、内存、设备的三大抽象",
+      "context_after": "",
+      "context": "ook \\~] $\\$ 5$ ./hello-tty\n\n# 总结：OS对CPU、内存、设备的三大抽象 [图片] ",
+      "section": "总结：OS对CPU、内存、设备的三大抽象",
+      "alt_text": "",
+      "description": "该图展示了操作系统对CPU、内存和设备资源的三大抽象机制。左侧为“使用CPU资源”，应用程序通过系统调用（如fork、signal）或直接执行CPU指令（如add、mov）与OS交互，OS提供“进程/线程”抽象，底层通过系统ISA和用户ISA与CPU通信。中间为“使用内存资源”，应用程序通过mmap..."
+    }
+  ]
+}

@@ -8,6 +8,7 @@ import MessageBubble from './MessageBubble';
 import InputArea from './InputArea';
 import ThinkingIndicator from './ThinkingIndicator';
 import SocraticHints from './SocraticHints';
+import RetrievalResults from './RetrievalResults';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const ChatInterface = ({ 
@@ -18,13 +19,19 @@ const ChatInterface = ({
   currentSessionId,
   selectedKnowledgeBase,
   onKnowledgeBaseChange,
+  retrievalCitations,
+  showRetrievalResults,
+  onCitationClick,
 }) => {
   const messagesEndRef = useRef(null);
 
-  // 自动滚动到底部
+  // 自动滚动到底部（当消息、检索结果或loading状态变化时）
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    // 使用setTimeout确保DOM已更新
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  }, [messages, retrievalCitations, loading]);
 
   return (
     <div className="flex flex-col h-full bg-white">
@@ -69,9 +76,25 @@ const ChatInterface = ({
                     message={message}
                     isLatest={index === messages.length - 1}
                     sessionId={currentSessionId}
+                    onCitationClick={(citeId) => {
+                      // 从cite_id找到对应的citation对象
+                      const citation = retrievalCitations?.find(c => c.id === citeId);
+                      if (citation && onCitationClick) {
+                        onCitationClick(citation);
+                      }
+                    }}
                   />
                 ))}
               </AnimatePresence>
+              
+              {/* 检索结果展示（在最新消息之后显示，让用户等待时能看到） */}
+              {loading && showRetrievalResults && retrievalCitations && retrievalCitations.length > 0 && (
+                <RetrievalResults 
+                  citations={retrievalCitations}
+                  onCitationClick={onCitationClick}
+                  visible={showRetrievalResults}
+                />
+              )}
             </>
           )}
 

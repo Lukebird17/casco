@@ -1,10 +1,12 @@
 import os
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 import chromadb
 from chromadb.config import Settings
 from openai import OpenAI
 from tqdm import tqdm
+import jieba  # 中文分词
+from rank_bm25 import BM25Okapi  # BM25算法
 
 from config import (
     VECTOR_DB_PATH,
@@ -41,6 +43,57 @@ class VectorStore:
         self.collection = self.chroma_client.get_or_create_collection(
             name=collection_name, metadata={"description": "课程材料向量数据库"}
         )
+        
+        # ==========================================
+        # 新增: BM25 索引构建逻辑
+        # ==========================================
+        self.bm25_model = None
+        self.bm25_corpus_map = []  # 用于通过BM25索引找回原始文档
+        self._build_bm25_index()
+
+    def _tokenize(self, text: str) -> List[str]:
+        """中文分词工具（用于BM25）"""
+        # 使用搜索引擎模式，切分得更细，提高召回率
+        return list(jieba.cut_for_search(text))
+
+    def _build_bm25_index(self):
+        """从 ChromaDB 加载所有数据并构建 BM25 索引"""
+        try:
+            count = self.collection.count()
+            if count == 0:
+                print("⚠️  向量库为空，跳过 BM25 索引构建")
+                return
+
+            print(f"🔄 正在构建 BM25 索引 (共 {count} 条数据)...")
+            
+            # 一次性拉取所有文档（如果数据量达到百万级，这里需要改为分页拉取）
+            result = self.collection.get(include=['documents', 'metadatas'])
+            
+            tokenized_corpus = []
+            self.bm25_corpus_map = []
+            
+            # 遍历构建
+            for i, doc_content in enumerate(result['documents']):
+                if not doc_content:
+                    continue
+                
+                # 分词
+                tokens = self._tokenize(doc_content)
+                tokenized_corpus.append(tokens)
+                
+                # 建立映射: BM25 index -> 原始数据
+                self.bm25_corpus_map.append({
+                    "content": doc_content,
+                    "metadata": result['metadatas'][i]
+                })
+            
+            # 初始化 BM25Okapi
+            if tokenized_corpus:
+                self.bm25_model = BM25Okapi(tokenized_corpus)
+                print("✅ BM25 索引构建完成")
+            
+        except Exception as e:
+            print(f"❌ BM25 构建失败: {e}")
 
     def get_embedding(self, text: str) -> List[float]:
         """获取文本的向量表示
@@ -110,13 +163,17 @@ class VectorStore:
                 documents.append(chunk['content'])
                 embeddings.append(embedding)
                 
-                # 元数据
+                # 元数据（支持image_url）
+                source_meta = chunk.get('metadata', {})
+                image_url = source_meta.get('image_url', '')
+                
                 metadata = {
                     'filename': chunk['filename'],
                     'filepath': chunk['filepath'],
                     'filetype': chunk['filetype'],
                     'page_number': chunk['page_number'],
-                    'chunk_id': chunk['chunk_id']
+                    'chunk_id': chunk['chunk_id'],
+                    'image_url': image_url  # 支持图片URL
                 }
                 metadatas.append(metadata)
             
@@ -146,6 +203,9 @@ class VectorStore:
         print(f"✅ 成功添加 {success_count} 个文档块到向量数据库")
         if skipped_count > 0:
             print(f"⚠️  跳过 {skipped_count} 个文档块（embedding 失败或文本过长）")
+        
+        # 重建BM25索引
+        self._build_bm25_index()
 
     def search(self, query: str, top_k: int = TOP_K) -> List[Dict]:
         """搜索相关文档
@@ -196,6 +256,56 @@ class VectorStore:
         
         except Exception as e:
             print(f"搜索失败: {e}")
+            return []
+    
+    def search_bm25(self, query: str, top_k: int = TOP_K) -> List[Dict]:
+        """【新增】BM25 关键词检索
+        
+        Args:
+            query: 查询文本
+            top_k: 返回结果数量
+            
+        Returns:
+            检索结果列表
+        """
+        if not self.bm25_model:
+            return []
+        
+        try:
+            # 1. 对查询分词
+            tokenized_query = self._tokenize(query)
+            
+            # 2. 获取分数
+            doc_scores = self.bm25_model.get_scores(tokenized_query)
+            
+            # 3. 获取 TopK 索引
+            # argsort 并取反切片
+            top_n_indexes = sorted(
+                range(len(doc_scores)), 
+                key=lambda i: doc_scores[i], 
+                reverse=True
+            )[:top_k]
+            
+            results = []
+            for idx in top_n_indexes:
+                score = doc_scores[idx]
+                # 过滤掉得分为0的结果（完全不匹配）
+                if score <= 0:
+                    continue
+                
+                doc_info = self.bm25_corpus_map[idx]
+                results.append({
+                    'content': doc_info['content'],
+                    'metadata': doc_info['metadata'],
+                    'score': score,  # BM25 分数
+                    'filename': doc_info['metadata'].get('filename', 'unknown'),
+                    'page_number': doc_info['metadata'].get('page_number', 0),
+                    'filetype': doc_info['metadata'].get('filetype', 'unknown'),
+                    'type': 'bm25'
+                })
+            return results
+        except Exception as e:
+            print(f"❌ BM25 搜索失败: {e}")
             return []
 
     def clear_collection(self) -> None:

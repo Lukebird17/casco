@@ -14,8 +14,9 @@ import { User, Bot, AlertCircle, Bookmark, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { saveSnippet } from '../api/client';
+import AnswerWithCitations from './AnswerWithCitations';
 
-const MessageBubble = ({ message, isLatest, sessionId }) => {
+const MessageBubble = ({ message, isLatest, sessionId, onCitationClick }) => {
   const isUser = message.role === 'user';
   const isError = message.error;
   const [isSaved, setIsSaved] = useState(false);
@@ -69,33 +70,10 @@ const MessageBubble = ({ message, isLatest, sessionId }) => {
           {isUser ? (
             <p className="text-google-gray-900 whitespace-pre-wrap">{message.content}</p>
           ) : (
-            <div className="markdown-content prose prose-sm max-w-none">
-              <ReactMarkdown
-                remarkPlugins={[remarkMath]}
-                rehypePlugins={[rehypeKatex]}
-                components={{
-                  code({ node, inline, className, children, ...props }) {
-                    const match = /language-(\w+)/.exec(className || '');
-                    return !inline && match ? (
-                      <SyntaxHighlighter
-                        style={vscDarkPlus}
-                        language={match[1]}
-                        PreTag="div"
-                        {...props}
-                      >
-                        {String(children).replace(/\n$/, '')}
-                      </SyntaxHighlighter>
-                    ) : (
-                      <code className={className} {...props}>
-                        {children}
-                      </code>
-                    );
-                  },
-                }}
-              >
-                {message.content}
-              </ReactMarkdown>
-            </div>
+            <AnswerWithCitations 
+              content={message.content} 
+              onCitationClick={onCitationClick}
+            />
           )}
           
           {/* 时间戳和操作按钮 */}

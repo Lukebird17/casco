@@ -1,0 +1,612 @@
+{
+  "pages": [
+    {
+      "text": "【第1页】\n# ARM汇编 – 基础\n\n【/第1页】",
+      "page_number": 1,
+      "section": "ARM汇编 – 基础"
+    },
+    {
+      "text": "【第2页】\n# 版权声明\n\n• 本内容版权归上海交通大学并行与分布式系统研究所所有\n\n使用者可以将全部或部分本内容免费用于非商业用途\n\n• 使用者在使用全部或部分本内容时请注明来源– 内容来自：上海交通大学并行与分布式系统研究所+材料名字\n\n• 对于不遵守此声明或者其他违法使用本内容者，将依法保留追究权\n\n本内容的发布采用 Creative Commons Attribution 4.0 License– 完整文本：https://creativecommons.org/licenses/by/4.0/legalcode\n\n【/第2页】",
+      "page_number": 2,
+      "section": "版权声明"
+    },
+    {
+      "text": "【第3页】\n# 大纲\n\n为什么学习ARM ISA/汇编\n\n从C语言到汇编语言\n\n理解ARM汇编\n\n理解机器执行\n\n【/第3页】",
+      "page_number": 3,
+      "section": "大纲"
+    },
+    {
+      "text": "【第4页】\n# 为什么学习ARM ISA/汇编\n\n【/第4页】",
+      "page_number": 4,
+      "section": "为什么学习ARM ISA/汇编"
+    },
+    {
+      "text": "【第5页】\n# 指令集架构与操作系统\n\n【/第5页】",
+      "page_number": 5,
+      "section": "指令集架构与操作系统"
+    },
+    {
+      "text": "【第6页】\n# • ISA (Instruction Set Architecture)\n\n– CPU向软件（应用程序和操作系统）提供的接口\n\n• 理解软件在CPU上的运行（操作系统设计、程序调试、内存安全等）– 操作系统中包含体系结构相关的汇编代码\n\n• 操作系统启动代码（例如栈未设置）• 部分操作C语言无法表达（例如获取系统状态、刷新TLB）• 有场景汇编代码比C代码高效很多（例如memcpy）\n\n【/第6页】",
+      "page_number": 6,
+      "section": "• ISA (Instruction Set Architecture)"
+    },
+    {
+      "text": "【第7页】\n# 两个简单示例\n\nstatic void target(void)   \n7 {   \n8 printf(\"Exploit succeeded!\\n\");   \n9 exit(0);   \n10 }   \n11   \n12 static void vulnerable(void)   \n13{   \n14 uint64_t a[1];   \n15 a[2] = (uint64_t)target;   \n16}   \n17   \n18 int main()   \n19{   \n20 vulnerable();   \n21 return 0;   \n22}\n\nvoid my_memcpy_c(void\\* dest,void\\* src, size_t n) { clock_t start = clock(); unsigned char\\* d = (unsigned char\\*)dest; unsigned char\\* s = (unsigned char\\*)src; for (size_t i =0; i <n; i++) { Memory Copy d[i] = s[i]; } clock_t end = clock(); double time_taken = ((double)(end - start)) / CLocKS_PER_SEC; printf(\"C implementation time taken: %f seconds\\n\",time_taken);   \nvoid my_memcpy_asm(void\\* dest，void\\* src,size_t n) { clock_t start = clock(O; asm volatile( \"cld\\n\\t\" //清除方向标志位，向前移动 \"rep movsb\\n\\t\" //重复执行movsb指令，将n个字节从src复制到de \"c\"(n)，\"S\"(src)，\"D\"(dest) \"memory\" )； clock_t end = clock(); double time_taken = ((double)(end - start)) / CLoCkS_PER_SEC;\n\n【/第7页】",
+      "page_number": 7,
+      "section": "两个简单示例"
+    },
+    {
+      "text": "【第8页】\nprintf(\"Assembly implementation time taken: %f seconds\\n\",time_taker\n\n【/第8页】",
+      "page_number": 8,
+      "section": "两个简单示例"
+    },
+    {
+      "text": "【第9页】\n# 为什么选择ARM\n\n• CPU体系结构– x86、ARM、RISC-V、SPARC、LoongArch、…\n\n【/第9页】",
+      "page_number": 9,
+      "section": "为什么选择ARM"
+    },
+    {
+      "text": "【第10页】\n# ARM的应用\n\n– 终端：手机、平台、智能终端、边缘设备  \n– 车载：智能座舱、自动驾驶计算平台  \n– 笔记本：Apple  \n– 服务器：鲲鹏、亚马逊Graviton、Ampere、NVIDIA Grace  \n– 航天：NASA\n\n【/第10页】",
+      "page_number": 10,
+      "section": "ARM的应用"
+    },
+    {
+      "text": "【第11页】\n# 从C语言到汇编语言\n\n【/第11页】\n\n【第11页·图片】(610e59714767b7519337b34c95d934aab044893fcb95e8a939738e44a66d79e6.jpg)\n该图展示了C程序从源代码到可执行二进制文件的完整编译过程。流程始于源程序文件 `mstore.c`（文本格式），首先由预处理器（cpp）处理生成 `mstore.i`（经预处理的源程序，文本）；接着由编译器（cc1）将其转换为汇编程序 `mstore.s`（文本）；然后汇编器（as）将其汇编成可重定...\n【/图片】\n",
+      "page_number": 11,
+      "section": "从C语言到汇编语言"
+    },
+    {
+      "text": "【第12页】\n# 为什么硬件不能直接运行高级语言的源代码\n\n【/第12页】",
+      "page_number": 12,
+      "section": "为什么硬件不能直接运行高级语言的源代码"
+    },
+    {
+      "text": "【第13页】\n# 硬件设计\n\n– 高级语言的表达能力很强– 硬件理解高级语言的复杂度过高、难以高效设计\n\n【/第13页】",
+      "page_number": 13,
+      "section": "硬件设计"
+    },
+    {
+      "text": "【第14页】\n# 机器指令\n\n– 格式相对固定– 功能相对简单– 二进制编码\n\n【/第14页】\n\n【第14页·图片】(1cd0a549211f05726f9f69cbbf93414786fbfb77be647f27269a12324de14d31.jpg)\n该图片展示了C语言源代码与对应ARM汇编代码的对照，用于说明从高级语言到机器指令的转换过程。左侧为C代码（`mstore.c`），定义了函数`multstore`，调用`mult2`函数并将结果存入指针`dest`指向的内存。右侧为对应的ARM汇编代码（`mstore.s`），包含函数调用、栈帧管理...\n【/图片】\n",
+      "page_number": 14,
+      "section": "机器指令"
+    },
+    {
+      "text": "【第15页】\n# C代码示例\n\nlong mult2(long a, long b)   \n{ return a \\* b;   \n}\n\n//C code in mstore.c\n\nlong mult2(long, long);   \nvoid multstore(long x, long y, long \\*dest)   \n{ long t = mult2(x, y); \\*dest $=$ t;   \n}\n\n【/第15页】",
+      "page_number": 15,
+      "section": "C代码示例"
+    },
+    {
+      "text": "【第16页】\n# 编译过程\n\n![](images/610e59714767b7519337b34c95d934aab044893fcb95e8a939738e44a66d79e6.jpg)\n\n【/第16页】\n\n【第16页·图片】(88dc6e1916f21266522f6950cb2b821095c6142c26f23e7d94bb62a8942da5c0.jpg)\n该图片展示了一个名为“Mulstore程序”的汇编代码片段，以十六进制格式呈现，排列在类似卷轴的图形框内。代码共五行，每行包含若干字节（如“fd 7b be a9”等），代表ARM架构下的机器指令。此图用于说明程序代码在内存中的存储形式，是理解ARM汇编指令执行流程的示意图。\n【/图片】\n\n\n【第16页·图片】(cc5fea73c42e279ebd84fce247796805644e223a7ceddd8a2add993bdf73b8a6.jpg)\n该图片展示了一个简单的示意图，包含一个红色边框的矩形框，框内为空白，下方标注有黑色大写字母“CPU”。整体布局简洁，用于表示中央处理器（CPU）的抽象图形符号，常见于计算机系统架构图或硬件组成示意图中。\n【/图片】\n\n\n【第16页·图片】(18a995a094fa0f4a71bea3f9b4617052325d7ad2e83355f4b6b69c509854a01c.jpg)\n该图片展示了一个简洁的矩形框，边框为红色，内部为空白。框下方标注有中文文字“内存”，字体为黑色，居中对齐。整体布局清晰，用于表示计算机系统中的内存（Memory）概念，常见于系统架构或硬件组成示意图中。\n【/图片】\n\n\n【第16页·图片】(c433a6e16bea95b1fcbf9f0c525928451bdab6f0d65de56f50e79e8f01b5f501.jpg)\n该图片为一个简化的线框图，展示了一个矩形轮廓，其顶部有一条水平线，左右两端各有一个小圆点，整体形似一个带有盖子的容器或存储单元。图形位于红色边框内，背景为白色。结合上下文“存储（硬盘）”和“代码加载”，该图象征性地表示硬盘或存储设备，用于承载程序或操作系统代码，是计算机启动和加载过程中的关键物理载体。\n【/图片】\n",
+      "page_number": 16,
+      "section": "编译过程"
+    },
+    {
+      "text": "【第17页】\n# 从C程序到二进制编码\n\n<table><tr><td>//C code in mstore.c long mult2(long，long); void multstore(long X, long y， long *dest) { long t = mult2(x,y); *dest = t; }</td><td>//Assembly file in mstore.s multstore: stp x29，x30，[sp，-32]! x29，sp mov str x19，[sp，16] mov x19,x2 bl mult2 str x0，[x19] ldr x19，[sp,16] 1dp ×29，x30，[sp]，32 ret</td></tr><tr><td>fd 7b be a9 fd 03 00 91 f3 0b 00 f9 f3 03 02 aa 00 00 00 94 60 02 00 f9</td><td rowspan=\"16\">fd 7b be a9 fd 03 00 91 f3 0b 00 f9 f3 03 02 aa f0 ff ff 97 60 02 00 f9 f3 0b 40 f9 fd 7b c2 a8 c0 03 5f d6</td></tr><tr><td></td></tr><tr><td>//Binary code in mstore.o //Binary code in mstore</td></tr><tr><td></td></tr><tr><td></td></tr><tr><td>f3 0b 40 f9 fd 7b c2 a8 c0 03 5f d6</td></tr></table>\n\n【/第17页】\n\n【第17页·图片】(a69e773dd4abc42cebe2af4098659d64e48398e4ce4ae3b1c8f8771c5e089aad.jpg)\n该图片展示了一个简单的示意图，图中有一个红色边框的矩形框，框内为空白，下方标注有“CPU”字样。结合上下文“存储（硬盘）”和“俯瞰指令执行：代码加载”，该图用于示意中央处理器（CPU）在程序或操作系统加载过程中的角色，可能作为教学材料中用于填充或对比的占位图，强调CPU是执行指令的核心部件，但图中未显示具体加载机制或与其他组件（如内存、硬盘）的连接关系。\n【/图片】\n\n\n【第17页·图片】(49ccbdb5e5350d1ad962158d4ec37ad21a63c60746f22ee907cf753d46290745.jpg)\n该图片展示了一个简单的示意图，图中为一个红色边框的矩形框，框内为空白区域，下方标注有“内存”二字。该图用于表示计算机系统中的内存（Memory）组件，通常在系统架构或存储层次结构的说明中作为基础元素出现。图示简洁，无其他装饰或细节，强调“内存”这一概念的抽象表示。\n【/图片】\n\n\n【第17页·图片】(34ce4619815b04b70ce10ab2ae91b24735afe0f5891c7faf52fe544043bd6eea.jpg)\n该图展示了“Mulstore程序”的存储结构。上方为一个卷轴状的程序代码区域，内含多行十六进制指令（如`fd 7b be a9 fd 03 00 91`等），代表程序的机器码。下方是一个红色边框的矩形框，内含一个简化的存储单元图标（类似卷轴或容器），下方标注“存储（硬盘）”，表示程序被存储在硬盘中。整体图示用于说明程序在存储设备中的存放形式，属于计算机体系结构或指令执行流程的可视化表达。\n【/图片】\n",
+      "page_number": 17,
+      "section": "从C程序到二进制编码"
+    },
+    {
+      "text": "【第18页】\n# 从C程序到二进制编码\n\n【/第18页】\n\n【第18页·图片】(1f457b63f302c2037ce0ddad81017ea048ea598793f957b03ebc69aad34fa1ea.jpg)\n该图展示了指令执行过程中的程序计数器（PC）与内存、存储之间的关系。左侧为CPU模块，其中PC指向当前执行的指令；中间为内存，包含一个卷轴状的“Mulstore程序”，显示其机器码（如fd 7b be a9等）；右侧为存储（硬盘），为空白。上方的代码框列出了“multstore”函数的汇编指令，通过...\n【/图片】\n",
+      "page_number": 18,
+      "section": "从C程序到二进制编码"
+    },
+    {
+      "text": "【第19页】\n# //C code in mstore.c\n\nlong mult2(long, long);   \nvoid multstore(long x, long y, long \\*dest)   \n{ long t $=$ mult2(x, y); \\*dest = t;   \n}\n\n【/第19页】\n\n【第19页·图片】(3ab9951ca79165f343167734a84111e9ab85da6b3b4a83fba42a9405f03154ae.jpg)\n该图展示了指令执行过程中程序计数器（PC）的更新机制及程序在存储层次中的分布。上方左侧显示“指令定长”特性，PC通过“PC = PC + 4”递增，指向下一指令；中间为名为“multstore”的汇编代码片段，包含stp、mov、str、bl、ldr、ldp、ret等指令；右侧为对应的机器码（十六进...\n【/图片】\n",
+      "page_number": 19,
+      "section": "//C code in mstore.c"
+    },
+    {
+      "text": "【第20页】\n# //Assembly file in mstore.s\n\nmultstore:\n\nstp x29, x30, [sp, -32]! mov x29, sp strmov x19, [sp, 16]x19, x2 指令 bl mult2 str x0, [x19] ldr x19, [sp, 16] ldp x29, x30, [sp], 32 ret //Binary\n\n【/第20页】\n\n【第20页·图片】(65c22568dac6f61ccbbbadb9d3a08be8c15ba715350061dc24898679efda2e6b.jpg)\n该图展示了ARMv8架构下CPU执行程序时数据在寄存器、内存与存储之间的流动机制。左侧为“multstore”汇编代码片段，包含stp、mov、str、ldr等寄存器数据搬移指令。中间“Mulstore程序”卷轴表示程序在内存中的存储，右侧为存储设备（硬盘）中的数据。底部示意图显示CPU（含PC和多...\n【/图片】\n",
+      "page_number": 20,
+      "section": "//Assembly file in mstore.s"
+    },
+    {
+      "text": "【第21页】\n# 从C程序到二进制编码\n\n![](images/1cd0a549211f05726f9f69cbbf93414786fbfb77be647f27269a12324de14d31.jpg)\n\n【/第21页】",
+      "page_number": 21,
+      "section": "从C程序到二进制编码"
+    },
+    {
+      "text": "【第22页】\n# 理解ARM汇编\n\n【/第22页】\n\n【第22页·图片】(3f480b085095096bfa07c5416b4a6d937e1cb9f9551d4c5057c96e8e4b07f27f.jpg)\n该图展示了ARMv8架构中31个64位通用寄存器的结构。每个寄存器由两个部分组成：左侧为64位寄存器（X0至X16），右侧为对应的32位低字部分（W0至W16），表示Wn是Xn的低32位。图中通过省略号表示X7至X15之间的寄存器，整体采用分层矩形框结构，清晰呈现了寄存器的命名规则和位宽关系。\n【/图片】\n\n\n【第22页·图片】(a7b76d9edce80683832775d0c835c520f62a00e087962309770cb096a4cb03ec.jpg)\n该图展示了ARM架构中部分通用寄存器的组织结构，具体为X17至X30及其对应的W17至W30寄存器。每个寄存器以矩形框表示，左侧为64位寄存器（Xn），右侧为其低32位对应的32位寄存器（Wn）。图中通过省略号表示X20至X28的中间寄存器未全部列出。该结构用于说明寄存器间数据搬移指令（如mov）中源操作数可选取的寄存器范围。\n【/图片】\n",
+      "page_number": 22,
+      "section": "理解ARM汇编"
+    },
+    {
+      "text": "【第23页】\n# 俯瞰指令执行： 程序代码在哪\n\n![](images/88dc6e1916f21266522f6950cb2b821095c6142c26f23e7d94bb62a8942da5c0.jpg)\n\n![](images/cc5fea73c42e279ebd84fce247796805644e223a7ceddd8a2add993bdf73b8a6.jpg)\n\n![](images/18a995a094fa0f4a71bea3f9b4617052325d7ad2e83355f4b6b69c509854a01c.jpg)\n\n![](images/c433a6e16bea95b1fcbf9f0c525928451bdab6f0d65de56f50e79e8f01b5f501.jpg)  \n存储（硬盘）\n\n【/第23页】",
+      "page_number": 23,
+      "section": "俯瞰指令执行： 程序代码在哪"
+    },
+    {
+      "text": "【第24页】\n# 俯瞰指令执行： 代码加载\n\n问：谁负责加载程序？ 问：谁负责加载OS？\n\n![](images/a69e773dd4abc42cebe2af4098659d64e48398e4ce4ae3b1c8f8771c5e089aad.jpg)\n\n![](images/49ccbdb5e5350d1ad962158d4ec37ad21a63c60746f22ee907cf753d46290745.jpg)\n\n![](images/34ce4619815b04b70ce10ab2ae91b24735afe0f5891c7faf52fe544043bd6eea.jpg)  \n存储（硬盘）\n\n【/第24页】",
+      "page_number": 24,
+      "section": "俯瞰指令执行： 代码加载"
+    },
+    {
+      "text": "【第25页】\n# 俯瞰指令执行： 指令位置\n\n![](images/1f457b63f302c2037ce0ddad81017ea048ea598793f957b03ebc69aad34fa1ea.jpg)\n\n【/第25页】",
+      "page_number": 25,
+      "section": "俯瞰指令执行： 指令位置"
+    },
+    {
+      "text": "【第26页】\n# 俯瞰指令执行：更新PC找到下一条指令\n\n![](images/3ab9951ca79165f343167734a84111e9ab85da6b3b4a83fba42a9405f03154ae.jpg)\n\n【/第26页】\n\n【第26页·图片】(1d7e5379fa860ee298b36599841bd69da2cad3b8634e89444a09dfaac985e5d5.jpg)\n该图展示了两种移位指令的示意图：左侧为左移指令（lsl），数据从寄存器最低位（0）补0，最高位（63）被丢弃；右侧为右移指令（lsr），数据从寄存器最高位（63）补0，最低位被丢弃。图中寄存器以红色矩形表示，位编号从0到63，两端以圆筒状符号表示移出位的处理方式，箭头指示数据移动方向。\n【/图片】\n",
+      "page_number": 26,
+      "section": "俯瞰指令执行：更新PC找到下一条指令"
+    },
+    {
+      "text": "【第27页】\n# 俯瞰指令执行： 数据在哪\n\n![](images/65c22568dac6f61ccbbbadb9d3a08be8c15ba715350061dc24898679efda2e6b.jpg)\n\n【/第27页】\n\n【第27页·图片】(b0e2859bd22b310a8d5e243fb79e800085256db34c093275932c57308c2bcaad.jpg)\n该图展示了两种逻辑移位操作：算术右移（asr）和循环右移（ror）。左侧的asr操作中，寄存器（64位，位号63至0）最高位（位63）按符号扩展，移出位被丢弃；右侧的ror操作中，寄存器位按循环方式右移，最高位移出后回填至最低位，形成循环。图中“寄存器”以红色矩形表示，位编号标注于下方，箭头指示数据流向。\n【/图片】\n",
+      "page_number": 27,
+      "section": "俯瞰指令执行： 数据在哪"
+    },
+    {
+      "text": "【第28页】\n# 寄存器数据搬移指令\n\n【/第28页】",
+      "page_number": 28,
+      "section": "寄存器数据搬移指令"
+    },
+    {
+      "text": "【第29页】\n# CPU中的寄存器 （ARMv8）\n\n• 31个64位通用寄存器：处理器内部的高速存储单元\n\n![](images/3f480b085095096bfa07c5416b4a6d937e1cb9f9551d4c5057c96e8e4b07f27f.jpg)\n\n![](images/a7b76d9edce80683832775d0c835c520f62a00e087962309770cb096a4cb03ec.jpg)\n\n【/第29页】\n\n【第29页·图片】(c5ca3f3e4a6abe1df82ad6870ff78caa7c8fbe14adcec3b29c31f759bf73fd18.jpg)\n该图片展示了一段用蓝色字体书写的伪代码或中间表示（IR）代码，背景为白色。代码包含六行注释形式的表达式，每行以“#”开头，内容如下：  \n1. `t1 = x ^ y`（按位异或）  \n2. `z = z * 3`（乘法）  \n3. `t2 = z * 16`（乘法）  \n4. `tmp = 0x0...\n【/图片】\n",
+      "page_number": 29,
+      "section": "CPU中的寄存器 （ARMv8）"
+    },
+    {
+      "text": "【第30页】\n# 寄存器间的数据搬移指令\n\n指令格式：mov dst, src– 源操作数src可以是：\n\n• 立即数• 寄存器– 目的操作数dst必须是寄存器\n\n示例：\n\nmov w0, #1   \nmov x0, #1   \nmov x0, w1   \nmov x0, x1\n\n【/第30页】",
+      "page_number": 30,
+      "section": "寄存器间的数据搬移指令"
+    },
+    {
+      "text": "【第31页】\n# 算术与逻辑运算指令\n\n【/第31页】",
+      "page_number": 31,
+      "section": "算术与逻辑运算指令"
+    },
+    {
+      "text": "【第32页】\n# 算术指令\n\n<table><tr><td rowspan=1 colspan=1>指令</td><td rowspan=1 colspan=1>效果</td><td rowspan=1 colspan=1>描述</td></tr><tr><td rowspan=1 colspan=1>addRd,Rn,Op2</td><td rowspan=1 colspan=1>Rd↑Rn+（0p2</td><td rowspan=1 colspan=1>加</td></tr><tr><td rowspan=1 colspan=1>subRd,Rn,0p2</td><td rowspan=1 colspan=1>Rd ← Rn - 0p2</td><td rowspan=1 colspan=1>减</td></tr><tr><td rowspan=1 colspan=1>mulRd,Rn,Op2</td><td rowspan=1 colspan=1>Rd←FRnX0p2</td><td rowspan=1 colspan=1>乘(smul/umul)</td></tr><tr><td rowspan=1 colspan=1>divRd,Rn,Op2</td><td rowspan=1 colspan=1>Rd ← Rn ÷0p2</td><td rowspan=1 colspan=1>除(sdiv/udiv)</td></tr><tr><td rowspan=1 colspan=1>negRd, Rn</td><td rowspan=1 colspan=1>Rd ← -Rn</td><td rowspan=1 colspan=1>取相反数</td></tr></table>\n\n【/第32页】\n\n【第32页·图片】(403f2438db030b8980b723400f12f2e9810df05d61b2c1f2fc853495c37dd76e.jpg)\n该图片展示了一段以蓝色字体书写的伪代码或注释形式的汇编/中间语言代码，背景为白色。代码共六行，每行以井号（#）开头，表示注释或等价操作。内容依次为：`t1 = x ^ y`（异或运算）、`z = z * 3`（乘法）、`t2 = z * 16`（乘法）、`tmp = 0x0F0F0F0F`（常量赋值...\n【/图片】\n",
+      "page_number": 32,
+      "section": "算术指令"
+    },
+    {
+      "text": "【第33页】\n# 移位指令\n\n<table><tr><td rowspan=1 colspan=1>指令</td><td rowspan=1 colspan=1>效果</td><td rowspan=1 colspan=1>描述</td></tr><tr><td rowspan=1 colspan=1>lslRd,Rn,Op2</td><td rowspan=1 colspan=1>Rd←FRn&lt;&lt;0p2</td><td rowspan=1 colspan=1>Logical left shift</td></tr><tr><td rowspan=1 colspan=1>lsrRd,Rn,0p2</td><td rowspan=1 colspan=1>Rd←FRn&gt;&gt;0p2</td><td rowspan=1 colspan=1>Logical right shift</td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td></tr><tr><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td></tr></table>\n\n【/第33页】",
+      "page_number": 33,
+      "section": "移位指令"
+    },
+    {
+      "text": "【第34页】\n![](images/1d7e5379fa860ee298b36599841bd69da2cad3b8634e89444a09dfaac985e5d5.jpg)\n\n【/第34页】\n\n【第34页·图片】(c7d6f2671aab798590d8bd59df44a4cd03758cc769f8bf6f4042f4bd6087c111.jpg)\n该图展示了ARM架构下`multistore`函数的汇编代码及其对应的机器码。左侧为汇编指令列表，包含`stp`、`mov`、`str`、`ldr`、`ldp`等操作，用于数据存取和函数调用；右侧为“Multstore程序”卷轴，显示其对应的十六进制机器码，并通过红色连线与左侧指令对应。卷轴右侧有一...\n【/图片】\n",
+      "page_number": 34,
+      "section": "移位指令"
+    },
+    {
+      "text": "【第35页】\n# 移位指令\n\n<table><tr><td rowspan=1 colspan=1>指令</td><td rowspan=1 colspan=1>效果</td><td rowspan=1 colspan=1>描述</td></tr><tr><td rowspan=1 colspan=1>lslRd,Rn,0p2</td><td rowspan=1 colspan=1>Rd↑Rn&lt;0p2</td><td rowspan=1 colspan=1>Logical left shift</td></tr><tr><td rowspan=1 colspan=1>1srRd,Rn,Op2</td><td rowspan=1 colspan=1>Rd↑Rn&gt;&gt;0p2</td><td rowspan=1 colspan=1>Logical right shift</td></tr><tr><td rowspan=1 colspan=1>asrRd,Rn,Op2</td><td rowspan=1 colspan=1>Rd↑Rn&gt;&gt;A0p2</td><td rowspan=1 colspan=1>Arithmetic right shift</td></tr><tr><td rowspan=1 colspan=1>rorRd,Rn,0p2</td><td rowspan=1 colspan=1>Rd←Rn&gt;&gt;R0p2</td><td rowspan=1 colspan=1>Rotate right</td></tr></table>\n\n【/第35页】",
+      "page_number": 35,
+      "section": "移位指令"
+    },
+    {
+      "text": "【第36页】\n![](images/b0e2859bd22b310a8d5e243fb79e800085256db34c093275932c57308c2bcaad.jpg)\n\n【/第36页】\n\n【第36页·图片】(fd29ad3614f09bed86d4b0c78783793b8bcd5a9e4f19e9d0970e9cb30270cc9d.jpg)\n该图展示了内存的抽象模型：内存被视作一个由地址索引的字节数组。左侧“地址”标签通过红色箭头指向多个十六进制地址（如0x0、0x1、0x2、0xfffffffffffffe、0xffffffffffffffff），这些地址对应中间红色边框的存储单元数组中的不同位置。每个存储单元通过箭头连接至右侧“内容...\n【/图片】\n",
+      "page_number": 36,
+      "section": "移位指令"
+    },
+    {
+      "text": "【第37页】\n# 逻辑运算指令\n\n<table><tr><td rowspan=1 colspan=1>指令</td><td rowspan=1 colspan=1>效果</td><td rowspan=1 colspan=1>描述</td></tr><tr><td rowspan=1 colspan=1>eorRd,Rn,0p2</td><td rowspan=1 colspan=1>Rd↑ Rn&gt;0p2</td><td rowspan=1 colspan=1>按位异或</td></tr><tr><td rowspan=1 colspan=1>orrRd,Rn,Op2</td><td rowspan=1 colspan=1>Rd↑Rn     0p2</td><td rowspan=1 colspan=1>按位或</td></tr><tr><td rowspan=1 colspan=1>andRd,Rn,0p2</td><td rowspan=1 colspan=1>Rd↑Rn&amp;&amp;0p2</td><td rowspan=1 colspan=1>按位与</td></tr><tr><td rowspan=1 colspan=1>mvnRd, Rn</td><td rowspan=1 colspan=1>Rd↑~ Rn</td><td rowspan=1 colspan=1>按位取反</td></tr></table>\n\n【/第37页】",
+      "page_number": 37,
+      "section": "逻辑运算指令"
+    },
+    {
+      "text": "【第38页】\n# 算术运算汇编代码\n\nint arith(long x, long y, long z) {\n\nlong t1 = x ^ y;   \nlong t2 = z \\* 48;   \nlong t3 = t1 & 0x0F0F0F0F;   \nlong $t 4 = t 2 - t 3 ;$ return t4;\n\n}\n\neor x0, x0, x1 add x2, x2, x2, lsl #1 lsl x2, x2, 4 mov w1, #0x0F0F0F0F and x0, x0, x1 sub w0, w2, w0 ret\n\n![](images/c5ca3f3e4a6abe1df82ad6870ff78caa7c8fbe14adcec3b29c31f759bf73fd18.jpg)\n\n<table><tr><td rowspan=1 colspan=1>add</td><td rowspan=1 colspan=1>加</td></tr><tr><td rowspan=1 colspan=1>sub</td><td rowspan=1 colspan=1>减</td></tr><tr><td rowspan=1 colspan=1>mul</td><td rowspan=1 colspan=1>乘</td></tr><tr><td rowspan=1 colspan=1>div</td><td rowspan=1 colspan=1>除</td></tr><tr><td rowspan=1 colspan=1>neg</td><td rowspan=1 colspan=1>取反</td></tr><tr><td rowspan=1 colspan=1>1sl</td><td rowspan=1 colspan=1>逻辑左移</td></tr><tr><td rowspan=1 colspan=1>1sr</td><td rowspan=1 colspan=1>逻辑右移</td></tr><tr><td rowspan=1 colspan=1>asr</td><td rowspan=1 colspan=1>算数右移</td></tr><tr><td rowspan=1 colspan=1>ror</td><td rowspan=1 colspan=1>循环右移</td></tr><tr><td rowspan=1 colspan=1>eor</td><td rowspan=1 colspan=1>按位异或</td></tr><tr><td rowspan=1 colspan=1>orr</td><td rowspan=1 colspan=1>按位或</td></tr><tr><td rowspan=1 colspan=1>and</td><td rowspan=1 colspan=1>按位与</td></tr><tr><td rowspan=1 colspan=1>mvn</td><td rowspan=1 colspan=1>按位取反</td></tr></table>\n\n【/第38页】",
+      "page_number": 38,
+      "section": "算术运算汇编代码"
+    },
+    {
+      "text": "【第39页】\n初始时，寄存器 x0、x1、x2 分别对应变量 x、y、z\n\n【/第39页】",
+      "page_number": 39,
+      "section": "算术运算汇编代码"
+    },
+    {
+      "text": "【第40页】\n# Modified Register： 修改过的寄存器\n\n• add x2, x2, x2, lsl #1– 减少指令数量– 减少用于存放中间结果的寄存器占用量\n\n【/第40页】",
+      "page_number": 40,
+      "section": "Modified Register： 修改过的寄存器"
+    },
+    {
+      "text": "【第41页】\n# Modified Register的常见用法\n\n• 对操作数进行移位– 例子： eor w0, w8, w8, asr #16• 对操作数进行位扩展– 例子： add x19, x19, w0, sxtw– 无符号扩展: uxtb, uxth, uxtw– 符号扩展: sxtb, sxth, sxtw\n\n$\\begin{array} { r } { \\begin{array} { r } { \\vert \\begin{array} { r } { \\vert \\Biggl \\vert \\Biggl \\vert \\Biggl \\vert \\Biggl \\vert \\Biggl \\vert \\Biggl \\vert \\Biggl \\vert \\Biggl \\vert \\Biggl \\vert } \\\\ { \\Bigl \\vert \\Biggl \\vert \\Biggl \\vert \\Biggl \\vert \\Biggl \\vert \\Biggl \\vert \\Biggl \\vert \\Biggl \\vert \\Biggl \\vert } \\end{array} } \\end{array} \\mapsto I \\Bigl ( 1 6 - \\underbrace { \\cdots } \\Biggr ) ; \\Biggr array} \\end{array}$ long x19; int w0; x19 += w0;\n\n【/第41页】",
+      "page_number": 41,
+      "section": "Modified Register的常见用法"
+    },
+    {
+      "text": "【第42页】\n# 算术运算汇编代码\n\nint arith(long x, long y, long z) {\n\nlong t1 = x ^ y;   \nlong t2 = z \\* 48;   \nlong t3 = t1 & 0x0F0F0F0F;   \nlong $t 4 = t 2 - t 3 ;$ return t4;\n\n}\n\neor x0, x0, x1 add x2, x2, x2, lsl #1 lsl x2, x2, 4 mov w1, #0x0F0F0F0F and x0, x0, x1 sub w0, w2, w0 ret\n\n![](images/403f2438db030b8980b723400f12f2e9810df05d61b2c1f2fc853495c37dd76e.jpg)\n\n<table><tr><td rowspan=1 colspan=1>add</td><td rowspan=1 colspan=1>加</td></tr><tr><td rowspan=1 colspan=1>sub</td><td rowspan=1 colspan=1>减</td></tr><tr><td rowspan=1 colspan=1>mul</td><td rowspan=1 colspan=1>乘</td></tr><tr><td rowspan=1 colspan=1>div</td><td rowspan=1 colspan=1>除</td></tr><tr><td rowspan=1 colspan=1>neg</td><td rowspan=1 colspan=1>取反</td></tr><tr><td rowspan=1 colspan=1>1s1</td><td rowspan=1 colspan=1>逻辑左移</td></tr><tr><td rowspan=1 colspan=1>1sr</td><td rowspan=1 colspan=1>逻辑右移</td></tr><tr><td rowspan=1 colspan=1>asr</td><td rowspan=1 colspan=1>算数右移</td></tr><tr><td rowspan=1 colspan=1>ror</td><td rowspan=1 colspan=1>循环右移</td></tr><tr><td rowspan=1 colspan=1>eor</td><td rowspan=1 colspan=1>按位异或</td></tr><tr><td rowspan=1 colspan=1>orr</td><td rowspan=1 colspan=1>按位或</td></tr><tr><td rowspan=1 colspan=1>and</td><td rowspan=1 colspan=1>按位与</td></tr><tr><td rowspan=1 colspan=1>mvn</td><td rowspan=1 colspan=1>按位取反</td></tr></table>\n\n【/第42页】",
+      "page_number": 42,
+      "section": "算术运算汇编代码"
+    },
+    {
+      "text": "【第43页】\n初始时，寄存器 x0、x1、x2 分别对应变量 x、y、z\n\n【/第43页】",
+      "page_number": 43,
+      "section": "算术运算汇编代码"
+    },
+    {
+      "text": "【第44页】\n# 访存指令\n\n计算指令mov指令\n\n【/第44页】",
+      "page_number": 44,
+      "section": "访存指令"
+    },
+    {
+      "text": "【第45页】\n# 操作CPU内部的数据\n\n![](images/c7d6f2671aab798590d8bd59df44a4cd03758cc769f8bf6f4042f4bd6087c111.jpg)  \nCPU 数据计算  \n内存 数据存放  \n存储\n\n【/第45页】\n\n【第45页·图片】(813c22ae16991dfbdc2ae2f3f19230d5119ab4836cf603b82001c7ced7fa8324.jpg)\n该图展示了程序计数器（PC）在条件分支指令 `bne .L3` 执行时的两种控制流路径。左侧为“顺序执行”路径：当条件不成立时，PC 继续执行下一条指令 `ret`。右侧为“跳转执行”路径：当条件成立时，PC 跳转至标签 `.L3` 处，重新执行 `mul w0, w0, w2` 指令，形成循环。图中通过灰色高亮标示当前执行指令，清晰呈现了分支跳转对程序执行顺序的影响。\n【/图片】\n",
+      "page_number": 45,
+      "section": "操作CPU内部的数据"
+    },
+    {
+      "text": "【第46页】\n# 访存指令\n\n<table><tr><td rowspan=1 colspan=1>指令</td><td rowspan=1 colspan=1>效果</td><td rowspan=1 colspan=1>描述</td></tr><tr><td rowspan=1 colspan=1>ldr R,addr</td><td rowspan=1 colspan=1>R ← mem[addr :addr+Rs]</td><td rowspan=1 colspan=1>从内存加载数据到寄存器</td></tr><tr><td rowspan=1 colspan=1>str R,addr</td><td rowspan=1 colspan=1>mem[addr :addr+R,]← R</td><td rowspan=1 colspan=1>把寄存器中数据写到内存</td></tr></table>\n\nmem[a : b] 指地址 a 到地址 b 的内存范围\n\nload/store操作的内存大小由寄存器大小决定：\n\nRs指寄存器的大小（字节数）\n\n【/第46页】",
+      "page_number": 46,
+      "section": "访存指令"
+    },
+    {
+      "text": "【第47页】\n# 处理器视角下的内存\n\n内存可以被视为一个很大的字节数组\n\n数组中每个元素可以由唯一的地址来索引\n\n![](images/fd29ad3614f09bed86d4b0c78783793b8bcd5a9e4f19e9d0970e9cb30270cc9d.jpg)\n\nQ: 一个地址能够存在多大的数据量？\n\n【/第47页】\n\n【第47页·图片】(28c3be6248ac78250ce1eb37c5f8d162bf3475f911755801d1d1374c5e040971.jpg)\n该图片展示了一段ARM汇编代码片段，用于实现幂运算函数`power`。代码包含两条被红色框标出的关键指令：第4行的`cbz w1, .L1`（若w1为零则跳转到.L1），以及第8行的`bne .L3`（若不相等则跳转到.L3）。这两条指令均依赖于条件码（标志位）的状态，用于控制程序流程。上下文问题“之前的指令的执行状态如何传递给bne呢？”表明该图旨在说明条件码在分支指令中的作用机制。\n【/图片】\n",
+      "page_number": 47,
+      "section": "处理器视角下的内存"
+    },
+    {
+      "text": "【第48页】\n# 内存地址\n\n• 将“内存数组”的名称记为M– 若addr为要访问的内存地址– M[addr]即为由addr开始的内存单元的内容• addr在这里被用作数组索引– 内存单元的大小由上下文决定\n\naddr的具体格式由寻址模式决定\n\n【/第48页】",
+      "page_number": 48,
+      "section": "内存地址"
+    },
+    {
+      "text": "【第49页】\n# 寻址模式\n\n寻址模式是表示内存地址的表达式  \n– 基地址模式（索引寻址）• [rb]  \n– 基地址加偏移量模式（偏移量寻址）• [rb, offset]\n\n【/第49页】",
+      "page_number": 49,
+      "section": "寻址模式"
+    },
+    {
+      "text": "【第50页】\n# 示例： 基地址模式\n\nvoid swap(int\\* a，int\\* b) 2 { int temp = \\*a; 4 \\*a= \\*b; 5 \\*b = temp; 6 }\n\n1 swap:  \n2 dr w3， [x1]  \n3 ldr w2, [x0  \n4 str w3, [x0]  \n5 str w2, [x1]  \n6 ret\n\n初始时x0、x1分别对应a、b\n\n【/第50页】",
+      "page_number": 50,
+      "section": "示例： 基地址模式"
+    },
+    {
+      "text": "【第51页】\n# 基地址加偏移量模式\n\n引用M[rb，Offset]处的数据基地址寄存器rb：64位通用寄存器偏移量Offset可以是下列选项之一\n\n1. 立即数 #imm\n\n2. 64位通用寄存器 ri\n\n3. 修改过的寄存器 $\\Gamma _ { \\mathrm { m } } , \\mathbf { o } \\mathbf { p }$ ，在这里op可以是\n\n• 移位运算: lsl #3 ldr w8, [x0, #8] ldr w9, [x1, x0] str w9, [x0, x0, lsl #2] str w9, [x0, w0, sxtw]\n\n【/第51页】",
+      "page_number": 51,
+      "section": "基地址加偏移量模式"
+    },
+    {
+      "text": "【第52页】\n# 示例：基地址加偏移量模式\n\nlong E[6]\n\n<table><tr><td rowspan=1 colspan=1>0</td><td rowspan=1 colspan=1>8</td><td rowspan=1 colspan=1>16</td><td rowspan=1 colspan=1>24</td><td rowspan=1 colspan=1>32</td><td rowspan=1 colspan=1>40</td></tr></table>\n\n假设E是一个长整型数组– E的起始地址存放在x0寄存器中– E的索引 i 存放在x1寄存器中\n\n• 那么数组元素E[i]的访问在ARM汇编中为：– ldr x2, [x0, x1, lsl #3]\n\n【/第52页】",
+      "page_number": 52,
+      "section": "示例：基地址加偏移量模式"
+    },
+    {
+      "text": "【第53页】\n# 寻址模式\n\n寻址模式是表示内存地址的表达式– 基地址模式（索引寻址）• [rb]– 基地址加偏移量模式（偏移量寻址）• [rb, offset]  \n– 前索引寻址（寻址操作前更新基地址）• [rb, offset]! $\\boldsymbol { \\mathsf { r } } _ { \\mathsf { b } } + = \\mathsf { O } \\mathsf { f f s e t } ;$ 寻址 $M [ r _ { \\mathrm { b } } ]$ – 后索引寻址（寻址操作后更新基地址）• $[ r _ { \\mathrm { b } } ] ,$ offset 寻址 $\\mathsf { M } [ \\mathsf { r } _ { \\mathrm { b } } ] ; \\mathsf { r } _ { \\mathrm { b } } + = \\mathsf { O } \\mathsf { f } \\mathsf { f } _ { \\mathsf { S } \\mathsf { e } } \\mathsf { t }$\n\n【/第53页】\n\n【第53页·图片】(d117575315ccd66d24bd445dec21c0ad27948044aa87c291651efca3a6ba510d.jpg)\n该图展示了CPU内部主要寄存器结构及其与内存的交互。左侧为CPU内部，包含31个通用寄存器（X0–X30，ZR为零寄存器）和程序计数器（PC）。下方为程序状态寄存器（PSTATE），包含条件码（N、Z、C、V）及掩码、特权级、执行状态等字段。右侧表示CPU通过地址总线访问内存，数据总线双向传输数据，指令总线从内存读取指令。整体呈现了CPU寄存器组织与内存交互的基本架构。\n【/图片】\n",
+      "page_number": 53,
+      "section": "寻址模式"
+    },
+    {
+      "text": "【第54页】\n# 练习题\n\n<table><tr><td rowspan=1 colspan=1>内存地址</td><td rowspan=2 colspan=1>值0xFF</td></tr><tr><td rowspan=1 colspan=1>0x100</td></tr><tr><td rowspan=1 colspan=1>0x108</td><td rowspan=1 colspan=1>0xAB</td></tr><tr><td rowspan=1 colspan=1>0x110</td><td rowspan=1 colspan=1>0x13</td></tr><tr><td rowspan=1 colspan=1>0x118</td><td rowspan=1 colspan=1>0x11</td></tr></table>\n\n<table><tr><td rowspan=1 colspan=1>操作</td><td rowspan=2 colspan=1>（地址）值0x100</td></tr><tr><td rowspan=1 colspan=1>X0</td></tr><tr><td rowspan=1 colspan=1>[x0]</td><td rowspan=1 colspan=1>0xFF</td></tr><tr><td rowspan=1 colspan=1>[x0,x1]</td><td rowspan=1 colspan=1>0xAB</td></tr><tr><td rowspan=1 colspan=1>[X0,X2，1sl #3]</td><td rowspan=1 colspan=1>(0x110)0x13</td></tr><tr><td rowspan=1 colspan=1>[x0，#0x18]!</td><td rowspan=1 colspan=1>(0x118)0x11</td></tr><tr><td rowspan=1 colspan=1>[x0],#0x18</td><td rowspan=1 colspan=1>(0x100)0xFF</td></tr></table>\n\n【/第54页】",
+      "page_number": 54,
+      "section": "练习题"
+    },
+    {
+      "text": "【第55页】\n<table><tr><td rowspan=1 colspan=1>寄存器</td><td rowspan=1 colspan=1>值</td></tr><tr><td rowspan=1 colspan=1>X0</td><td rowspan=1 colspan=1>0x100</td></tr><tr><td rowspan=1 colspan=1>X1</td><td rowspan=1 colspan=1>0x8</td></tr><tr><td rowspan=1 colspan=1>X2</td><td rowspan=1 colspan=1>0x2</td></tr></table>\n\n条件码\n\n【/第55页】",
+      "page_number": 55,
+      "section": "练习题"
+    },
+    {
+      "text": "【第56页】\n# PC更新： 顺序执行和跳转执行\n\n![](images/813c22ae16991dfbdc2ae2f3f19230d5119ab4836cf603b82001c7ced7fa8324.jpg)\n\n【/第56页】",
+      "page_number": 56,
+      "section": "PC更新： 顺序执行和跳转执行"
+    },
+    {
+      "text": "【第57页】\n# 控制流跳转：标签与分支指令\n\nint power(int x，unsigned int n)   \n{ int result = 1; for (unsigned int i = n; i > 0； i--) result \\*= x; return result;   \n1 power: mov w2， w0 3 mov w0, cbz w1；.L1 mul wo，wo，w2 subs wi, wi, #1 hne .L3   \n10 et\n\n【/第57页】",
+      "page_number": 57,
+      "section": "控制流跳转：标签与分支指令"
+    },
+    {
+      "text": "【第58页】\n# 控制流跳转：标签与分支指令\n\nint power(int x，unsigned int n)   \n{ int result = 1; for (unsigned int i = n； i > 0；i--) result \\*= X; return result;   \n}\n\n![](images/28c3be6248ac78250ce1eb37c5f8d162bf3475f911755801d1d1374c5e040971.jpg)\n\n【/第58页】",
+      "page_number": 58,
+      "section": "控制流跳转：标签与分支指令"
+    },
+    {
+      "text": "【第59页】\n# Q：之前的指令的执行状态如何传递给bne呢？\n\n【/第59页】",
+      "page_number": 59,
+      "section": "Q：之前的指令的执行状态如何传递给bne呢？"
+    },
+    {
+      "text": "【第60页】\n# 条件码\n\n【/第60页】",
+      "page_number": 60,
+      "section": "条件码"
+    },
+    {
+      "text": "【第61页】\n# 条件码是一组标志位的统称\n\n– 条件码由PSTATE寄存器维护– N（Negative）、Z（Zero）、C（Carry）、V（Overflow）\n\n条件码保留之前相关指令的执行状态，这种指令包括：\n\n– 带有s后缀的算术或逻辑运算指令（如subs、adds）\n\n【/第61页】",
+      "page_number": 61,
+      "section": "条件码是一组标志位的统称"
+    },
+    {
+      "text": "【第62页】\n# 比较指令\n\n• cmp：操作数之差；例如 cmp x0, x1  \n• cmn：操作数之和；例如 cmn x0, x1  \n• tst ：操作数相与；例如 tst x0, x1\n\n【/第62页】",
+      "page_number": 62,
+      "section": "比较指令"
+    },
+    {
+      "text": "【第63页】\n# 条件码的设置\n\n通过s后缀数据处理指令隐式设置  \nadds Rd, Rn, Op2  \n等价于C语言中的: t = a + b  \n– C：当运算产生进位时被设置  \n– Z：当t为0时被设置  \n– N：当t小于0时被设置  \n– V：当运算产生有符号溢出时被设置(a>0 && b>0 && t<0) || (a<0 && b\n\n【/第63页】",
+      "page_number": 63,
+      "section": "条件码的设置"
+    },
+    {
+      "text": "【第64页】\n# 条件码的设置\n\n• 通过比较指令cmp显式设置cmp Src1, Src2计算Src1 - Src2，但不存储结果– C：当减法产生借位时被设置– Z：当两个操作数相等时被设置– N：当Src1小于Src2时被设置– V：当运算产生有符号溢出时被设置(a>0 && b<0 && (a-b)<0) || (a<0 && b>0 && (a-b)>0)\n\n跳转条件  \n\n<table><tr><td rowspan=1 colspan=1>条件</td><td rowspan=1 colspan=1>条件码组合</td><td rowspan=1 colspan=1>条件含义</td></tr><tr><td rowspan=1 colspan=1>EQ</td><td rowspan=1 colspan=1>Z</td><td rowspan=1 colspan=1>相等或为0</td></tr><tr><td rowspan=1 colspan=1>NE</td><td rowspan=1 colspan=1>~z</td><td rowspan=1 colspan=1>不等或非0</td></tr><tr><td rowspan=1 colspan=1>MI</td><td rowspan=1 colspan=1>N</td><td rowspan=1 colspan=1>负数</td></tr><tr><td rowspan=1 colspan=1>PL</td><td rowspan=1 colspan=1>~N</td><td rowspan=1 colspan=1>非负数</td></tr><tr><td rowspan=1 colspan=1>LT</td><td rowspan=1 colspan=1>N^V</td><td rowspan=1 colspan=1>有符号小于</td></tr><tr><td rowspan=1 colspan=1>LE</td><td rowspan=1 colspan=1>(N^V)|z</td><td rowspan=1 colspan=1>有符号小于或等于</td></tr><tr><td rowspan=1 colspan=1>GT</td><td rowspan=1 colspan=1>~(N^V)&amp;~Z</td><td rowspan=1 colspan=1>有符号大于</td></tr><tr><td rowspan=1 colspan=1>GE</td><td rowspan=1 colspan=1>~(N^v)</td><td rowspan=1 colspan=1>有符号大于或等于</td></tr><tr><td rowspan=1 colspan=1>HI</td><td rowspan=1 colspan=1>c&amp;~z</td><td rowspan=1 colspan=1>无符号大于</td></tr><tr><td rowspan=1 colspan=1>LS</td><td rowspan=1 colspan=1>~c|z</td><td rowspan=1 colspan=1>无符号小于或等于</td></tr><tr><td rowspan=1 colspan=1>LO</td><td rowspan=1 colspan=1>~C</td><td rowspan=1 colspan=1>无符号小于</td></tr></table>\n\n【/第64页】",
+      "page_number": 64,
+      "section": "条件码的设置"
+    },
+    {
+      "text": "【第65页】\n# 直接分支指令\n\n– 以标签对应的地址作为跳转目标  \n– 无条件分支指令 b <label>  \n– 有条件分支指令bcond <label>，例如beq，bne，ble\n\n间接分支指令– 以寄存器中的地址作为跳转目标– br reg，例如 br x0\n\n【/第65页】",
+      "page_number": 65,
+      "section": "直接分支指令"
+    },
+    {
+      "text": "【第66页】\n# 小结\n\n寄存器数据搬移指令算术与逻辑运算指令访存指令  \n分支指令\n\n![](images/d117575315ccd66d24bd445dec21c0ad27948044aa87c291651efca3a6ba510d.jpg)\n【/第66页】",
+      "page_number": 66,
+      "section": "小结"
+    }
+  ],
+  "images": [
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/610e59714767b7519337b34c95d934aab044893fcb95e8a939738e44a66d79e6.jpg",
+      "image_name": "610e59714767b7519337b34c95d934aab044893fcb95e8a939738e44a66d79e6.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 11,
+      "context_before": "void multstore(long x, long y, long \\*dest)   \n{ long t = mult2(x, y); \\*dest $=$ t;   \n}\n\n# 编译过程",
+      "context_after": "# 从C程序到二进制编码\n\n<table><tr><td>//C code in mstore.c long mult2(long，long); void multstore(long X, lo",
+      "context": "{ long t = mult2(x, y); \\*dest $=$ t;   \n}\n\n# 编译过程 [图片] # 从C程序到二进制编码\n\n<table><tr><td>//C code in mstore.c ",
+      "section": "编译过程",
+      "alt_text": "",
+      "description": "该图展示了C程序从源代码到可执行二进制文件的完整编译过程。流程始于源程序文件 `mstore.c`（文本格式），首先由预处理器（cpp）处理生成 `mstore.i`（经预处理的源程序，文本）；接着由编译器（cc1）将其转换为汇编程序 `mstore.s`（文本）；然后汇编器（as）将其汇编成可重定..."
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/1cd0a549211f05726f9f69cbbf93414786fbfb77be647f27269a12324de14d31.jpg",
+      "image_name": "1cd0a549211f05726f9f69cbbf93414786fbfb77be647f27269a12324de14d31.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 14,
+      "context_before": ", x2 指令 bl mult2 str x0, [x19] ldr x19, [sp, 16] ldp x29, x30, [sp], 32 ret //Binary\n\n# 从C程序到二进制编码",
+      "context_after": "# 理解ARM汇编\n\n# 俯瞰指令执行： 程序代码在哪\n\n![](images/88dc6e1916f21266522f6950cb2b821095c6142c26f23e7d94bb62a894",
+      "context": " ldp x29, x30, [sp], 32 ret //Binary\n\n# 从C程序到二进制编码 [图片] # 理解ARM汇编\n\n# 俯瞰指令执行： 程序代码在哪\n\n![](images/88dc6e1916",
+      "section": "从C程序到二进制编码",
+      "alt_text": "",
+      "description": "该图片展示了C语言源代码与对应ARM汇编代码的对照，用于说明从高级语言到机器指令的转换过程。左侧为C代码（`mstore.c`），定义了函数`multstore`，调用`mult2`函数并将结果存入指针`dest`指向的内存。右侧为对应的ARM汇编代码（`mstore.s`），包含函数调用、栈帧管理..."
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/88dc6e1916f21266522f6950cb2b821095c6142c26f23e7d94bb62a8942da5c0.jpg",
+      "image_name": "88dc6e1916f21266522f6950cb2b821095c6142c26f23e7d94bb62a8942da5c0.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 16,
+      "context_before": "1cd0a549211f05726f9f69cbbf93414786fbfb77be647f27269a12324de14d31.jpg)\n\n# 理解ARM汇编\n\n# 俯瞰指令执行： 程序代码在哪",
+      "context_after": "![](images/cc5fea73c42e279ebd84fce247796805644e223a7ceddd8a2add993bdf73b8a6.jpg)\n\n![](images/18a99",
+      "context": "269a12324de14d31.jpg)\n\n# 理解ARM汇编\n\n# 俯瞰指令执行： 程序代码在哪 [图片] ![](images/cc5fea73c42e279ebd84fce247796805644e223",
+      "section": "俯瞰指令执行： 程序代码在哪",
+      "alt_text": "",
+      "description": "该图片展示了一个名为“Mulstore程序”的汇编代码片段，以十六进制格式呈现，排列在类似卷轴的图形框内。代码共五行，每行包含若干字节（如“fd 7b be a9”等），代表ARM架构下的机器指令。此图用于说明程序代码在内存中的存储形式，是理解ARM汇编指令执行流程的示意图。"
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/cc5fea73c42e279ebd84fce247796805644e223a7ceddd8a2add993bdf73b8a6.jpg",
+      "image_name": "cc5fea73c42e279ebd84fce247796805644e223a7ceddd8a2add993bdf73b8a6.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 16,
+      "context_before": "# 俯瞰指令执行： 程序代码在哪\n\n![](images/88dc6e1916f21266522f6950cb2b821095c6142c26f23e7d94bb62a8942da5c0.jpg)",
+      "context_after": "![](images/18a995a094fa0f4a71bea3f9b4617052325d7ad2e83355f4b6b69c509854a01c.jpg)\n\n![](images/c433a",
+      "context": "f6950cb2b821095c6142c26f23e7d94bb62a8942da5c0.jpg) [图片] ![](images/18a995a094fa0f4a71bea3f9b4617052325d7ad",
+      "section": "俯瞰指令执行： 程序代码在哪",
+      "alt_text": "",
+      "description": "该图片展示了一个简单的示意图，包含一个红色边框的矩形框，框内为空白，下方标注有黑色大写字母“CPU”。整体布局简洁，用于表示中央处理器（CPU）的抽象图形符号，常见于计算机系统架构图或硬件组成示意图中。"
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/18a995a094fa0f4a71bea3f9b4617052325d7ad2e83355f4b6b69c509854a01c.jpg",
+      "image_name": "18a995a094fa0f4a71bea3f9b4617052325d7ad2e83355f4b6b69c509854a01c.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 16,
+      "context_before": "2a8942da5c0.jpg)\n\n![](images/cc5fea73c42e279ebd84fce247796805644e223a7ceddd8a2add993bdf73b8a6.jpg)",
+      "context_after": "![](images/c433a6e16bea95b1fcbf9f0c525928451bdab6f0d65de56f50e79e8f01b5f501.jpg)  \n存储（硬盘）\n\n# 俯瞰指令执",
+      "context": "4fce247796805644e223a7ceddd8a2add993bdf73b8a6.jpg) [图片] ![](images/c433a6e16bea95b1fcbf9f0c525928451bdab6f",
+      "section": "俯瞰指令执行： 程序代码在哪",
+      "alt_text": "",
+      "description": "该图片展示了一个简洁的矩形框，边框为红色，内部为空白。框下方标注有中文文字“内存”，字体为黑色，居中对齐。整体布局清晰，用于表示计算机系统中的内存（Memory）概念，常见于系统架构或硬件组成示意图中。"
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/c433a6e16bea95b1fcbf9f0c525928451bdab6f0d65de56f50e79e8f01b5f501.jpg",
+      "image_name": "c433a6e16bea95b1fcbf9f0c525928451bdab6f0d65de56f50e79e8f01b5f501.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 16,
+      "context_before": "93bdf73b8a6.jpg)\n\n![](images/18a995a094fa0f4a71bea3f9b4617052325d7ad2e83355f4b6b69c509854a01c.jpg)",
+      "context_after": "存储（硬盘）\n\n# 俯瞰指令执行： 代码加载\n\n问：谁负责加载程序？ 问：谁负责加载OS？\n\n![](images/a69e773dd4abc42cebe2af4098659d64e48398e",
+      "context": "ea3f9b4617052325d7ad2e83355f4b6b69c509854a01c.jpg) [图片] 存储（硬盘）\n\n# 俯瞰指令执行： 代码加载\n\n问：谁负责加载程序？ 问：谁负责加载OS？\n\n![]",
+      "section": "俯瞰指令执行： 程序代码在哪",
+      "alt_text": "",
+      "description": "该图片为一个简化的线框图，展示了一个矩形轮廓，其顶部有一条水平线，左右两端各有一个小圆点，整体形似一个带有盖子的容器或存储单元。图形位于红色边框内，背景为白色。结合上下文“存储（硬盘）”和“代码加载”，该图象征性地表示硬盘或存储设备，用于承载程序或操作系统代码，是计算机启动和加载过程中的关键物理载体。"
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/a69e773dd4abc42cebe2af4098659d64e48398e4ce4ae3b1c8f8771c5e089aad.jpg",
+      "image_name": "a69e773dd4abc42cebe2af4098659d64e48398e4ce4ae3b1c8f8771c5e089aad.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 17,
+      "context_before": "f9f0c525928451bdab6f0d65de56f50e79e8f01b5f501.jpg)  \n存储（硬盘）\n\n# 俯瞰指令执行： 代码加载\n\n问：谁负责加载程序？ 问：谁负责加载OS？",
+      "context_after": "![](images/49ccbdb5e5350d1ad962158d4ec37ad21a63c60746f22ee907cf753d46290745.jpg)\n\n![](images/34ce4",
+      "context": "g)  \n存储（硬盘）\n\n# 俯瞰指令执行： 代码加载\n\n问：谁负责加载程序？ 问：谁负责加载OS？ [图片] ![](images/49ccbdb5e5350d1ad962158d4ec37ad21a63c60",
+      "section": "俯瞰指令执行： 代码加载",
+      "alt_text": "",
+      "description": "该图片展示了一个简单的示意图，图中有一个红色边框的矩形框，框内为空白，下方标注有“CPU”字样。结合上下文“存储（硬盘）”和“俯瞰指令执行：代码加载”，该图用于示意中央处理器（CPU）在程序或操作系统加载过程中的角色，可能作为教学材料中用于填充或对比的占位图，强调CPU是执行指令的核心部件，但图中未显示具体加载机制或与其他组件（如内存、硬盘）的连接关系。"
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/49ccbdb5e5350d1ad962158d4ec37ad21a63c60746f22ee907cf753d46290745.jpg",
+      "image_name": "49ccbdb5e5350d1ad962158d4ec37ad21a63c60746f22ee907cf753d46290745.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 17,
+      "context_before": "加载程序？ 问：谁负责加载OS？\n\n![](images/a69e773dd4abc42cebe2af4098659d64e48398e4ce4ae3b1c8f8771c5e089aad.jpg)",
+      "context_after": "![](images/34ce4619815b04b70ce10ab2ae91b24735afe0f5891c7faf52fe544043bd6eea.jpg)  \n存储（硬盘）\n\n# 俯瞰指令执",
+      "context": "2af4098659d64e48398e4ce4ae3b1c8f8771c5e089aad.jpg) [图片] ![](images/34ce4619815b04b70ce10ab2ae91b24735afe0f",
+      "section": "俯瞰指令执行： 代码加载",
+      "alt_text": "",
+      "description": "该图片展示了一个简单的示意图，图中为一个红色边框的矩形框，框内为空白区域，下方标注有“内存”二字。该图用于表示计算机系统中的内存（Memory）组件，通常在系统架构或存储层次结构的说明中作为基础元素出现。图示简洁，无其他装饰或细节，强调“内存”这一概念的抽象表示。"
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/34ce4619815b04b70ce10ab2ae91b24735afe0f5891c7faf52fe544043bd6eea.jpg",
+      "image_name": "34ce4619815b04b70ce10ab2ae91b24735afe0f5891c7faf52fe544043bd6eea.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 17,
+      "context_before": "71c5e089aad.jpg)\n\n![](images/49ccbdb5e5350d1ad962158d4ec37ad21a63c60746f22ee907cf753d46290745.jpg)",
+      "context_after": "存储（硬盘）\n\n# 俯瞰指令执行： 指令位置\n\n![](images/1f457b63f302c2037ce0ddad81017ea048ea598793f957b03ebc69aad34fa1",
+      "context": "2158d4ec37ad21a63c60746f22ee907cf753d46290745.jpg) [图片] 存储（硬盘）\n\n# 俯瞰指令执行： 指令位置\n\n![](images/1f457b63f302c20",
+      "section": "俯瞰指令执行： 代码加载",
+      "alt_text": "",
+      "description": "该图展示了“Mulstore程序”的存储结构。上方为一个卷轴状的程序代码区域，内含多行十六进制指令（如`fd 7b be a9 fd 03 00 91`等），代表程序的机器码。下方是一个红色边框的矩形框，内含一个简化的存储单元图标（类似卷轴或容器），下方标注“存储（硬盘）”，表示程序被存储在硬盘中。整体图示用于说明程序在存储设备中的存放形式，属于计算机体系结构或指令执行流程的可视化表达。"
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/1f457b63f302c2037ce0ddad81017ea048ea598793f957b03ebc69aad34fa1ea.jpg",
+      "image_name": "1f457b63f302c2037ce0ddad81017ea048ea598793f957b03ebc69aad34fa1ea.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 18,
+      "context_before": "ges/34ce4619815b04b70ce10ab2ae91b24735afe0f5891c7faf52fe544043bd6eea.jpg)  \n存储（硬盘）\n\n# 俯瞰指令执行： 指令位置",
+      "context_after": "# 俯瞰指令执行：更新PC找到下一条指令\n\n![](images/3ab9951ca79165f343167734a84111e9ab85da6b3b4a83fba42a9405f03154ae.",
+      "context": "7faf52fe544043bd6eea.jpg)  \n存储（硬盘）\n\n# 俯瞰指令执行： 指令位置 [图片] # 俯瞰指令执行：更新PC找到下一条指令\n\n![](images/3ab9951ca79165f34",
+      "section": "俯瞰指令执行： 指令位置",
+      "alt_text": "",
+      "description": "该图展示了指令执行过程中的程序计数器（PC）与内存、存储之间的关系。左侧为CPU模块，其中PC指向当前执行的指令；中间为内存，包含一个卷轴状的“Mulstore程序”，显示其机器码（如fd 7b be a9等）；右侧为存储（硬盘），为空白。上方的代码框列出了“multstore”函数的汇编指令，通过..."
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/3ab9951ca79165f343167734a84111e9ab85da6b3b4a83fba42a9405f03154ae.jpg",
+      "image_name": "3ab9951ca79165f343167734a84111e9ab85da6b3b4a83fba42a9405f03154ae.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 19,
+      "context_before": "images/1f457b63f302c2037ce0ddad81017ea048ea598793f957b03ebc69aad34fa1ea.jpg)\n\n# 俯瞰指令执行：更新PC找到下一条指令",
+      "context_after": "# 俯瞰指令执行： 数据在哪\n\n![](images/65c22568dac6f61ccbbbadb9d3a08be8c15ba715350061dc24898679efda2e6b.jpg)",
+      "context": "3f957b03ebc69aad34fa1ea.jpg)\n\n# 俯瞰指令执行：更新PC找到下一条指令 [图片] # 俯瞰指令执行： 数据在哪\n\n![](images/65c22568dac6f61ccbbbadb",
+      "section": "俯瞰指令执行：更新PC找到下一条指令",
+      "alt_text": "",
+      "description": "该图展示了指令执行过程中程序计数器（PC）的更新机制及程序在存储层次中的分布。上方左侧显示“指令定长”特性，PC通过“PC = PC + 4”递增，指向下一指令；中间为名为“multstore”的汇编代码片段，包含stp、mov、str、bl、ldr、ldp、ret等指令；右侧为对应的机器码（十六进..."
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/65c22568dac6f61ccbbbadb9d3a08be8c15ba715350061dc24898679efda2e6b.jpg",
+      "image_name": "65c22568dac6f61ccbbbadb9d3a08be8c15ba715350061dc24898679efda2e6b.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 20,
+      "context_before": "![](images/3ab9951ca79165f343167734a84111e9ab85da6b3b4a83fba42a9405f03154ae.jpg)\n\n# 俯瞰指令执行： 数据在哪",
+      "context_after": "# 寄存器数据搬移指令\n\n# CPU中的寄存器 （ARMv8）\n\n• 31个64位通用寄存器：处理器内部的高速存储单元\n\n![](images/3f480b085095096bfa07c5416b",
+      "context": "5da6b3b4a83fba42a9405f03154ae.jpg)\n\n# 俯瞰指令执行： 数据在哪 [图片] # 寄存器数据搬移指令\n\n# CPU中的寄存器 （ARMv8）\n\n• 31个64位通用寄存器：处理器",
+      "section": "俯瞰指令执行： 数据在哪",
+      "alt_text": "",
+      "description": "该图展示了ARMv8架构下CPU执行程序时数据在寄存器、内存与存储之间的流动机制。左侧为“multstore”汇编代码片段，包含stp、mov、str、ldr等寄存器数据搬移指令。中间“Mulstore程序”卷轴表示程序在内存中的存储，右侧为存储设备（硬盘）中的数据。底部示意图显示CPU（含PC和多..."
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/3f480b085095096bfa07c5416b4a6d937e1cb9f9551d4c5057c96e8e4b07f27f.jpg",
+      "image_name": "3f480b085095096bfa07c5416b4a6d937e1cb9f9551d4c5057c96e8e4b07f27f.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 22,
+      "context_before": "c15ba715350061dc24898679efda2e6b.jpg)\n\n# 寄存器数据搬移指令\n\n# CPU中的寄存器 （ARMv8）\n\n• 31个64位通用寄存器：处理器内部的高速存储单元",
+      "context_after": "![](images/a7b76d9edce80683832775d0c835c520f62a00e087962309770cb096a4cb03ec.jpg)\n\n# 寄存器间的数据搬移指令\n\n指",
+      "context": "指令\n\n# CPU中的寄存器 （ARMv8）\n\n• 31个64位通用寄存器：处理器内部的高速存储单元 [图片] ![](images/a7b76d9edce80683832775d0c835c520f62a00e",
+      "section": "CPU中的寄存器 （ARMv8）",
+      "alt_text": "",
+      "description": "该图展示了ARMv8架构中31个64位通用寄存器的结构。每个寄存器由两个部分组成：左侧为64位寄存器（X0至X16），右侧为对应的32位低字部分（W0至W16），表示Wn是Xn的低32位。图中通过省略号表示X7至X15之间的寄存器，整体采用分层矩形框结构，清晰呈现了寄存器的命名规则和位宽关系。"
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/a7b76d9edce80683832775d0c835c520f62a00e087962309770cb096a4cb03ec.jpg",
+      "image_name": "a7b76d9edce80683832775d0c835c520f62a00e087962309770cb096a4cb03ec.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 22,
+      "context_before": "寄存器：处理器内部的高速存储单元\n\n![](images/3f480b085095096bfa07c5416b4a6d937e1cb9f9551d4c5057c96e8e4b07f27f.jpg)",
+      "context_after": "# 寄存器间的数据搬移指令\n\n指令格式：mov dst, src– 源操作数src可以是：\n\n• 立即数• 寄存器– 目的操作数dst必须是寄存器\n\n示例：\n\nmov w0, #1   \nmov",
+      "context": "7c5416b4a6d937e1cb9f9551d4c5057c96e8e4b07f27f.jpg) [图片] # 寄存器间的数据搬移指令\n\n指令格式：mov dst, src– 源操作数src可以是：\n\n• 立",
+      "section": "CPU中的寄存器 （ARMv8）",
+      "alt_text": "",
+      "description": "该图展示了ARM架构中部分通用寄存器的组织结构，具体为X17至X30及其对应的W17至W30寄存器。每个寄存器以矩形框表示，左侧为64位寄存器（Xn），右侧为其低32位对应的32位寄存器（Wn）。图中通过省略号表示X20至X28的中间寄存器未全部列出。该结构用于说明寄存器间数据搬移指令（如mov）中源操作数可选取的寄存器范围。"
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/1d7e5379fa860ee298b36599841bd69da2cad3b8634e89444a09dfaac985e5d5.jpg",
+      "image_name": "1d7e5379fa860ee298b36599841bd69da2cad3b8634e89444a09dfaac985e5d5.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 26,
+      "context_before": "d rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td><td rowspan=1 colspan=1></td></tr></table>",
+      "context_after": "# 移位指令\n\n<table><tr><td rowspan=1 colspan=1>指令</td><td rowspan=1 colspan=1>效果</td><td rowspan=1 col",
+      "context": "=1></td><td rowspan=1 colspan=1></td></tr></table> [图片] # 移位指令\n\n<table><tr><td rowspan=1 colspan=1>指令</td>",
+      "section": "移位指令",
+      "alt_text": "",
+      "description": "该图展示了两种移位指令的示意图：左侧为左移指令（lsl），数据从寄存器最低位（0）补0，最高位（63）被丢弃；右侧为右移指令（lsr），数据从寄存器最高位（63）补0，最低位被丢弃。图中寄存器以红色矩形表示，位编号从0到63，两端以圆筒状符号表示移出位的处理方式，箭头指示数据移动方向。"
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/b0e2859bd22b310a8d5e243fb79e800085256db34c093275932c57308c2bcaad.jpg",
+      "image_name": "b0e2859bd22b310a8d5e243fb79e800085256db34c093275932c57308c2bcaad.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 27,
+      "context_before": "d rowspan=1 colspan=1>Rd←Rn&gt;&gt;R0p2</td><td rowspan=1 colspan=1>Rotate right</td></tr></table>",
+      "context_after": "# 逻辑运算指令\n\n<table><tr><td rowspan=1 colspan=1>指令</td><td rowspan=1 colspan=1>效果</td><td rowspan=1 c",
+      "context": "rowspan=1 colspan=1>Rotate right</td></tr></table> [图片] # 逻辑运算指令\n\n<table><tr><td rowspan=1 colspan=1>指令</t",
+      "section": "移位指令",
+      "alt_text": "",
+      "description": "该图展示了两种逻辑移位操作：算术右移（asr）和循环右移（ror）。左侧的asr操作中，寄存器（64位，位号63至0）最高位（位63）按符号扩展，移出位被丢弃；右侧的ror操作中，寄存器位按循环方式右移，最高位移出后回填至最低位，形成循环。图中“寄存器”以红色矩形表示，位编号标注于下方，箭头指示数据流向。"
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/c5ca3f3e4a6abe1df82ad6870ff78caa7c8fbe14adcec3b29c31f759bf73fd18.jpg",
+      "image_name": "c5ca3f3e4a6abe1df82ad6870ff78caa7c8fbe14adcec3b29c31f759bf73fd18.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 29,
+      "context_before": "x0, x1 add x2, x2, x2, lsl #1 lsl x2, x2, 4 mov w1, #0x0F0F0F0F and x0, x0, x1 sub w0, w2, w0 ret",
+      "context_after": "<table><tr><td rowspan=1 colspan=1>add</td><td rowspan=1 colspan=1>加</td></tr><tr><td rowspan=1 co",
+      "context": " w1, #0x0F0F0F0F and x0, x0, x1 sub w0, w2, w0 ret [图片] <table><tr><td rowspan=1 colspan=1>add</td><td row",
+      "section": "算术运算汇编代码",
+      "alt_text": "",
+      "description": "该图片展示了一段用蓝色字体书写的伪代码或中间表示（IR）代码，背景为白色。代码包含六行注释形式的表达式，每行以“#”开头，内容如下：  \n1. `t1 = x ^ y`（按位异或）  \n2. `z = z * 3`（乘法）  \n3. `t2 = z * 16`（乘法）  \n4. `tmp = 0x0..."
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/403f2438db030b8980b723400f12f2e9810df05d61b2c1f2fc853495c37dd76e.jpg",
+      "image_name": "403f2438db030b8980b723400f12f2e9810df05d61b2c1f2fc853495c37dd76e.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 32,
+      "context_before": "x0, x1 add x2, x2, x2, lsl #1 lsl x2, x2, 4 mov w1, #0x0F0F0F0F and x0, x0, x1 sub w0, w2, w0 ret",
+      "context_after": "<table><tr><td rowspan=1 colspan=1>add</td><td rowspan=1 colspan=1>加</td></tr><tr><td rowspan=1 co",
+      "context": " w1, #0x0F0F0F0F and x0, x0, x1 sub w0, w2, w0 ret [图片] <table><tr><td rowspan=1 colspan=1>add</td><td row",
+      "section": "算术运算汇编代码",
+      "alt_text": "",
+      "description": "该图片展示了一段以蓝色字体书写的伪代码或注释形式的汇编/中间语言代码，背景为白色。代码共六行，每行以井号（#）开头，表示注释或等价操作。内容依次为：`t1 = x ^ y`（异或运算）、`z = z * 3`（乘法）、`t2 = z * 16`（乘法）、`tmp = 0x0F0F0F0F`（常量赋值..."
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/c7d6f2671aab798590d8bd59df44a4cd03758cc769f8bf6f4042f4bd6087c111.jpg",
+      "image_name": "c7d6f2671aab798590d8bd59df44a4cd03758cc769f8bf6f4042f4bd6087c111.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 34,
+      "context_before": "1 colspan=1>按位取反</td></tr></table>\n\n初始时，寄存器 x0、x1、x2 分别对应变量 x、y、z\n\n# 访存指令\n\n计算指令mov指令\n\n# 操作CPU内部的数据",
+      "context_after": "CPU 数据计算  \n内存 数据存放  \n存储\n\n# 访存指令\n\n<table><tr><td rowspan=1 colspan=1>指令</td><td rowspan=1 colspan=",
+      "context": "1、x2 分别对应变量 x、y、z\n\n# 访存指令\n\n计算指令mov指令\n\n# 操作CPU内部的数据 [图片] CPU 数据计算  \n内存 数据存放  \n存储\n\n# 访存指令\n\n<table><tr><td ro",
+      "section": "操作CPU内部的数据",
+      "alt_text": "",
+      "description": "该图展示了ARM架构下`multistore`函数的汇编代码及其对应的机器码。左侧为汇编指令列表，包含`stp`、`mov`、`str`、`ldr`、`ldp`等操作，用于数据存取和函数调用；右侧为“Multstore程序”卷轴，显示其对应的十六进制机器码，并通过红色连线与左侧指令对应。卷轴右侧有一..."
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/fd29ad3614f09bed86d4b0c78783793b8bcd5a9e4f19e9d0970e9cb30270cc9d.jpg",
+      "image_name": "fd29ad3614f09bed86d4b0c78783793b8bcd5a9e4f19e9d0970e9cb30270cc9d.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 36,
+      "context_before": "存范围\n\nload/store操作的内存大小由寄存器大小决定：\n\nRs指寄存器的大小（字节数）\n\n# 处理器视角下的内存\n\n内存可以被视为一个很大的字节数组\n\n数组中每个元素可以由唯一的地址来索引",
+      "context_after": "Q: 一个地址能够存在多大的数据量？\n\n# 内存地址\n\n• 将“内存数组”的名称记为M– 若addr为要访问的内存地址– M[addr]即为由addr开始的内存单元的内容• addr在这里被用作数",
+      "context": "\n# 处理器视角下的内存\n\n内存可以被视为一个很大的字节数组\n\n数组中每个元素可以由唯一的地址来索引 [图片] Q: 一个地址能够存在多大的数据量？\n\n# 内存地址\n\n• 将“内存数组”的名称记为M– 若addr",
+      "section": "处理器视角下的内存",
+      "alt_text": "",
+      "description": "该图展示了内存的抽象模型：内存被视作一个由地址索引的字节数组。左侧“地址”标签通过红色箭头指向多个十六进制地址（如0x0、0x1、0x2、0xfffffffffffffe、0xffffffffffffffff），这些地址对应中间红色边框的存储单元数组中的不同位置。每个存储单元通过箭头连接至右侧“内容..."
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/813c22ae16991dfbdc2ae2f3f19230d5119ab4836cf603b82001c7ced7fa8324.jpg",
+      "image_name": "813c22ae16991dfbdc2ae2f3f19230d5119ab4836cf603b82001c7ced7fa8324.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 45,
+      "context_before": "d rowspan=1 colspan=1>X2</td><td rowspan=1 colspan=1>0x2</td></tr></table>\n\n条件码\n\n# PC更新： 顺序执行和跳转执行",
+      "context_after": "# 控制流跳转：标签与分支指令\n\nint power(int x，unsigned int n)   \n{ int result = 1; for (unsigned int i = n; i >",
+      "context": "an=1>0x2</td></tr></table>\n\n条件码\n\n# PC更新： 顺序执行和跳转执行 [图片] # 控制流跳转：标签与分支指令\n\nint power(int x，unsigned int n)  ",
+      "section": "PC更新： 顺序执行和跳转执行",
+      "alt_text": "",
+      "description": "该图展示了程序计数器（PC）在条件分支指令 `bne .L3` 执行时的两种控制流路径。左侧为“顺序执行”路径：当条件不成立时，PC 继续执行下一条指令 `ret`。右侧为“跳转执行”路径：当条件成立时，PC 跳转至标签 `.L3` 处，重新执行 `mul w0, w0, w2` 指令，形成循环。图中通过灰色高亮标示当前执行指令，清晰呈现了分支跳转对程序执行顺序的影响。"
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/28c3be6248ac78250ce1eb37c5f8d162bf3475f911755801d1d1374c5e040971.jpg",
+      "image_name": "28c3be6248ac78250ce1eb37c5f8d162bf3475f911755801d1d1374c5e040971.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 47,
+      "context_before": "int n)   \n{ int result = 1; for (unsigned int i = n； i > 0；i--) result \\*= X; return result;   \n}",
+      "context_after": "# Q：之前的指令的执行状态如何传递给bne呢？\n\n# 条件码\n\n# 条件码是一组标志位的统称\n\n– 条件码由PSTATE寄存器维护– N（Negative）、Z（Zero）、C（Carry）、V",
+      "context": " = n； i > 0；i--) result \\*= X; return result;   \n} [图片] # Q：之前的指令的执行状态如何传递给bne呢？\n\n# 条件码\n\n# 条件码是一组标志位的统称\n\n–",
+      "section": "控制流跳转：标签与分支指令",
+      "alt_text": "",
+      "description": "该图片展示了一段ARM汇编代码片段，用于实现幂运算函数`power`。代码包含两条被红色框标出的关键指令：第4行的`cbz w1, .L1`（若w1为零则跳转到.L1），以及第8行的`bne .L3`（若不相等则跳转到.L3）。这两条指令均依赖于条件码（标志位）的状态，用于控制程序流程。上下文问题“之前的指令的执行状态如何传递给bne呢？”表明该图旨在说明条件码在分支指令中的作用机制。"
+    },
+    {
+      "image_path": ".mineru_output/OS-02.1 asm-arm-user/OS-02.1 asm-arm-user/auto/images/d117575315ccd66d24bd445dec21c0ad27948044aa87c291651efca3a6ba510d.jpg",
+      "image_name": "d117575315ccd66d24bd445dec21c0ad27948044aa87c291651efca3a6ba510d.jpg",
+      "filename": "OS-02.1 asm-arm-user.pdf",
+      "page_number": 53,
+      "context_before": "label>，例如beq，bne，ble\n\n间接分支指令– 以寄存器中的地址作为跳转目标– br reg，例如 br x0\n\n# 小结\n\n寄存器数据搬移指令算术与逻辑运算指令访存指令  \n分支指令",
+      "context_after": "",
+      "context": " reg，例如 br x0\n\n# 小结\n\n寄存器数据搬移指令算术与逻辑运算指令访存指令  \n分支指令 [图片] ",
+      "section": "小结",
+      "alt_text": "",
+      "description": "该图展示了CPU内部主要寄存器结构及其与内存的交互。左侧为CPU内部，包含31个通用寄存器（X0–X30，ZR为零寄存器）和程序计数器（PC）。下方为程序状态寄存器（PSTATE），包含条件码（N、Z、C、V）及掩码、特权级、执行状态等字段。右侧表示CPU通过地址总线访问内存，数据总线双向传输数据，指令总线从内存读取指令。整体呈现了CPU寄存器组织与内存交互的基本架构。"
+    }
+  ]
+}

@@ -67,8 +67,8 @@ class KnowledgeGraph:
         # 过滤掉常见停用词
         stopwords = {'的', '了', '是', '在', '和', '有', '与', '等', '中', '对', '为', '都', '可以', '这', '就', '也', '我', '你', '他', '她', '我们', '一个', '一些', '这个', '那个', '什么', '怎么', '如何'}
         
-        # 提取2-4个字的词
-        words = re.findall(r'[\u4e00-\u9fa5]{2,4}', text)
+        # 提取2-8个字的词（允许更长的专业术语如"隐马尔可夫模型"）
+        words = re.findall(r'[\u4e00-\u9fa5]{2,8}', text)
         words = [w for w in words if w not in stopwords and len(w) >= 2]
         
         # 统计词频
@@ -329,21 +329,23 @@ class KnowledgeGraph:
     <style>
         #mynetwork {{
             width: 100%;
-            height: 800px;
+            height: 900px;
             border: 1px solid #ddd;
         }}
         body {{
-            font-family: Arial, sans-serif;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
             margin: 20px;
         }}
         h1 {{
             color: #333;
+            font-size: 28px;
         }}
         .info {{
             background: #f0f0f0;
-            padding: 10px;
-            margin-bottom: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
             border-radius: 5px;
+            font-size: 16px;
         }}
     </style>
 </head>
@@ -369,33 +371,44 @@ class KnowledgeGraph:
         var options = {{
             nodes: {{
                 shape: 'dot',
-                size: 20,
+                size: 30,
                 font: {{
-                    size: 14,
-                    color: '#000'
+                    size: 18,
+                    color: '#000',
+                    face: 'Microsoft YaHei, Arial'
                 }},
                 borderWidth: 2
             }},
             edges: {{
                 arrows: 'to',
                 smooth: true,
+                width: 2,
                 font: {{
-                    size: 12,
-                    align: 'middle'
+                    size: 16,
+                    align: 'middle',
+                    color: '#666',
+                    face: 'Microsoft YaHei, Arial'
                 }}
             }},
             physics: {{
                 enabled: true,
                 barnesHut: {{
-                    gravitationalConstant: -30000,
-                    springLength: 150
+                    gravitationalConstant: -40000,
+                    springLength: 200,
+                    springConstant: 0.01
+                }},
+                stabilization: {{
+                    iterations: 200
                 }}
             }},
             groups: {{
-                '概念': {{color: {{background: '#97C2FC'}}}},
-                '技术': {{color: {{background: '#FFCC99'}}}},
-                '术语': {{color: {{background: '#C2FABC'}}}},
-                '人物': {{color: {{background: '#FFC0CB'}}}}
+                '概念': {{color: {{background: '#97C2FC', border: '#2B7CE9'}}}},
+                '技术': {{color: {{background: '#FFCC99', border: '#FF9933'}}}},
+                '术语': {{color: {{background: '#C2FABC', border: '#74D66A'}}}},
+                '人物': {{color: {{background: '#FFC0CB', border: '#FF69B4'}}}},
+                '组织': {{color: {{background: '#FFD700', border: '#FFA500'}}}},
+                '地点': {{color: {{background: '#87CEEB', border: '#4682B4'}}}},
+                '动作': {{color: {{background: '#DDA0DD', border: '#BA55D3'}}}}
             }}
         }};
         

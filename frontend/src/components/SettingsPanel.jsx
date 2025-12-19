@@ -86,15 +86,15 @@ const SettingsPanel = ({ open, onClose, darkMode, onDarkModeChange }) => {
 
           {/* 面板主体 */}
           <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25 }}
-            className="fixed right-0 top-0 bottom-0 w-[500px] bg-white shadow-2xl z-50 
-                     overflow-y-auto"
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: 500, opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+            className="fixed left-[280px] top-0 bottom-0 bg-white shadow-lg border-r 
+                     border-google-gray-200 z-20 flex flex-col"
           >
             {/* 头部 */}
-            <div className="sticky top-0 bg-white border-b border-google-gray-200 p-6 flex items-center justify-between z-10">
+            <div className="flex-shrink-0 bg-white border-b border-google-gray-200 p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Settings size={24} className="text-google-blue-600" />
                 <h2 className="text-xl font-semibold text-google-gray-900">系统设置</h2>
@@ -107,7 +107,8 @@ const SettingsPanel = ({ open, onClose, darkMode, onDarkModeChange }) => {
               </button>
             </div>
 
-            <div className="p-6 space-y-6">
+            {/* 内容区 - 可滚动 */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6">
               {/* 外观设置 */}
               <section>
                 <div className="flex items-center gap-2 mb-4">

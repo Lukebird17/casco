@@ -61,7 +61,8 @@ class TextSplitter:
         return chunks
 
     def split_documents(self, documents: List[Dict[str, str]]) -> List[Dict[str, str]]:
-        """切分多个文档。
+        """切分多个文档，并【至关重要】地保留元数据（包括image_url）
+        
         所有文档都进行文本切分，以确保不超过 embedding 模型的 token 限制
         """
         chunks_with_metadata = []
@@ -70,10 +71,17 @@ class TextSplitter:
             content = doc.get("content", "")
             filetype = doc.get("filetype", "")
             
+            # === [核心修复点 1] 获取原始 metadata (这里面才有 image_url!) ===
+            # 如果这里没拿到，Loader 做的一切都白费了
+            original_metadata = doc.get("metadata", {}) 
+            
             # 所有类型的文档都进行切分
             chunks = self.split_text(content)
             
             for i, chunk in enumerate(chunks):
+                # === [核心修复点 2] 必须为每个块复制一份 metadata ===
+                chunk_metadata = original_metadata.copy()
+                
                 chunk_data = {
                     "content": chunk,
                     "filename": doc.get("filename", "unknown"),
@@ -82,6 +90,8 @@ class TextSplitter:
                     "page_number": doc.get("page_number", 0),
                     "chunk_id": i,
                     "images": doc.get("images", []),
+                    # === [核心修复点 3] 必须显式传递这个字段 ===
+                    "metadata": chunk_metadata 
                 }
                 chunks_with_metadata.append(chunk_data)
 
