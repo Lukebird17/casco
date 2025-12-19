@@ -16,6 +16,8 @@ const ChatInterface = ({
   onSendMessage, 
   enableSocratic,
   currentSessionId,
+  selectedKnowledgeBase,
+  onKnowledgeBaseChange,
 }) => {
   const messagesEndRef = useRef(null);
 
@@ -85,6 +87,8 @@ const ChatInterface = ({
         onSend={onSendMessage} 
         loading={loading}
         enableSocratic={enableSocratic}
+        selectedKnowledgeBase={selectedKnowledgeBase}
+        onKnowledgeBaseChange={onKnowledgeBaseChange}
       />
     </div>
   );

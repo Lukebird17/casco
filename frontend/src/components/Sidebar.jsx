@@ -175,9 +175,9 @@ const Sidebar = ({
                 </div>
               ) : (
                 // 正常模式
-                <button
+                <div
                   onClick={() => onSwitchSession(session.session_id)}
-                  className="w-full text-left px-3 py-2 rounded-lg"
+                  className="w-full text-left px-3 py-2 rounded-lg cursor-pointer hover:bg-google-gray-100 dark:hover:bg-gray-700 transition-colors"
                   title={session.name}
                 >
                   <div className="flex items-center justify-between gap-2">
@@ -220,7 +220,7 @@ const Sidebar = ({
                       </div>
                     )}
                   </div>
-                </button>
+                </div>
               )}
             </div>
           ))}

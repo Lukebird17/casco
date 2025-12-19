@@ -120,6 +120,8 @@ class ChatRequest(BaseModel):
     message: str
     session_id: str
     enable_socratic: bool = False
+    thinking_mode: str = 'fast'  # 'fast' 或 'thinking'
+    knowledge_base_id: str = 'default'  # 知识库ID
     image_base64: Optional[str] = None
     file_content: Optional[str] = None  # 文件内容
     temperature: Optional[float] = 0.7
@@ -181,6 +183,79 @@ async def chat(request: ChatRequest):
         chat_history = session.messages
         is_first_message = len(chat_history) == 0
         
+        # 打印思考模式和知识库
+        print(f"\n{'='*80}")
+        print(f"📝 用户问题: {request.message}")
+        print(f"🧠 思考模式: {request.thinking_mode.upper()}")
+        print(f"📚 知识库: {request.knowledge_base_id}")
+        print(f"{'='*80}\n")
+        
+        # 切换到指定的知识库
+        if request.knowledge_base_id:
+            try:
+                from config import get_kb_vector_dir, get_kb_data_dir, COLLECTION_NAME
+                from vector_store import VectorStore
+                from image_vector_store import ImageVectorStore
+                
+                kb_vector_path = get_kb_vector_dir(request.knowledge_base_id)
+                kb_data_path = get_kb_data_dir(request.knowledge_base_id)
+                
+                if os.path.exists(kb_vector_path):
+                    print(f"🔄 正在切换知识库...")
+                    print(f"   目标库: {request.knowledge_base_id}")
+                    print(f"   向量路径: {kb_vector_path}")
+                    print(f"   数据路径: {kb_data_path}")
+                    
+                    # 1. 重新初始化 VectorStore（使用正确的collection名称）
+                    new_vector_store = VectorStore(
+                        db_path=kb_vector_path,
+                        collection_name=COLLECTION_NAME  # 使用配置中的名称：course_documents
+                    )
+                    
+                    # 检查collection的文档数量
+                    doc_count = new_vector_store.get_collection_count()
+                    print(f"   ✅ 文本向量库已更新")
+                    print(f"   📊 Collection文档数量: {doc_count}")
+                    print(f"   📂 数据库路径: {kb_vector_path}")
+                    print(f"   📝 Collection名称: {COLLECTION_NAME}")
+                    
+                    if doc_count == 0:
+                        print(f"   ⚠️  警告：该知识库为空！请先上传文档。")
+                    
+                    rag_agent.vector_store = new_vector_store
+                    
+                    # 2. 更新 HybridRetriever（如果启用）
+                    if hasattr(rag_agent, 'hybrid_retriever') and rag_agent.hybrid_retriever:
+                        # 更新text_store引用
+                        rag_agent.hybrid_retriever.text_store = new_vector_store
+                        rag_agent.hybrid_retriever.vector_store = new_vector_store  # 也更新这个引用
+                        print(f"   ✅ HybridRetriever.text_store 已更新")
+                        
+                        # 更新image_store到对应的知识库图片库
+                        images_dir = os.path.join(kb_data_path, "images")
+                        image_vector_dir = os.path.join(kb_vector_path, "images")
+                        
+                        if os.path.exists(images_dir):
+                            try:
+                                new_image_store = ImageVectorStore(
+                                    db_path=image_vector_dir,
+                                    image_dir=images_dir
+                                )
+                                rag_agent.hybrid_retriever.image_store = new_image_store
+                                print(f"   ✅ HybridRetriever.image_store 已更新: {images_dir}")
+                            except Exception as img_err:
+                                print(f"   ⚠️  图片库更新失败: {img_err}")
+                        else:
+                            print(f"   ℹ️  该知识库无图片目录: {images_dir}")
+                    
+                    print(f"✅ 已切换到知识库: {request.knowledge_base_id}")
+                else:
+                    print(f"⚠️  知识库路径不存在: {kb_vector_path}")
+            except Exception as e:
+                print(f"⚠️  切换知识库失败: {e}，使用当前库")
+                import traceback
+                traceback.print_exc()
+        
         # 处理消息 - 根据输入类型调用不同逻辑
         # 1. 纯文本：文字+图片库检索 → 文本模型
         # 2. 有图片：描述图片 → 增强query检索 → 原图+context → 多模态模型
@@ -191,17 +266,29 @@ async def chat(request: ChatRequest):
             chat_history=chat_history,
             image=request.image_base64 if request.image_base64 else None,
             file_content=request.file_content if request.file_content else None,
-            enable_socratic=request.enable_socratic
+            enable_socratic=request.enable_socratic,
+            thinking_mode=request.thinking_mode,
+            top_k=request.retrieval_k or 10,  # 使用前端传来的retrieval_k，默认10
+            temperature=request.temperature or 0.7,
+            max_tokens=request.max_tokens or 2000
         )
         
         # 提取引用（在添加消息之前）
+        # Context已经在rag_agent中打印，这里只收集用于前端展示
         citations = []
         if hasattr(rag_agent, 'last_context_docs') and rag_agent.last_context_docs:
-            for doc in rag_agent.last_context_docs[:5]:  # 最多5个引用
+            for i, doc in enumerate(rag_agent.last_context_docs[:5], 1):  # 最多5个引用
+                filename = doc.get("filename", "未知")
+                page_num = doc.get("page_num", doc.get("page_number", 0))
+                section = doc.get("section", "")
+                content_snippet = doc.get("content", "")[:200]
+                
+                # 添加到引用列表（用于前端展示）
                 citations.append({
-                    "filename": doc.get("filename", "未知"),
-                    "page": doc.get("page_num", 0),
-                    "snippet": doc.get("content", "")[:200]
+                    "filename": filename,
+                    "page": page_num,
+                    "section": section,
+                    "snippet": content_snippet
                 })
         
         # 计算置信度

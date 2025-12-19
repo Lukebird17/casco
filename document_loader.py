@@ -115,11 +115,12 @@ class DocumentLoader:
 
         要求：
         1. 优先使用MinerU处理PDF文件
-        2. 提取文本内容并格式化
+        2. 提取文本内容并格式化，保留页码信息
         3. 提取图片信息
         
         Returns:
             (pages, images): 页面文本列表和图片信息列表
+            pages格式: [{"text": str, "page_number": int, "section": str}, ...]
         """
         pages = []
         images = []
@@ -133,14 +134,65 @@ class DocumentLoader:
                 if full_result and full_result.get('content'):
                     # 提取文本内容
                     markdown_content = full_result['content']
-                    formatted_text = f"--- PDF文档（MinerU处理） ---\n{markdown_content}\n"
-                    pages.append({"text": formatted_text})
+                    
+                    # 尝试按页分割内容（MinerU可能在markdown中包含页码标记）
+                    # 如果没有明确的页码标记，我们按段落分割并估计页码
+                    lines = markdown_content.split('\n')
+                    current_page = 1
+                    current_section = ""
+                    current_text = []
+                    
+                    for line in lines:
+                        # 检测是否是新的章节/标题（通常是新页的开始）
+                        if line.strip().startswith('#'):
+                            # 如果有累积的文本，保存为一个段落
+                            if current_text:
+                                pages.append({
+                                    "text": '\n'.join(current_text),
+                                    "page_number": current_page,
+                                    "section": current_section
+                                })
+                                current_text = []
+                                current_page += 1
+                            
+                            # 更新当前章节
+                            current_section = line.strip().replace('#', '').strip()
+                            current_text.append(line)
+                        else:
+                            current_text.append(line)
+                            
+                            # 每500字符估算为一页（可调整）
+                            if len('\n'.join(current_text)) > 500 and line.strip() == '':
+                                pages.append({
+                                    "text": '\n'.join(current_text),
+                                    "page_number": current_page,
+                                    "section": current_section
+                                })
+                                current_text = []
+                                current_page += 1
+                    
+                    # 保存最后剩余的文本
+                    if current_text:
+                        pages.append({
+                            "text": '\n'.join(current_text),
+                            "page_number": current_page,
+                            "section": current_section
+                        })
+                    
+                    # 如果分割失败，至少保存整个文档
+                    if not pages:
+                        pages.append({
+                            "text": markdown_content,
+                            "page_number": 1,
+                            "section": "全文"
+                        })
                     
                     # 提取图片信息
                     if 'images' in full_result and full_result['images']:
                         images = full_result['images']
                         print(f"   📸 提取到 {len(images)} 张图片")
                     
+                    print(f"   📄 分割为 {len(pages)} 个段落")
                     return pages, images
             except Exception as e:
                 print(f"⚠️  MinerU处理失败，尝试基础解析器: {e}")
@@ -152,8 +204,11 @@ class DocumentLoader:
             for page_num, page in enumerate(reader.pages, 1):
                 text = page.extract_text()
                 if text.strip():
-                    formatted_text = f"--- 第 {page_num} 页 ---\n{text}\n"
-                    pages.append({"text": formatted_text})
+                    pages.append({
+                        "text": f"--- 第 {page_num} 页 ---\n{text}\n",
+                        "page_number": page_num,
+                        "section": f"第 {page_num} 页"
+                    })
         except Exception as e:
             print(f"❌ 加载PDF文件失败 {file_path}: {e}")
         
@@ -303,7 +358,8 @@ class DocumentLoader:
                         "filename": filename,
                         "filepath": file_path,
                         "filetype": ext,
-                        "page_number": page_idx,
+                        "page_number": page_data.get("page_number", page_idx),
+                        "section": page_data.get("section", ""),
                     }
                 )
         elif ext == ".pptx":
@@ -315,7 +371,8 @@ class DocumentLoader:
                         "filename": filename,
                         "filepath": file_path,
                         "filetype": ext,
-                        "page_number": slide_idx,
+                        "page_number": slide_data.get("page_number", slide_idx),
+                        "section": slide_data.get("section", f"幻灯片 {slide_idx}"),
                     }
                 )
         elif ext == ".docx":
@@ -327,7 +384,8 @@ class DocumentLoader:
                         "filename": filename,
                         "filepath": file_path,
                         "filetype": ext,
-                        "page_number": 0,
+                        "page_number": 1,
+                        "section": "文档内容",
                     }
                 )
         elif ext == ".txt":
@@ -339,7 +397,8 @@ class DocumentLoader:
                         "filename": filename,
                         "filepath": file_path,
                         "filetype": ext,
-                        "page_number": 0,
+                        "page_number": 1,
+                        "section": "文本内容",
                     }
                 )
         elif ext == ".md":
@@ -351,7 +410,8 @@ class DocumentLoader:
                         "filename": filename,
                         "filepath": file_path,
                         "filetype": ext,
-                        "page_number": 0,
+                        "page_number": 1,
+                        "section": "Markdown内容",
                     }
                 )
         else:

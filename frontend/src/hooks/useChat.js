@@ -14,7 +14,16 @@ export const useChat = (currentSessionId) => {
   const [confidence, setConfidence] = useState(null);
 
   const sendChatMessage = useCallback(async (message, options = {}) => {
-    const { image, file, enableSocratic = false } = options;
+    const { 
+      image, 
+      file, 
+      enableSocratic = false, 
+      thinkingMode = 'fast', 
+      knowledgeBaseId = 'default',
+      temperature = 0.7,
+      maxTokens = 2000,
+      retrievalK = 5
+    } = options;
 
     // 准备用户消息内容
     let displayMessage = message;
@@ -40,6 +49,11 @@ export const useChat = (currentSessionId) => {
         message: message,
         session_id: currentSessionId,
         enable_socratic: enableSocratic,
+        thinking_mode: thinkingMode,
+        knowledge_base_id: knowledgeBaseId,
+        temperature: temperature,
+        max_tokens: maxTokens,
+        retrieval_k: retrievalK,
       };
 
       // 如果有图片，添加图片数据

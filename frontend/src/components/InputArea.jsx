@@ -3,16 +3,42 @@
  * Gemini 风格的底部输入框
  */
 
-import React, { useState, useRef } from 'react';
-import { Send, Image, Paperclip, Loader2 } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Send, Image, Paperclip, Loader2, Zap, Brain, Database } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { listKnowledgeBases } from '../api/client';
 
-const InputArea = ({ onSend, loading, enableSocratic }) => {
+const InputArea = ({ 
+  onSend, 
+  loading, 
+  enableSocratic,
+  selectedKnowledgeBase,
+  onKnowledgeBaseChange 
+}) => {
   const [message, setMessage] = useState('');
   const [imageFile, setImageFile] = useState(null);
   const [docFile, setDocFile] = useState(null);
+  const [thinkingMode, setThinkingMode] = useState('fast'); // 'fast' 或 'thinking'
+  const [knowledgeBases, setKnowledgeBases] = useState([]);
   const imageInputRef = useRef(null);
   const fileInputRef = useRef(null);
+
+  // 加载知识库列表
+  useEffect(() => {
+    const loadKBs = async () => {
+      try {
+        const response = await listKnowledgeBases();
+        if (response.success && response.knowledge_bases) {
+          setKnowledgeBases(response.knowledge_bases);
+        }
+      } catch (error) {
+        console.error('加载知识库列表失败:', error);
+        // 如果加载失败，设置默认知识库
+        setKnowledgeBases([{ id: 'default', name: '默认知识库' }]);
+      }
+    };
+    loadKBs();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,9 +48,10 @@ const InputArea = ({ onSend, loading, enableSocratic }) => {
       return;
     }
 
-    // 准备发送
+    // 准备发送（不需要传递 knowledgeBaseId，因为 App.jsx 会自动添加）
     const options = {
       enableSocratic,
+      thinkingMode, // 添加思考模式
     };
 
     // 处理图片
@@ -155,6 +182,62 @@ const InputArea = ({ onSend, loading, enableSocratic }) => {
           </div>
         )}
 
+        {/* 知识库和思考模式选择器 */}
+        <div className="mb-2 flex items-center gap-3">
+          {/* 知识库选择 */}
+          <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 dark:bg-gray-800 rounded-full">
+            <Database size={16} className="text-gray-600 dark:text-gray-400" />
+            <select
+              value={selectedKnowledgeBase}
+              onChange={(e) => onKnowledgeBaseChange(e.target.value)}
+              disabled={loading}
+              className="bg-transparent text-sm font-medium text-gray-700 dark:text-gray-300 
+                       border-none outline-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {knowledgeBases.map(kb => (
+                <option key={kb.id} value={kb.id}>
+                  {kb.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* 分隔符 */}
+          <div className="h-6 w-px bg-gray-300 dark:bg-gray-600"></div>
+
+          {/* 思考模式选择器 */}
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => setThinkingMode('fast')}
+              disabled={loading}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all
+                ${thinkingMode === 'fast' 
+                  ? 'bg-google-blue-600 text-white shadow-md' 
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300'
+                }
+                disabled:opacity-50 disabled:cursor-not-allowed`}
+            >
+              <Zap size={16} />
+              <span>Fast</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setThinkingMode('thinking')}
+              disabled={loading}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all
+                ${thinkingMode === 'thinking' 
+                  ? 'bg-purple-600 text-white shadow-md' 
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300'
+                }
+                disabled:opacity-50 disabled:cursor-not-allowed`}
+            >
+              <Brain size={16} />
+              <span>Thinking (CoT)</span>
+            </button>
+          </div>
+        </div>
+
         {/* 输入框 */}
         <div className="flex gap-3 items-end">
           <div className="flex-1 relative">
@@ -162,14 +245,16 @@ const InputArea = ({ onSend, loading, enableSocratic }) => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="向我提问任何问题..."
+              placeholder={thinkingMode === 'fast' 
+                ? '向我提问任何问题...' 
+                : '提出复杂问题，我会深度思考...'}
               disabled={loading}
               rows={1}
               className="w-full px-5 py-4 rounded-3xl border border-google-gray-300 
                        focus:outline-none focus:ring-2 focus:ring-google-blue-500 
                        focus:border-transparent resize-none transition-all duration-200
                        disabled:bg-google-gray-50 disabled:cursor-not-allowed
-                       text-base"
+                       text-base dark:bg-gray-800 dark:border-gray-600 dark:text-white"
               style={{ minHeight: '56px', maxHeight: '200px' }}
             />
           </div>

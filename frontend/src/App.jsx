@@ -46,6 +46,7 @@ function App() {
   const [viewerDocument, setViewerDocument] = useState(null);
   const [viewerHighlight, setViewerHighlight] = useState(null);
   const [viewerPage, setViewerPage] = useState(null);
+  const [selectedKnowledgeBase, setSelectedKnowledgeBase] = useState('default'); // 全局知识库选择
 
   // 会话管理
   const {
@@ -156,6 +157,7 @@ function App() {
         temperature: settings.temperature,
         maxTokens: settings.maxTokens,
         retrievalK: settings.retrievalK,
+        knowledgeBaseId: selectedKnowledgeBase, // 使用全局知识库选择
       });
       
       // 如果有引用，自动打开工具面板
@@ -335,6 +337,8 @@ function App() {
             onSendMessage={handleSendMessage}
             enableSocratic={enableSocratic}
             currentSessionId={currentSessionId}
+            selectedKnowledgeBase={selectedKnowledgeBase}
+            onKnowledgeBaseChange={setSelectedKnowledgeBase}
           />
         </div>
       </div>

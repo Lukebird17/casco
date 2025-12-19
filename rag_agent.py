@@ -344,7 +344,8 @@ class RAGAgent:
         基础检索策略（移植自Casco）
         
         特点：
-        - 检索数量：3个
+        - 初始检索：15个文档
+        - Rerank后返回：5个最相关文档
         - 适用于简单事实提取
         
         参数:
@@ -353,27 +354,28 @@ class RAGAgent:
         返回:
             (上下文字符串, 检索结果列表)
         """
-        print(f"  📚 使用【基础检索】策略 (k=3)")
+        print(f"  📚 使用【基础检索】策略 (初始检索15个 → Rerank → 返回5个)")
         
-        # 多查询检索
-        results = self.multi_query_retrieve(query, k=3)
+        # 多查询检索（每个查询检索5个，通常生成3个查询 = 15个候选）
+        results = self.multi_query_retrieve(query, k=5)
         
         # 重排序
         print(f"  🔄 正在重排序 {len(results)} 个结果...")
         results = self.rerank_results(query, results)
         
-        # 格式化
+        # 格式化（取前5个）
         print(f"  📝 格式化上下文...")
-        context = self._format_context(results[:3])
+        context = self._format_context(results[:5])
         
-        return context, results[:3]
+        return context, results[:5]
     
     def intermediate_retrieve(self, query: str) -> Tuple[str, List[Dict]]:
         """
         中级检索策略（移植自Casco）
         
         特点：
-        - 检索数量：6个
+        - 初始检索：24个文档
+        - Rerank后返回：8个最相关文档
         - 需要综合多个文档片段
         
         参数:
@@ -382,27 +384,28 @@ class RAGAgent:
         返回:
             (上下文字符串, 检索结果列表)
         """
-        print(f"  📚 使用【中级检索】策略 (k=6)")
+        print(f"  📚 使用【中级检索】策略 (初始检索24个 → Rerank → 返回8个)")
         
-        # 多查询检索
-        results = self.multi_query_retrieve(query, k=6)
+        # 多查询检索（每个查询检索8个，通常生成3个查询 = 24个候选）
+        results = self.multi_query_retrieve(query, k=8)
         
         # 重排序
         print(f"  🔄 正在重排序 {len(results)} 个结果...")
         results = self.rerank_results(query, results)
         
-        # 格式化
+        # 格式化（取前8个）
         print(f"  📝 格式化上下文...")
-        context = self._format_context(results[:6])
+        context = self._format_context(results[:8])
         
-        return context, results[:6]
+        return context, results[:8]
     
     def advanced_retrieve(self, query: str) -> Tuple[str, List[Dict]]:
         """
         高级检索策略（移植自Casco）
         
         特点：
-        - 检索数量：8个
+        - 初始检索：30个文档
+        - Rerank后返回：10个最相关文档
         - 支持跨文档分析和对比
         
         参数:
@@ -411,20 +414,20 @@ class RAGAgent:
         返回:
             (上下文字符串, 检索结果列表)
         """
-        print(f"  📚 使用【高级检索】策略 (k=8)")
+        print(f"  📚 使用【高级检索】策略 (初始检索30个 → Rerank → 返回10个)")
         
-        # 多查询检索（更多数量）
-        results = self.multi_query_retrieve(query, k=8)
+        # 多查询检索（更多数量，每个查询检索10个 = 30个候选）
+        results = self.multi_query_retrieve(query, k=10)
         
         # 重排序
         print(f"  🔄 正在重排序 {len(results)} 个结果...")
         results = self.rerank_results(query, results)
         
-        # 构建结构化上下文
+        # 构建结构化上下文（取前10个）
         print(f"  📝 构建结构化上下文...")
-        context = self._build_structured_context(results[:8], query)
+        context = self._build_structured_context(results[:10], query)
         
-        return context, results[:8]
+        return context, results[:10]
     
     def _format_context(self, results: List[Dict]) -> str:
         """
@@ -519,6 +522,38 @@ class RAGAgent:
         
         return "\n".join(context_parts)
 
+    def _print_retrieved_context(self, retrieved_docs: List[Dict]):
+        """
+        在检索完成后立即打印context详情
+        
+        参数:
+            retrieved_docs: 检索到的文档列表
+        """
+        if not retrieved_docs:
+            print(f"\n{'='*80}")
+            print(f"⚠️  未检索到相关文档")
+            print(f"{'='*80}\n")
+            return
+        
+        print(f"\n{'='*80}")
+        print(f"📚 检索到的Context详情: ({len(retrieved_docs)} 个文档)")
+        print(f"{'='*80}\n")
+        
+        for i, doc in enumerate(retrieved_docs, 1):
+            filename = doc.get("filename", "未知文件")
+            page_num = doc.get("page_num", doc.get("page_number", "未知"))
+            section = doc.get("section", "")
+            content_snippet = doc.get("content", "")[:200].replace('\n', ' ')
+            score = doc.get("distance", doc.get("rerank_score", "N/A"))
+            
+            print(f"  [{i}] 文件: {filename}")
+            print(f"      页码: 第 {page_num} 页" + (f" ({section})" if section else ""))
+            print(f"      相似度: {score}")
+            print(f"      内容: {content_snippet}...")
+            print(f"      {'-'*76}\n")
+        
+        print(f"{'='*80}\n")
+    
     def retrieve_context(
         self, query: str, top_k: int = TOP_K
     ) -> Tuple[str, List[Dict]]:
@@ -594,6 +629,9 @@ class RAGAgent:
         file_content: Optional[str] = None,  # 新增：文件内容
         use_multimodal_model: bool = False,  # 新增：是否使用多模态模型
         enable_socratic: bool = False,  # 新增：苏格拉底模式
+        thinking_mode: str = 'fast',  # 新增：思考模式
+        temperature: float = 0.7,  # LLM温度参数
+        max_tokens: int = 2000,  # LLM最大token数
     ) -> str:
         """
         生成回答（集成Auto-CoT和Token追踪）
@@ -602,10 +640,12 @@ class RAGAgent:
             query: 用户问题
             context: 检索到的上下文
             chat_history: 对话历史
-            query_type: 问题类型（用于选择温度和CoT）
+            query_type: 问题类型（用于选择温度）
             image: 图片路径或base64（可选）
             file_content: 文件内容（可选）
             use_multimodal_model: 是否使用多模态模型
+            enable_socratic: 苏格拉底模式
+            thinking_mode: 'fast' 或 'thinking'（thinking时使用CoT）
         """
         # 【暂时注释】Token优化上下文 - 先确保基本功能正确
         # if self.token_tracker:
@@ -651,18 +691,18 @@ class RAGAgent:
                 )
             print(f"  🤔 启用苏格拉底模式")
             
-        elif self.enable_cot and self.cot_builder and query_type in ['intermediate', 'advanced']:
+        elif thinking_mode == 'thinking' and self.enable_cot and self.cot_builder:
             # 使用Auto-CoT构建提示词
             user_text = self.cot_builder.build_prompt(query, context, max_examples=2)
             
             if self.current_reasoning_chain:
                 self.current_reasoning_chain.add_step(
                     "CoT",
-                    f"启用Auto-CoT推理（{query_type}题）",
+                    f"启用Auto-CoT深度推理",
                     f"注入了 {len(self.cot_builder.examples)} 个推理示例"
                 )
             
-            print(f"  💡 启用Auto-CoT推理")
+            print(f"  🧠 启用Thinking模式 (Auto-CoT推理)")
         else:
             # 使用标准提示词
             user_text = f"""{context}
@@ -753,7 +793,7 @@ class RAGAgent:
                 model=selected_model, 
                 messages=messages, 
                 temperature=temperature,
-                max_tokens=1500
+                max_tokens=max_tokens
             )
             
             print(f"  ✅ 收到LLM响应")
@@ -805,6 +845,10 @@ class RAGAgent:
         image: Optional[str] = None,  # 图片路径或base64
         file_content: Optional[str] = None,  # 文件内容
         enable_socratic: bool = False,  # 苏格拉底模式
+        thinking_mode: str = 'fast',  # 'fast' 或 'thinking' (使用CoT)
+        stream_thinking: bool = False,  # 是否流式输出思考过程
+        temperature: float = 0.7,  # LLM温度参数
+        max_tokens: int = 2000,  # LLM最大token数
     ) -> Dict[str, any]:
         """
         回答问题（完整流程，按照新的多模态处理逻辑）
@@ -862,13 +906,19 @@ class RAGAgent:
             query_type = self.analyze_query_type(enhanced_query)
             context, retrieved_docs = self.retrieve_context(enhanced_query, top_k=top_k)
             
+            # 【立即打印检索结果】
+            self._print_retrieved_context(retrieved_docs)
+            
             # 2.3 生成回答：原图 + context → 多模态模型
             answer = self.generate_response(
                 query, context, chat_history, query_type,
                 image=image_path,  # 传原图
                 file_content=None,
                 use_multimodal_model=True,  # 强制使用多模态模型
-                enable_socratic=enable_socratic
+                enable_socratic=enable_socratic,
+                thinking_mode=thinking_mode,
+                temperature=temperature,
+                max_tokens=max_tokens
             )
             
         elif file_content:
@@ -879,13 +929,19 @@ class RAGAgent:
             query_type = self.analyze_query_type(query)
             context, retrieved_docs = self.retrieve_context(query, top_k=top_k)
             
+            # 【立即打印检索结果】
+            self._print_retrieved_context(retrieved_docs)
+            
             # 3.2 生成回答：文件内容 + context → 多模态模型
             answer = self.generate_response(
                 query, context, chat_history, query_type,
                 image=None,
                 file_content=file_content,  # 传文件内容
                 use_multimodal_model=True,  # 强制使用多模态模型
-                enable_socratic=enable_socratic
+                enable_socratic=enable_socratic,
+                thinking_mode=thinking_mode,
+                temperature=temperature,
+                max_tokens=max_tokens
             )
             
         else:
@@ -898,13 +954,19 @@ class RAGAgent:
             # 1.2 在文字和图片库都检索
             context, retrieved_docs = self.retrieve_context(query, top_k=top_k)
             
+            # 【立即打印检索结果】
+            self._print_retrieved_context(retrieved_docs)
+            
             # 1.3 生成回答：使用纯文本模型
             answer = self.generate_response(
                 query, context, chat_history, query_type,
                 image=None,
                 file_content=None,
                 use_multimodal_model=False,  # 强制使用文本模型
-                enable_socratic=enable_socratic
+                enable_socratic=enable_socratic,
+                thinking_mode=thinking_mode,
+                temperature=temperature,
+                max_tokens=max_tokens
             )
         
         if not context:
