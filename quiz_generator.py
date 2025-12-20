@@ -31,13 +31,13 @@ class QuizGenerator:
             context: 基于的文档内容
             num_questions: 题目数量
             difficulty: 难度 (easy/medium/hard)
-            question_types: 题目类型列表 ['choice', 'true_false', 'short_answer']
+            question_types: 题目类型列表 ['choice', 'true_false']
         
         返回:
             题目列表
         """
         if question_types is None:
-            question_types = ['choice', 'true_false', 'short_answer']
+            question_types = ['choice', 'true_false']  # ✅ 只保留选择题和判断题
         
         difficulty_desc = {
             'easy': '简单（基础概念理解）',
@@ -52,13 +52,12 @@ class QuizGenerator:
 题目类型要求：
 1. 选择题（单选题，4个选项）
 2. 判断题（正确/错误）
-3. 填空题（简单的关键词或短语填空）
 
 题目要求：
 - 题目要清晰、准确，基于给定内容
 - 答案要有详细解释
-- 填空题答案要简短明确（1-3个词）
 - 难度适中，符合学习目标
+- 选项设计合理，干扰项具有迷惑性
 
 内容：
 {context[:3000]}
@@ -77,12 +76,6 @@ class QuizGenerator:
     "question": "判断题内容（陈述句）",
     "correct_answer": "true",
     "explanation": "答案解释"
-  }},
-  {{
-    "type": "fill_blank",
-    "question": "填空题内容，用____表示空格位置",
-    "correct_answer": "简短答案",
-    "explanation": "答案解释和关键词"
   }}
 ]
 

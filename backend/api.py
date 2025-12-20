@@ -954,27 +954,41 @@ async def generate_quiz(request: QuizRequest):
         if quiz_generator is None:
             raise HTTPException(status_code=500, detail="测验生成器未初始化")
         
-        # ✅ 从知识库获取所有文档内容作为context
-        kb_data_dir = get_kb_data_dir(request.kb_id)
-        if not kb_data_dir.exists():
-            raise HTTPException(status_code=404, detail=f"知识库 {request.kb_id} 不存在")
+        # ✅ 从向量库获取文档内容作为context
+        from pathlib import Path
+        kb_vector_dir = Path(get_kb_vector_dir(request.kb_id))
+        if not kb_vector_dir.exists():
+            raise HTTPException(status_code=404, detail=f"知识库 {request.kb_id} 不存在或未初始化")
         
-        # 读取知识库中的所有文本内容（简化版，取前3000字符）
-        context_parts = []
-        for json_file in kb_data_dir.glob("*.json"):
-            try:
-                with open(json_file, 'r', encoding='utf-8') as f:
-                    import json
-                    data = json.load(f)
-                    for item in data:
-                        if 'content' in item:
-                            context_parts.append(item['content'][:500])
-            except Exception as e:
-                print(f"⚠️ 读取文件 {json_file} 失败: {e}")
+        # 从向量库中获取所有文档
+        try:
+            # 临时创建一个向量存储实例来获取文档
+            from vector_store import VectorStore
+            temp_vector_store = VectorStore(
+                db_path=str(kb_vector_dir),  # ✅ 使用db_path参数
+                collection_name=COLLECTION_NAME
+            )
+            
+            # 获取所有文档（通过查询一个空字符串或通用术语）
+            all_docs = temp_vector_store.collection.get(
+                limit=100,  # 获取最多100个文档片段
+                include=['documents', 'metadatas']
+            )
+            
+            context_parts = []
+            if all_docs and all_docs.get('documents'):
+                for doc in all_docs['documents'][:20]:  # 取前20个片段
+                    if doc and len(doc.strip()) > 50:  # 确保文档有实质内容
+                        context_parts.append(doc[:800])  # 每个片段最多800字符
+            
+            context = "\n\n".join(context_parts)
+            if not context.strip():
+                raise HTTPException(status_code=400, detail="知识库中没有可用内容生成测验。请先上传文档到该知识库。")
+        except Exception as e:
+            print(f"⚠️ 从向量库获取文档失败: {e}")
+            raise HTTPException(status_code=400, detail=f"获取知识库内容失败: {str(e)}")
         
-        context = "\n\n".join(context_parts[:10])  # 取前10个片段
-        if not context.strip():
-            raise HTTPException(status_code=400, detail="知识库中没有可用内容生成测验")
+        print(f"📝 准备生成测验，上下文长度: {len(context)} 字符")
         
         questions = quiz_generator.generate_quiz(
             context,
