@@ -10,10 +10,10 @@ import hashlib
 from typing import List, Dict, Optional
 from datetime import datetime
 
-from document_loader import DocumentLoader
-from text_splitter import TextSplitter
-from vector_store import VectorStore
-from enhanced_ocr import EnhancedOCRProcessor
+from src.processors.document_loader import DocumentLoader
+from src.processors.text_splitter import TextSplitter
+from src.core.vector_store import VectorStore
+from src.processors.enhanced_ocr import EnhancedOCRProcessor
 from config import CHUNK_SIZE, CHUNK_OVERLAP
 
 

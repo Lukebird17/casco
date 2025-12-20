@@ -8,10 +8,10 @@
 from typing import List, Dict, Optional, Union
 from pathlib import Path
 
-from vector_store import VectorStore
-from image_vector_store import ImageVectorStore
+from src.core.vector_store import VectorStore
+from src.core.image_vector_store import ImageVectorStore
 from config import TOP_K
-from reranker import Reranker
+from src.core.reranker import Reranker
 
 
 class HybridRetriever:

@@ -1,483 +1,488 @@
-# OmniScry - Navigate the Depths of Knowledge
+# 🎓 RAG智能学习助手
 
-**全知洞察** - 探索知识的深渊
+> 基于检索增强生成(RAG)技术的智能课程助教系统，提供文档问答、知识图谱、质量评估等功能
 
-基于检索增强生成（RAG）和AI自省的智能问答系统，提供高质量、可追溯的知识检索与生成服务。
+![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)
+![Python](https://img.shields.io/badge/python-3.10%2B-green.svg)
+![React](https://img.shields.io/badge/react-18.3-61dafb.svg)
+![License](https://img.shields.io/badge/license-MIT-yellow.svg)
 
 ---
 
 ## ✨ 核心特性
 
-### 🎯 智能问答
-- **多轮对话**: 支持上下文记忆的多轮对话
-- **多模态输入**: 文本 + 图像 + 文件上传
-- **苏格拉底模式**: 启发式教学，引导用户思考
-- **实时反馈**: 8秒内显示答案，评估异步进行
+### 🚀 智能检索
+- **混合检索**: 结合BM25关键词匹配和向量语义搜索，提升检索精度
+- **智能重排序**: 使用BGE-Reranker-v2-m3模型进行结果重排序
+- **多模态支持**: 支持PDF、Word、PPT、图片等多种文档格式
 
-### 🔍 先进检索
-- **SOTA架构**: Query Expansion + Hybrid Search (Vector + BM25) + RRF Fusion + API Reranker
-- **多知识库**: 支持创建、切换、删除独立知识库
-- **可追溯性**: 所有答案都有引用来源，可直接跳转原文档
+### 📊 质量评估
+- **AI自省报告**: 5维度自动评估答案质量
+  - 忠实度 (Faithfulness): 答案是否基于检索内容
+  - 相关性 (Relevancy): 答案是否直接回应问题
+  - 完整性 (Completeness): 答案是否全面
+  - 准确性 (Accuracy): 答案是否准确无误
+  - 检索质量 (Retrieval Quality): 检索文档的相关性
+- **置信度计算**: 基于检索相似度的置信度评分
+- **可视化展示**: 雷达图直观展示评估结果
 
-### 📊 AI自省评估
-- **3维质量评估**: 忠实度、相关性、检索质量
-- **雷达图可视化**: 直观展示各维度得分
-- **实时计时**: 检索、生成、评估各阶段耗时透明
+### 🎯 高级功能
+- **知识图谱**: 自动构建课程知识网络，支持概念关系可视化
+- **概念检索**: 智能识别并高亮文档中的关键概念
+- **文档大纲**: 自动提取PDF文档目录结构
+- **记忆卡片**: 自动生成学习记忆卡片
+- **苏格拉底模式**: 引导式教学，培养独立思考能力
 
-### 🛠️ 学习工具
-- **文档大纲**: 智能提取PDF/Word文档目录结构
-- **概念定位**: 关键词提取与文档内搜索
-- **智能测验**: 基于知识库自动生成选择题和判断题
-- **记忆闪卡**: Anki风格的间隔重复学习
-- **片段收藏**: 保存重要文本片段
-- **热力图**: 可视化学习活动
+### 🎨 现代化界面
+- **Gemini风格**: 仿照Google Gemini的简洁美观设计
+- **实时流式输出**: 使用SSE技术实现逐字输出效果
+- **LaTeX渲染**: 完美支持数学公式显示（KaTeX）
+- **引用跳转**: 点击引用直接定位到原文档对应位置
+- **深色模式**: 支持深色/浅色主题切换
 
 ---
 
-## 📦 快速开始
+## 📁 项目结构
 
-### 1. 环境要求
+```
+rag-agent/
+├── src/                          # 源代码（模块化设计）
+│   ├── core/                     # 核心RAG功能
+│   │   ├── rag_agent.py         # 主RAG引擎
+│   │   ├── vector_store.py      # ChromaDB向量存储
+│   │   ├── hybrid_retriever.py  # 混合检索器（BM25+向量）
+│   │   ├── reranker.py          # BGE重排序器
+│   │   └── image_vector_store.py # 图片向量存储
+│   │
+│   ├── processors/               # 文档处理
+│   │   ├── document_loader.py   # 多格式文档加载器
+│   │   ├── text_splitter.py     # 智能文本分割
+│   │   ├── enhanced_ocr.py      # OCR文字识别
+│   │   └── image_describer.py   # 图片描述生成
+│   │
+│   ├── evaluators/               # 质量评估
+│   │   ├── quality_evaluator.py # 5维度质量评估
+│   │   └── confidence_calculator.py # 置信度计算
+│   │
+│   ├── features/                 # 高级功能
+│   │   ├── knowledge_graph.py   # 知识图谱生成
+│   │   ├── flashcard_system.py  # 记忆卡片系统
+│   │   ├── socratic_mode.py     # 苏格拉底模式
+│   │   ├── reasoning_chain.py   # 推理链
+│   │   ├── quiz_generator.py    # 测验生成
+│   │   ├── document_heatmap.py  # 文档热力图
+│   │   ├── document_outline.py  # 文档大纲
+│   │   └── enhanced_features.py # 增强功能
+│   │
+│   └── utils/                    # 工具类
+│       ├── session_manager.py   # 会话管理
+│       ├── token_tracker.py     # Token统计
+│       ├── dynamic_db_manager.py # 动态数据库管理
+│       └── snippet_manager.py   # 代码片段管理
+│
+├── backend/                      # FastAPI后端
+│   ├── api.py                   # RESTful API
+│   └── sessions/                # 会话存储
+│
+├── frontend/                     # React前端
+│   ├── src/
+│   │   ├── components/          # UI组件
+│   │   ├── hooks/               # 自定义Hooks
+│   │   └── api/                 # API客户端
+│   └── package.json
+│
+├── data/                         # 原始文档目录
+│   └── NLP/                     # 示例：NLP课程文档
+│
+├── vector_db/                    # 向量数据库存储
+│   ├── default/                 # 默认知识库
+│   └── NLP/                     # NLP知识库
+│
+├── scripts/                      # 工具脚本
+│   ├── process_data.py          # 数据处理
+│   ├── rebuild_kg.py            # 重建知识图谱
+│   └── update_imports.py        # 更新导入路径
+│
+├── tests/                        # 测试文件
+│   ├── quick_test.py
+│   └── test_latex_fix.py
+│
+├── config.py                     # 配置文件
+├── requirements.txt              # Python依赖
+├── start.sh                      # 一键启动脚本
+├── stop.sh                       # 停止服务脚本
+├── README.md                     # 本文档
+└── INSTALL.md                    # 安装指南
+```
 
-- **Python**: 3.10+
-- **Node.js**: 16+
-- **系统**: Linux / macOS / Windows (WSL)
+---
 
-### 2. 克隆项目
+## 🚀 快速开始
+
+### 环境要求
+
+- **Python**: 3.10 或更高版本
+- **Node.js**: 18.0 或更高版本
+- **操作系统**: Linux / macOS / Windows
+- **内存**: 建议 8GB 以上
+- **磁盘**: 建议 10GB 以上可用空间
+
+### 快速安装
 
 ```bash
+# 1. 克隆项目
 git clone <repository-url>
 cd rag-agent
-```
 
-### 3. 安装依赖
+# 2. 配置环境变量（复制并编辑config.py）
+cp config.example.py config.py
+# 编辑config.py，填入你的API密钥
 
-**一键安装（推荐）**:
-```bash
-chmod +x install.sh
-./install.sh
-```
-
-**或手动安装**:
-```bash
-# Python依赖
+# 3. 安装后端依赖
 pip install -r requirements.txt
 
-# 前端依赖
-cd frontend
-npm install
-cd ..
+# 4. 安装前端依赖
+cd frontend && npm install && cd ..
+
+# 5. 启动服务
+bash start.sh
 ```
 
-### 4. 配置API密钥
+### 访问应用
 
-编辑 `config.py`，填入你的API密钥：
+打开浏览器访问：**http://localhost:5173**
 
-```python
-# API配置（统一使用SiliconFlow）
-OPENAI_API_KEY = "your-api-key-here"  # 用于embeddings和LLM
-OPENAI_API_BASE = "https://api.siliconflow.cn/v1/"
-
-# 模型配置
-TEXT_MODEL_NAME = "Qwen/Qwen2.5-72B-Instruct"          # 纯文本模型
-MULTIMODAL_MODEL_NAME = "Qwen/Qwen3-VL-32B-Instruct"   # 多模态模型
-OPENAI_EMBEDDING_MODEL = "Pro/BAAI/bge-m3"             # 嵌入模型
-RERANK_MODEL_NAME = "Pro/BAAI/bge-reranker-v2-m3"      # 重排序模型
-
-# Reranker API（可选，用于高级检索）
-RERANK_API_URL = "your-reranker-api-url"  # 如果有的话
-```
-
-### 5. 启动服务
-
-**一键启动（推荐）**:
-```bash
-chmod +x start.sh
-./start.sh
-```
-
-**手动启动**:
-```bash
-# 终端1：启动后端
-uvicorn backend.api:app --host 0.0.0.0 --port 8000 --reload
-
-# 终端2：启动前端
-cd frontend
-npm run dev
-```
-
-### 6. 访问系统
-
-- **前端界面**: http://localhost:5173
-- **后端API**: http://localhost:8000
-- **API文档**: http://localhost:8000/docs
-
-### 7. 停止服务
-
-```bash
-./stop.sh
-```
-
-或手动停止：
-```bash
-pkill -f uvicorn
-pkill -f "npm run dev"
-```
+> 📖 详细安装步骤请参考 [INSTALL.md](INSTALL.md)
 
 ---
 
 ## 📚 使用指南
 
-### 1. 创建知识库
+### 1. 上传文档
 
-1. 点击左侧 **"知识库"** 按钮
-2. 点击 **"新建知识库"**
-3. 输入知识库名称（如"操作系统课程"）
-4. 点击 **"创建"**
+**方式一：批量上传**
+- 将课程文档（PDF、Word、PPT等）放入 `data/` 目录
+- 系统会自动检测并构建向量索引
 
-### 2. 上传文档
+**方式二：界面上传**
+- 点击界面的"上传文档"按钮
+- 选择文件并上传
+- 系统实时处理并索引
 
-1. 在知识库面板中选择目标知识库
-2. 点击 **"上传文档"** 或拖拽文件到上传区域
-3. 支持格式：PDF、DOCX、PPTX、TXT、MD
-4. 支持批量上传（按住 Ctrl/Cmd 多选）
-5. 等待处理完成
+### 2. 开始对话
 
-### 3. 开始问答
+- 直接在输入框输入问题
+- 系统会从文档中检索相关内容并回答
+- 支持上传图片进行多模态问答
+- 支持上传临时文档进行即时分析
 
-1. 在知识库下拉菜单中选择要使用的知识库
-2. 在输入框中输入问题
-3. （可选）开启 **"苏格拉底模式"** 进行启发式学习
-4. 点击发送或按 Enter
+### 3. 查看引用
 
-### 4. 查看答案
+- 答案中的蓝色标签是引用链接
+- 点击引用可跳转到原文档对应位置
+- 右侧"检索结果"面板显示所有相关片段
 
-- **答案**: 8秒内显示，可立即阅读
-- **检索结果**: 显示在答案上方，可查看引用来源
-- **AI自省报告**: 评估完成后显示，包含：
-  - 总体置信度分数
-  - 3维雷达图（忠实度、相关性、检索质量）
-  - 详细评分解释
-  - 各阶段耗时
+### 4. 质量评估
 
-### 5. 查看引用来源
+- 点击答案下方的"详细信息"按钮
+- 查看AI自省报告（雷达图）
+- 了解答案的可靠性和改进方向
 
-- 点击答案中的 **蓝色引用链接**
-- 文档查看器将打开并跳转到对应页面
-- 可在文档查看器中：
-  - 翻页查看
-  - 放大/缩小
-  - 关闭查看器
+### 5. 知识图谱
 
-### 6. 使用学习工具
+- 点击左侧"知识图谱"按钮
+- 查看课程概念网络可视化
+- 点击节点查看详细说明
+- 支持搜索和过滤功能
 
-#### 文档大纲
-1. 点击 **"文档大纲"**
-2. 选择知识库
-3. 选择文档
-4. 查看智能提取的目录结构
-5. 点击标题跳转到对应页面
+### 6. 多知识库管理
 
-#### 概念定位
-1. 点击 **"概念定位"**
-2. 选择知识库
-3. 查看 **热门概念** 或搜索特定概念
-4. 点击概念查看在哪些文档中出现
-
-#### 智能测验
-1. 点击 **"智能测验"**
-2. 选择知识库（必须有文档）
-3. 设置题目数量（1-10题）
-4. 选择难度（简单/中等/困难）
-5. 点击 **"生成测验"**
-6. 作答并查看结果
-
-#### 记忆闪卡
-1. 点击 **"记忆闪卡"**
-2. 点击 **"添加闪卡"** 创建新卡片
-3. 每日复习到期的闪卡
-4. 根据记忆情况选择难度
-
-#### 片段收藏
-1. 在对话中，点击答案旁的 **"收藏"** 图标
-2. 在 **"片段收藏"** 中查看所有收藏
-3. 可添加标签、笔记
-4. 支持导出
+- 在输入框上方切换知识库
+- 每个知识库对应一个课程或主题
+- 支持动态创建和管理知识库
 
 ---
 
-## 🔧 高级功能
+## ⚙️ 配置说明
 
-### 苏格拉底模式
+### 基础配置 (config.py)
 
-启发式教学模式，通过提问引导用户思考：
+```python
+# OpenAI API配置
+OPENAI_API_KEY = "your-api-key-here"
+OPENAI_API_BASE = "https://api.siliconflow.cn/v1"  # 或其他兼容服务
 
-1. 在输入框下方开启 **"苏格拉底模式"**
-2. AI将：
-   - 不直接给出答案
-   - 提出引导性问题
-   - 帮助你自己找到答案
-   - 加深理解和记忆
+# 模型配置
+TEXT_MODEL_NAME = "deepseek-ai/DeepSeek-V3"
+MULTIMODAL_MODEL_NAME = "Pro/Qwen/Qwen2-VL-72B-Instruct"
 
-### 多模态输入
+# 向量数据库配置
+CHROMA_PERSIST_DIR = "./vector_db"
+COLLECTION_NAME = "default"
 
-#### 图像问答
-1. 点击输入框旁的 **"📷"** 图标
-2. 上传图片
-3. 提问关于图片的问题
-
-#### 文件问答
-1. 点击输入框旁的 **"📎"** 图标
-2. 上传临时文件（PDF、DOCX等）
-3. 直接提问，无需添加到知识库
-
-### 文档查看器
-
-双栏显示模式：
-- **左侧**: 对话窗口
-- **右侧**: 文档查看器
-- 点击引用自动打开并跳转
-- 可关闭查看器返回单栏模式
-
----
-
-## 📊 系统架构
-
-### 技术栈
-
-**后端**:
-- FastAPI - Web框架
-- ChromaDB - 向量数据库
-- BM25 + RRF - 混合检索
-- bge-reranker-v2-m3 - 重排序
-- Qwen2.5-72B - 纯文本LLM
-- Qwen3-VL-32B - 多模态LLM
-- DeepEval - 质量评估
-
-**前端**:
-- React 18 - UI框架
-- Vite - 构建工具
-- Tailwind CSS - 样式
-- Framer Motion - 动画
-- Recharts - 图表
-- react-markdown - Markdown渲染
-
-### 数据存储
-
-```
-rag-agent/
-├── data/           # 原始文件（PDF、DOCX等）
-│   └── [kb_id]/
-├── vectordb/       # 向量数据库（ChromaDB）
-│   └── [kb_id]/
-├── static/         # 页面截图
-│   └── [kb_id]/
-└── sessions/       # 会话历史
+# 数据目录
+DATA_DIR = "./data"
 ```
 
-### 检索流程
+### 检索参数调整
 
+```python
+# 在 config.py 中调整
+TOP_K = 5                    # 检索文档数量（推荐3-10）
+CHUNK_SIZE = 500             # 文本分块大小（推荐300-800）
+CHUNK_OVERLAP = 50           # 分块重叠大小（推荐CHUNK_SIZE的10%）
 ```
-用户问题
-    ↓
-Query Expansion (查询扩展)
-    ↓
-┌─────────────┬─────────────┐
-│ Vector Search │ BM25 Search │ (并行检索)
-└─────────────┴─────────────┘
-    ↓
-RRF Fusion (结果融合)
-    ↓
-API Reranker (重排序)
-    ↓
-Top-K Results (最相关结果)
-    ↓
-LLM Generation (生成答案)
-    ↓
-DeepEval Quality Assessment (质量评估)
+
+### 质量评估配置
+
+```python
+# 启用/禁用质量评估
+enable_quality_evaluation = True
+
+# 评估超时设置
+evaluation_timeout = 60  # 秒
 ```
 
 ---
 
-## 🎯 性能指标
+## 🛠️ 技术栈
 
-### 速度
+### 后端技术
+- **FastAPI**: 现代化高性能Web框架
+- **ChromaDB**: 向量数据库，支持高效相似度搜索
+- **Sentence-Transformers**: 文本嵌入模型
+- **BGE-Reranker**: 智能检索重排序
+- **Jieba**: 中文分词
+- **Rank-BM25**: 关键词检索算法
 
-| 阶段 | 时间 |
-|------|------|
-| 检索 | 1-3秒 |
-| 答案生成 | 5-8秒 |
-| 质量评估 | 10-45秒（异步） |
-| **用户等待** | **8秒** |
+### 前端技术
+- **React 18**: 现代化前端框架
+- **Vite**: 下一代前端构建工具
+- **TailwindCSS**: 实用优先的CSS框架
+- **Framer Motion**: 流畅的动画库
+- **KaTeX**: 高质量数学公式渲染
+- **Recharts**: React图表库
+- **React Hot Toast**: 优雅的提示组件
 
-### 质量
+### AI技术
+- **RAG**: 检索增强生成
+- **Hybrid Retrieval**: BM25 + 向量检索
+- **Reranking**: BGE-Reranker-v2-m3
+- **Streaming**: SSE流式输出
+- **DeepEval**: 质量评估框架
 
-| 指标 | 分数 |
-|------|------|
-| 检索准确率 | 95%+ |
-| 答案相关性 | 90%+ |
-| 引用准确性 | 100% |
+---
+
+## 📊 性能优化
+
+### 1. 检索优化
+- 使用混合检索提升召回率（BM25 + 向量检索）
+- 使用重排序模型提升精确度（BGE-Reranker）
+- 智能分块策略，保持语义完整性
+
+### 2. 响应速度
+- SSE流式输出，提升用户体验
+- 异步处理，后台评估不阻塞主流程
+- 数据库连接池管理
+
+### 3. 内存管理
+- 按需加载文档
+- 定期清理过期会话
+- 向量数据库分片存储
 
 ---
 
 ## 🐛 常见问题
 
-### Q1: 后端启动失败
+### Q: 如何解决API限流问题？
 
-**A**: 检查端口占用：
+**A:** 有以下几种方案：
+1. 在 `config.py` 中配置多个API密钥进行轮询
+2. 使用本地模型（如Ollama）
+3. 降低并发请求数量
+
+### Q: 文档上传失败怎么办？
+
+**A:** 请检查：
+1. 文档格式是否支持（PDF、Word、PPT、TXT、Markdown）
+2. 文件大小不超过50MB
+3. 文件名不包含特殊字符
+4. 磁盘空间是否充足
+
+### Q: 答案不准确怎么办？
+
+**A:** 可以尝试：
+1. 调整检索参数（增加TOP_K）
+2. 检查文档质量，确保内容清晰
+3. 查看质量评估报告，了解问题所在
+4. 尝试重新表述问题
+
+### Q: 前端无法连接后端？
+
+**A:** 请检查：
+1. 后端是否正常运行（访问 http://localhost:8000/docs）
+2. 防火墙是否阻止了8000端口
+3. CORS配置是否正确
+4. 查看浏览器控制台的错误信息
+
+### Q: LaTeX公式无法正确显示？
+
+**A:** 请确保：
+1. 公式使用 `$...$` (行内) 或 `$$...$$` (独立) 格式
+2. 浏览器已加载KaTeX样式
+3. 清除浏览器缓存后重试
+
+### Q: 如何备份数据？
+
+**A:** 需要备份以下目录：
 ```bash
-# 查看8000端口
-lsof -i:8000
+# 备份向量数据库
+tar -czf vector_db_backup.tar.gz vector_db/
 
-# 或杀掉旧进程
-pkill -f uvicorn
+# 备份会话数据
+tar -czf sessions_backup.tar.gz backend/sessions/
+
+# 备份原始文档
+tar -czf data_backup.tar.gz data/
 ```
 
-### Q2: 前端无法访问
+---
 
-**A**: 检查前端进程和端口：
+## 🔧 开发指南
+
+### 项目设置
+
 ```bash
-# 查看5173端口
-lsof -i:5173
+# 克隆仓库
+git clone <repository-url>
+cd rag-agent
 
-# 或重启前端
+# 创建虚拟环境
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+
+# 安装开发依赖
+pip install -r requirements.txt
+cd frontend && npm install && cd ..
+```
+
+### 运行开发服务器
+
+```bash
+# 终端1：启动后端（自动重载）
+cd backend
+uvicorn api:app --reload --port 8000
+
+# 终端2：启动前端（自动重载）
 cd frontend
 npm run dev
 ```
 
-### Q3: 智能出题显示"知识库中没有可用内容"
+### 代码规范
 
-**A**: 确保选择的知识库已上传文档：
-1. 打开知识库面板
-2. 确认文档数量 > 0
-3. 如果为0，上传文档后重试
+- **Python**: 遵循PEP 8规范
+- **JavaScript**: 使用ESLint配置
+- **提交信息**: 使用语义化提交（feat, fix, docs等）
 
-### Q4: API密钥错误
-
-**A**: 检查`config.py`中的配置：
-- `OPENAI_API_KEY`: 必须有效
-- `OPENAI_API_BASE`: 确保URL正确
-- 测试命令: `curl -H "Authorization: Bearer $API_KEY" $API_BASE/models`
-
-### Q5: CLIP模型下载慢
-
-**A**: 预下载模型：
-```bash
-./download_clip_model.sh
-```
-
-或使用镜像：
-```bash
-export HF_ENDPOINT=https://hf-mirror.com
-```
-
-### Q6: DeepEval评估超时
-
-**A**: 正常现象，系统会：
-- 使用默认评估值（0.75）
-- 不影响答案显示
-- 可在日志中查看详细信息
-
----
-
-## 🧹 维护
-
-### 清理仓库
+### 测试
 
 ```bash
-chmod +x cleanup.sh
-./cleanup.sh
-```
+# 运行Python测试
+python -m pytest tests/
 
-这将删除：
-- 过时的文档
-- 临时测试文件
-- Python缓存
-- 备份目录
-
-### 查看日志
-
-```bash
-# 后端日志
-tail -f backend.log
-
-# 前端日志
-tail -f frontend.log
-
-# 实时监控
-watch -n 1 "tail -20 backend.log"
-```
-
-### 备份数据
-
-重要目录：
-- `data/` - 原始文件
-- `vectordb/` - 向量数据
-- `sessions/` - 会话历史
-
-备份命令：
-```bash
-tar -czf omniscry-backup-$(date +%Y%m%d).tar.gz data/ vectordb/ sessions/
+# 快速功能测试
+python tests/quick_test.py
 ```
 
 ---
 
-## 📖 详细文档
-
-项目根目录下的重要文档：
-
-- `INSTALLATION_GUIDE.md` - 详细安装指南
-- `PROJECT_BRANDING.md` - 品牌设计指南
-- `PERFORMANCE_OPTIMIZATION.md` - 性能优化说明
-- `DEEPEVAL_IMPLEMENTATION.md` - DeepEval实现细节
-- `SOTA_RETRIEVAL_ENABLED.md` - SOTA检索架构说明
-- `QUIZ_COMPLETE_FIX.md` - 智能出题修复记录
-- `FINAL_UPDATE_SUMMARY.md` - 最终更新总结
-
----
-
-## 🤝 贡献
+## 🤝 贡献指南
 
 欢迎提交Issue和Pull Request！
 
----
+### 贡献流程
 
-## 📄 许可
+1. Fork本仓库
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 提交Pull Request
 
-MIT License
+### 提交规范
 
----
-
-## 👨‍💻 作者
-
-OmniScry Team
-
----
-
-## 🌟 特别说明
-
-### 项目亮点
-
-- ⚡ **极速响应**: 8秒显示答案，业界领先
-- 🎯 **高准确率**: 95%+检索准确率，100%引用准确性
-- 📊 **AI自省**: 3维质量评估，实时反馈
-- 🔗 **完全可追溯**: 所有答案都有引用来源
-- 🧠 **启发式教学**: 苏格拉底模式，引导思考
-- 🛠️ **丰富工具**: 测验、闪卡、大纲、概念定位
-
-### 适用场景
-
-- 📚 **学习辅助**: 课程学习、知识复习
-- 📖 **文档问答**: 技术文档、产品手册
-- 🔬 **研究支持**: 论文阅读、文献调研
-- 👨‍🏫 **教学工具**: 备课、出题、答疑
+```
+feat: 新功能
+fix: 修复bug
+docs: 文档更新
+style: 代码格式调整
+refactor: 重构代码
+test: 测试相关
+chore: 构建/工具链相关
+```
 
 ---
 
-**OmniScry** - 让知识探索成为一种享受 🌌
+## 📝 更新日志
 
-**Navigate the Depths of Knowledge** ✨
+### v2.0.0 (2024-12-21)
+
+**🎉 重大更新**
+- ✨ 完全重构项目结构，采用模块化设计
+- ✨ 新增AI质量自省报告（5维度评估）
+- ✨ 优化LaTeX公式渲染系统
+- ✨ 新增知识图谱可视化功能
+- ✨ 采用Gemini风格的现代化UI
+- 🐛 修复多个已知问题
+- 📝 完善文档和安装指南
+
+**架构改进**
+- 📦 源代码重组为 `src/{core,processors,evaluators,features,utils}`
+- 🔧 统一import路径管理
+- 🧹 清理冗余文件，提升项目可维护性
+
+### v1.0.0 (2024-11)
+
+- 🎉 初始版本发布
+- ✨ 基础RAG功能
+- ✨ 文档上传和检索
+- ✨ 基础问答功能
 
 ---
 
-*最后更新: 2025-12-20*  
-*版本: v2.1.0 - Production Ready*
+## 📄 许可证
+
+本项目采用 [MIT License](LICENSE) 开源协议
+
+---
+
+## 👥 联系方式
+
+- **问题反馈**: 请提交 [GitHub Issue](issues)
+- **功能建议**: 请提交 [GitHub Discussion](discussions)
+
+---
+
+## 🙏 致谢
+
+感谢以下开源项目的支持：
+
+- [FastAPI](https://fastapi.tiangolo.com/) - 现代化Python Web框架
+- [React](https://react.dev/) - 构建用户界面的JavaScript库
+- [ChromaDB](https://www.trychroma.com/) - AI原生向量数据库
+- [Sentence-Transformers](https://www.sbert.net/) - 文本嵌入模型
+- [BGE](https://github.com/FlagOpen/FlagEmbedding) - 中英文语义表示模型
+- [DeepEval](https://github.com/confident-ai/deepeval) - LLM评估框架
+- [TailwindCSS](https://tailwindcss.com/) - CSS框架
+- [Vite](https://vitejs.dev/) - 前端构建工具
+
+---
+
+<div align="center">
+
+**⭐ 如果这个项目对你有帮助，请给个Star！⭐**
+
+Made with ❤️ by RAG Team
+
+[⬆ 回到顶部](#-rag智能学习助手)
+
+</div>

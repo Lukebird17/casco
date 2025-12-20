@@ -18,22 +18,24 @@ import asyncio
 # 添加父目录到路径
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from rag_agent import RAGAgent
-from session_manager import SessionManager
-from confidence_calculator import ConfidenceCalculator
-from quiz_generator import QuizGenerator
-from flashcard_system import FlashcardSystem
-from knowledge_graph import KnowledgeGraph
+# 导入核心模块
+from src.core.rag_agent import RAGAgent
+from src.utils.session_manager import SessionManager
+from src.evaluators.confidence_calculator import ConfidenceCalculator
+from src.features.quiz_generator import QuizGenerator
+from src.features.flashcard_system import FlashcardSystem
+from src.features.knowledge_graph import KnowledgeGraph
+
 # 尝试导入 LlamaIndex 版本
 try:
-    from knowledge_graph_llamaindex import LlamaIndexKnowledgeGraph
+    from src.features.knowledge_graph_llamaindex import LlamaIndexKnowledgeGraph
     USE_LLAMAINDEX_KG = True
     print("✅ LlamaIndex 知识图谱可用")
 except ImportError:
     USE_LLAMAINDEX_KG = False
     print("⚠️  LlamaIndex 知识图谱不可用，使用标准版本")
 
-from quality_evaluator import QualityEvaluator
+from src.evaluators.quality_evaluator import QualityEvaluator
 from config import *
 
 # ============================================================

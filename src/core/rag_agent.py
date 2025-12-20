@@ -15,12 +15,12 @@ from config import (
     MULTIMODAL_MODEL_NAME,
     TOP_K,
 )
-from vector_store import VectorStore
-from hybrid_retriever import HybridRetriever
-from reranker import Reranker  # 使用API Reranker
-from token_tracker import TokenTracker
-from reasoning_chain import ReasoningChain
-from auto_cot_prompting import AutoCotPromptBuilder
+from src.core.vector_store import VectorStore
+from src.core.hybrid_retriever import HybridRetriever
+from src.core.reranker import Reranker  # 使用API Reranker
+from src.utils.token_tracker import TokenTracker
+from src.features.reasoning_chain import ReasoningChain
+from src.features.auto_cot_prompting import AutoCotPromptBuilder
 
 
 class RAGAgent:

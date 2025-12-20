@@ -6,8 +6,8 @@ from typing import List, Dict, Optional, Tuple
 from pathlib import Path
 
 from config import DATA_DIR, LIBREOFFICE_PATH
-from enhanced_ocr import EnhancedOCRProcessor, MINERU_AVAILABLE
-from image_describer import ImageDescriber
+from src.processors.enhanced_ocr import EnhancedOCRProcessor, MINERU_AVAILABLE
+from src.processors.image_describer import ImageDescriber
 
 
 class DocumentLoader:
