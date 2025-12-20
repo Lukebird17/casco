@@ -5,13 +5,16 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Sparkles } from 'lucide-react';
+import { Search, Sparkles, Clock } from 'lucide-react';
 import CitationCard from './CitationCard';
 
 const RetrievalResults = ({ citations, onCitationClick, visible = true }) => {
   if (!visible || !citations || citations.length === 0) {
     return null;
   }
+
+  // ✅ 获取检索时间（从第一个citation中获取，所有citation共享同一个检索时间）
+  const retrievalTime = citations[0]?.retrievalTime;
 
   return (
     <AnimatePresence>
@@ -32,8 +35,15 @@ const RetrievalResults = ({ citations, onCitationClick, visible = true }) => {
               找到相关文档
               <Sparkles size={16} className="text-yellow-500" />
             </h3>
-            <p className="text-sm text-google-gray-600">
+            <p className="text-sm text-google-gray-600 flex items-center gap-2">
               正在基于以下 {citations.length} 个文档生成回答...
+              {/* ✅ 显示检索时间 */}
+              {retrievalTime !== undefined && (
+                <span className="inline-flex items-center gap-1 text-google-blue-600 font-medium">
+                  <Clock size={14} />
+                  检索耗时 {retrievalTime}秒
+                </span>
+              )}
             </p>
           </div>
         </div>

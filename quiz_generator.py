@@ -8,14 +8,18 @@
 import json
 from typing import List, Dict
 from openai import OpenAI
-from config import OPENAI_API_KEY, OPENAI_API_BASE, MODEL_NAME
+from config import OPENAI_API_KEY, OPENAI_API_BASE, TEXT_MODEL_NAME
 
 
 class QuizGenerator:
     """测验生成器"""
     
-    def __init__(self, model: str = MODEL_NAME):
-        self.client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_API_BASE)
+    def __init__(self, model: str = TEXT_MODEL_NAME):
+        # ✅ 使用TEXT_MODEL_NAME而非MODEL_NAME
+        self.client = OpenAI(
+            api_key=OPENAI_API_KEY, 
+            base_url=OPENAI_API_BASE
+        )
         self.model = model
     
     def generate_quiz(self, context: str, num_questions: int = 5, 

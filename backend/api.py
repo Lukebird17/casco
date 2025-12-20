@@ -32,6 +32,8 @@ try:
 except ImportError:
     USE_LLAMAINDEX_KG = False
     print("⚠️  LlamaIndex 知识图谱不可用，使用标准版本")
+
+from quality_evaluator_advanced import AdvancedQualityEvaluator
 from config import *
 
 # ============================================================
@@ -44,6 +46,7 @@ confidence_calculator = None
 quiz_generator = None
 flashcard_system = None
 knowledge_graph = None
+quality_evaluator = None  # 新增：质量评估器
 
 # ============================================================
 # Lifespan 事件处理（替代 on_event）
@@ -52,7 +55,7 @@ knowledge_graph = None
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """应用生命周期管理"""
-    global rag_agent, session_manager, confidence_calculator, quiz_generator, flashcard_system, knowledge_graph
+    global rag_agent, session_manager, confidence_calculator, quiz_generator, flashcard_system, knowledge_graph, quality_evaluator
     
     # 启动时初始化
     try:
@@ -89,6 +92,10 @@ async def lifespan(app: FastAPI):
         else:
             knowledge_graph = KnowledgeGraph()
             print("✅ 使用标准知识图谱")
+        
+        # 初始化质量评估器（使用融合yzy的高级版本）
+        quality_evaluator = AdvancedQualityEvaluator()
+        print("✅ 质量评估器初始化成功")
         
         # 如果没有会话，创建一个默认会话
         if not session_manager.sessions:
@@ -554,6 +561,7 @@ async def chat_stream(request: ChatRequest):
             
             # === 第3步：先执行检索（在线程池中执行以避免阻塞） ===
             import concurrent.futures
+            import time  # ✅ 添加time模块
             executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
             
             # 分析query类型
@@ -562,6 +570,9 @@ async def chat_stream(request: ChatRequest):
                 rag_agent.analyze_query_type, 
                 request.message
             )
+            
+            # ✅ 检索计时开始
+            retrieval_start_time = time.time()
             
             # 执行SOTA检索
             def do_retrieval():
@@ -578,6 +589,10 @@ async def chat_stream(request: ChatRequest):
                 executor,
                 do_retrieval
             )
+            
+            # ✅ 检索计时结束
+            retrieval_time = time.time() - retrieval_start_time
+            print(f"⏱️  检索耗时: {retrieval_time:.2f}秒")
             
             # === 第4步：提取检索结果（包含图片URL）并去重 ===
             citations = []
@@ -622,11 +637,14 @@ async def chat_stream(request: ChatRequest):
             # 转换为列表，按分数排序
             citations = sorted(seen_cite_ids.values(), key=lambda x: x["score"], reverse=True)
             
-            # === 第5步：发送检索结果（让用户看到找到的文档） ===
-            yield f"data: {json.dumps({'type': 'citations', 'data': citations}, ensure_ascii=False)}\n\n"
+            # === 第5步：发送检索结果（让用户看到找到的文档）+ 检索时间 ===
+            yield f"data: {json.dumps({'type': 'citations', 'data': citations, 'retrieval_time': round(retrieval_time, 2)}, ensure_ascii=False)}\n\n"
             
             # === 第6步：发送"生成中"状态 ===
             yield f"data: {json.dumps({'type': 'status', 'data': '正在整合信息并生成回答...'}, ensure_ascii=False)}\n\n"
+            
+            # ✅ 生成计时开始
+            generation_start_time = time.time()
             
             # === 第7步：生成答案（在线程池中执行） ===
             def do_generation():
@@ -649,20 +667,74 @@ async def chat_stream(request: ChatRequest):
                 do_generation
             )
             
-            # === 第8步：发送答案 ===
-            yield f"data: {json.dumps({'type': 'answer', 'data': response_text}, ensure_ascii=False)}\n\n"
+            # ✅ 生成计时结束
+            generation_time = time.time() - generation_start_time
+            print(f"⏱️  生成耗时: {generation_time:.2f}秒")
             
-            # === 第9步：计算置信度 ===
-            confidence = None
-            if hasattr(rag_agent, 'last_retrieval_results') and rag_agent.last_retrieval_results:
-                confidence = confidence_calculator.calculate(
-                    request.message,
-                    response_text,
-                    rag_agent.last_retrieval_results
-                )
+            # === 第8步：发送答案 + 生成时间 ===
+            yield f"data: {json.dumps({'type': 'answer', 'data': response_text, 'generation_time': round(generation_time, 2)}, ensure_ascii=False)}\n\n"
             
-            # 发送置信度
-            yield f"data: {json.dumps({'type': 'confidence', 'data': confidence}, ensure_ascii=False)}\n\n"
+            # === 第9步：质量评估（雷达图）- 异步执行 ===
+            # ✅ 评估计时开始
+            eval_start_time = time.time()
+            yield f"data: {json.dumps({'type': 'status', 'data': '正在进行质量评估...'}, ensure_ascii=False)}\n\n"
+            
+            quality_metrics = None
+            if quality_evaluator and hasattr(rag_agent, 'last_context_docs') and rag_agent.last_context_docs:
+                try:
+                    print("📊 开始质量评估...")
+                    
+                    # ⚡ 超时保护：从90秒减少到45秒，快速失败
+                    quality_metrics = await asyncio.wait_for(
+                        quality_evaluator.evaluate(
+                            query=request.message,
+                            answer=response_text,
+                            retrieved_context=rag_agent.last_context_docs,
+                            chat_history=chat_history
+                        ),
+                        timeout=45.0  # ⚡ 从90减少到45秒，快速评估或快速失败
+                    )
+                    
+                    # ✅ 评估计时结束
+                    eval_time = time.time() - eval_start_time
+                    print(f"⏱️  评估耗时: {eval_time:.2f}秒")
+                    print(f"✅ 质量评估完成: 总分 {quality_metrics.get('overall_score', 0)}")
+                    
+                    # ✅ 添加评估时间到结果中
+                    quality_metrics['eval_time'] = round(eval_time, 2)
+                    
+                    # 发送质量评估结果
+                    yield f"data: {json.dumps({'type': 'quality_metrics', 'data': quality_metrics}, ensure_ascii=False)}\n\n"
+                except asyncio.TimeoutError:
+                    eval_time = time.time() - eval_start_time
+                    print(f"⚠️  质量评估超时（45秒），使用默认值")
+                    # 使用默认评估值（3个指标）
+                    quality_metrics = {
+                        "overall_score": 0.75,
+                        "radar_data": [
+                            {"subject": "忠实度", "A": 75, "fullMark": 100},
+                            {"subject": "相关性", "A": 75, "fullMark": 100},
+                            {"subject": "检索质量", "A": 75, "fullMark": 100}
+                        ],
+                        "detailed_scores": {
+                            "faithfulness": 0.75,
+                            "answer_relevancy": 0.75,
+                            "contextual_relevancy": 0.75
+                        },
+                        "explanations": {
+                            "faithfulness": "评估超时",
+                            "answer_relevancy": "评估超时",
+                            "contextual_relevancy": "评估超时"
+                        },
+                        "eval_time": round(eval_time, 2)
+                    }
+                    yield f"data: {json.dumps({'type': 'quality_metrics', 'data': quality_metrics}, ensure_ascii=False)}\n\n"
+                except Exception as e:
+                    eval_time = time.time() - eval_start_time
+                    print(f"⚠️  质量评估失败: {e}")
+                    import traceback
+                    traceback.print_exc()
+                    # 评估失败不影响主流程
             
             # === 第10步：保存会话 ===
             session.add_message("user", request.message)
@@ -869,21 +941,43 @@ async def upload_file(file: UploadFile = File(...)):
 
 class QuizRequest(BaseModel):
     """测验生成请求"""
-    context: str
+    kb_id: str  # ✅ 改为知识库ID
     num_questions: int = 5
     difficulty: str = "medium"
 
 @app.post("/api/quiz/generate")
 async def generate_quiz(request: QuizRequest):
     """
-    生成测验
+    生成测验 - 基于知识库内容
     """
     try:
         if quiz_generator is None:
             raise HTTPException(status_code=500, detail="测验生成器未初始化")
         
+        # ✅ 从知识库获取所有文档内容作为context
+        kb_data_dir = get_kb_data_dir(request.kb_id)
+        if not kb_data_dir.exists():
+            raise HTTPException(status_code=404, detail=f"知识库 {request.kb_id} 不存在")
+        
+        # 读取知识库中的所有文本内容（简化版，取前3000字符）
+        context_parts = []
+        for json_file in kb_data_dir.glob("*.json"):
+            try:
+                with open(json_file, 'r', encoding='utf-8') as f:
+                    import json
+                    data = json.load(f)
+                    for item in data:
+                        if 'content' in item:
+                            context_parts.append(item['content'][:500])
+            except Exception as e:
+                print(f"⚠️ 读取文件 {json_file} 失败: {e}")
+        
+        context = "\n\n".join(context_parts[:10])  # 取前10个片段
+        if not context.strip():
+            raise HTTPException(status_code=400, detail="知识库中没有可用内容生成测验")
+        
         questions = quiz_generator.generate_quiz(
-            request.context,
+            context,
             request.num_questions,
             request.difficulty
         )
@@ -892,8 +986,12 @@ async def generate_quiz(request: QuizRequest):
             "success": True,
             "questions": questions
         }
+    except HTTPException:
+        raise
     except Exception as e:
         print(f"❌ 生成测验错误: {e}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 class GradeRequest(BaseModel):
@@ -2090,11 +2188,21 @@ async def list_knowledge_bases():
                         # 新建的空知识库
                         created_at = os.path.getctime(kb_vector_path)
                     
+                    # ✅ 计算文档数量
+                    data_dir = get_kb_data_dir(kb_name)
+                    document_count = 0
+                    if os.path.exists(data_dir):
+                        # 统计data目录下的原始文件数（不包括.json和.md缓存文件）
+                        import glob
+                        for ext in ['*.pdf', '*.docx', '*.pptx', '*.txt']:
+                            document_count += len(glob.glob(os.path.join(data_dir, ext)))
+                    
                     knowledge_bases.append({
                         "id": kb_name,
                         "name": f"{kb_name}知识库" if kb_name == "default" else kb_name,
                         "path": kb_vector_path,
                         "size": round(size, 2),
+                        "document_count": document_count,  # ✅ 添加文档数量
                         "is_current": kb_name == "default",  # 默认选中default
                         "created_at": created_at
                     })

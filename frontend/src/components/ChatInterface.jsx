@@ -61,8 +61,8 @@ const ChatInterface = ({
             </div>
           ) : (
             <>
-              {/* 苏格拉底模式提示（在对话中显示） */}
-              {enableSocratic && loading && (
+              {/* 苏格拉底模式提示（始终显示，不消失） */}
+              {enableSocratic && messages.length > 0 && (
                 <SocraticHints 
                   visible={true} 
                   query={messages[messages.length - 1]?.content}
@@ -70,29 +70,45 @@ const ChatInterface = ({
               )}
 
               <AnimatePresence>
-                {messages.map((message, index) => (
-                  <MessageBubble
-                    key={`${message.timestamp}-${index}`}
-                    message={message}
-                    isLatest={index === messages.length - 1}
-                    sessionId={currentSessionId}
-                    onCitationClick={(citeId) => {
-                      // 从cite_id找到对应的citation对象
-                      const citation = retrievalCitations?.find(c => c.id === citeId);
-                      if (citation && onCitationClick) {
-                        onCitationClick(citation);
-                      }
-                    }}
-                  />
-                ))}
+                {messages.map((message, index) => {
+                  const isLastMessage = index === messages.length - 1;
+                  const isAssistantMessage = message.role === 'assistant';
+                  
+                  return (
+                    <React.Fragment key={`${message.timestamp}-${index}`}>
+                      {/* 如果是最后一条助手消息，先显示检索结果 */}
+                      {isLastMessage && isAssistantMessage && showRetrievalResults && retrievalCitations && retrievalCitations.length > 0 && (
+                        <RetrievalResults 
+                          citations={retrievalCitations}
+                          onCitationClick={onCitationClick}
+                          visible={showRetrievalResults}
+                        />
+                      )}
+                      
+                      {/* 然后显示消息本身 */}
+                      <MessageBubble
+                        message={message}
+                        isLatest={isLastMessage}
+                        sessionId={currentSessionId}
+                        onCitationClick={(citeId) => {
+                          // 从cite_id找到对应的citation对象
+                          const citation = retrievalCitations?.find(c => c.id === citeId);
+                          if (citation && onCitationClick) {
+                            onCitationClick(citation);
+                          }
+                        }}
+                      />
+                    </React.Fragment>
+                  );
+                })}
               </AnimatePresence>
               
-              {/* 检索结果展示（在最新消息之后显示，让用户等待时能看到） */}
+              {/* ✅ 重要：在loading期间也显示Context（在消息列表之后，加载指示器之前） */}
               {loading && showRetrievalResults && retrievalCitations && retrievalCitations.length > 0 && (
                 <RetrievalResults 
                   citations={retrievalCitations}
                   onCitationClick={onCitationClick}
-                  visible={showRetrievalResults}
+                  visible={true}
                 />
               )}
             </>

@@ -6,6 +6,7 @@
 import React from 'react';
 import { X, TrendingUp, Quote, Bookmark, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { QualityMetricsDisplay } from './QualityMetrics';
 
 const ConfidenceDisplay = ({ confidence }) => {
   if (!confidence) return null;
@@ -116,6 +117,7 @@ const ToolPanel = ({
   confidence, 
   citations, 
   onJumpToCitation,
+  qualityMetrics,  // 新增：质量评估数据
 }) => {
   return (
     <AnimatePresence>
@@ -144,7 +146,30 @@ const ToolPanel = ({
 
           {/* 内容 - 可滚动 */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
-            <ConfidenceDisplay confidence={confidence} />
+            {/* ✅ 优先显示质量评估（雷达图） */}
+            {qualityMetrics && <QualityMetricsDisplay metrics={qualityMetrics} />}
+            
+            {/* ✅ 如果没有质量评估且答案已生成，显示"正在生成"提示 */}
+            {!qualityMetrics && citations && citations.length > 0 && (
+              <div className="bg-white rounded-xl shadow-sm border border-google-gray-200 p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <TrendingUp size={20} className="text-google-blue-600 animate-pulse" />
+                  <h3 className="font-semibold text-google-gray-900">AI 自省报告</h3>
+                </div>
+                <div className="flex flex-col items-center justify-center py-8">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-google-blue-600 mb-4"></div>
+                  <p className="text-sm text-google-gray-600">正在生成质量评估报告...</p>
+                  <p className="text-xs text-google-gray-500 mt-2">
+                    这可能需要10-30秒，请稍候
+                  </p>
+                </div>
+              </div>
+            )}
+            
+            {/* 如果没有质量评估也没有引用，显示简单的置信度 */}
+            {!qualityMetrics && !citations && confidence && <ConfidenceDisplay confidence={confidence} />}
+            
+            {/* 引用列表 */}
             <CitationsList citations={citations} onJump={onJumpToCitation} />
           </div>
         </motion.div>

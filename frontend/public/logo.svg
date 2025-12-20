@@ -1,0 +1,134 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 星球渐变 -->
+    <radialGradient id="planetGradient" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#4285f4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a56db;stop-opacity:1" />
+    </radialGradient>
+    
+    <!-- 光环渐变 -->
+    <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9333ea;stop-opacity:0.8" />
+      <stop offset="50%" style="stop-color:#4285f4;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:0.8" />
+    </linearGradient>
+    
+    <!-- 辉光效果 -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- 外层光晕 -->
+    <radialGradient id="auraGradient" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#4285f4;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#4285f4;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- 背景光晕 -->
+  <circle cx="64" cy="64" r="60" fill="url(#auraGradient)" opacity="0.6"/>
+  
+  <!-- 主星球 -->
+  <circle cx="64" cy="64" r="36" fill="url(#planetGradient)" filter="url(#glow)"/>
+  
+  <!-- 星球表面细节 - 大陆/知识区域 -->
+  <ellipse cx="50" cy="55" rx="12" ry="8" fill="#5a67d8" opacity="0.4"/>
+  <ellipse cx="70" cy="70" rx="10" ry="6" fill="#5a67d8" opacity="0.3"/>
+  <ellipse cx="60" cy="75" rx="8" ry="5" fill="#5a67d8" opacity="0.35"/>
+  
+  <!-- 光环系统 (代表RAG检索路径) -->
+  <!-- 外环 -->
+  <ellipse cx="64" cy="64" rx="52" ry="18" 
+           fill="none" 
+           stroke="url(#ringGradient)" 
+           stroke-width="3" 
+           opacity="0.7"
+           transform="rotate(-25 64 64)"/>
+  
+  <!-- 中环 -->
+  <ellipse cx="64" cy="64" rx="48" ry="16" 
+           fill="none" 
+           stroke="url(#ringGradient)" 
+           stroke-width="2" 
+           opacity="0.5"
+           transform="rotate(-25 64 64)"/>
+  
+  <!-- 内环 -->
+  <ellipse cx="64" cy="64" rx="44" ry="14" 
+           fill="none" 
+           stroke="#4285f4" 
+           stroke-width="1.5" 
+           opacity="0.4"
+           transform="rotate(-25 64 64)"/>
+  
+  <!-- 环上的数据节点 (代表知识点) -->
+  <circle cx="110" cy="58" r="3" fill="#06b6d4" opacity="0.9">
+    <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="18" cy="70" r="2.5" fill="#9333ea" opacity="0.8">
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="2.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="100" cy="48" r="2" fill="#fbbf24" opacity="0.7">
+    <animate attributeName="opacity" values="0.3;1;0.3" dur="1.8s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 星球高光 -->
+  <ellipse cx="54" cy="54" rx="16" ry="12" 
+           fill="#ffffff" 
+           opacity="0.25"
+           transform="rotate(-30 54 54)"/>
+  
+  <!-- 装饰星星 -->
+  <!-- 大星星 -->
+  <path d="M 20 20 L 21 22 L 23 22 L 21.5 23.5 L 22 25.5 L 20 24 L 18 25.5 L 18.5 23.5 L 17 22 L 19 22 Z" 
+        fill="#fbbf24" opacity="0.8">
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="3s" repeatCount="indefinite"/>
+  </path>
+  
+  <!-- 小星星 -->
+  <circle cx="108" cy="20" r="1.5" fill="#ffffff" opacity="0.7">
+    <animate attributeName="opacity" values="0.3;0.9;0.3" dur="2.2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="105" cy="108" r="1.5" fill="#ffffff" opacity="0.6">
+    <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2.8s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="25" cy="100" r="1" fill="#ffffff" opacity="0.5">
+    <animate attributeName="opacity" values="0.2;0.7;0.2" dur="3.2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- 质量评估星标 (右下角) -->
+  <g transform="translate(95, 95)">
+    <circle cx="0" cy="0" r="12" fill="#fbbf24" opacity="0.2"/>
+    <path d="M 0 -6 L 1.5 -1.5 L 6 -1.5 L 2.5 1 L 4 6 L 0 3 L -4 6 L -2.5 1 L -6 -1.5 L -1.5 -1.5 Z" 
+          fill="#fbbf24" 
+          stroke="#ffffff" 
+          stroke-width="0.5"
+          opacity="0.95"/>
+  </g>
+  
+  <!-- 数据流粒子 (环绕效果) -->
+  <circle cx="75" cy="35" r="1.5" fill="#06b6d4" opacity="0.6">
+    <animateTransform
+      attributeName="transform"
+      type="rotate"
+      from="0 64 64"
+      to="360 64 64"
+      dur="4s"
+      repeatCount="indefinite"/>
+  </circle>
+  
+  <circle cx="80" cy="40" r="1" fill="#9333ea" opacity="0.5">
+    <animateTransform
+      attributeName="transform"
+      type="rotate"
+      from="0 64 64"
+      to="360 64 64"
+      dur="5s"
+      repeatCount="indefinite"/>
+  </circle>
+</svg>

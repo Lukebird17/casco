@@ -17,7 +17,8 @@ const DocumentViewer = ({
   filename = null,
   highlightText = null,
   page = null,  // PDF页码
-  embedded = false  // 是否为内嵌模式（两栏布局中）
+  embedded = false,  // 是否为内嵌模式（两栏布局中）
+  selectedKnowledgeBase = 'default'  // 当前选择的知识库
 }) => {
   const [documents, setDocuments] = useState([]);
   const [selectedDoc, setSelectedDoc] = useState(filename);
@@ -28,7 +29,7 @@ const DocumentViewer = ({
   
   // 新增：知识库相关状态
   const [knowledgeBases, setKnowledgeBases] = useState([]);
-  const [selectedKB, setSelectedKB] = useState('default');
+  const [selectedKB, setSelectedKB] = useState(selectedKnowledgeBase);  // 使用传入的知识库
 
   // 获取文件扩展名
   const getFileExtension = (filename) => {
@@ -54,6 +55,13 @@ const DocumentViewer = ({
       loadKnowledgeBases();
     }
   }, [open]);
+
+  // 当外部传入的知识库改变时，同步更新
+  useEffect(() => {
+    if (selectedKnowledgeBase) {
+      setSelectedKB(selectedKnowledgeBase);
+    }
+  }, [selectedKnowledgeBase]);
 
   // 当知识库改变时，加载文档列表
   useEffect(() => {

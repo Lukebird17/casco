@@ -70,10 +70,10 @@ const Sidebar = ({
   const tools = [
     { id: 'database', name: '知识库', icon: Database },
     { id: 'documents', name: '文档查看', icon: BookOpen },
-    { id: 'confidence', name: '置信度分析', icon: TrendingUp },
+    // { id: 'confidence', name: '置信度分析', icon: TrendingUp },  // ✅ 已删除，整合到ToolPanel的AI自省报告中
     { id: 'outline', name: '文档大纲', icon: Hash },
     { id: 'concept-search', name: '概念定位', icon: Zap },
-    { id: 'knowledge-graph', name: '知识图谱', icon: Brain },
+    // { id: 'knowledge-graph', name: '知识图谱', icon: Brain },  // ✅ 已删除
     { id: 'heatmap', name: '热力图', icon: LineChart },
     { id: 'snippets', name: '片段收藏', icon: FileText },
     { id: 'quiz', name: '智能测验', icon: Award },
@@ -89,9 +89,11 @@ const Sidebar = ({
       {/* 顶部 Logo */}
       <div className="p-4 border-b border-google-gray-200">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-google-blue-500 to-google-blue-600 flex items-center justify-center">
-            <span className="text-white text-xl font-bold">R</span>
-          </div>
+          <img 
+            src="/logo.svg" 
+            alt="OmniScry" 
+            className="w-10 h-10"
+          />
           <AnimatePresence>
             {!collapsed && (
               <motion.div
@@ -99,9 +101,12 @@ const Sidebar = ({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                <h1 className="text-lg font-semibold text-google-gray-900">
-                  RAG Agent
+                <h1 className="text-lg font-bold bg-gradient-to-r from-google-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  OmniScry
                 </h1>
+                <p className="text-xs text-google-gray-500 -mt-0.5">
+                  Navigate the Depths of Knowledge
+                </p>
               </motion.div>
             )}
           </AnimatePresence>

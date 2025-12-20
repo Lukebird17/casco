@@ -12,6 +12,7 @@ export const useChat = (currentSessionId) => {
   const [loading, setLoading] = useState(false);
   const [citations, setCitations] = useState([]);
   const [confidence, setConfidence] = useState(null);
+  const [qualityMetrics, setQualityMetrics] = useState(null); // 新增：质量评估（雷达图）
   const [retrievalCitations, setRetrievalCitations] = useState([]); // 新增：检索阶段的引用
   const [showRetrievalResults, setShowRetrievalResults] = useState(false); // 新增：是否显示检索结果
 
@@ -45,7 +46,7 @@ export const useChat = (currentSessionId) => {
     setCitations([]);
     setConfidence(null);
     setRetrievalCitations([]); // 清空之前的检索结果
-    setShowRetrievalResults(false);
+    // setShowRetrievalResults(false);  // ❌ 删除：不要隐藏
     
     // 显示处理中的提示
     const processingToast = toast.loading(
@@ -94,6 +95,8 @@ export const useChat = (currentSessionId) => {
       const decoder = new TextDecoder();
       let answerText = '';
       let receivedCitations = [];  // 用本地变量保存citations
+      let retrievalTime = 0;  // ✅ 检索时间
+      let generationTime = 0;  // ✅ 生成时间
 
       while (true) {
         const { done, value } = await reader.read();
@@ -115,23 +118,50 @@ export const useChat = (currentSessionId) => {
                   break;
                   
                 case 'citations':
-                  // 收到检索结果，立即显示
-                  console.log('收到检索结果:', data.data.length, '个文档');
+                  // ✅ 收到检索结果和检索时间
+                  console.log('收到检索结果:', data.data.length, '个文档', `耗时${data.retrieval_time}秒`);
                   receivedCitations = data.data;  // 保存到本地变量
+                  retrievalTime = data.retrieval_time || 0;
                   setRetrievalCitations(data.data);
                   setShowRetrievalResults(true);
                   toast.dismiss(processingToast);
-                  toast.success('找到 ' + data.data.length + ' 个相关文档', { duration: 2000 });
+                  toast.success(`找到 ${data.data.length} 个相关文档 (${retrievalTime}秒)`, { duration: 2000 });
                   break;
                   
                 case 'answer':
-                  // 收到答案
+                  // ✅ 收到答案和生成时间 - 立即显示给用户
                   answerText = data.data;
+                  generationTime = data.generation_time || 0;
+                  console.log(`✅ 收到答案，立即显示给用户 (生成耗时: ${generationTime}秒)`);
+                  
+                  // ⚡ 关键优化：立即将答案添加到messages，不等待后续事件
+                  const immediateMessage = {
+                    role: 'assistant',
+                    content: answerText,
+                    timestamp: new Date().toISOString(),
+                    generationTime: generationTime,
+                  };
+                  setMessages((prev) => [...prev, immediateMessage]);
+                  
+                  // 关闭loading，让用户看到答案
+                  setLoading(false);
+                  toast.dismiss(processingToast);
+                  toast.success('回答已生成', { duration: 2000 });
                   break;
                   
                 case 'confidence':
                   // 收到置信度
                   setConfidence(data.data);
+                  break;
+                
+                case 'quality_metrics':
+                  // 收到质量评估（雷达图数据）
+                  console.log('收到质量评估:', data.data);
+                  setQualityMetrics(data.data);
+                  toast.dismiss(processingToast);
+                  const score = data.data.overall_score || 0;
+                  const evalTime = data.data.eval_time || 0;
+                  toast.success(`质量评估完成：${(score * 100).toFixed(0)}分 (${evalTime}秒)`, { duration: 2000 });
                   break;
                   
                 case 'done':
@@ -148,30 +178,14 @@ export const useChat = (currentSessionId) => {
         }
       }
 
-      // 添加 AI 回复
-      if (answerText) {
-        const assistantMessage = {
-          role: 'assistant',
-          content: answerText,
-          timestamp: new Date().toISOString(),
-        };
-        
-        setMessages((prev) => [...prev, assistantMessage]);
-        
-        // 更新最终引用（使用本地变量）
-        if (receivedCitations.length > 0) {
-          setCitations(receivedCitations);
-        }
-        
-        // 延迟隐藏检索结果面板（让用户有时间查看）
-        setTimeout(() => {
-          setShowRetrievalResults(false);
-        }, 3000);  // 延长到3秒
-        
-        return { success: true, response: answerText };
-      } else {
-        throw new Error('未收到回答');
+      // ⚡ 答案已经在收到时立即显示，这里只需要更新引用
+      if (receivedCitations.length > 0) {
+        setCitations(receivedCitations.map(c => ({ ...c, retrievalTime })));
       }
+      
+      // 不再自动隐藏检索结果面板，让用户可以一直查看
+      
+      return { success: true, response: answerText };
     } catch (error) {
       console.error('发送消息错误:', error);
       
@@ -230,6 +244,7 @@ export const useChat = (currentSessionId) => {
     loading,
     citations,
     confidence,
+    qualityMetrics, // 新增：质量评估（雷达图）
     retrievalCitations, // 新增：检索阶段的引用
     showRetrievalResults, // 新增：是否显示检索结果
     sendChatMessage,

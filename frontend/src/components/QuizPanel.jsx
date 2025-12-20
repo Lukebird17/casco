@@ -12,21 +12,48 @@ const QuizPanel = ({ open, onClose }) => {
   const [quizMode, setQuizMode] = useState('setup'); // setup, quiz, result
   const [numQuestions, setNumQuestions] = useState(5);
   const [difficulty, setDifficulty] = useState('medium');
+  const [selectedKB, setSelectedKB] = useState('');
+  const [knowledgeBases, setKnowledgeBases] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState({});
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // ✅ 加载知识库列表
+  React.useEffect(() => {
+    if (open) {
+      loadKnowledgeBases();
+    }
+  }, [open]);
+
+  const loadKnowledgeBases = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/knowledge-bases');
+      if (response.data.success) {
+        setKnowledgeBases(response.data.knowledge_bases || []);
+        // 默认选择第一个
+        if (response.data.knowledge_bases && response.data.knowledge_bases.length > 0) {
+          setSelectedKB(response.data.knowledge_bases[0].id);
+        }
+      }
+    } catch (error) {
+      console.error('加载知识库失败:', error);
+    }
+  };
+
   // 生成测验
   const generateQuiz = async () => {
+    if (!selectedKB) {
+      toast.error('请先选择知识库');
+      return;
+    }
+    
     setLoading(true);
     try {
-      // 这里应该从当前会话的上下文生成
-      const context = "基于操作系统课程内容..."; // 简化示例
-      
+      // ✅ 传递知识库ID
       const response = await axios.post('http://localhost:8000/api/quiz/generate', {
-        context,
+        kb_id: selectedKB,
         num_questions: numQuestions,
         difficulty
       });
@@ -128,6 +155,26 @@ const QuizPanel = ({ open, onClose }) => {
             {/* 设置模式 */}
             {quizMode === 'setup' && (
               <div className="space-y-4">
+                {/* ✅ 新增：知识库选择 */}
+                <div>
+                  <label className="block text-sm font-medium text-google-gray-700 mb-2">
+                    选择知识库
+                  </label>
+                  <select
+                    value={selectedKB}
+                    onChange={(e) => setSelectedKB(e.target.value)}
+                    className="w-full px-3 py-2 border border-google-gray-300 rounded-lg
+                             focus:outline-none focus:ring-2 focus:ring-google-blue-500"
+                  >
+                    <option value="">请选择知识库</option>
+                    {knowledgeBases.map((kb) => (
+                      <option key={kb.id} value={kb.id}>
+                        {kb.name} ({kb.document_count || 0} 个文档)
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
                 <div>
                   <label className="block text-sm font-medium text-google-gray-700 mb-2">
                     题目数量

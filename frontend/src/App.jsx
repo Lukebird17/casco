@@ -14,13 +14,14 @@ import SnippetsPanel from './components/SnippetsPanel';
 import HeatmapPanel from './components/HeatmapPanel';
 import QuizPanel from './components/QuizPanel';
 import FlashcardPanel from './components/FlashcardPanel';
-import KnowledgeGraphPanel from './components/KnowledgeGraphPanel';
+// import KnowledgeGraphPanel from './components/KnowledgeGraphPanel';  // ✅ 已删除
 import DocumentViewer from './components/DocumentViewer';
-import ConfidencePanel from './components/ConfidencePanel';
+// import ConfidencePanel from './components/ConfidencePanel';  // ✅ 已删除，功能整合到ToolPanel
 import DocumentOutlinePanel from './components/DocumentOutlinePanel';
 import ConceptSearchPanel from './components/ConceptSearchPanel';
 import KnowledgeBasePanel from './components/KnowledgeBasePanel';
 import SettingsPanel from './components/SettingsPanel';
+import WelcomeGuide from './components/WelcomeGuide';
 import { useChat } from './hooks/useChat';
 import { useSessions } from './hooks/useSessions';
 import { initializeSystem } from './api/client';
@@ -29,6 +30,8 @@ import { Info, Loader2, X } from 'lucide-react';
 
 function App() {
   const [initializing, setInitializing] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [assistantConfig, setAssistantConfig] = useState(null);
   const [enableSocratic, setEnableSocratic] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [toolPanelOpen, setToolPanelOpen] = useState(false);
@@ -36,9 +39,9 @@ function App() {
   const [heatmapPanelOpen, setHeatmapPanelOpen] = useState(false);
   const [quizPanelOpen, setQuizPanelOpen] = useState(false);
   const [flashcardPanelOpen, setFlashcardPanelOpen] = useState(false);
-  const [knowledgeGraphPanelOpen, setKnowledgeGraphPanelOpen] = useState(false);
+  // const [knowledgeGraphPanelOpen, setKnowledgeGraphPanelOpen] = useState(false);  // 已移除
   const [documentViewerOpen, setDocumentViewerOpen] = useState(false);
-  const [confidencePanelOpen, setConfidencePanelOpen] = useState(false);
+  // const [confidencePanelOpen, setConfidencePanelOpen] = useState(false);  // ✅ 已删除
   const [outlinePanelOpen, setOutlinePanelOpen] = useState(false);
   const [conceptSearchPanelOpen, setConceptSearchPanelOpen] = useState(false);
   const [knowledgeBasePanelOpen, setKnowledgeBasePanelOpen] = useState(false);
@@ -66,6 +69,7 @@ function App() {
     loading: chatLoading,
     citations,
     confidence,
+    qualityMetrics, // 新增：质量评估（雷达图）
     retrievalCitations,
     showRetrievalResults,
     sendChatMessage,
@@ -112,10 +116,30 @@ function App() {
   // 处理新会话
   const handleNewSession = async () => {
     try {
-      await newSession();
-      clearMessages();
+      // 显示引导界面
+      setShowWelcome(true);
     } catch (error) {
       console.error('创建新会话失败:', error);
+    }
+  };
+
+  // 处理引导完成
+  const handleWelcomeComplete = async (config) => {
+    try {
+      setAssistantConfig(config);
+      setShowWelcome(false);
+      
+      // 创建新会话
+      await newSession();
+      clearMessages();
+      
+      // 存储配置到localStorage
+      localStorage.setItem('assistantConfig', JSON.stringify(config));
+      
+      toast.success(`已配置 ${config.personality} 风格助教`);
+    } catch (error) {
+      console.error('创建新会话失败:', error);
+      toast.error('创建会话失败');
     }
   };
 
@@ -180,9 +204,9 @@ function App() {
       (toolId === 'heatmap' && heatmapPanelOpen) ||
       (toolId === 'quiz' && quizPanelOpen) ||
       (toolId === 'flashcards' && flashcardPanelOpen) ||
-      (toolId === 'knowledge-graph' && knowledgeGraphPanelOpen) ||
+      // (toolId === 'knowledge-graph' && knowledgeGraphPanelOpen) ||  // ✅ 已删除
       (toolId === 'database' && knowledgeBasePanelOpen) ||
-      (toolId === 'confidence' && confidencePanelOpen) ||
+      // (toolId === 'confidence' && confidencePanelOpen) ||  // ✅ 已删除
       (toolId === 'outline' && outlinePanelOpen) ||
       (toolId === 'concept-search' && conceptSearchPanelOpen) ||
       (toolId === 'settings' && settingsPanelOpen)
@@ -195,9 +219,9 @@ function App() {
         case 'heatmap': setHeatmapPanelOpen(false); break;
         case 'quiz': setQuizPanelOpen(false); break;
         case 'flashcards': setFlashcardPanelOpen(false); break;
-        case 'knowledge-graph': setKnowledgeGraphPanelOpen(false); break;
+        // case 'knowledge-graph': setKnowledgeGraphPanelOpen(false); break;  // ✅ 已删除
         case 'database': setKnowledgeBasePanelOpen(false); break;
-        case 'confidence': setConfidencePanelOpen(false); break;
+        // case 'confidence': setConfidencePanelOpen(false); break;  // ✅ 已删除
         case 'outline': setOutlinePanelOpen(false); break;
         case 'concept-search': setConceptSearchPanelOpen(false); break;
         case 'settings': setSettingsPanelOpen(false); break;
@@ -214,8 +238,8 @@ function App() {
     setHeatmapPanelOpen(false);
     setQuizPanelOpen(false);
     setFlashcardPanelOpen(false);
-    setKnowledgeGraphPanelOpen(false);
-    setConfidencePanelOpen(false);
+    // setKnowledgeGraphPanelOpen(false);  // ✅ 已删除
+    // setConfidencePanelOpen(false);  // ✅ 已删除
     setOutlinePanelOpen(false);
     setConceptSearchPanelOpen(false);
     setKnowledgeBasePanelOpen(false);
@@ -235,9 +259,9 @@ function App() {
       case 'flashcards':
         setFlashcardPanelOpen(true);
         break;
-      case 'knowledge-graph':
-        setKnowledgeGraphPanelOpen(true);
-        break;
+      // case 'knowledge-graph':  // ✅ 已删除
+      //   setKnowledgeGraphPanelOpen(true);
+      //   break;
       case 'database':
         setKnowledgeBasePanelOpen(true);
         break;
@@ -246,9 +270,9 @@ function App() {
         setViewerHighlight(null);
         setDocumentViewerOpen(true);
         break;
-      case 'confidence':
-        setConfidencePanelOpen(true);
-        break;
+      // case 'confidence':  // ✅ 已删除
+      //   setConfidencePanelOpen(true);
+      //   break;
       case 'outline':
         setOutlinePanelOpen(true);
         break;
@@ -381,21 +405,33 @@ function App() {
         {/* 两栏布局：聊天界面 + 文档查看器 */}
         <div className="flex-1 flex overflow-hidden">
           {/* 聊天界面 */}
-          <div className={`flex-1 overflow-hidden transition-all duration-300 ${
+          <div className={`flex-1 overflow-hidden transition-all duration-300 flex flex-col ${
             documentViewerOpen ? 'border-r border-google-gray-200' : ''
           }`}>
-            <ChatInterface
-              messages={messages}
-              loading={chatLoading}
-              onSendMessage={handleSendMessage}
-              enableSocratic={enableSocratic}
-              currentSessionId={currentSessionId}
-              selectedKnowledgeBase={selectedKnowledgeBase}
-              onKnowledgeBaseChange={setSelectedKnowledgeBase}
-              retrievalCitations={retrievalCitations}
-              showRetrievalResults={showRetrievalResults}
-              onCitationClick={handleJumpToCitation}
-            />
+            {/* 欢迎引导界面 */}
+            <AnimatePresence>
+              {showWelcome && (
+                <div className="p-6 overflow-y-auto">
+                  <WelcomeGuide onComplete={handleWelcomeComplete} />
+                </div>
+              )}
+            </AnimatePresence>
+
+            {/* 聊天界面 */}
+            {!showWelcome && (
+              <ChatInterface
+                messages={messages}
+                loading={chatLoading}
+                onSendMessage={handleSendMessage}
+                enableSocratic={enableSocratic}
+                currentSessionId={currentSessionId}
+                selectedKnowledgeBase={selectedKnowledgeBase}
+                onKnowledgeBaseChange={setSelectedKnowledgeBase}
+                retrievalCitations={retrievalCitations}
+                showRetrievalResults={showRetrievalResults}
+                onCitationClick={handleJumpToCitation}
+              />
+            )}
           </div>
 
           {/* 文档查看器（内嵌版本） */}
@@ -408,6 +444,7 @@ function App() {
                 highlightText={viewerHighlight}
                 page={viewerPage}
                 embedded={true}
+                selectedKnowledgeBase={selectedKnowledgeBase}
               />
             </div>
           )}
@@ -419,6 +456,7 @@ function App() {
         open={toolPanelOpen}
         onClose={() => setToolPanelOpen(false)}
         confidence={confidence}
+        qualityMetrics={qualityMetrics} // 新增：传递质量评估数据
         citations={citations}
         onJumpToCitation={handleJumpToCitation}
       />
@@ -448,20 +486,20 @@ function App() {
         onClose={() => setFlashcardPanelOpen(false)}
       />
 
-      {/* 知识图谱面板 */}
-      <KnowledgeGraphPanel
+      {/* 知识图谱面板 - ✅ 已删除 */}
+      {/* <KnowledgeGraphPanel
         open={knowledgeGraphPanelOpen}
         onClose={() => setKnowledgeGraphPanelOpen(false)}
-      />
+      /> */}
 
       {/* 文档查看器已移至主内容区两栏布局中 */}
 
       {/* 独立面板 - 从左侧显示，避免遮挡右侧文档查看器 */}
-      <ConfidencePanel
+      {/* <ConfidencePanel  // ✅ 已删除，功能整合到ToolPanel的AI自省报告中
         open={confidencePanelOpen}
         onClose={() => setConfidencePanelOpen(false)}
         confidence={confidence}
-      />
+      /> */}
 
       <DocumentOutlinePanel
         open={outlinePanelOpen}

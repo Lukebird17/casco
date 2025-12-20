@@ -10,7 +10,7 @@ import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css'; // 导入KaTeX样式
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { User, Bot, AlertCircle, Bookmark, Check } from 'lucide-react';
+import { User, Bot, AlertCircle, Bookmark, Check, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { saveSnippet } from '../api/client';
@@ -76,16 +76,26 @@ const MessageBubble = ({ message, isLatest, sessionId, onCitationClick }) => {
             />
           )}
           
-          {/* 时间戳和操作按钮 */}
-          <div className="flex items-center justify-between mt-2">
-            {message.timestamp && (
-              <div className="text-xs text-google-gray-500">
-                {new Date(message.timestamp).toLocaleTimeString('zh-CN', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </div>
-            )}
+          {/* 时间戳、生成时间和操作按钮 */}
+          <div className="flex items-center justify-between mt-2 flex-wrap gap-2">
+            <div className="flex items-center gap-3">
+              {message.timestamp && (
+                <div className="text-xs text-google-gray-500">
+                  {new Date(message.timestamp).toLocaleTimeString('zh-CN', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </div>
+              )}
+              
+              {/* ✅ 显示生成时间（仅AI回答） */}
+              {!isUser && message.generationTime !== undefined && (
+                <div className="text-xs text-google-blue-600 font-medium inline-flex items-center gap-1">
+                  <Clock size={12} />
+                  生成耗时 {message.generationTime}秒
+                </div>
+              )}
+            </div>
             
             {/* AI回答才显示收藏按钮 */}
             {!isUser && !isError && (

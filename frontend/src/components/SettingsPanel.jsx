@@ -81,7 +81,7 @@ const SettingsPanel = ({ open, onClose, darkMode, onDarkModeChange }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/30 z-40"
+            className="fixed inset-0 bg-black/20 z-10"
           />
 
           {/* 面板主体 */}
@@ -90,8 +90,8 @@ const SettingsPanel = ({ open, onClose, darkMode, onDarkModeChange }) => {
             animate={{ width: 500, opacity: 1 }}
             exit={{ width: 0, opacity: 0 }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed left-[280px] top-0 bottom-0 bg-white shadow-lg border-r 
-                     border-google-gray-200 z-20 flex flex-col"
+            className="fixed left-[280px] top-0 bottom-0 bg-white shadow-2xl border-r 
+                     border-google-gray-200 z-30 flex flex-col"
           >
             {/* 头部 */}
             <div className="flex-shrink-0 bg-white border-b border-google-gray-200 p-4 flex items-center justify-between">
