@@ -6,6 +6,7 @@
 
 from typing import Dict, List, Tuple
 import re
+import asyncio
 from openai import OpenAI
 from config import OPENAI_API_KEY, OPENAI_API_BASE, MODEL_NAME
 
@@ -25,7 +26,7 @@ class QualityEvaluator:
         chat_history: List[Dict] = None
     ) -> Dict:
         """
-        评估答案质量，生成雷达图数据
+        评估答案质量，生成雷达图数据（同步版本）
         
         参数:
             question: 用户问题
@@ -117,7 +118,8 @@ AI的回答：
                 
                 radar_data.append({
                     "subject": dimension,
-                    "A": score
+                    "A": score,
+                    "fullMark": 100  # ✅ 添加fullMark字段，与前端兼容
                 })
                 
                 total_score += score
@@ -136,6 +138,36 @@ AI的回答：
             print(f"⚠️  质量评估失败: {e}")
             # 返回默认值
             return self._get_default_evaluation()
+    
+    async def evaluate(
+        self,
+        query: str,
+        answer: str,
+        retrieved_context: List[Dict],
+        chat_history: List[Dict] = None
+    ) -> Dict:
+        """
+        异步评估接口（与AdvancedQualityEvaluator兼容）
+        
+        参数:
+            query: 用户问题
+            answer: AI回答
+            retrieved_context: 检索到的上下文文档
+            chat_history: 聊天历史
+        
+        返回:
+            与evaluate_answer相同的格式
+        """
+        # 在线程池中运行同步的evaluate_answer
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(
+            None, 
+            self.evaluate_answer,
+            query,
+            answer,
+            retrieved_context,
+            chat_history
+        )
     
     def _format_context(self, context_docs: List[Dict]) -> str:
         """格式化上下文文档"""
@@ -162,11 +194,11 @@ AI的回答：
         return {
             "overall_score": 0.75,
             "radar_data": [
-                {"subject": "准确性", "A": default_score},
-                {"subject": "相关性", "A": default_score},
-                {"subject": "完整性", "A": default_score - 5},
-                {"subject": "忠实度", "A": default_score + 5},
-                {"subject": "清晰度", "A": default_score},
+                {"subject": "准确性", "A": default_score, "fullMark": 100},
+                {"subject": "相关性", "A": default_score, "fullMark": 100},
+                {"subject": "完整性", "A": default_score - 5, "fullMark": 100},
+                {"subject": "忠实度", "A": default_score + 5, "fullMark": 100},
+                {"subject": "清晰度", "A": default_score, "fullMark": 100},
             ],
             "details": {
                 "准确性": "评估失败，使用默认值",

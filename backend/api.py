@@ -33,7 +33,7 @@ except ImportError:
     USE_LLAMAINDEX_KG = False
     print("⚠️  LlamaIndex 知识图谱不可用，使用标准版本")
 
-from quality_evaluator_advanced import AdvancedQualityEvaluator
+from quality_evaluator import QualityEvaluator
 from config import *
 
 # ============================================================
@@ -47,6 +47,9 @@ quiz_generator = None
 flashcard_system = None
 knowledge_graph = None
 quality_evaluator = None  # 新增：质量评估器
+
+# 全局变量：跟踪正在运行的评估任务（每个会话一个）
+active_evaluation_tasks = {}  # {session_id: asyncio.Task}
 
 # ============================================================
 # Lifespan 事件处理（替代 on_event）
@@ -93,9 +96,9 @@ async def lifespan(app: FastAPI):
             knowledge_graph = KnowledgeGraph()
             print("✅ 使用标准知识图谱")
         
-        # 初始化质量评估器（使用融合yzy的高级版本）
-        quality_evaluator = AdvancedQualityEvaluator()
-        print("✅ 质量评估器初始化成功")
+        # 初始化质量评估器（使用简单快速版本）
+        quality_evaluator = QualityEvaluator()
+        print("✅ 质量评估器初始化成功（简单版）")
         
         # 如果没有会话，创建一个默认会话
         if not session_manager.sessions:
@@ -457,7 +460,8 @@ async def chat(request: ChatRequest):
                         "section": section,
                         "snippet": content_snippet,
                         "image_url": image_url,
-                        "score": score
+                        "score": score,
+                        "kb_id": request.knowledge_base_id or "default"  # ✅ 添加知识库ID
                     }
             
             # 转换为列表，按分数排序，取前5个
@@ -522,6 +526,18 @@ async def chat_stream(request: ChatRequest):
                 request.session_id = session.session_id
             
             chat_history = session.messages
+            
+            # ⚡ 取消该会话之前正在运行的评估任务
+            if request.session_id in active_evaluation_tasks:
+                old_task = active_evaluation_tasks[request.session_id]
+                if not old_task.done():
+                    print(f"🛑 检测到新问题，取消会话 {request.session_id} 的旧评估任务")
+                    old_task.cancel()
+                    try:
+                        await old_task
+                    except asyncio.CancelledError:
+                        print("✅ 旧评估任务已取消")
+                del active_evaluation_tasks[request.session_id]
             
             # 打印日志
             print(f"\n{'='*80}")
@@ -621,7 +637,8 @@ async def chat_stream(request: ChatRequest):
                             "page": page_num,
                             "snippet": doc.get("content", "")[:200],
                             "image_url": image_url,
-                            "score": score
+                            "score": score,
+                            "kb_id": request.knowledge_base_id or "default"  # ✅ 添加知识库ID
                         }
                 else:
                     # 首次出现，直接添加
@@ -631,7 +648,8 @@ async def chat_stream(request: ChatRequest):
                         "page": page_num,
                         "snippet": doc.get("content", "")[:200],
                         "image_url": image_url,
-                        "score": score
+                        "score": score,
+                        "kb_id": request.knowledge_base_id or "default"  # ✅ 添加知识库ID
                     }
             
             # 转换为列表，按分数排序
@@ -674,71 +692,65 @@ async def chat_stream(request: ChatRequest):
             # === 第8步：发送答案 + 生成时间 ===
             yield f"data: {json.dumps({'type': 'answer', 'data': response_text, 'generation_time': round(generation_time, 2)}, ensure_ascii=False)}\n\n"
             
-            # === 第9步：质量评估（雷达图）- 异步执行 ===
-            # ✅ 评估计时开始
-            eval_start_time = time.time()
-            yield f"data: {json.dumps({'type': 'status', 'data': '正在进行质量评估...'}, ensure_ascii=False)}\n\n"
+            # === 第9步：质量评估（雷达图）- 完全后台运行，不阻塞 ===
+            # ⚡ 先发送"评估中"状态，告诉前端正在评估
+            yield f"data: {json.dumps({'type': 'quality_metrics', 'data': {'status': 'evaluating'}}, ensure_ascii=False)}\n\n"
             
-            quality_metrics = None
+            # ⚡ 评估完全在后台进行，这里只是启动任务，不等待结果
             if quality_evaluator and hasattr(rag_agent, 'last_context_docs') and rag_agent.last_context_docs:
-                try:
-                    print("📊 开始质量评估...")
-                    
-                    # ⚡ 超时保护：从90秒减少到45秒，快速失败
-                    quality_metrics = await asyncio.wait_for(
-                        quality_evaluator.evaluate(
-                            query=request.message,
-                            answer=response_text,
-                            retrieved_context=rag_agent.last_context_docs,
-                            chat_history=chat_history
-                        ),
-                        timeout=45.0  # ⚡ 从90减少到45秒，快速评估或快速失败
-                    )
-                    
-                    # ✅ 评估计时结束
-                    eval_time = time.time() - eval_start_time
-                    print(f"⏱️  评估耗时: {eval_time:.2f}秒")
-                    print(f"✅ 质量评估完成: 总分 {quality_metrics.get('overall_score', 0)}")
-                    
-                    # ✅ 添加评估时间到结果中
-                    quality_metrics['eval_time'] = round(eval_time, 2)
-                    
-                    # 发送质量评估结果
-                    yield f"data: {json.dumps({'type': 'quality_metrics', 'data': quality_metrics}, ensure_ascii=False)}\n\n"
-                except asyncio.TimeoutError:
-                    eval_time = time.time() - eval_start_time
-                    print(f"⚠️  质量评估超时（45秒），使用默认值")
-                    # 使用默认评估值（3个指标）
-                    quality_metrics = {
-                        "overall_score": 0.75,
-                        "radar_data": [
-                            {"subject": "忠实度", "A": 75, "fullMark": 100},
-                            {"subject": "相关性", "A": 75, "fullMark": 100},
-                            {"subject": "检索质量", "A": 75, "fullMark": 100}
-                        ],
-                        "detailed_scores": {
-                            "faithfulness": 0.75,
-                            "answer_relevancy": 0.75,
-                            "contextual_relevancy": 0.75
-                        },
-                        "explanations": {
-                            "faithfulness": "评估超时",
-                            "answer_relevancy": "评估超时",
-                            "contextual_relevancy": "评估超时"
-                        },
-                        "eval_time": round(eval_time, 2)
-                    }
-                    yield f"data: {json.dumps({'type': 'quality_metrics', 'data': quality_metrics}, ensure_ascii=False)}\n\n"
-                except Exception as e:
-                    eval_time = time.time() - eval_start_time
-                    print(f"⚠️  质量评估失败: {e}")
-                    import traceback
-                    traceback.print_exc()
-                    # 评估失败不影响主流程
+                # 记录当前消息的索引（评估结果将关联到这条消息）
+                current_message_idx = len(session.messages)  # 当前user消息的索引
+                
+                # 定义后台评估函数
+                async def run_background_evaluation():
+                    eval_start_time = time.time()
+                    try:
+                        print("📊 后台质量评估开始...")
+                        quality_metrics = await asyncio.wait_for(
+                            quality_evaluator.evaluate(
+                                query=request.message,
+                                answer=response_text,
+                                retrieved_context=rag_agent.last_context_docs,
+                                chat_history=chat_history
+                            ),
+                            timeout=60.0  # ⚡ 简单版评估也需要时间，给60秒
+                        )
+                        eval_time = time.time() - eval_start_time
+                        print(f"✅ 后台评估完成: 总分 {quality_metrics.get('overall_score', 0)}, 耗时 {eval_time:.2f}秒")
+                        quality_metrics['eval_time'] = round(eval_time, 2)
+                        
+                        # ✅ 保存到对应消息的评估结果（而不是session级别）
+                        if session:
+                            session.add_quality_metrics(current_message_idx + 1, quality_metrics)  # +1 是assistant消息的索引
+                            session_manager._save_session(session)
+                    except asyncio.CancelledError:
+                        print("🛑 后台评估已被取消（新问题到来）")
+                        raise  # 重新抛出，让任务正常取消
+                    except asyncio.TimeoutError:
+                        eval_time = time.time() - eval_start_time
+                        print(f"⚠️  后台评估超时（60秒）")
+                    except Exception as e:
+                        print(f"❌ 后台评估错误: {e}")
+                    finally:
+                        # 清理任务记录
+                        if request.session_id in active_evaluation_tasks:
+                            del active_evaluation_tasks[request.session_id]
+                
+                # ⚡ 启动后台任务（fire-and-forget），不阻塞主流程
+                eval_task = asyncio.create_task(run_background_evaluation())
+                active_evaluation_tasks[request.session_id] = eval_task  # ✅ 记录任务
+                
+                # ⚡ 不再等待快速评估，直接让评估在后台运行
+                # 用户可以立即继续操作，评估完成后结果会保存到session中
             
             # === 第10步：保存会话 ===
             session.add_message("user", request.message)
+            message_idx = len(session.messages) - 1
             session.add_message("assistant", response_text)
+            
+            # 保存引用信息
+            if citations:
+                session.add_citation(message_idx + 1, citations)
             
             is_first_message = len(session.messages) == 2
             if is_first_message:
@@ -759,6 +771,43 @@ async def chat_stream(request: ChatRequest):
             yield f"data: {json.dumps({'type': 'error', 'data': str(e)}, ensure_ascii=False)}\n\n"
     
     return StreamingResponse(generate(), media_type="text/event-stream")
+
+@app.get("/api/sessions/{session_id}/quality-metrics")
+async def get_quality_metrics(session_id: str, message_idx: int = None):
+    """
+    获取会话的质量评估结果
+    - 如果提供message_idx，返回该消息的评估结果
+    - 如果不提供，返回最新消息的评估结果
+    """
+    try:
+        session = session_manager.get_session(session_id)
+        if not session:
+            raise HTTPException(status_code=404, detail="会话不存在")
+        
+        # 获取quality_metrics字典
+        quality_metrics_dict = getattr(session, 'quality_metrics', {})
+        
+        if message_idx is not None:
+            # 返回指定消息的评估结果
+            quality_metrics = quality_metrics_dict.get(str(message_idx))
+        else:
+            # 返回最新消息的评估结果（最大的索引）
+            if quality_metrics_dict:
+                latest_idx = max([int(k) for k in quality_metrics_dict.keys()])
+                quality_metrics = quality_metrics_dict.get(str(latest_idx))
+            else:
+                quality_metrics = None
+        
+        if quality_metrics:
+            return {"success": True, "data": quality_metrics}
+        else:
+            # 检查是否有正在运行的评估任务
+            if session_id in active_evaluation_tasks and not active_evaluation_tasks[session_id].done():
+                return {"success": False, "status": "evaluating", "message": "评估进行中"}
+            else:
+                return {"success": False, "status": "pending", "message": "评估尚未完成"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/sessions")
 async def get_sessions():
@@ -2211,13 +2260,20 @@ async def list_knowledge_bases():
                         for ext in ['*.pdf', '*.docx', '*.pptx', '*.txt']:
                             document_count += len(glob.glob(os.path.join(data_dir, ext)))
                     
+                    # ✅ 判断是否为当前使用的知识库
+                    # 检查rag_agent的向量库路径是否匹配
+                    is_current_kb = False
+                    if rag_agent and hasattr(rag_agent, 'vector_store'):
+                        current_path = str(rag_agent.vector_store.db_path)
+                        is_current_kb = kb_vector_path in current_path or current_path in kb_vector_path
+                    
                     knowledge_bases.append({
                         "id": kb_name,
                         "name": f"{kb_name}知识库" if kb_name == "default" else kb_name,
                         "path": kb_vector_path,
                         "size": round(size, 2),
                         "document_count": document_count,  # ✅ 添加文档数量
-                        "is_current": kb_name == "default",  # 默认选中default
+                        "is_current": is_current_kb,  # ✅ 基于实际使用的知识库
                         "created_at": created_at
                     })
         

@@ -158,7 +158,8 @@ const DocumentOutlinePanel = ({ open, onClose, onJumpToSection, currentKBId = 'd
         section: section.title,
         page: section.page,
         line: section.line,
-        isPDF: isPDF
+        isPDF: isPDF,
+        kb_id: selectedKB  // ✅ 添加知识库ID
       });
     }
     toast.success(`跳转到: ${section.title}${section.page ? ` (第${section.page}页)` : ''}`);

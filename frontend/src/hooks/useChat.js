@@ -3,7 +3,7 @@
  * 管理聊天状态和消息发送
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { sendMessage } from '../api/client';
 import toast from 'react-hot-toast';
 
@@ -15,6 +15,63 @@ export const useChat = (currentSessionId) => {
   const [qualityMetrics, setQualityMetrics] = useState(null); // 新增：质量评估（雷达图）
   const [retrievalCitations, setRetrievalCitations] = useState([]); // 新增：检索阶段的引用
   const [showRetrievalResults, setShowRetrievalResults] = useState(false); // 新增：是否显示检索结果
+  
+  // 轮询定时器引用
+  let pollingInterval = null;
+  
+  // AbortController用于停止请求（使用useRef保持引用）
+  const abortControllerRef = useRef(null);
+  
+  // 启动质量评估轮询
+  const startQualityMetricsPolling = useCallback((sessionId, messageIdx) => {
+    // 清除之前的轮询
+    if (pollingInterval) {
+      clearInterval(pollingInterval);
+    }
+    
+    let attempts = 0;
+    const maxAttempts = 20; // 最多轮询20次（60秒 / 3秒每次）
+    
+    console.log(`🔄 开始轮询质量评估: sessionId=${sessionId}, messageIdx=${messageIdx}`);
+    
+    pollingInterval = setInterval(async () => {
+      attempts++;
+      
+      try {
+        // ✅ 传递message_idx参数
+        const url = messageIdx !== undefined 
+          ? `http://localhost:8000/api/sessions/${sessionId}/quality-metrics?message_idx=${messageIdx}`
+          : `http://localhost:8000/api/sessions/${sessionId}/quality-metrics`;
+        const response = await fetch(url);
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+          // 评估完成
+          console.log('轮询获取到评估结果:', result.data);
+          setQualityMetrics(result.data);
+          const score = result.data.overall_score || 0;
+          const evalTime = result.data.eval_time || 0;
+          toast.success(`质量评估完成：${(score * 100).toFixed(0)}分 (${evalTime}秒)`, { duration: 2000 });
+          
+          // 停止轮询
+          clearInterval(pollingInterval);
+          pollingInterval = null;
+        } else if (attempts >= maxAttempts) {
+          // 超过最大次数，停止轮询
+          console.log('质量评估轮询超时');
+          toast.info('评估时间较长，已切换到后台运行', { duration: 2000 });
+          clearInterval(pollingInterval);
+          pollingInterval = null;
+        }
+      } catch (error) {
+        console.error('轮询评估结果失败:', error);
+        if (attempts >= maxAttempts) {
+          clearInterval(pollingInterval);
+          pollingInterval = null;
+        }
+      }
+    }, 3000); // 每3秒轮询一次
+  }, []);
 
   const sendChatMessage = useCallback(async (message, options = {}) => {
     const { 
@@ -79,12 +136,14 @@ export const useChat = (currentSessionId) => {
       }
 
       // === 使用流式API ===
+      abortControllerRef.current = new AbortController();
       const response = await fetch('http://localhost:8000/api/chat/stream', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestData),
+        signal: abortControllerRef.current.signal,  // 添加abort信号
       });
 
       if (!response.ok) {
@@ -146,7 +205,7 @@ export const useChat = (currentSessionId) => {
                   // 关闭loading，让用户看到答案
                   setLoading(false);
                   toast.dismiss(processingToast);
-                  toast.success('回答已生成', { duration: 2000 });
+                  toast.success(`✅ 回答已生成 (${generationTime}秒)`, { duration: 1000 }); // 缩短到1秒，避免挡住UI
                   break;
                   
                 case 'confidence':
@@ -157,11 +216,23 @@ export const useChat = (currentSessionId) => {
                 case 'quality_metrics':
                   // 收到质量评估（雷达图数据）
                   console.log('收到质量评估:', data.data);
-                  setQualityMetrics(data.data);
-                  toast.dismiss(processingToast);
-                  const score = data.data.overall_score || 0;
-                  const evalTime = data.data.eval_time || 0;
-                  toast.success(`质量评估完成：${(score * 100).toFixed(0)}分 (${evalTime}秒)`, { duration: 2000 });
+                  if (data.data.status === 'evaluating') {
+                    // 评估中，启动轮询
+                    console.log('启动质量评估轮询...');
+                    // ✅ 修复索引计算
+                    // 后端逻辑：current_message_idx = len(session.messages)（添加前），保存到 current_message_idx + 1
+                    // 前端逻辑：messages.length 对应 len(session.messages)，所以助手消息索引 = messages.length + 1
+                    const currentMessageIdx = messages.length + 1;  // assistant message index
+                    console.log(`📍 助手消息索引: ${currentMessageIdx} (messages.length=${messages.length})`);
+                    startQualityMetricsPolling(currentSessionId, currentMessageIdx);
+                  } else {
+                    // 评估完成
+                    setQualityMetrics(data.data);
+                    toast.dismiss(processingToast);
+                    const score = data.data.overall_score || 0;
+                    const evalTime = data.data.eval_time || 0;
+                    toast.success(`质量评估完成：${(score * 100).toFixed(0)}分 (${evalTime}秒)`, { duration: 2000 });
+                  }
                   break;
                   
                 case 'done':
@@ -188,6 +259,12 @@ export const useChat = (currentSessionId) => {
       return { success: true, response: answerText };
     } catch (error) {
       console.error('发送消息错误:', error);
+      
+      // 检查是否是用户主动取消
+      if (error.name === 'AbortError') {
+        console.log('用户取消了请求');
+        return { success: false, cancelled: true };
+      }
       
       // 根据错误类型提供更具体的提示
       let errorMsg = '抱歉，发送消息时出错了。请稍后重试。';
@@ -238,6 +315,16 @@ export const useChat = (currentSessionId) => {
   const setInitialMessages = useCallback((msgs) => {
     setMessages(msgs);
   }, []);
+  
+  // 停止生成
+  const stopGeneration = useCallback(() => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+      setLoading(false);
+      toast.success('已停止生成');
+    }
+  }, []);
 
   return {
     messages,
@@ -250,6 +337,7 @@ export const useChat = (currentSessionId) => {
     sendChatMessage,
     clearMessages,
     setInitialMessages,
+    stopGeneration,  // 导出停止函数
   };
 };
 

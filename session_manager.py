@@ -24,6 +24,8 @@ class Session:
         self.context_docs: List[str] = []  # 当前会话相关的文档
         self.citations: Dict = {}  # 引用信息
         self.snippets: List[Dict] = []  # 收藏的片段
+        self.quality_metrics: Dict = {}  # 每条消息的质量评估
+        self.last_quality_metrics = None  # 兼容旧代码
         
     def add_message(self, role: str, content: str, metadata: Optional[Dict] = None):
         """添加消息"""
@@ -39,6 +41,11 @@ class Session:
     def add_citation(self, message_idx: int, citations: List[Dict]):
         """添加引用信息"""
         self.citations[str(message_idx)] = citations
+    
+    def add_quality_metrics(self, message_idx: int, metrics: Dict):
+        """添加质量评估信息"""
+        self.quality_metrics[str(message_idx)] = metrics
+        self.last_quality_metrics = metrics  # 同时更新last（兼容旧代码）
         
     def add_snippet(self, content: str, source: str, tags: List[str] = None):
         """添加收藏片段"""
@@ -61,7 +68,8 @@ class Session:
             "messages": self.messages,
             "context_docs": self.context_docs,
             "citations": self.citations,
-            "snippets": self.snippets
+            "snippets": self.snippets,
+            "quality_metrics": getattr(self, 'quality_metrics', {})
         }
     
     @classmethod
@@ -74,6 +82,7 @@ class Session:
         session.context_docs = data.get("context_docs", [])
         session.citations = data.get("citations", {})
         session.snippets = data.get("snippets", [])
+        session.quality_metrics = data.get("quality_metrics", {})
         return session
 
 

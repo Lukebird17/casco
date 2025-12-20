@@ -7,14 +7,14 @@ import React, { useEffect, useRef } from 'react';
 import MessageBubble from './MessageBubble';
 import InputArea from './InputArea';
 import ThinkingIndicator from './ThinkingIndicator';
-import SocraticHints from './SocraticHints';
 import RetrievalResults from './RetrievalResults';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const ChatInterface = ({ 
   messages, 
   loading, 
-  onSendMessage, 
+  onSendMessage,
+  onStopGeneration,  // 新增：停止生成
   enableSocratic,
   currentSessionId,
   selectedKnowledgeBase,
@@ -61,14 +61,6 @@ const ChatInterface = ({
             </div>
           ) : (
             <>
-              {/* 苏格拉底模式提示（始终显示，不消失） */}
-              {enableSocratic && messages.length > 0 && (
-                <SocraticHints 
-                  visible={true} 
-                  query={messages[messages.length - 1]?.content}
-                />
-              )}
-
               <AnimatePresence>
                 {messages.map((message, index) => {
                   const isLastMessage = index === messages.length - 1;
@@ -123,7 +115,8 @@ const ChatInterface = ({
 
       {/* 输入区域 */}
       <InputArea 
-        onSend={onSendMessage} 
+        onSend={onSendMessage}
+        onStop={onStopGeneration}
         loading={loading}
         enableSocratic={enableSocratic}
         selectedKnowledgeBase={selectedKnowledgeBase}

@@ -13,10 +13,11 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { FileText } from 'lucide-react';
 
 const AnswerWithCitations = ({ content, onCitationClick }) => {
-  // 解析<cite>标签
+  // 解析<cite>标签（支持两种格式）
   const parseCitations = (text) => {
     const parts = [];
-    const regex = /<cite id="([^"]+)">([^<]+)<\/cite>/g;
+    // 修改正则：支持 <cite id="xxx">内容</cite> 和 <cite id="xxx"> 两种格式
+    const regex = /<cite id="([^"]+)">([^<]*)<\/cite>|<cite id="([^"]+)">/g;
     let lastIndex = 0;
     let match;
 
@@ -30,10 +31,27 @@ const AnswerWithCitations = ({ content, onCitationClick }) => {
       }
 
       // 添加cite标签
+      // match[1]和match[2]是第一种格式（带结束标签），match[3]是第二种格式（自闭合）
+      const citeId = match[1] || match[3];
+      let citeContent = match[2];
+      
+      // 如果没有内容，从ID中提取文件名和页码
+      if (!citeContent) {
+        // ID格式：filename_pXX
+        const parts = citeId.split('_p');
+        if (parts.length === 2) {
+          const filename = parts[0].replace(/_/g, ' '); // 将下划线替换为空格
+          const page = parts[1];
+          citeContent = `${filename} 第${page}页`;
+        } else {
+          citeContent = citeId;
+        }
+      }
+      
       parts.push({
         type: 'citation',
-        id: match[1],
-        content: match[2]
+        id: citeId,
+        content: citeContent
       });
 
       lastIndex = regex.lastIndex;
@@ -57,7 +75,7 @@ const AnswerWithCitations = ({ content, onCitationClick }) => {
     return (
       <div className="markdown-content prose prose-sm max-w-none">
         <ReactMarkdown
-          remarkPlugins={[[remarkMath, { singleDollarTextMath: false }]]}
+          remarkPlugins={[remarkMath]}
           rehypePlugins={[rehypeKatex]}
           components={{
             code({ node, inline, className, children, ...props }) {
@@ -93,7 +111,7 @@ const AnswerWithCitations = ({ content, onCitationClick }) => {
           return (
             <ReactMarkdown
               key={index}
-              remarkPlugins={[[remarkMath, { singleDollarTextMath: false }]]}
+              remarkPlugins={[remarkMath]}
               rehypePlugins={[rehypeKatex]}
               components={{
                 code({ node, inline, className, children, ...props }) {

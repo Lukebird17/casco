@@ -1,0 +1,207 @@
+{
+  "session_id": "session_1766261921203",
+  "title": "大型语言模型演变中的图中T",
+  "created_at": "2025-12-21T04:18:41.203352",
+  "updated_at": "2025-12-21T04:42:15.528829",
+  "messages": [
+    {
+      "role": "user",
+      "content": "大型语言模型演变中的图中T",
+      "timestamp": "2025-12-21T04:19:20.973531",
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "根据您提供的课程材料，**未包含任何关于“大型语言模型演变中的图中T”的相关内容**。\n\n所有材料均来自操作系统相关的课程文档（如《OS-07 vm-manage.pdf》和《OS-08 pm-manage.pdf》），主要讨论的是虚拟内存管理、页表映射、内存分配机制（如伙伴系统、VMA、mmap等），与“大型语言模型”或其演变过程无直接关联。\n\n因此，无法基于当前材料回答该问题。\n\n建议您核对问题是否涉及其他课程材料，或提供更多上下文（如“图中T”具体指代什么，是某个图示中的标记，还是技术术语的缩写），以便进一步协助。",
+      "timestamp": "2025-12-21T04:19:20.973562",
+      "metadata": {}
+    },
+    {
+      "role": "user",
+      "content": "大型语言模型演变中的图的T5模型后的模型是什么",
+      "timestamp": "2025-12-21T04:19:54.013716",
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "根据提供的课程材料，大型语言模型演变中的图中，T5模型之后的模型是GPT-3。\n\n- **GPT-3**：在2020年5月由OpenAI发布，参数量达到175B，展现出强大的无监督及小样本学习能力。\n  - 根据<cite id=\"4.2_大语言模型_v2_p10\">、<cite id=\"4.2_大语言模型_v2_p13\">和<cite id=\"4.2_大语言模型_v2_p16\">。",
+      "timestamp": "2025-12-21T04:19:54.013761",
+      "metadata": {}
+    },
+    {
+      "role": "user",
+      "content": "指令微调的第一步是什么",
+      "timestamp": "2025-12-21T04:21:14.671036",
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "让我们一步一步地进行推理，然后给出答案。\n\n### 问题：指令微调的第一步是什么？\n\n1. **理解问题**：\n   - 需要明确指令微调的第一步是什么，以及这一步的具体内容。\n\n2. **查找定义**：\n   - 根据课程材料，指令微调的第一步是收集示例数据并训练一个有监督的策略。\n\n3. **理解关键步骤**：\n   - **收集示例数据**：从提示数据集中采样提示（prompt）。\n   - **生成标注数据**：标注者（labeler）提供期望的输出行为（response）。\n   - **训练有监督的策略**：使用这些标注数据对预训练模型（如GPT-3）进行微调，得到一个监督策略（SFT模型）。\n\n4. **总结**：\n   - 指令微调的第一步是收集示例数据并训练一个有监督的策略。具体来说，从提示数据集中采样提示，标注者提供期望的输出行为，然后使用这些标注数据对预训练模型进行微调，得到一个监督策略（SFT模型）。\n\n### 答案：\n指令微调的第一步是收集示例数据并训练一个有监督的策略。具体步骤如下：\n1. **收集示例数据**：从提示数据集中采样提示（prompt）。\n2. **生成标注数据**：标注者（labeler）提供期望的输出行为（response）。\n3. **训练有监督的策略**：使用这些标注数据对预训练模型（如GPT-3）进行微调，得到一个监督策略（SFT模型）。\n\n根据<cite id=\"4.2_大语言模型_v2_p34\">。",
+      "timestamp": "2025-12-21T04:21:14.671056",
+      "metadata": {}
+    },
+    {
+      "role": "user",
+      "content": "PalM",
+      "timestamp": "2025-12-21T04:40:54.355173",
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "根据提供的课程材料，**未包含任何关于“PalM”模型的相关信息**。\n\n所有材料均来自操作系统相关的课程文档（如《OS-07 vm-manage.pdf》和《OS-08 pm-manage.pdf》），内容涉及虚拟内存管理、页表映射、内存分配机制（如伙伴系统、VMA、mmap等），与“PalM”这一大型语言模型无任何关联。\n\n此外，材料中未提及“PalM”或其相关技术细节、架构、应用场景等内容。\n\n因此，无法基于当前材料回答该问题。\n\n建议您核对问题是否涉及其他课程材料，或提供更多上下文（如“PalM”是否指代某个特定模型或技术），以便进一步协助。",
+      "timestamp": "2025-12-21T04:40:54.355197",
+      "metadata": {}
+    },
+    {
+      "role": "user",
+      "content": "PaLM的模型规模是什么",
+      "timestamp": "2025-12-21T04:41:12.338192",
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "根据提供的课程材料，**未包含任何关于“PaLM”模型规模的相关信息**。\n\n所有材料均来自操作系统相关的课程文档（如《OS-07 vm-manage.pdf》和《OS-08 pm-manage.pdf》），内容涉及虚拟内存管理、页表映射、内存分配机制（如伙伴系统、VMA、mmap等），与“PaLM”这一大型语言模型无任何关联。\n\n此外，材料中未提及“PaLM”或其参数量、模型规模、架构等技术细节。\n\n因此，无法基于当前材料回答该问题。\n\n建议您核对问题是否涉及其他课程材料，或提供更多上下文（如“PaLM”是否指代某个特定模型或技术），以便进一步协助。",
+      "timestamp": "2025-12-21T04:41:12.338234",
+      "metadata": {}
+    },
+    {
+      "role": "user",
+      "content": "PaLM的模型规模是什么\n\n",
+      "timestamp": "2025-12-21T04:42:15.528786",
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "根据提供的课程材料，PaLM（Pathways Language Model）的模型规模为540B（540亿参数）。\n\n- **模型规模**：540B\n- **发布日期**：2022年4月\n- **发布者**：Google\n\n根据<cite id=\"4.2_大语言模型_v2_p13\">、<cite id=\"4.2_大语言模型_v2_p15\">和<cite id=\"4.2_大语言模型_v2_p16\">。",
+      "timestamp": "2025-12-21T04:42:15.528824",
+      "metadata": {}
+    }
+  ],
+  "context_docs": [],
+  "citations": {
+    "7": [
+      {
+        "id": "OS-07_vm-manage_p22",
+        "filename": "OS-07 vm-manage.pdf",
+        "page": 22,
+        "snippet": "",
+        "image_url": null,
+        "score": 0.0005208952352404594,
+        "kb_id": "default"
+      },
+      {
+        "id": "4.2_大语言模型_v2_p2",
+        "filename": "4.2 大语言模型 v2.pdf",
+        "page": 2,
+        "snippet": "",
+        "image_url": null,
+        "score": 0.0004484982928261161,
+        "kb_id": "default"
+      },
+      {
+        "id": "OS-08_pm-manage_p26",
+        "filename": "OS-08 pm-manage.pdf",
+        "page": 26,
+        "snippet": "",
+        "image_url": null,
+        "score": 0.0004240866401232779,
+        "kb_id": "default"
+      },
+      {
+        "id": "OS-07_vm-manage_p7",
+        "filename": "OS-07 vm-manage.pdf",
+        "page": 7,
+        "snippet": "",
+        "image_url": null,
+        "score": 0.00031051781843416393,
+        "kb_id": "default"
+      }
+    ],
+    "9": [
+      {
+        "id": "4.2_大语言模型_v2_p3",
+        "filename": "4.2 大语言模型 v2.pdf",
+        "page": 3,
+        "snippet": "",
+        "image_url": null,
+        "score": 0.0019714958034455776,
+        "kb_id": "default"
+      },
+      {
+        "id": "OS-08_pm-manage_p26",
+        "filename": "OS-08 pm-manage.pdf",
+        "page": 26,
+        "snippet": "",
+        "image_url": null,
+        "score": 0.0001554795599076897,
+        "kb_id": "default"
+      },
+      {
+        "id": "OS-08_pm-manage_p3",
+        "filename": "OS-08 pm-manage.pdf",
+        "page": 3,
+        "snippet": "",
+        "image_url": null,
+        "score": 8.121709834085777e-05,
+        "kb_id": "default"
+      },
+      {
+        "id": "OS-07_vm-manage_p33",
+        "filename": "OS-07 vm-manage.pdf",
+        "page": 33,
+        "snippet": "",
+        "image_url": null,
+        "score": 8.017427171580493e-05,
+        "kb_id": "default"
+      }
+    ],
+    "11": [
+      {
+        "id": "4.2_大语言模型_v2_p15",
+        "filename": "4.2 大语言模型 v2.pdf",
+        "page": 15,
+        "snippet": "【第15页】\n大型语言模型综述\n大型语言模型发展历程\n监督学习 --> Pretrain+Finetune 两阶段\n判别式模型无法解决生成任务，生成式模型判别任务性能差\n【/第15页】\n\n【第15页·图片】(d36f8fe97d2ce99ee9feac3a3efc77e5fd31c3c05ae80c91359d27cea92eabd5.jpg)\n该图为大型语言模型发展历程的柱状图，横轴表示技术演进",
+        "image_url": "",
+        "score": 0.9339603781700134,
+        "kb_id": "NLP"
+      },
+      {
+        "id": "4.2_大语言模型_v2_p16",
+        "filename": "4.2 大语言模型 v2.pdf",
+        "page": 16,
+        "snippet": "【第16页】\n大型语言模型综述\n大型语言模型发展历程\n▸ Pretrain+Finetune 两阶段 --> Pretrain+Prompt Engineering\n模型表现出较好的 zero-shot/few-shot 能力，但仍差于监督学习\n生成式模型逐渐占据主流\n言处理前沿技术4.2 大语言模型\n【/第16页】\n\n【第16页·图片】(58c8b9c13307b9df2c8a9ecda44bd",
+        "image_url": "",
+        "score": 0.926878809928894,
+        "kb_id": "NLP"
+      },
+      {
+        "id": "4.2_大语言模型_v2_p17",
+        "filename": "4.2 大语言模型 v2.pdf",
+        "page": 17,
+        "snippet": "【第17页】\n大型语言模型综述\n大型语言模型发展历程\n▸ 基于 Prompt engineering 的无监督学习全面比肩或超越监督学习\n通过 Chain-of-Thought 等方法，模型表现出惊人的推理能力\n【/第17页】\n\n【第17页·图片】(90b63a0178ab1dcdf3cf334776cbbe9df62e4871e70d8866cbb2e4ebd3a3e4f4.jpg)\n该图为大型",
+        "image_url": "",
+        "score": 0.9202765822410583,
+        "kb_id": "NLP"
+      },
+      {
+        "id": "4.2_大语言模型_v2_p13",
+        "filename": "4.2 大语言模型 v2.pdf",
+        "page": 13,
+        "snippet": "【第13页】\n大型语言模型综述\n大型语言模型发展历程\n陈露SJTU NLP 课程组\n言处理前沿技术4.2 大语言模型\n前沿应用系列讲自然语言处理 13 / 13\n[1] Chowdhery, Aakanksha, et al. \"Palm: Scaling language modeling with pathways.\" arXiv preprint arXiv:2204.02311 (2022",
+        "image_url": "",
+        "score": 0.8709036707878113,
+        "kb_id": "NLP"
+      },
+      {
+        "id": "4.2_大语言模型_v2_p14",
+        "filename": "4.2 大语言模型 v2.pdf",
+        "page": 14,
+        "snippet": "【第14页】\n大型语言模型综述\n大型语言模型发展历程\n陈露SJTU NLP 课程组\n言处理前沿技术4.2 大语言模型\n【/第14页】\n\n【第14页·图片】(85ad3f07951fc53eb05cf622c68c5dc155ae5817d399ae891087ae6b7e0148e9.jpg)\n该图为柱状图，展示了多个代表性大型语言模型的参数规模发展历程。横轴从左至右依次列出模型：GPT-1、BE",
+        "image_url": "",
+        "score": 0.7061073184013367,
+        "kb_id": "NLP"
+      }
+    ]
+  },
+  "snippets": []
+}

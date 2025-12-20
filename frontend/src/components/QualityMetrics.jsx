@@ -123,7 +123,7 @@ export const QualityMetricsDisplay = ({ metrics }) => {
     ? metrics.overall_score 
     : (metrics.score || 0);
   const radarData = metrics.radar_data || [];
-  const detailedScores = metrics.detailed_scores || {};
+  const details = metrics.details || {};  // 新增：从后端获取的详细说明
   const evalTime = metrics.eval_time;
 
   // 根据分数确定颜色和标签
@@ -188,66 +188,66 @@ export const QualityMetricsDisplay = ({ metrics }) => {
       )}
 
       {/* ✅ 详细指标说明 */}
-      <div className="space-y-4 border-t border-gray-100 pt-4">
-        <div className="text-sm font-semibold text-gray-700 mb-3">
-          📊 三维质量评估详解
-        </div>
-        
-        {Object.entries(detailedScores).map(([metricKey, scoreValue]) => {
-          const desc = METRIC_DESCRIPTIONS[metricKey];
-          if (!desc) return null;
+      {Object.keys(details).length > 0 && (
+        <div className="space-y-3 border-t border-gray-100 pt-4">
+          <div className="text-sm font-semibold text-gray-700 mb-3">
+            📊 各维度评估说明
+          </div>
           
-          const Icon = desc.icon;
-          const interpretation = getScoreInterpretation(metricKey, scoreValue);
-          
-          return (
-            <div 
-              key={metricKey} 
-              className={`rounded-lg border ${desc.borderColor} ${desc.bgColor} p-3`}
-            >
-              {/* 指标名称和分数 */}
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <Icon size={16} className={desc.color} />
-                  <span className={`text-sm font-semibold ${desc.color}`}>
-                    {desc.name}
+          {radarData.map((item) => {
+            const dimension = item.subject;
+            const scoreValue = item.A;
+            const reason = details[dimension] || '暂无说明';
+            
+            // 根据分数确定颜色
+            const getColorClass = (score) => {
+              if (score >= 80) return {
+                text: 'text-green-700',
+                bg: 'bg-green-50',
+                border: 'border-green-200'
+              };
+              if (score >= 60) return {
+                text: 'text-yellow-700',
+                bg: 'bg-yellow-50',
+                border: 'border-yellow-200'
+              };
+              return {
+                text: 'text-red-700',
+                bg: 'bg-red-50',
+                border: 'border-red-200'
+              };
+            };
+            
+            const colorClass = getColorClass(scoreValue);
+            
+            return (
+              <div 
+                key={dimension} 
+                className={`rounded-lg border ${colorClass.border} ${colorClass.bg} p-3`}
+              >
+                {/* 指标名称和分数 */}
+                <div className="flex items-center justify-between mb-2">
+                  <span className={`text-sm font-semibold ${colorClass.text}`}>
+                    {dimension}
+                  </span>
+                  <span className={`text-sm font-bold ${colorClass.text}`}>
+                    {scoreValue}分
                   </span>
                 </div>
-                <span className={`text-sm font-bold ${desc.color}`}>
-                  {(scoreValue * 100).toFixed(0)}分
-                </span>
+                
+                {/* 说明理由 */}
+                <p className="text-xs text-gray-700">
+                  {reason}
+                </p>
               </div>
-              
-              {/* 指标描述 */}
-              <p className="text-xs text-gray-700 mb-2">
-                {desc.description}
-              </p>
-              
-              {/* 评估要点 */}
-              <div className="text-xs text-gray-600 space-y-1 mb-2">
-                {desc.details.map((detail, idx) => (
-                  <div key={idx}>{detail}</div>
-                ))}
-              </div>
-              
-              {/* 本次评估结果解读 */}
-              <div className={`text-xs ${desc.color} font-medium bg-white rounded px-2 py-1 border ${desc.borderColor}`}>
-                💡 {interpretation}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
 
       {/* 底部提示 */}
       <div className="mt-4 text-xs text-gray-500 bg-gray-50 rounded-lg p-3 border border-gray-200">
-        <strong>📖 使用建议：</strong>
-        <ul className="list-disc list-inside mt-1 space-y-1">
-          <li>总分70分以上表示答案质量可信</li>
-          <li>如相关性较低，建议重新组织问题</li>
-          <li>如检索质量不佳，可尝试添加更多关键词或切换知识库</li>
-          <li>如忠实度偏低，建议交叉核对原始资料</li>
-        </ul>
+        <strong>💡 提示：</strong>总分80分以上表示答案质量优秀，60-80分良好，60分以下建议核查或重新提问。
       </div>
     </div>
   );

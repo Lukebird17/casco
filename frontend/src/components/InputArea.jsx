@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Image, Paperclip, Loader2, Zap, Brain, Database } from 'lucide-react';
+import { Send, Image, Paperclip, Loader2, Zap, Brain, Database, ArrowUp, Square } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { listKnowledgeBases } from '../api/client';
 
@@ -13,7 +13,8 @@ const InputArea = ({
   loading, 
   enableSocratic,
   selectedKnowledgeBase,
-  onKnowledgeBaseChange 
+  onKnowledgeBaseChange,
+  onStop  // 新增：停止回调
 }) => {
   const [message, setMessage] = useState('');
   const [imageFile, setImageFile] = useState(null);
@@ -299,18 +300,21 @@ const InputArea = ({
               <Paperclip size={20} />
             </button>
 
-            {/* 发送按钮 */}
+            {/* 发送/停止按钮 */}
             <button
-              type="submit"
-              disabled={loading || (!message.trim() && !imageFile && !docFile)}
-              className="btn-primary w-12 h-12 flex items-center justify-center
+              type={loading ? "button" : "submit"}
+              onClick={loading ? onStop : undefined}
+              disabled={!loading && !message.trim() && !imageFile && !docFile}
+              className="btn-primary w-12 h-12 flex items-center justify-center rounded-full
                        disabled:opacity-50 disabled:cursor-not-allowed
-                       disabled:hover:transform-none"
+                       disabled:hover:transform-none transition-all
+                       hover:scale-105 active:scale-95"
+              title={`发送 (loading: ${loading}, message: "${message}", hasImage: ${!!imageFile}, hasDoc: ${!!docFile})`}
             >
               {loading ? (
-                <Loader2 size={20} className="animate-spin" />
+                <Square size={20} strokeWidth={2.5} fill="currentColor" />
               ) : (
-                <Send size={20} />
+                <ArrowUp size={20} strokeWidth={2.5} />
               )}
             </button>
           </div>

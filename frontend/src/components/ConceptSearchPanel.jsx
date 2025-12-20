@@ -121,7 +121,8 @@ const ConceptSearchPanel = ({ open, onClose, onJumpTo, currentKBId = 'default' }
         line: result.line,
         page: result.page,  // 传递PDF页码
         highlight: searchTerm,
-        isPDF: result.isPDF
+        isPDF: result.isPDF,
+        kb_id: currentKBId  // ✅ 添加知识库ID
       });
     }
     const location = result.page ? `第${result.page}页` : `第${result.line}行`;

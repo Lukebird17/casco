@@ -24,7 +24,7 @@ import SettingsPanel from './components/SettingsPanel';
 import WelcomeGuide from './components/WelcomeGuide';
 import { useChat } from './hooks/useChat';
 import { useSessions } from './hooks/useSessions';
-import { initializeSystem } from './api/client';
+import { initializeSystem, getSessionMessages } from './api/client';
 import { initSettings, getSettings } from './utils/settings';
 import { Info, Loader2, X } from 'lucide-react';
 
@@ -75,6 +75,7 @@ function App() {
     sendChatMessage,
     clearMessages,
     setInitialMessages,
+    stopGeneration,  // 新增：停止生成
   } = useChat(currentSessionId);
 
   // 初始化系统
@@ -103,6 +104,25 @@ function App() {
 
     init();
   }, []);
+  
+  // 监听会话切换，自动加载历史消息
+  useEffect(() => {
+    const loadSessionHistory = async () => {
+      if (currentSessionId && !initializing) {
+        try {
+          const data = await getSessionMessages(currentSessionId);
+          if (data.messages && data.messages.length > 0) {
+            setInitialMessages(data.messages);
+            console.log(`✅ 加载会话历史: ${data.messages.length} 条消息`);
+          }
+        } catch (error) {
+          console.error('加载会话历史失败:', error);
+        }
+      }
+    };
+    
+    loadSessionHistory();
+  }, [currentSessionId, initializing]);
   
   // 应用dark模式
   useEffect(() => {
@@ -288,19 +308,43 @@ function App() {
   };
 
   // 处理跳转到引用
-  const handleJumpToCitation = (citation) => {
-    console.log('跳转到引用:', citation);
+  const handleJumpToCitation = (citationOrId) => {
+    console.log('跳转到引用:', citationOrId);
+    
+    // ✅ 判断输入类型：可能是citation对象，也可能是cite_id字符串
+    let citation;
+    if (typeof citationOrId === 'string') {
+      // 从retrievalCitations中查找对应的citation
+      citation = retrievalCitations.find(c => c.id === citationOrId);
+      if (!citation) {
+        console.warn('未找到引用:', citationOrId);
+        toast.error('未找到该引用');
+        return;
+      }
+    } else {
+      citation = citationOrId;
+    }
+    
+    // ✅ 使用 citation 中的 kb_id，如果没有则使用当前选中的知识库
+    const targetKbId = citation.kb_id || selectedKnowledgeBase;
+    
+    // ✅ 如果目标知识库与当前不同，先切换知识库
+    if (targetKbId !== selectedKnowledgeBase) {
+      console.log(`切换知识库: ${selectedKnowledgeBase} -> ${targetKbId}`);
+      setSelectedKnowledgeBase(targetKbId);
+    }
     
     // 设置文档、页码和高亮文本
     setViewerDocument(citation.filename);
-    setViewerPage(citation.page || null); // 新增：设置页码
+    setViewerPage(citation.page || null);
     setViewerHighlight(citation.snippet || '');
     
     // 打开文档查看器
     setDocumentViewerOpen(true);
     
     const pageInfo = citation.page ? ` 第${citation.page}页` : '';
-    toast.success(`正在打开: ${citation.filename}${pageInfo}`, { icon: '📄' });
+    const kbInfo = targetKbId !== 'default' ? ` (知识库: ${targetKbId})` : '';
+    toast.success(`正在打开: ${citation.filename}${pageInfo}${kbInfo}`, { icon: '📄' });
   };
 
   // 加载界面
@@ -317,25 +361,6 @@ function App() {
 
   return (
     <div className="h-screen flex bg-google-gray-50 dark:bg-gray-900">
-      {/* Toast 通知 */}
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          duration: 3000,
-          style: {
-            background: '#fff',
-            color: '#1f2937',
-            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
-          },
-          success: {
-            iconTheme: {
-              primary: '#4285f4',
-              secondary: '#fff',
-            },
-          },
-        }}
-      />
-
       {/* 侧边栏 */}
       <Sidebar
         sessions={sessions}
@@ -423,6 +448,7 @@ function App() {
                 messages={messages}
                 loading={chatLoading}
                 onSendMessage={handleSendMessage}
+                onStopGeneration={stopGeneration}
                 enableSocratic={enableSocratic}
                 currentSessionId={currentSessionId}
                 selectedKnowledgeBase={selectedKnowledgeBase}
@@ -505,6 +531,12 @@ function App() {
         open={outlinePanelOpen}
         onClose={() => setOutlinePanelOpen(false)}
         onJumpToSection={(section) => {
+          // ✅ 如果传入的知识库与当前不同，先切换
+          if (section.kb_id && section.kb_id !== selectedKnowledgeBase) {
+            console.log(`切换知识库: ${selectedKnowledgeBase} -> ${section.kb_id}`);
+            setSelectedKnowledgeBase(section.kb_id);
+          }
+          
           setViewerDocument(section.filename);
           setViewerHighlight(section.section);
           setViewerPage(section.page || null);
@@ -517,6 +549,12 @@ function App() {
         open={conceptSearchPanelOpen}
         onClose={() => setConceptSearchPanelOpen(false)}
         onJumpTo={(location) => {
+          // ✅ 如果传入的知识库与当前不同，先切换
+          if (location.kb_id && location.kb_id !== selectedKnowledgeBase) {
+            console.log(`切换知识库: ${selectedKnowledgeBase} -> ${location.kb_id}`);
+            setSelectedKnowledgeBase(location.kb_id);
+          }
+          
           setViewerDocument(location.filename);
           setViewerHighlight(location.highlight);
           setViewerPage(location.page || null);
@@ -543,7 +581,7 @@ function App() {
       />
 
       {/* Toast 通知 */}
-      <Toaster position="top-right" />
+      <Toaster position="bottom-right" />
     </div>
   );
 }

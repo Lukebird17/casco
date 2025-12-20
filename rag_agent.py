@@ -112,7 +112,7 @@ class RAGAgent:
         """
         系统提示词：定义助教的角色和回答策略
         """
-        self.system_prompt = """你是一位专业、耐心的课程助教，你的任务是帮助学生理解课程内容。
+        self.system_prompt = r"""你是一位专业、耐心的课程助教，你的任务是帮助学生理解课程内容。
 
 【你的职责】
 1. 根据提供的课程材料准确回答学生的问题
@@ -124,7 +124,57 @@ class RAGAgent:
 1. 准确性：确保回答基于课程材料，不编造信息
 2. 完整性：提供充分的解释和必要的背景知识
 3. 清晰性：使用易懂的语言，适当使用例子说明
-4. 来源标注：在回答中注明"根据《文件名》第X页..."
+4. 来源标注：在回答末尾单独一行注明来源
+   - 格式：在答案结束后，**空一行**，然后写"根据"，后面紧跟引用标签（不换行）
+   - 正确示例：
+     ```
+     PaLM的模型规模为540B。
+     
+     根据<cite id="文件_p13">、<cite id="文件_p15">和<cite id="文件_p16">。
+     ```
+   - ⚠️ **错误示例**（禁止这样）：
+     ```
+     根据
+     
+     <cite id="文件_p13">
+     
+     <cite id="文件_p15">
+     ```
+   - 要点：多个引用在同一行，用顿号（、）和"和"连接
+
+【数学公式格式】⚠️ 极其重要，必须严格遵守
+- **必须且只能使用以下格式：**
+  - **行内公式**：`$公式内容$`（美元符号包裹）
+    - ✅ 示例：`$P(w|h)$`、`$\mathbf{W}^{(\ell)}$`、`$\gamma_t(i)$`
+  - **独立公式（换行居中）**：`$$公式内容$$`（双美元符号包裹，前后各空一行）
+    - ✅ 示例：
+      ```
+      
+      $$
+      \hat{a}_{ij} = \frac{\sum_{t=1}^{N-1} \xi_t(i, j)}{\sum_{t=1}^{N-1} \gamma_t(i)}
+      $$
+      
+      ```
+
+- **严格禁止使用以下格式**（这些格式无法渲染）：
+  - ❌ `\( ... \)` 或 `\\( ... \\)` - 禁止使用
+  - ❌ `\[ ... \]` 或 `\\[ ... \\]` - 禁止使用
+  - ❌ `( ... )` 包裹公式 - 禁止使用
+  - ❌ `[ ... ]` 包裹公式 - 禁止使用
+
+- **完整示例：**
+  当你需要说"状态转移概率"时，这样写：
+  ```
+  状态转移概率：$\hat{a}_{ij} = P(h_{t+1} = j | h_t = i)$
+  
+  计算公式：
+  
+  $$
+  \hat{a}_{ij} = \frac{\sum_{t=1}^{N-1} \xi_t(i, j)}{\sum_{t=1}^{N-1} \gamma_t(i)}
+  $$
+  
+  其中，$\xi_t(i, j)$ 是联合后验概率。
+  ```
 
 【特殊情况处理】
 - 如果课程材料中没有相关信息，诚实告知学生
@@ -132,6 +182,114 @@ class RAGAgent:
 - 如果涉及复杂概念，可以分步骤讲解
 
 请始终保持专业、友好的态度，帮助学生更好地掌握课程知识。"""
+    
+    def _fix_latex_format(self, text: str) -> str:
+        """
+        强力修复LaTeX格式，统一转换为 $ $ 和 $$ $$ 格式
+        
+        ⚠️ 策略：
+        1. 先处理已有反斜杠的格式（\(...\)、\[...\]）
+        2. 再一次性扫描，优先处理方括号，然后处理圆括号
+        3. 最后修复孤立的LaTeX命令（如单独的 \operatorname）
+        """
+        import re
+        
+        # 第1步：修复奇怪的空格（\ ) 这种）
+        text = text.replace('\\ )', '\\)')
+        text = text.replace('\\ ]', '\\]')
+        text = text.replace('\\ (', '\\(')
+        text = text.replace('\\ [', '\\[')
+        
+        # 第2步：将 \\( ... \\) 或 \( ... \) 转换为 $ ... $
+        text = re.sub(r'\\\\?\(\s*([^()]+?)\s*\\\\?\)', r'$\1$', text)
+        
+        # 第3步：将 \\[ ... \\] 或 \[ ... \] 转换为 $$ ... $$
+        text = re.sub(r'\\\\?\[\s*([^\[\]]+?)\s*\\\\?\]', r'\n$$\n\1\n$$\n', text)
+        
+        # 第4步：一次性扫描，优先处理方括号，再处理圆括号
+        def find_matching(text, start_idx, open_char, close_char):
+            """找到匹配的闭合符号"""
+            depth = 1
+            i = start_idx + 1
+            while i < len(text) and depth > 0:
+                if text[i] == open_char:
+                    depth += 1
+                elif text[i] == close_char:
+                    depth -= 1
+                i += 1
+            return i - 1 if depth == 0 else -1
+        
+        result = []
+        i = 0
+        while i < len(text):
+            # 检查是否是未转义的 [
+            if text[i] == '[' and (i == 0 or text[i-1] not in ['\\', '\\\\']):
+                end_idx = find_matching(text, i, '[', ']')
+                if end_idx != -1:
+                    content = text[i+1:end_idx].strip()
+                    # 检查是否包含LaTeX命令
+                    if re.search(r'\\[a-zA-Z]+|\\frac|\\sum|\\prod|\\int|\\mid', content):
+                        result.append(f'\n$$\n{content}\n$$\n')
+                        i = end_idx + 1
+                        continue
+            
+            # 检查是否是未转义的 (
+            elif text[i] == '(' and (i == 0 or text[i-1] not in ['\\', '\\\\']):
+                end_idx = find_matching(text, i, '(', ')')
+                if end_idx != -1:
+                    content = text[i+1:end_idx].strip()
+                    # 检查是否包含LaTeX命令
+                    if re.search(r'\\[a-zA-Z]+|\\frac|\\sum|\\prod|\\int|\\hat|\\mathbf|\\xi|\\gamma|\\dots|\\mid', content):
+                        result.append(f'${content}$')
+                        i = end_idx + 1
+                        continue
+            
+            result.append(text[i])
+            i += 1
+        
+        text = ''.join(result)
+        
+        # 第5步：修复孤立的LaTeX命令行（如 \operatorname 开头的行）
+        # 如果一行以LaTeX命令开头，且包含数学符号，将整行包裹为独立公式
+        lines = text.split('\n')
+        fixed_lines = []
+        for line in lines:
+            stripped = line.strip()
+            # 检查是否以LaTeX命令开头，且不在 $ 或 $$ 中
+            if (stripped and 
+                re.match(r'^\\[a-zA-Z]+', stripped) and 
+                not stripped.startswith('$$') and 
+                not stripped.startswith('$') and
+                '_' in stripped or '^' in stripped or '\\' in stripped):
+                # 这是一个孤立的LaTeX命令行，包裹为独立公式
+                fixed_lines.append(f'$$\n{stripped}\n$$')
+            else:
+                fixed_lines.append(line)
+        text = '\n'.join(fixed_lines)
+        
+        # 第6步：清理多余的连续换行
+        text = re.sub(r'\n{4,}', '\n\n', text)
+        
+        return text
+    
+    def _fix_citation_format(self, text: str) -> str:
+        """
+        修复引用格式，只移除cite标签之间的换行，保留"根据"前面的空行
+        """
+        import re
+        
+        # 只处理cite标签之间的换行，不处理"根据"前面的换行
+        # 匹配：<cite ...> + 换行 + 根据/、
+        text = re.sub(r'(<cite id="[^"]+">)\s*\n+\s*(根据|、)', r'\1\2', text)
+        
+        # 移除连续cite标签之间的所有换行
+        # 匹配：</cite> 或 <cite> + 任意空白和换行 + <cite>
+        text = re.sub(r'(<cite id="[^"]+">)\s*\n+\s*(<cite)', r'\1、\2', text)
+        
+        # 移除cite标签后面紧跟的"根据"前的换行（但保留正常段落的换行）
+        # 不修改"根据"前面的换行，保持原有格式
+        
+        return text
     
     # ==================== Casco核心功能：问题分析 ====================
     
@@ -210,12 +368,15 @@ class RAGAgent:
 用户查询: "{query}"
 """
         try:
+            print(f"  🤖 正在调用LLM进行查询扩展...")
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[{"role": "user", "content": prompt}],
-                temperature=0.5
+                temperature=0.5,
+                timeout=10  # 添加10秒超时
             )
             content = response.choices[0].message.content
+            print(f"  ✅ LLM返回: {content}")
             # 清洗结果
             keywords = [k.strip() for k in content.split(',') if k.strip()]
             queries = [query] + keywords  # 原始查询 + 扩展词
@@ -230,7 +391,7 @@ class RAGAgent:
             print(f"  🔍 查询增强: {unique[:4]}")
             return unique[:4]
         except Exception as e:
-            print(f"  ⚠️  查询增强失败: {e}")
+            print(f"  ⚠️  查询增强失败: {e}，使用原始查询")
             return [query]
     
     def extract_technical_terms(self, query: str) -> List[str]:
@@ -1032,6 +1193,12 @@ class RAGAgent:
             print(f"  ✅ 收到LLM响应")
 
             answer = response.choices[0].message.content
+            
+            # 【新增】修复LaTeX公式格式
+            answer = self._fix_latex_format(answer)
+            
+            # 【新增】修复引用格式
+            answer = self._fix_citation_format(answer)
             
             # 【新增】追踪Token使用
             if self.token_tracker:

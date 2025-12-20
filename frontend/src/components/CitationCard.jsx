@@ -35,7 +35,7 @@ const CitationCard = ({ citation, index, onClick }) => {
             <span>第 {page} 页</span>
             {score > 0 && (
               <span className="px-2 py-0.5 bg-green-50 text-green-600 rounded">
-                相关度: {(score * 100).toFixed(0)}%
+                相关度: {score > 1 ? score.toFixed(0) : (score * 100).toFixed(0)}%
               </span>
             )}
           </div>
