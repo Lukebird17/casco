@@ -1,3 +1,5 @@
+
+
 from typing import List, Dict, Optional, Tuple
 import re
 import base64
@@ -494,12 +496,21 @@ class RAGAgent:
             limit = top_k if i == 0 else 3  # 主查询查多点，副查询查少点
             # 向量检索
             if self.use_multimodal and self.hybrid_retriever:
-                search_results = self.hybrid_retriever.search(
-                    query=q,
-                    top_k=limit,
-                    include_images=True
-                )
-                raw_vec.extend(search_results['combined'])
+                # ✅ 修复：针对图片检索截断 query，防止 CLIP 报错
+                # CLIP text encoder 限制 77 token，安全起见截断到 50 个字符或使用 summary
+                short_query = q[:60] # 简单截断，或者使用 LLM 提取关键词
+                
+                try:
+                    search_results = self.hybrid_retriever.search(
+                        query=short_query, # <--- 这里使用短文本
+                        top_k=limit,
+                        include_images=True
+                    )
+                    raw_vec.extend(search_results['combined'])
+                except Exception as e:
+                    print(f"⚠️ 多模态检索单次失败: {e}")
+                    # 降级：如果多模态失败，尝试仅文本检索
+                    raw_vec.extend(self.vector_store.search(q, top_k=limit))
             else:
                 raw_vec.extend(self.vector_store.search(q, top_k=limit))
             
@@ -1281,7 +1292,7 @@ class RAGAgent:
             print("\n📷 检测到图片输入，使用多模态处理流程")
             
             # 2.1 描述图片
-            from multimodal_input_handler import MultimodalInputHandler
+            from src.utils.multimodal_input_handler import MultimodalInputHandler
             handler = MultimodalInputHandler()
             
             # 如果是base64，先转换为PIL Image

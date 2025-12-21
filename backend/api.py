@@ -1,3 +1,5 @@
+
+
 """
 FastAPI 后端 API
 为 React 前端提供 RESTful 接口
@@ -7,6 +9,7 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from typing import List, Dict, Optional, Tuple
 from contextlib import asynccontextmanager
@@ -350,8 +353,8 @@ async def chat(request: ChatRequest):
         if request.knowledge_base_id:
             try:
                 from config import get_kb_vector_dir, get_kb_data_dir, COLLECTION_NAME
-                from vector_store import VectorStore
-                from image_vector_store import ImageVectorStore
+                from src.core.vector_store import VectorStore
+                from src.core.image_vector_store import ImageVectorStore
                 
                 kb_vector_path = get_kb_vector_dir(request.knowledge_base_id)
                 kb_data_path = get_kb_data_dir(request.knowledge_base_id)
@@ -552,8 +555,8 @@ async def chat_stream(request: ChatRequest):
             if request.knowledge_base_id:
                 try:
                     from config import get_kb_vector_dir, get_kb_data_dir, COLLECTION_NAME
-                    from vector_store import VectorStore
-                    from image_vector_store import ImageVectorStore
+                    from src.core.vector_store import VectorStore
+                    from src.core.image_vector_store import ImageVectorStore
                     
                     kb_vector_path = get_kb_vector_dir(request.knowledge_base_id)
                     kb_data_path = get_kb_data_dir(request.knowledge_base_id)
@@ -1014,7 +1017,8 @@ async def generate_quiz(request: QuizRequest):
         # 从向量库中获取所有文档
         try:
             # 临时创建一个向量存储实例来获取文档
-            from vector_store import VectorStore
+            from src.core.vector_store import VectorStore
+            from src.core.image_vector_store import ImageVectorStore
             temp_vector_store = VectorStore(
                 db_path=str(kb_vector_dir),  # ✅ 使用db_path参数
                 collection_name=COLLECTION_NAME
@@ -1318,7 +1322,6 @@ async def visualize_knowledge_graph(max_nodes: int = 50):
         
         html = knowledge_graph.visualize_graph(max_nodes)
         
-        from fastapi.responses import HTMLResponse
         return HTMLResponse(content=html)
     except Exception as e:
         print(f"❌ 可视化知识图谱错误: {e}")
@@ -1474,7 +1477,7 @@ async def preview_docx(filename: str):
     """
     try:
         from config import DATA_DIR
-        from fastapi.responses import HTMLResponse
+        
         import mammoth  # 需要安装: pip install mammoth
         
         filepath = os.path.join(DATA_DIR, filename)
@@ -2304,10 +2307,10 @@ async def create_knowledge_base(request: CreateKBRequest):
     创建新知识库
     """
     try:
-        from document_loader import DocumentLoader
-        from text_splitter import TextSplitter
-        from vector_store import VectorStore
-        from image_vector_store import ImageVectorStore
+        from src.processors.document_loader import DocumentLoader
+        from src.processors.text_splitter import TextSplitter
+        from src.core.vector_store import VectorStore
+        from src.core.image_vector_store import ImageVectorStore
         from config import ensure_kb_dirs, get_kb_data_dir, get_kb_vector_dir
         
         # 检查知识库是否已存在
@@ -2634,7 +2637,7 @@ async def preview_kb_docx(kb_id: str, filename: str):
     """
     try:
         from config import get_kb_data_dir
-        from fastapi.responses import HTMLResponse
+        
         
         data_dir = get_kb_data_dir(kb_id)
         filepath = os.path.join(data_dir, filename)
@@ -2708,7 +2711,7 @@ async def preview_kb_pptx(kb_id: str, filename: str, page: int = 1):
     """
     try:
         from config import get_kb_data_dir
-        from fastapi.responses import HTMLResponse
+        
         from pptx import Presentation
         
         data_dir = get_kb_data_dir(kb_id)
@@ -2802,7 +2805,7 @@ async def delete_kb_file(kb_id: str, filename: str):
     """
     try:
         from config import get_kb_data_dir, get_kb_vector_dir
-        from vector_store import VectorStore
+        from src.core.vector_store import VectorStore
         
         # 1. 删除原文件
         data_dir = get_kb_data_dir(kb_id)
@@ -2864,10 +2867,10 @@ async def upload_to_knowledge_base(kb_id: str, files: List[UploadFile] = File(..
     上传文件到指定知识库并处理
     """
     try:
-        from document_loader import DocumentLoader
-        from text_splitter import TextSplitter
-        from vector_store import VectorStore
-        from image_vector_store import ImageVectorStore
+        from src.processors.document_loader import DocumentLoader
+        from src.processors.text_splitter import TextSplitter
+        from src.core.vector_store import VectorStore
+        from src.core.image_vector_store import ImageVectorStore
         import tempfile
         import shutil
         

@@ -19,7 +19,7 @@ VECTOR_DB_PATH = os.path.join(VECTOR_DB_DIR, DEFAULT_KB)  # 默认向量库路�
 COLLECTION_NAME = "course_documents"  # Collection名称
 
 # LibreOffice 路径配置
-LIBREOFFICE_PATH = "/home/honglianglu/hdd/my_libreoffice/extracted_libreoffice/opt/libreoffice25.8/program/soffice"
+LIBREOFFICE_PATH = "C:/Program Files/LibreOffice/program/soffice.exe"  # 请根据实际安装路径修改
 
 # 知识库路径辅助函数
 def get_kb_data_dir(kb_id="default"):
