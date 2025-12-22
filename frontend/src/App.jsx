@@ -314,12 +314,30 @@ function App() {
     // ✅ 判断输入类型：可能是citation对象，也可能是cite_id字符串
     let citation;
     if (typeof citationOrId === 'string') {
-      // 从retrievalCitations中查找对应的citation
+      // 先从retrievalCitations中查找对应的citation
       citation = retrievalCitations.find(c => c.id === citationOrId);
+      
       if (!citation) {
-        console.warn('未找到引用:', citationOrId);
-        toast.error('未找到该引用');
-        return;
+        // 如果没找到，尝试从cite_id中解析文件名和页码
+        // cite_id格式：filename_pXX (例如: 统计语言模型2025_秋_p51)
+        console.log('从retrievalCitations中未找到，尝试解析cite_id:', citationOrId);
+        const parts = citationOrId.split('_p');
+        if (parts.length === 2) {
+          const filename = parts[0].replace(/_/g, ' ') + '.pdf'; // 添加.pdf扩展名
+          const page = parseInt(parts[1]);
+          citation = {
+            id: citationOrId,
+            filename: filename,
+            page: page,
+            snippet: '',
+            kb_id: selectedKnowledgeBase
+          };
+          console.log('解析的citation:', citation);
+        } else {
+          console.warn('无法解析引用ID:', citationOrId);
+          toast.error('引用格式错误');
+          return;
+        }
       }
     } else {
       citation = citationOrId;

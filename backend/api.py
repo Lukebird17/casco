@@ -6,7 +6,7 @@ FastAPI 后端 API
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, HTMLResponse
 from pydantic import BaseModel
 from typing import List, Dict, Optional, Tuple
 from contextlib import asynccontextmanager
@@ -350,8 +350,8 @@ async def chat(request: ChatRequest):
         if request.knowledge_base_id:
             try:
                 from config import get_kb_vector_dir, get_kb_data_dir, COLLECTION_NAME
-                from vector_store import VectorStore
-                from image_vector_store import ImageVectorStore
+                from src.core.vector_store import VectorStore
+                from src.core.image_vector_store import ImageVectorStore
                 
                 kb_vector_path = get_kb_vector_dir(request.knowledge_base_id)
                 kb_data_path = get_kb_data_dir(request.knowledge_base_id)
@@ -552,8 +552,8 @@ async def chat_stream(request: ChatRequest):
             if request.knowledge_base_id:
                 try:
                     from config import get_kb_vector_dir, get_kb_data_dir, COLLECTION_NAME
-                    from vector_store import VectorStore
-                    from image_vector_store import ImageVectorStore
+                    from src.core.vector_store import VectorStore
+                    from src.core.image_vector_store import ImageVectorStore
                     
                     kb_vector_path = get_kb_vector_dir(request.knowledge_base_id)
                     kb_data_path = get_kb_data_dir(request.knowledge_base_id)
@@ -702,6 +702,9 @@ async def chat_stream(request: ChatRequest):
             if quality_evaluator and hasattr(rag_agent, 'last_context_docs') and rag_agent.last_context_docs:
                 # 记录当前消息的索引（评估结果将关联到这条消息）
                 current_message_idx = len(session.messages)  # 当前user消息的索引
+                print(f"🔍 准备启动质量评估，消息索引: {current_message_idx}")
+                print(f"🔍 quality_evaluator: {quality_evaluator is not None}")
+                print(f"🔍 last_context_docs数量: {len(rag_agent.last_context_docs)}")
                 
                 # 定义后台评估函数
                 async def run_background_evaluation():
@@ -715,24 +718,29 @@ async def chat_stream(request: ChatRequest):
                                 retrieved_context=rag_agent.last_context_docs,
                                 chat_history=chat_history
                             ),
-                            timeout=60.0  # ⚡ 简单版评估也需要时间，给60秒
+                            timeout=120.0  # ⚡ 增加到120秒，给LLM更多时间
                         )
                         eval_time = time.time() - eval_start_time
                         print(f"✅ 后台评估完成: 总分 {quality_metrics.get('overall_score', 0)}, 耗时 {eval_time:.2f}秒")
+                        print(f"📊 雷达图数据: {quality_metrics.get('radar_data', [])}")
                         quality_metrics['eval_time'] = round(eval_time, 2)
                         
                         # ✅ 保存到对应消息的评估结果（而不是session级别）
                         if session:
                             session.add_quality_metrics(current_message_idx + 1, quality_metrics)  # +1 是assistant消息的索引
                             session_manager._save_session(session)
+                            print(f"✅ 评估结果已保存到消息索引 {current_message_idx + 1}")
                     except asyncio.CancelledError:
                         print("🛑 后台评估已被取消（新问题到来）")
                         raise  # 重新抛出，让任务正常取消
                     except asyncio.TimeoutError:
                         eval_time = time.time() - eval_start_time
-                        print(f"⚠️  后台评估超时（60秒）")
+                        print(f"⚠️  后台评估超时（120秒），可能是LLM响应太慢")
+                        print(f"    建议：检查模型配置或网络连接")
                     except Exception as e:
                         print(f"❌ 后台评估错误: {e}")
+                        import traceback
+                        traceback.print_exc()
                     finally:
                         # 清理任务记录
                         if request.session_id in active_evaluation_tasks:
@@ -741,9 +749,12 @@ async def chat_stream(request: ChatRequest):
                 # ⚡ 启动后台任务（fire-and-forget），不阻塞主流程
                 eval_task = asyncio.create_task(run_background_evaluation())
                 active_evaluation_tasks[request.session_id] = eval_task  # ✅ 记录任务
+                print(f"✅ 后台评估任务已启动")
                 
                 # ⚡ 不再等待快速评估，直接让评估在后台运行
                 # 用户可以立即继续操作，评估完成后结果会保存到session中
+            else:
+                print(f"⚠️  跳过质量评估: quality_evaluator={quality_evaluator is not None}, has_docs={hasattr(rag_agent, 'last_context_docs') and bool(rag_agent.last_context_docs)}")
             
             # === 第10步：保存会话 ===
             session.add_message("user", request.message)
@@ -1014,7 +1025,7 @@ async def generate_quiz(request: QuizRequest):
         # 从向量库中获取所有文档
         try:
             # 临时创建一个向量存储实例来获取文档
-            from vector_store import VectorStore
+            from src.core.vector_store import VectorStore
             temp_vector_store = VectorStore(
                 db_path=str(kb_vector_dir),  # ✅ 使用db_path参数
                 collection_name=COLLECTION_NAME
@@ -2304,10 +2315,10 @@ async def create_knowledge_base(request: CreateKBRequest):
     创建新知识库
     """
     try:
-        from document_loader import DocumentLoader
-        from text_splitter import TextSplitter
-        from vector_store import VectorStore
-        from image_vector_store import ImageVectorStore
+        from src.processors.document_loader import DocumentLoader
+        from src.processors.text_splitter import TextSplitter
+        from src.core.vector_store import VectorStore
+        from src.core.image_vector_store import ImageVectorStore
         from config import ensure_kb_dirs, get_kb_data_dir, get_kb_vector_dir
         
         # 检查知识库是否已存在
@@ -2864,10 +2875,10 @@ async def upload_to_knowledge_base(kb_id: str, files: List[UploadFile] = File(..
     上传文件到指定知识库并处理
     """
     try:
-        from document_loader import DocumentLoader
-        from text_splitter import TextSplitter
-        from vector_store import VectorStore
-        from image_vector_store import ImageVectorStore
+        from src.processors.document_loader import DocumentLoader
+        from src.processors.text_splitter import TextSplitter
+        from src.core.vector_store import VectorStore
+        from src.core.image_vector_store import ImageVectorStore
         import tempfile
         import shutil
         

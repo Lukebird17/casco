@@ -8,7 +8,7 @@ from typing import Dict, List, Tuple
 import re
 import asyncio
 from openai import OpenAI
-from config import OPENAI_API_KEY, OPENAI_API_BASE, MODEL_NAME
+from config import OPENAI_API_KEY, OPENAI_API_BASE, TEXT_MODEL_NAME  # ✅ 改用TEXT_MODEL_NAME
 
 
 class QualityEvaluator:
@@ -16,7 +16,8 @@ class QualityEvaluator:
     
     def __init__(self):
         self.client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_API_BASE)
-        self.model = MODEL_NAME
+        self.model = TEXT_MODEL_NAME  # ✅ 使用纯文本模型，而不是多模态模型
+        print(f"✅ QualityEvaluator初始化，使用模型: {self.model}")
     
     def evaluate_answer(
         self,
@@ -54,48 +55,51 @@ class QualityEvaluator:
         context_text = self._format_context(context_docs)
         
         # 2. 使用 LLM 进行多维度评估
-        evaluation_prompt = f"""请你作为一个严格的答案质量评估专家，从多个维度评估下面的AI回答。
+        evaluation_prompt = f"""你是答案质量评估专家。请评估以下AI回答的质量。
 
-用户问题：
+【用户问题】
 {question}
 
-检索到的参考资料：
-{context_text[:2000]}
+【参考资料】（前1500字符）
+{context_text[:1500]}
 
-AI的回答：
-{answer}
+【AI回答】
+{answer[:1000]}
 
-请从以下5个维度评估答案质量，每个维度给出0-100的分数，并简要说明理由：
+请从5个维度评估（0-100分），用JSON格式返回：
 
-1. **准确性** (Accuracy): 答案是否准确无误，没有事实错误？
-2. **相关性** (Relevance): 答案是否直接回答了用户的问题？
-3. **完整性** (Completeness): 答案是否全面，包含了关键信息？
-4. **忠实度** (Faithfulness): 答案是否基于参考资料，没有编造内容？
-5. **清晰度** (Clarity): 答案是否表述清晰，易于理解？
+1. 准确性：事实是否正确
+2. 相关性：是否回答问题
+3. 完整性：信息是否全面
+4. 忠实度：是否基于参考资料
+5. 清晰度：表述是否清晰
 
-请以如下JSON格式返回（只返回JSON，不要其他说明）：
+返回格式（只返回JSON）：
 {{
-  "准确性": {{"score": 85, "reason": "说明"}},
-  "相关性": {{"score": 90, "reason": "说明"}},
-  "完整性": {{"score": 80, "reason": "说明"}},
-  "忠实度": {{"score": 88, "reason": "说明"}},
-  "清晰度": {{"score": 85, "reason": "说明"}}
+  "准确性": {{"score": 85, "reason": "简短理由"}},
+  "相关性": {{"score": 90, "reason": "简短理由"}},
+  "完整性": {{"score": 80, "reason": "简短理由"}},
+  "忠实度": {{"score": 88, "reason": "简短理由"}},
+  "清晰度": {{"score": 85, "reason": "简短理由"}}
 }}
 """
         
         try:
+            print(f"🔍 开始LLM评估，模型: {self.model}")
             # 调用 LLM 评估
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[
-                    {"role": "system", "content": "你是一位专业的答案质量评估专家。"},
+                    {"role": "system", "content": "你是专业的答案质量评估专家，用JSON格式返回评估结果。"},
                     {"role": "user", "content": evaluation_prompt}
                 ],
-                temperature=0.3,
-                max_tokens=1000
+                temperature=0.1,  # ✅ 降低温度，使输出更稳定
+                max_tokens=800,   # ✅ 减少max_tokens，加快速度
+                timeout=30.0      # ✅ 设置30秒超时
             )
             
             result_text = response.choices[0].message.content.strip()
+            print(f"✅ LLM评估完成，结果长度: {len(result_text)}")
             
             # 提取 JSON
             if '```json' in result_text:

@@ -24,19 +24,35 @@ const ChatInterface = ({
   onCitationClick,
 }) => {
   const messagesEndRef = useRef(null);
+  const chatContainerRef = useRef(null);
+  const prevMessagesLengthRef = useRef(0);
+  const isUserScrollingRef = useRef(false);
 
-  // 自动滚动到底部（当消息、检索结果或loading状态变化时）
+  // 自动滚动到底部（只在新消息添加时，且用户没有主动向上滚动）
   useEffect(() => {
-    // 使用setTimeout确保DOM已更新
-    setTimeout(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
-  }, [messages, retrievalCitations, loading]);
+    // 只在消息数量增加时才滚动（新消息添加）
+    if (messages.length > prevMessagesLengthRef.current) {
+      setTimeout(() => {
+        // 只在用户没有主动向上滚动时才自动滚动
+        if (!isUserScrollingRef.current) {
+          messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+      prevMessagesLengthRef.current = messages.length;
+    }
+  }, [messages]);
+
+  // 检测用户是否主动滚动
+  const handleScroll = (e) => {
+    const element = e.target;
+    const isAtBottom = element.scrollHeight - element.scrollTop - element.clientHeight < 100;
+    isUserScrollingRef.current = !isAtBottom;
+  };
 
   return (
     <div className="flex flex-col h-full bg-white">
       {/* 消息列表 */}
-      <div className="flex-1 overflow-y-auto px-6 py-8">
+      <div className="flex-1 overflow-y-auto px-6 py-8" onScroll={handleScroll}>
         <div className="max-w-4xl mx-auto">
           {/* 苏格拉底模式欢迎消息 */}
           {messages.length === 0 ? (
@@ -85,8 +101,13 @@ const ChatInterface = ({
                         onCitationClick={(citeId) => {
                           // 从cite_id找到对应的citation对象
                           const citation = retrievalCitations?.find(c => c.id === citeId);
-                          if (citation && onCitationClick) {
-                            onCitationClick(citation);
+                          if (citation) {
+                            // 找到了citation对象，传递整个对象
+                            onCitationClick && onCitationClick(citation);
+                          } else {
+                            // 没找到citation对象（可能是历史消息），直接传递cite_id字符串
+                            // App.jsx中的handleJumpToCitation会处理字符串形式的cite_id
+                            onCitationClick && onCitationClick(citeId);
                           }
                         }}
                       />
